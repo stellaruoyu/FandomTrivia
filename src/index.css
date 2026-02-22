@@ -37,3 +37,12 @@
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+.twilight-quiz-card {
+  background: linear-gradient(135deg, rgba(17, 17, 17, 1) 0%, rgba(20, 15, 30, 1) 100%);
+  box-shadow: 0 0 60px rgba(127, 19, 236, 0.08), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.twilight-quiz-card:hover {
+  box-shadow: 0 0 80px rgba(127, 19, 236, 0.12), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}

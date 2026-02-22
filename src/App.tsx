@@ -5,13 +5,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, 
-  ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, 
-  ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon
+import {
+  Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
+  ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
+  ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft
 } from 'lucide-react';
-import { 
-  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, LEADERBOARD 
+import {
+  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, LEADERBOARD, TWILIGHT_TRIVIA
 } from './constants';
 
 // --- Types ---
@@ -64,7 +65,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-md w-full shadow-2xl space-y-6"
@@ -77,7 +78,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Username</label>
-            <input 
+            <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
@@ -88,7 +89,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
             {error && <p className="text-red-500 text-[10px] font-bold uppercase tracking-wider ml-1">{error}</p>}
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="w-full bg-primary text-white py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-[1.02] transition-all shadow-xl shadow-primary/30 disabled:opacity-50"
@@ -101,16 +102,16 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: { 
-  isDashboard: boolean, 
-  setView: (v: 'landing' | 'dashboard') => void,
+const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
+  isDashboard: boolean,
+  setView: (v: ViewType) => void,
   user: User | null,
   onLogin: () => void,
   onLogout: () => void
 }) => (
   <header className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
-      <div 
+      <div
         className="flex items-center gap-3 group cursor-pointer"
         onClick={() => setView('landing')}
       >
@@ -121,12 +122,12 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
           Fandom<span className="text-primary">{isDashboard ? 'Hub' : 'Trivia'}</span>
         </h1>
       </div>
-      
+
       <nav className="hidden md:flex items-center gap-10">
         {(isDashboard ? DASHBOARD_NAV_LINKS : NAV_LINKS).map((link) => (
-          <a 
-            key={link.name} 
-            href={link.href} 
+          <a
+            key={link.name}
+            href={link.href}
             className={`text-sm font-semibold hover:text-primary transition-colors ${isDashboard ? 'uppercase tracking-widest text-xs' : ''} ${(link as any).active ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
           >
             {link.name}
@@ -144,7 +145,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
         <button className="hidden sm:flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors mr-4">
           <Search className="size-5" />
         </button>
-        
+
         {user ? (
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 pl-2 pr-4 py-1.5 rounded-full">
@@ -154,7 +155,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
                 <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{user.name}</span>
               </div>
             </div>
-            <button 
+            <button
               onClick={onLogout}
               className="size-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all"
             >
@@ -162,7 +163,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
             </button>
           </div>
         ) : (
-          <button 
+          <button
             onClick={onLogin}
             className="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
           >
@@ -204,7 +205,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
           )}
         </div>
       </div>
-      
+
       <div className="space-y-6">
         <h5 className="text-sm font-black uppercase tracking-widest text-white">
           {isDashboard ? 'Circuit' : 'Platform'}
@@ -259,10 +260,292 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => void, key?: string }) => (
-  <motion.div 
-    initial={{ opacity: 0 }} 
-    animate={{ opacity: 1 }} 
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight';
+
+const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
+  const [currentQ, setCurrentQ] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
+  const [finished, setFinished] = useState(false);
+
+  const questions = TWILIGHT_TRIVIA;
+  const q = questions[currentQ];
+  const total = questions.length;
+  const correctCount = Object.values(scores).filter(s => s === 'correct').length;
+  const answeredCount = Object.keys(scores).length;
+
+  const handleScore = (result: 'correct' | 'incorrect') => {
+    setScores(prev => ({ ...prev, [currentQ]: result }));
+    if (currentQ < total - 1) {
+      setTimeout(() => {
+        setCurrentQ(prev => prev + 1);
+        setRevealed(false);
+      }, 400);
+    } else {
+      setTimeout(() => setFinished(true), 400);
+    }
+  };
+
+  const handleRestart = () => {
+    setCurrentQ(0);
+    setRevealed(false);
+    setScores({});
+    setFinished(false);
+  };
+
+  if (finished) {
+    const pct = Math.round((correctCount / total) * 100);
+    let grade = '';
+    let gradeColor = '';
+    if (pct >= 90) { grade = 'Cullen-Level Expert'; gradeColor = 'text-amber-400'; }
+    else if (pct >= 70) { grade = 'Forks Insider'; gradeColor = 'text-purple-400'; }
+    else if (pct >= 50) { grade = 'Curious Newcomer'; gradeColor = 'text-blue-400'; }
+    else { grade = 'Just Arrived in Forks'; gradeColor = 'text-slate-400'; }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="pt-28 pb-20 px-6"
+      >
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+            className="space-y-6"
+          >
+            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto">
+              <Trophy className="size-12 text-amber-400" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+              Quiz Complete!
+            </h2>
+            <div className="space-y-2">
+              <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
+                {correctCount}/{total}
+              </p>
+              <p className="text-slate-400 font-medium">Questions Correct ({pct}%)</p>
+            </div>
+            <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>
+              {grade}
+            </p>
+
+            {/* Score breakdown bar */}
+            <div className="w-full max-w-md mx-auto space-y-2">
+              <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
+                <div
+                  className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500"
+                  style={{ width: `${pct}%` }}
+                />
+                <div
+                  className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500"
+                  style={{ width: `${100 - pct}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                <span className="text-green-400">{correctCount} Correct</span>
+                <span className="text-red-400">{total - correctCount} Incorrect</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <button
+              onClick={handleRestart}
+              className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30"
+            >
+              <RotateCcw className="size-4" />
+              Play Again
+            </button>
+            <button
+              onClick={() => setView('landing')}
+              className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
+            >
+              <ArrowLeft className="size-4" />
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="pt-28 pb-20 px-6"
+    >
+      <div className="max-w-3xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setView('landing')}
+            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-bold text-sm"
+          >
+            <ArrowLeft className="size-4" />
+            Back
+          </button>
+          <div className="flex items-center gap-3">
+            <Droplets className="size-5 text-blue-400" />
+            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Twilight · Vol. I</span>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+            <span>Question {currentQ + 1} of {total}</span>
+            <span className="text-green-400">{correctCount} correct</span>
+          </div>
+          <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-primary to-purple-400 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentQ + 1) / total) * 100}%` }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+        </div>
+
+        {/* Question Card */}
+        <motion.div
+          key={q.id}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          className="twilight-quiz-card relative bg-card-dark border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+        >
+          {/* Decorative top gradient */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-primary to-purple-500" />
+
+          <div className="p-8 md:p-12 space-y-8">
+            {/* Question number badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
+              <BookOpen className="size-3.5 text-primary" />
+              <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+                Question {q.id}
+              </span>
+            </div>
+
+            {/* Question text */}
+            <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-snug tracking-tight">
+              {q.question}
+            </h3>
+
+            {/* Answer area */}
+            <AnimatePresence mode="wait">
+              {!revealed ? (
+                <motion.button
+                  key="reveal-btn"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  onClick={() => setRevealed(true)}
+                  className="w-full py-5 bg-gradient-to-r from-primary/20 to-purple-500/20 border border-primary/30 rounded-2xl text-white font-black text-sm uppercase tracking-widest hover:from-primary/30 hover:to-purple-500/30 transition-all flex items-center justify-center gap-3 group"
+                >
+                  <Eye className="size-5 text-primary group-hover:scale-110 transition-transform" />
+                  Reveal Answer
+                </motion.button>
+              ) : (
+                <motion.div
+                  key="answer-block"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="space-y-4"
+                >
+                  <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-3">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Answer</p>
+                    <p className="text-xl font-bold text-white leading-relaxed">{q.answer}</p>
+                  </div>
+                  <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 space-y-3">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary/70">Contextual Insight</p>
+                    <p className="text-sm font-medium text-slate-300 leading-relaxed italic">{q.insight}</p>
+                  </div>
+
+                  {/* Self-assessment buttons */}
+                  {!scores[currentQ] && (
+                    <div className="flex gap-3 pt-2">
+                      <button
+                        onClick={() => handleScore('correct')}
+                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 font-black text-xs uppercase tracking-widest hover:bg-green-500/20 transition-all"
+                      >
+                        <Check className="size-4" />
+                        I Knew It
+                      </button>
+                      <button
+                        onClick={() => handleScore('incorrect')}
+                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 font-black text-xs uppercase tracking-widest hover:bg-red-500/20 transition-all"
+                      >
+                        <X className="size-4" />
+                        Didn't Know
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => { setCurrentQ(prev => Math.max(0, prev - 1)); setRevealed(false); }}
+            disabled={currentQ === 0}
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-bold text-sm hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="size-4" />
+            Previous
+          </button>
+
+          {/* Question dots (compact) */}
+          <div className="hidden md:flex items-center gap-1">
+            {questions.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setCurrentQ(i); setRevealed(false); }}
+                className={`size-2 rounded-full transition-all ${i === currentQ
+                  ? 'bg-primary scale-150'
+                  : scores[i] === 'correct'
+                    ? 'bg-green-500'
+                    : scores[i] === 'incorrect'
+                      ? 'bg-red-500'
+                      : 'bg-white/20 hover:bg-white/40'
+                  }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={() => {
+              if (currentQ < total - 1) {
+                setCurrentQ(prev => prev + 1);
+                setRevealed(false);
+              } else if (answeredCount === total) {
+                setFinished(true);
+              }
+            }}
+            disabled={currentQ === total - 1 && answeredCount < total}
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            {currentQ === total - 1 ? 'Finish' : 'Next'}
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     className="pt-20"
   >
@@ -273,7 +556,7 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px]"></div>
       </div>
       <div className="max-w-5xl mx-auto text-center space-y-8">
-        <motion.div 
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest"
@@ -284,7 +567,7 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
           </span>
           Join 12.4K Active Players
         </motion.div>
-        <motion.h2 
+        <motion.h2
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -292,7 +575,7 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
         >
           The Ultimate <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Fandom Trivia</span>
         </motion.h2>
-        <motion.p 
+        <motion.p
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -300,13 +583,13 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
         >
           Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, and K-Pop: Demon Hunters.
         </motion.p>
-        <motion.div 
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <button 
+          <button
             onClick={() => setView('dashboard')}
             className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
           >
@@ -328,7 +611,7 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
           { icon: Trophy, label: 'Quizzes Taken', value: '1.2M+', color: 'text-primary', bg: 'bg-primary/10' },
           { icon: Star, label: 'Global Rankings', value: '#1 Hub', color: 'text-amber-500', bg: 'bg-amber-500/10' },
         ].map((stat, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -362,7 +645,7 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {UNIVERSES.map((universe, i) => (
-          <motion.div 
+          <motion.div
             key={universe.id}
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -370,8 +653,8 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
             transition={{ delay: i * 0.1 }}
             className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
           >
-            <div 
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
               style={{ backgroundImage: `url(${universe.image})` }}
             ></div>
             <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
@@ -389,7 +672,13 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
                 ) : universe.title}
               </h4>
               <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-              <button className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (universe.id === 'twilight') setView('trivia-twilight');
+                }}
+                className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
+              >
                 {universe.buttonText}
               </button>
             </div>
@@ -410,10 +699,10 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
         <h3 className="text-4xl font-black text-white leading-tight">Think you're a Super Fan?</h3>
         <p className="text-white/80 text-lg max-w-xl font-medium">Join our community to get notified about new trivia drops, special limited-time events, and global tournaments.</p>
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-          <input 
-            type="email" 
-            className="flex-1 bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/40 font-medium" 
-            placeholder="Enter your email" 
+          <input
+            type="email"
+            className="flex-1 bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/40 font-medium"
+            placeholder="Enter your email"
           />
           <button className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-slate-100 transition-colors">Join Now</button>
         </div>
@@ -423,9 +712,9 @@ const LandingView = ({ setView }: { setView: (v: 'landing' | 'dashboard') => voi
 );
 
 const DashboardView = ({ key }: { key?: string }) => (
-  <motion.div 
-    initial={{ opacity: 0 }} 
-    animate={{ opacity: 1 }} 
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     className="pt-24 pb-20"
   >
@@ -483,8 +772,8 @@ const DashboardView = ({ key }: { key?: string }) => (
             {TOURNAMENTS.map((t) => (
               <div key={t.id} className={`group relative bg-card-dark rounded-2xl overflow-hidden border border-white/5 p-1 transition-all hover:border-${t.color}/50`}>
                 <div className="relative h-48 rounded-xl overflow-hidden">
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" 
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                     style={{ backgroundImage: `url(${t.image})` }}
                   ></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
@@ -506,8 +795,8 @@ const DashboardView = ({ key }: { key?: string }) => (
                       <span className={`text-${t.color}`}>{t.progress}%</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full bg-${t.color} rounded-full`} 
+                      <div
+                        className={`h-full bg-${t.color} rounded-full`}
                         style={{ width: `${t.progress}%` }}
                       ></div>
                     </div>
@@ -613,7 +902,7 @@ const DashboardView = ({ key }: { key?: string }) => (
 );
 
 export default function App() {
-  const [view, setView] = useState<'landing' | 'dashboard'>('landing');
+  const [view, setView] = useState<ViewType>('landing');
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
 
@@ -669,17 +958,19 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
-      <Navbar 
-        isDashboard={view === 'dashboard'} 
-        setView={setView} 
+      <Navbar
+        isDashboard={view === 'dashboard'}
+        setView={setView}
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}
       />
-      
+
       <AnimatePresence mode="wait">
         {view === 'landing' ? (
           <LandingView key="landing" setView={setView} />
+        ) : view === 'trivia-twilight' ? (
+          <TriviaQuizView key="trivia-twilight" setView={setView} />
         ) : (
           <DashboardView key="dashboard" />
         )}
@@ -687,11 +978,11 @@ export default function App() {
 
       <AnimatePresence>
         {showUsernameModal && (
-          <UsernameModal 
+          <UsernameModal
             onComplete={(username) => {
               setUser(prev => prev ? { ...prev, username } : null);
               setShowUsernameModal(false);
-            }} 
+            }}
           />
         )}
       </AnimatePresence>
