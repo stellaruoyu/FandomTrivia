@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Spline Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #7f13ec;
+  --color-accent: #00f2ff;
+  --color-bg-dark: #0b0b0b;
+  --color-card-dark: #111111;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0b0b0b] text-slate-100 font-sans;
+  }
+}
+
+.glass-nav {
+  background: rgba(11, 11, 11, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.fandom-card:hover .card-overlay {
+  background: rgba(127, 19, 236, 0.2);
+}
+
+.stats-gradient {
+  background: linear-gradient(135deg, rgba(127, 19, 236, 0.1) 0%, rgba(0, 242, 255, 0.05) 100%);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
