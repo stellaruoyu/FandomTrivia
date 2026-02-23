@@ -12,7 +12,7 @@ import {
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft
 } from 'lucide-react';
 import {
-  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, TWILIGHT_TRIVIA,
+  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
   KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 
@@ -261,336 +261,8 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight' | 'trivia-kpop' | 'trivia-twilight-mc';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop';
 
-const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
-  const [currentQ, setCurrentQ] = useState(0);
-  const [revealed, setRevealed] = useState(false);
-  const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
-  const [finished, setFinished] = useState(false);
-  const [playerName, setPlayerName] = useState('');
-  const [showNamePrompt, setShowNamePrompt] = useState(false);
-  const [scoreSaved, setScoreSaved] = useState(false);
-
-  const questions = TWILIGHT_TRIVIA;
-  const q = questions[currentQ];
-  const total = questions.length;
-  const correctCount = Object.values(scores).filter(s => s === 'correct').length;
-  const answeredCount = Object.keys(scores).length;
-
-  const handleScore = (result: 'correct' | 'incorrect') => {
-    setScores(prev => ({ ...prev, [currentQ]: result }));
-    if (currentQ < total - 1) {
-      setTimeout(() => {
-        setCurrentQ(prev => prev + 1);
-        setRevealed(false);
-      }, 400);
-    } else {
-      setTimeout(() => setFinished(true), 400);
-    }
-  };
-
-  const handleRestart = () => {
-    setCurrentQ(0);
-    setRevealed(false);
-    setScores({});
-    setFinished(false);
-    setScoreSaved(false);
-    setShowNamePrompt(false);
-    setPlayerName('');
-  };
-
-  const handleSaveScore = () => {
-    if (playerName.trim().length >= 2) {
-      saveScore(playerName.trim(), correctCount, total, 'Twilight Saga');
-      setScoreSaved(true);
-      setShowNamePrompt(false);
-    }
-  };
-
-  if (finished) {
-    const pct = Math.round((correctCount / total) * 100);
-    let grade = '';
-    let gradeColor = '';
-    if (pct >= 90) { grade = 'Cullen-Level Expert'; gradeColor = 'text-amber-400'; }
-    else if (pct >= 70) { grade = 'Forks Insider'; gradeColor = 'text-purple-400'; }
-    else if (pct >= 50) { grade = 'Curious Newcomer'; gradeColor = 'text-blue-400'; }
-    else { grade = 'Just Arrived in Forks'; gradeColor = 'text-slate-400'; }
-
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="pt-28 pb-20 px-6"
-      >
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto">
-              <Trophy className="size-12 text-amber-400" />
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
-              Quiz Complete!
-            </h2>
-            <div className="space-y-2">
-              <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                {correctCount}/{total}
-              </p>
-              <p className="text-slate-400 font-medium">Questions Correct ({pct}%)</p>
-            </div>
-            <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>
-              {grade}
-            </p>
-
-            {/* Score breakdown bar */}
-            <div className="w-full max-w-md mx-auto space-y-2">
-              <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                <div
-                  className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500"
-                  style={{ width: `${pct}%` }}
-                />
-                <div
-                  className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500"
-                  style={{ width: `${100 - pct}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                <span className="text-green-400">{correctCount} Correct</span>
-                <span className="text-red-400">{total - correctCount} Incorrect</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Save score prompt */}
-          {!scoreSaved && !showNamePrompt && (
-            <button
-              onClick={() => setShowNamePrompt(true)}
-              className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all"
-            >
-              <Star className="size-4" />
-              Save to Leaderboard
-            </button>
-          )}
-          {showNamePrompt && (
-            <div className="flex flex-col items-center gap-3 max-w-sm mx-auto w-full">
-              <input
-                type="text"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))}
-                placeholder="Enter your name..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center"
-                maxLength={20}
-              />
-              <button
-                onClick={handleSaveScore}
-                disabled={playerName.trim().length < 2}
-                className="w-full bg-amber-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                Submit Score
-              </button>
-            </div>
-          )}
-          {scoreSaved && (
-            <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
-              <Check className="size-4" /> Score saved!
-            </p>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <button
-              onClick={handleRestart}
-              className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30"
-            >
-              <RotateCcw className="size-4" />
-              Play Again
-            </button>
-            <button
-              onClick={() => setView('landing')}
-              className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
-            >
-              <ArrowLeft className="size-4" />
-              Back to Home
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-28 pb-20 px-6"
-    >
-      <div className="max-w-3xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => setView('landing')}
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-bold text-sm"
-          >
-            <ArrowLeft className="size-4" />
-            Back
-          </button>
-          <div className="flex items-center gap-3">
-            <Droplets className="size-5 text-blue-400" />
-            <span className="text-xs font-black uppercase tracking-widest text-slate-500">Twilight · Vol. I</span>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
-            <span>Question {currentQ + 1} of {total}</span>
-            <span className="text-green-400">{correctCount} correct</span>
-          </div>
-          <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-primary to-purple-400 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${((currentQ + 1) / total) * 100}%` }}
-              transition={{ duration: 0.4 }}
-            />
-          </div>
-        </div>
-
-        {/* Question Card */}
-        <motion.div
-          key={q.id}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-          className="twilight-quiz-card relative bg-card-dark border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
-        >
-          {/* Decorative top gradient */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-primary to-purple-500" />
-
-          <div className="p-8 md:p-12 space-y-8">
-            {/* Question number badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
-              <BookOpen className="size-3.5 text-primary" />
-              <span className="text-[10px] font-black text-primary uppercase tracking-widest">
-                Question {q.id}
-              </span>
-            </div>
-
-            {/* Question text */}
-            <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-snug tracking-tight">
-              {q.question}
-            </h3>
-
-            {/* Answer area */}
-            <AnimatePresence mode="wait">
-              {!revealed ? (
-                <motion.button
-                  key="reveal-btn"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  onClick={() => setRevealed(true)}
-                  className="w-full py-5 bg-gradient-to-r from-primary/20 to-purple-500/20 border border-primary/30 rounded-2xl text-white font-black text-sm uppercase tracking-widest hover:from-primary/30 hover:to-purple-500/30 transition-all flex items-center justify-center gap-3 group"
-                >
-                  <Eye className="size-5 text-primary group-hover:scale-110 transition-transform" />
-                  Reveal Answer
-                </motion.button>
-              ) : (
-                <motion.div
-                  key="answer-block"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="space-y-4"
-                >
-                  <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Answer</p>
-                    <p className="text-xl font-bold text-white leading-relaxed">{q.answer}</p>
-                  </div>
-                  <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 space-y-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary/70">Contextual Insight</p>
-                    <p className="text-sm font-medium text-slate-300 leading-relaxed italic">{q.insight}</p>
-                  </div>
-
-                  {/* Self-assessment buttons */}
-                  {!scores[currentQ] && (
-                    <div className="flex gap-3 pt-2">
-                      <button
-                        onClick={() => handleScore('correct')}
-                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 font-black text-xs uppercase tracking-widest hover:bg-green-500/20 transition-all"
-                      >
-                        <Check className="size-4" />
-                        I Knew It
-                      </button>
-                      <button
-                        onClick={() => handleScore('incorrect')}
-                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 font-black text-xs uppercase tracking-widest hover:bg-red-500/20 transition-all"
-                      >
-                        <X className="size-4" />
-                        Didn't Know
-                      </button>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => { setCurrentQ(prev => Math.max(0, prev - 1)); setRevealed(false); }}
-            disabled={currentQ === 0}
-            className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-bold text-sm hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <ChevronLeft className="size-4" />
-            Previous
-          </button>
-
-          {/* Question dots (compact) */}
-          <div className="hidden md:flex items-center gap-1">
-            {questions.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setCurrentQ(i); setRevealed(false); }}
-                className={`size-2 rounded-full transition-all ${i === currentQ
-                  ? 'bg-primary scale-150'
-                  : scores[i] === 'correct'
-                    ? 'bg-green-500'
-                    : scores[i] === 'incorrect'
-                      ? 'bg-red-500'
-                      : 'bg-white/20 hover:bg-white/40'
-                  }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={() => {
-              if (currentQ < total - 1) {
-                setCurrentQ(prev => prev + 1);
-                setRevealed(false);
-              } else if (answeredCount === total) {
-                setFinished(true);
-              }
-            }}
-            disabled={currentQ === total - 1 && answeredCount < total}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {currentQ === total - 1 ? 'Finish' : 'Next'}
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 // --- Multiple Choice Quiz View (Generic) ---
 
@@ -786,6 +458,18 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
               })}
             </div>
 
+            {/* Evidence after answering */}
+            {selected && q.evidence && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="px-5 py-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-1"
+              >
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary">📖 Source Evidence</p>
+                <p className="text-sm text-slate-300 leading-relaxed italic">{q.evidence}</p>
+              </motion.div>
+            )}
+
             {/* Next button after selecting */}
             {selected && (
               <motion.button
@@ -953,32 +637,16 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                 ) : universe.title}
               </h4>
               <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-              {universe.id === 'twilight' ? (
-                <div className="flex gap-2 w-full">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setView('trivia-twilight'); }}
-                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all text-sm"
-                  >
-                    📖 Vol. I
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setView('trivia-twilight-mc'); }}
-                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all text-sm"
-                  >
-                    🧠 Vol. II
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (universe.id === 'kpop') setView('trivia-kpop');
-                  }}
-                  className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
-                >
-                  {universe.buttonText}
-                </button>
-              )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (universe.id === 'twilight') setView('trivia-twilight-mc');
+                  if (universe.id === 'kpop') setView('trivia-kpop');
+                }}
+                className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
+              >
+                {universe.buttonText}
+              </button>
             </div>
             <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
               {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
@@ -1293,8 +961,6 @@ export default function App() {
       <AnimatePresence mode="wait">
         {view === 'landing' ? (
           <LandingView key="landing" setView={setView} />
-        ) : view === 'trivia-twilight' ? (
-          <TriviaQuizView key="trivia-twilight" setView={setView} />
         ) : view === 'trivia-kpop' ? (
           <MCQuizView key="trivia-kpop" setView={setView} questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
             { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400' },
@@ -1303,7 +969,7 @@ export default function App() {
             { threshold: 0, label: 'Trainee', color: 'text-slate-400' },
           ]} />
         ) : view === 'trivia-twilight-mc' ? (
-          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. II" scoreLabel="Twilight Vol. II" grades={[
+          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={[
             { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400' },
             { threshold: 70, label: 'Forks Insider', color: 'text-purple-400' },
             { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400' },

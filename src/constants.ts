@@ -334,6 +334,7 @@ export interface MCTriviaQuestion {
   question: string;
   options: string[];
   answer: string;
+  evidence?: string;
 }
 
 // --- K-Pop: Demon Hunters Trivia ---
@@ -432,6 +433,7 @@ export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
       "It was a custom-built 1970s model that Billy Black had restored for off-road use."
     ],
     answer: "Billy Black bought it in 1984, but it was manufactured in the late 1950s or early 1960s.",
+    evidence: '"He bought it in 1984, I think… Well, no. I think it was new in the early sixties or late fifties at the earliest," he admitted sheepishly. — Chapter 1',
   },
   {
     id: 2,
@@ -443,6 +445,7 @@ export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
       "She is a former cheerleader whose tan has faded significantly during the four-hour flight."
     ],
     answer: "She is ivory-skinned and lacks hand-eye coordination, despite the constant sunshine of her Phoenix life.",
+    evidence: '"Instead, I was ivory-skinned, without even the excuse of blue eyes or red hair, despite the constant sunshine… I didn\'t have the necessary hand-eye coordination to play sports without humiliating myself." — Chapter 1',
   },
   {
     id: 3,
@@ -454,6 +457,7 @@ export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
       "They all appear to be biologically related despite Jessica's claims of adoption."
     ],
     answer: "They all exhibit 'purplish, bruiselike shadows' beneath their very dark eyes.",
+    evidence: '"They all had very dark eyes despite the range in hair tones. They also had dark shadows under those eyes — purplish, bruiselike shadows." — Chapter 1',
   },
   {
     id: 4,
@@ -465,6 +469,7 @@ export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
       "His eyes shifted from 'pale green' to a 'piercing, electric blue.'"
     ],
     answer: "His eyes changed from 'flat black' to a 'strange ocher, darker than butterscotch.'",
+    evidence: '"I vividly remembered the flat black color of his eyes the last time he\'d glared at me… Today, his eyes were a completely different color: a strange ocher, darker than butterscotch, but with the same golden tone." — Chapter 5',
   },
   {
     id: 5,
@@ -476,35 +481,41 @@ export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
       "A modern paperback regarding Quileute tribal folklore."
     ],
     answer: "A shabbily bound compilation of the works of Jane Austen.",
+    evidence: '"I had a small collection of books… the shabbiest volume being a compilation of the works of Jane Austen. I selected that one and headed to the backyard…" — Chapter 7',
   },
   {
     id: 6,
     question: "True or False: Forks, Washington, holds a statistical distinction within the United States for having the highest annual rainfall of any location.",
     options: ["True", "False"],
     answer: "True",
+    evidence: '"It rains on this inconsequential town more than any other place in the United States of America." — Chapter 1',
   },
   {
     id: 7,
     question: "True or False: According to the Quileute legends shared by Jacob Black, the tribe claims direct ancestral descent from bears.",
     options: ["True", "False"],
     answer: "False",
+    evidence: '"Another legend claims that we descended from wolves — and that the wolves are our brothers still." The tribe descends from wolves, not bears. — Chapter 6',
   },
   {
     id: 8,
     question: "True or False: Bella discovers the term 'Stregoni benefici' through a digital search, which describes an Italian vampire myth focused on goodness.",
     options: ["True", "False"],
     answer: "True",
+    evidence: '"Stregoni benefici: An Italian vampire, said to be on the side of goodness, and a mortal enemy of all evil vampires." — Chapter 7',
   },
   {
     id: 9,
     question: "True or False: The specific student population count at Forks High School, including Bella Swan, is exactly 358.",
     options: ["True", "False"],
     answer: "True",
+    evidence: '"Forks High School had a frightening total of only three hundred and fifty-seven — now fifty-eight — students." — Chapter 1',
   },
   {
     id: 10,
     question: "True or False: Edward Cullen admits that his presence in Port Angeles was due to his ability to track Bella's physical scent across the city.",
     options: ["True", "False"],
     answer: "False",
+    evidence: '"I was just waiting for you, randomly searching through the thoughts of people on the street — to see if anyone had noticed you — so I would know where you were." He used telepathy, not scent tracking. — Chapter 8',
   },
 ];

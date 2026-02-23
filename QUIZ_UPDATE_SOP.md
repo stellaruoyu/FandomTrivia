@@ -119,9 +119,10 @@ Use this checklist **each time** a new quiz is added:
 
 | Universe | Quiz | Questions | Status |
 |----------|------|-----------|--------|
-| Twilight | Vol. I (Chapters 1–8) | 30 | ✅ Live |
+| Twilight | Vol. I — Open-Ended | 30 | ✅ Live |
+| Twilight | Vol. II — Multiple Choice | 10 | ✅ Live |
+| K-Pop: Demon Hunters | Multiple Choice | 13 (9 in Fun Mode) | ✅ Live |
 | Harry Potter | — | — | ⬜ Not started |
-| K-Pop: Demon Hunters | — | — | ⬜ Not started |
 
 ---
 
@@ -133,4 +134,4 @@ Use this checklist **each time** a new quiz is added:
 | [`src/App.tsx`](file:///c:/Users/ruoyu/OneDrive/Documents/Project/FandomTrivia/FandomTrivia/src/App.tsx) | Views, routing, quiz UI components |
 
 > [!NOTE]
-> Each new quiz reuses the same `TriviaQuizView` component — only the question data and routing change. Adding a quiz takes ~5 minutes of AI work once you provide the questions.
+> The `MCQuizView` component is fully generic — it accepts `questions`, `title`, `scoreLabel`, and `grades` as props. Adding a new MC quiz only requires adding the data and one route line.
