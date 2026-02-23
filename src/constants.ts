@@ -37,7 +37,7 @@ export const UNIVERSES = [
     title: 'K-Pop: Demon Hunters',
     tags: ['Neon', 'Hot'],
     description: 'High-energy beats & supernatural hunts. Test your rhythm and hunter instincts.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9iY-vK6_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S',
+    image: 'https://picsum.photos/seed/kpop-neon/800/1000',
     buttonText: 'Join the Hunt',
     icon: 'Zap',
     isSpecial: true
@@ -69,17 +69,69 @@ export const TOURNAMENTS = [
     pool: 'Rare NFT Skin',
     players: '814',
     progress: 24,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9iY-vK6_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S1_6S',
+    image: 'https://picsum.photos/seed/kpop-demon/600/400',
     color: 'purple-500'
   }
 ];
 
-export const LEADERBOARD = [
-  { id: '01', name: 'Lazer_Wolf', fandom: 'Hogwarts Legacy', points: '12,842', initials: 'LZ', color: 'from-amber-400 to-amber-600' },
-  { id: '02', name: 'Nexus_Player', fandom: 'Cullen Fanatic', points: '11,201', initials: 'NX', color: 'from-slate-300 to-slate-500' },
-  { id: '03', name: 'DemonHunter_7', fandom: 'K-Pop Pro', points: '10,559', initials: 'DH', color: 'from-orange-400 to-orange-600' },
-  { id: '04', name: 'StarlightVibe', fandom: 'Multi-Stanning', points: '9,820', initials: 'SV', color: 'bg-white/5' },
+// Leaderboard entry type
+export interface LeaderboardEntry {
+  id: string;
+  name: string;
+  fandom: string;
+  points: string;
+  initials: string;
+  color: string;
+  score: number;
+}
+
+const LEADERBOARD_COLORS = [
+  'from-amber-400 to-amber-600',
+  'from-slate-300 to-slate-500',
+  'from-orange-400 to-orange-600',
+  'from-purple-400 to-purple-600',
+  'from-blue-400 to-blue-600',
 ];
+
+export function getLeaderboard(): LeaderboardEntry[] {
+  try {
+    const raw = localStorage.getItem('fandomtrivia_scores');
+    if (!raw) return [];
+    const scores: { name: string; score: number; total: number; quiz: string; date: string }[] = JSON.parse(raw);
+    // Aggregate best score per player
+    const best: Record<string, { score: number; quiz: string }> = {};
+    for (const s of scores) {
+      if (!best[s.name] || s.score > best[s.name].score) {
+        best[s.name] = { score: s.score, quiz: s.quiz };
+      }
+    }
+    return Object.entries(best)
+      .sort((a, b) => b[1].score - a[1].score)
+      .slice(0, 5)
+      .map(([name, data], i) => ({
+        id: String(i + 1).padStart(2, '0'),
+        name,
+        fandom: data.quiz,
+        points: data.score.toLocaleString(),
+        initials: name.slice(0, 2).toUpperCase(),
+        color: LEADERBOARD_COLORS[i % LEADERBOARD_COLORS.length],
+        score: data.score,
+      }));
+  } catch {
+    return [];
+  }
+}
+
+export function saveScore(name: string, score: number, total: number, quiz: string) {
+  try {
+    const raw = localStorage.getItem('fandomtrivia_scores');
+    const scores = raw ? JSON.parse(raw) : [];
+    scores.push({ name, score, total, quiz, date: new Date().toISOString() });
+    localStorage.setItem('fandomtrivia_scores', JSON.stringify(scores));
+  } catch {
+    // silently fail
+  }
+}
 
 // --- Trivia Types ---
 

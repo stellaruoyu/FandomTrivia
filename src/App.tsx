@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
@@ -12,7 +12,8 @@ import {
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft
 } from 'lucide-react';
 import {
-  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, LEADERBOARD, TWILIGHT_TRIVIA
+  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, TWILIGHT_TRIVIA,
+  getLeaderboard, saveScore
 } from './constants';
 
 // --- Types ---
@@ -119,7 +120,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
           <Zap className="size-6 fill-current" />
         </div>
         <h1 className={`text-xl font-bold tracking-tight text-white ${isDashboard ? 'uppercase italic font-black' : ''}`}>
-          Fandom<span className="text-primary">{isDashboard ? 'Hub' : 'Trivia'}</span>
+          Fandom<span className="text-primary">Trivia</span>
         </h1>
       </div>
 
@@ -185,7 +186,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
             <Zap className="size-5 fill-current" />
           </div>
           <h1 className={`text-lg font-bold tracking-tight text-white ${isDashboard ? 'uppercase italic font-black' : ''}`}>
-            Fandom<span className="text-primary">{isDashboard ? 'Hub' : 'Trivia'}</span>
+            Fandom<span className="text-primary">Trivia</span>
           </h1>
         </div>
         <p className="text-slate-400 max-w-sm font-medium leading-relaxed">
@@ -267,6 +268,9 @@ const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: str
   const [revealed, setRevealed] = useState(false);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
   const [finished, setFinished] = useState(false);
+  const [playerName, setPlayerName] = useState('');
+  const [showNamePrompt, setShowNamePrompt] = useState(false);
+  const [scoreSaved, setScoreSaved] = useState(false);
 
   const questions = TWILIGHT_TRIVIA;
   const q = questions[currentQ];
@@ -291,6 +295,17 @@ const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: str
     setRevealed(false);
     setScores({});
     setFinished(false);
+    setScoreSaved(false);
+    setShowNamePrompt(false);
+    setPlayerName('');
+  };
+
+  const handleSaveScore = () => {
+    if (playerName.trim().length >= 2) {
+      saveScore(playerName.trim(), correctCount, total, 'Twilight Saga');
+      setScoreSaved(true);
+      setShowNamePrompt(false);
+    }
   };
 
   if (finished) {
@@ -350,6 +365,41 @@ const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: str
               </div>
             </div>
           </motion.div>
+
+          {/* Save score prompt */}
+          {!scoreSaved && !showNamePrompt && (
+            <button
+              onClick={() => setShowNamePrompt(true)}
+              className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all"
+            >
+              <Star className="size-4" />
+              Save to Leaderboard
+            </button>
+          )}
+          {showNamePrompt && (
+            <div className="flex flex-col items-center gap-3 max-w-sm mx-auto w-full">
+              <input
+                type="text"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))}
+                placeholder="Enter your name..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center"
+                maxLength={20}
+              />
+              <button
+                onClick={handleSaveScore}
+                disabled={playerName.trim().length < 2}
+                className="w-full bg-amber-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                Submit Score
+              </button>
+            </div>
+          )}
+          {scoreSaved && (
+            <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+              <Check className="size-4" /> Score saved!
+            </p>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <button
@@ -590,7 +640,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <button
-            onClick={() => setView('dashboard')}
+            onClick={() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' })}
             className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
           >
             <PlayCircle className="size-6" />
@@ -632,7 +682,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
     </section>
 
     {/* Universe Grid */}
-    <section className="max-w-7xl mx-auto px-6 pb-32">
+    <section id="universes" className="max-w-7xl mx-auto px-6 pb-32">
       <div className="flex items-end justify-between mb-10">
         <div className="space-y-2">
           <h3 className="text-3xl font-extrabold text-white">Choose Your Universe</h3>
@@ -711,195 +761,221 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
   </motion.div>
 );
 
-const DashboardView = ({ key }: { key?: string }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="pt-24 pb-20"
-  >
-    <section className="max-w-[1600px] mx-auto px-6">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Main Content */}
-        <div className="lg:col-span-8 space-y-8">
-          {/* Hero Banner */}
-          <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/5 p-8 md:p-12 shadow-2xl">
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent -z-0"></div>
-            <div className="relative z-10 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em]">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-                </span>
-                Live Circuit Active
-              </div>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white leading-none uppercase italic">
-                Season 4: <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-accent">Legends Rise</span>
-              </h2>
-              <p className="max-w-xl text-slate-400 font-medium leading-relaxed">
-                Compete in high-stakes trivia battles across the multiverse. Climb the global MMR and earn exclusive digital collectibles.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-4">
-                <button className="bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center gap-2">
-                  <Bolt className="size-5 fill-current" />
-                  Quick Match
-                </button>
-                <button className="bg-white/5 border border-white/10 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all text-white">
-                  All Tournaments
-                </button>
-              </div>
-            </div>
-          </div>
+const DashboardView = ({ key }: { key?: string }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const leaderboard = getLeaderboard();
 
-          {/* Active Tournaments Header */}
-          <div className="flex items-center justify-between pt-4">
-            <h3 className="text-xl font-black uppercase tracking-widest italic flex items-center gap-3">
-              <span className="w-8 h-[2px] bg-primary"></span>
-              Active Tournaments
-            </h3>
-            <div className="flex gap-2">
-              <button className="size-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                <ChevronLeft className="size-4" />
-              </button>
-              <button className="size-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                <ChevronRight className="size-4" />
-              </button>
-            </div>
-          </div>
+  const scrollTournaments = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 340;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
-          {/* Tournament Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TOURNAMENTS.map((t) => (
-              <div key={t.id} className={`group relative bg-card-dark rounded-2xl overflow-hidden border border-white/5 p-1 transition-all hover:border-${t.color}/50`}>
-                <div className="relative h-48 rounded-xl overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${t.image})` }}
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
-                  <div className="absolute top-3 left-3 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-widest border border-white/10">
-                    {t.pool}
-                  </div>
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="pt-24 pb-20"
+    >
+      <section className="max-w-[1600px] mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Main Content */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Hero Banner */}
+            <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/5 p-8 md:p-12 shadow-2xl">
+              <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent -z-0"></div>
+              <div className="relative z-10 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em]">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                  </span>
+                  Live Circuit Active
                 </div>
-                <div className="p-5 space-y-4">
-                  <div className="flex justify-between items-start">
-                    <h4 className="text-xl font-black text-white italic tracking-tight">{t.title}</h4>
-                    <div className="flex items-center gap-1 text-slate-500">
-                      <Users className="size-3" />
-                      <span className="text-[10px] font-bold">{t.players}</span>
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
-                      <span>Progress</span>
-                      <span className={`text-${t.color}`}>{t.progress}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full bg-${t.color} rounded-full`}
-                        style={{ width: `${t.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  <button className={`w-full py-2.5 bg-white/5 hover:bg-${t.color} transition-all rounded-lg text-[10px] font-black uppercase tracking-widest text-white border border-white/10 group-hover:border-${t.color}`}>
-                    Join Lobby
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white leading-none uppercase italic">
+                  Season 4: <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-accent">Legends Rise</span>
+                </h2>
+                <p className="max-w-xl text-slate-400 font-medium leading-relaxed">
+                  Compete in high-stakes trivia battles across the multiverse. Climb the global MMR and earn exclusive digital collectibles.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <button className="bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center gap-2">
+                    <Bolt className="size-5 fill-current" />
+                    Quick Match
+                  </button>
+                  <button className="bg-white/5 border border-white/10 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all text-white">
+                    All Tournaments
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="lg:col-span-4 sticky top-24 space-y-6">
-          <div className="bg-card-dark rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-            <div className="p-6 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
-              <h3 className="text-sm font-black uppercase tracking-widest italic flex items-center gap-2">
-                <LayoutDashboard className="size-4 text-primary" />
-                Live Leaderboard
-              </h3>
-              <span className="px-2 py-0.5 rounded bg-primary/20 text-primary text-[9px] font-black">SEASON 4</span>
             </div>
-            <div className="p-2 space-y-1">
-              {LEADERBOARD.map((user) => (
-                <div key={user.id} className={`flex items-center gap-4 p-4 rounded-xl ${user.id === '01' ? 'bg-white/[0.03] border border-white/5' : 'hover:bg-white/[0.02] transition-colors group'}`}>
-                  <div className={`size-8 flex items-center justify-center font-black italic ${user.id === '01' ? 'text-amber-400' : user.id === '02' ? 'text-slate-400' : user.id === '03' ? 'text-orange-400' : 'text-slate-600 text-xs'}`}>
-                    {user.id}
-                  </div>
-                  <div className={`size-10 rounded-full bg-gradient-to-br ${user.color} p-0.5`}>
-                    <div className="w-full h-full rounded-full bg-card-dark flex items-center justify-center font-bold text-xs">
-                      {user.initials}
+
+            {/* Active Tournaments Header */}
+            <div className="flex items-center justify-between pt-4">
+              <h3 className="text-xl font-black uppercase tracking-widest italic flex items-center gap-3">
+                <span className="w-8 h-[2px] bg-primary"></span>
+                Active Tournaments
+              </h3>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => scrollTournaments('left')}
+                  className="size-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"
+                >
+                  <ChevronLeft className="size-4" />
+                </button>
+                <button
+                  onClick={() => scrollTournaments('right')}
+                  className="size-8 rounded border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors"
+                >
+                  <ChevronRight className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Tournament Cards */}
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+              {TOURNAMENTS.map((t) => (
+                <div key={t.id} className={`group relative bg-card-dark rounded-2xl overflow-hidden border border-white/5 p-1 transition-all hover:border-${t.color}/50 min-w-[300px] flex-shrink-0 snap-start`}>
+                  <div className="relative h-48 rounded-xl overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${t.image})` }}
+                    ></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
+                    <div className="absolute top-3 left-3 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-widest border border-white/10">
+                      {t.pool}
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors">{user.name}</p>
-                    <p className="text-[10px] font-bold text-slate-500">{user.fandom}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-xs font-black ${user.id === '01' ? 'text-amber-400' : 'text-white'}`}>{user.points}</p>
-                    <p className="text-[9px] font-bold text-slate-500 uppercase">Points</p>
+                  <div className="p-5 space-y-4">
+                    <div className="flex justify-between items-start">
+                      <h4 className="text-xl font-black text-white italic tracking-tight">{t.title}</h4>
+                      <div className="flex items-center gap-1 text-slate-500">
+                        <Users className="size-3" />
+                        <span className="text-[10px] font-bold">{t.players}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+                        <span>Progress</span>
+                        <span className={`text-${t.color}`}>{t.progress}%</span>
+                      </div>
+                      <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full bg-${t.color} rounded-full`}
+                          style={{ width: `${t.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <button className={`w-full py-2.5 bg-white/5 hover:bg-${t.color} transition-all rounded-lg text-[10px] font-black uppercase tracking-widest text-white border border-white/10 group-hover:border-${t.color}`}>
+                      Join Lobby
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="p-6 bg-white/[0.02] border-t border-white/10">
-              <button className="w-full py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-2">
-                View Full Standings
-                <ExternalLink className="size-3" />
-              </button>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-4 sticky top-24 space-y-6">
+            <div className="bg-card-dark rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+              <div className="p-6 border-b border-white/10 bg-white/[0.02] flex items-center justify-between">
+                <h3 className="text-sm font-black uppercase tracking-widest italic flex items-center gap-2">
+                  <LayoutDashboard className="size-4 text-primary" />
+                  Live Leaderboard
+                </h3>
+                <span className="px-2 py-0.5 rounded bg-primary/20 text-primary text-[9px] font-black">SEASON 4</span>
+              </div>
+              <div className="p-2 space-y-1">
+                {leaderboard.length === 0 ? (
+                  <div className="p-6 text-center space-y-2">
+                    <p className="text-slate-500 text-xs font-bold">No scores yet</p>
+                    <p className="text-slate-600 text-[10px]">Complete a quiz to appear here!</p>
+                  </div>
+                ) : leaderboard.map((user) => (
+                  <div key={user.id} className={`flex items-center gap-4 p-4 rounded-xl ${user.id === '01' ? 'bg-white/[0.03] border border-white/5' : 'hover:bg-white/[0.02] transition-colors group'}`}>
+                    <div className={`size-8 flex items-center justify-center font-black italic ${user.id === '01' ? 'text-amber-400' : user.id === '02' ? 'text-slate-400' : user.id === '03' ? 'text-orange-400' : 'text-slate-600 text-xs'}`}>
+                      {user.id}
+                    </div>
+                    <div className={`size-10 rounded-full bg-gradient-to-br ${user.color} p-0.5`}>
+                      <div className="w-full h-full rounded-full bg-card-dark flex items-center justify-center font-bold text-xs">
+                        {user.initials}
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors">{user.name}</p>
+                      <p className="text-[10px] font-bold text-slate-500">{user.fandom}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`text-xs font-black ${user.id === '01' ? 'text-amber-400' : 'text-white'}`}>{user.points}</p>
+                      <p className="text-[9px] font-bold text-slate-500 uppercase">Points</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="p-6 bg-white/[0.02] border-t border-white/10">
+                <button className="w-full py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-2">
+                  View Full Standings
+                  <ExternalLink className="size-3" />
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-card-dark rounded-2xl border border-white/10 p-6 space-y-4">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Live Feed</h4>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="size-2 rounded-full bg-green-500 mt-1.5 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
+                  <p className="text-[11px] leading-relaxed"><span className="font-black text-white">@Jin_Solo</span> just achieved <span className="text-accent italic">Perfect Clear</span> in BTS Quest</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="size-2 rounded-full bg-primary mt-1.5 shadow-[0_0_8px_rgba(127,19,236,0.5)]"></div>
+                  <p className="text-[11px] leading-relaxed"><span className="font-black text-white">Team_Slytherin</span> has entered the Top 10 in HP Circuit</p>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="bg-card-dark rounded-2xl border border-white/10 p-6 space-y-4">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Live Feed</h4>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="size-2 rounded-full bg-green-500 mt-1.5 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
-                <p className="text-[11px] leading-relaxed"><span className="font-black text-white">@Jin_Solo</span> just achieved <span className="text-accent italic">Perfect Clear</span> in BTS Quest</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="size-2 rounded-full bg-primary mt-1.5 shadow-[0_0_8px_rgba(127,19,236,0.5)]"></div>
-                <p className="text-[11px] leading-relaxed"><span className="font-black text-white">Team_Slytherin</span> has entered the Top 10 in HP Circuit</p>
-              </div>
+      {/* Stats Grid */}
+      <section className="max-w-[1600px] mx-auto px-6 mt-12 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            { label: 'Global Users', value: '2.4M', color: 'text-white' },
+            { label: 'Prize Paid', value: '$150K', color: 'text-primary' },
+            { label: 'Active Lobbies', value: '1,402', color: 'text-accent' },
+            { label: 'Avg MMR', value: '1,250', color: 'text-white' },
+          ].map((stat, i) => (
+            <div key={i} className="bg-card-dark border border-white/5 p-6 rounded-2xl flex flex-col items-center justify-center gap-2 stats-gradient">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.label}</p>
+              <p className={`text-4xl font-black ${stat.color} tracking-tighter italic`}>{stat.value}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Ready CTA */}
+      <section className="max-w-[1600px] mx-auto px-6 mb-20">
+        <div className="relative bg-primary rounded-3xl p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10">
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+          <div className="relative z-10 space-y-2 text-center md:text-left">
+            <h3 className="text-3xl font-black text-white italic uppercase leading-none">Ready for the Pro-League?</h3>
+            <p className="text-white/70 text-sm font-medium">Join 50,000+ competitive players in the Season 5 qualifier.</p>
+          </div>
+          <div className="relative z-10 flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <button className="bg-white text-primary px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors shadow-2xl">Create Account</button>
+            <button className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">Read Rules</button>
           </div>
         </div>
-      </div>
-    </section>
-
-    {/* Stats Grid */}
-    <section className="max-w-[1600px] mx-auto px-6 mt-12 mb-20">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {[
-          { label: 'Global Users', value: '2.4M', color: 'text-white' },
-          { label: 'Prize Paid', value: '$150K', color: 'text-primary' },
-          { label: 'Active Lobbies', value: '1,402', color: 'text-accent' },
-          { label: 'Avg MMR', value: '1,250', color: 'text-white' },
-        ].map((stat, i) => (
-          <div key={i} className="bg-card-dark border border-white/5 p-6 rounded-2xl flex flex-col items-center justify-center gap-2 stats-gradient">
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{stat.label}</p>
-            <p className={`text-4xl font-black ${stat.color} tracking-tighter italic`}>{stat.value}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    {/* Ready CTA */}
-    <section className="max-w-[1600px] mx-auto px-6 mb-20">
-      <div className="relative bg-primary rounded-3xl p-10 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-        <div className="relative z-10 space-y-2 text-center md:text-left">
-          <h3 className="text-3xl font-black text-white italic uppercase leading-none">Ready for the Pro-League?</h3>
-          <p className="text-white/70 text-sm font-medium">Join 50,000+ competitive players in the Season 5 qualifier.</p>
-        </div>
-        <div className="relative z-10 flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-          <button className="bg-white text-primary px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-slate-100 transition-colors shadow-2xl">Create Account</button>
-          <button className="bg-transparent border border-white/30 text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">Read Rules</button>
-        </div>
-      </div>
-    </section>
-  </motion.div>
-);
+      </section>
+    </motion.div>
+  );
+};
 
 export default function App() {
   const [view, setView] = useState<ViewType>('landing');
