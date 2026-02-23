@@ -418,3 +418,93 @@ export const KPOP_TRIVIA: MCTriviaQuestion[] = [
     answer: "???",
   },
 ];
+
+// --- Twilight: Multiple Choice (Preface – Chapter 8) ---
+
+export const TWILIGHT_MC_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "According to Charlie, what is the specific manufacturing history and ownership timeline of Bella's truck?",
+    options: [
+      "Billy Black bought it new from a dealership in 1984.",
+      "Charlie purchased it new in 1984 as a surprise for Bella's arrival.",
+      "Billy Black bought it in 1984, but it was manufactured in the late 1950s or early 1960s.",
+      "It was a custom-built 1970s model that Billy Black had restored for off-road use."
+    ],
+    answer: "Billy Black bought it in 1984, but it was manufactured in the late 1950s or early 1960s.",
+  },
+  {
+    id: 2,
+    question: "Which of the following best describes Bella's aesthetic and physical self-assessment during her move to Forks?",
+    options: [
+      "She is a tan, athletic volleyball player who struggles with the sudden drop in humidity.",
+      "She is ivory-skinned and lacks hand-eye coordination, despite the constant sunshine of her Phoenix life.",
+      "She possesses blue eyes and red hair, making her look healthier in the overcast light of Washington.",
+      "She is a former cheerleader whose tan has faded significantly during the four-hour flight."
+    ],
+    answer: "She is ivory-skinned and lacks hand-eye coordination, despite the constant sunshine of her Phoenix life.",
+  },
+  {
+    id: 3,
+    question: "What specific 'anatomical anomaly' does Bella identify as a shared trait among all five Cullen/Hale siblings in the cafeteria?",
+    options: [
+      "They all possess identical, unnaturally golden-colored hair.",
+      "They all exhibit 'purplish, bruiselike shadows' beneath their very dark eyes.",
+      "They all have flushed, rosy complexions due to the cold, damp climate.",
+      "They all appear to be biologically related despite Jessica's claims of adoption."
+    ],
+    answer: "They all exhibit 'purplish, bruiselike shadows' beneath their very dark eyes.",
+  },
+  {
+    id: 4,
+    question: "During a Biology II lab session, Bella observes a striking change in Edward's eyes compared to their first encounter. What is the nature of this shift?",
+    options: [
+      "His eyes shifted from a bright, glowing red to a flat, dull gray.",
+      "His eyes changed from 'golden honey' to a 'coal black.'",
+      "His eyes changed from 'flat black' to a 'strange ocher, darker than butterscotch.'",
+      "His eyes shifted from 'pale green' to a 'piercing, electric blue.'"
+    ],
+    answer: "His eyes changed from 'flat black' to a 'strange ocher, darker than butterscotch.'",
+  },
+  {
+    id: 5,
+    question: "While attempting to distract herself in the backyard, Bella selects a specific volume from her collection. Which book does she choose?",
+    options: [
+      "A pristine, new copy of Wuthering Heights.",
+      "A shabbily bound compilation of the works of Jane Austen.",
+      "A leather-bound edition of Macbeth annotated by her mother.",
+      "A modern paperback regarding Quileute tribal folklore."
+    ],
+    answer: "A shabbily bound compilation of the works of Jane Austen.",
+  },
+  {
+    id: 6,
+    question: "True or False: Forks, Washington, holds a statistical distinction within the United States for having the highest annual rainfall of any location.",
+    options: ["True", "False"],
+    answer: "True",
+  },
+  {
+    id: 7,
+    question: "True or False: According to the Quileute legends shared by Jacob Black, the tribe claims direct ancestral descent from bears.",
+    options: ["True", "False"],
+    answer: "False",
+  },
+  {
+    id: 8,
+    question: "True or False: Bella discovers the term 'Stregoni benefici' through a digital search, which describes an Italian vampire myth focused on goodness.",
+    options: ["True", "False"],
+    answer: "True",
+  },
+  {
+    id: 9,
+    question: "True or False: The specific student population count at Forks High School, including Bella Swan, is exactly 358.",
+    options: ["True", "False"],
+    answer: "True",
+  },
+  {
+    id: 10,
+    question: "True or False: Edward Cullen admits that his presence in Port Angeles was due to his ability to track Bella's physical scent across the city.",
+    options: ["True", "False"],
+    answer: "False",
+  },
+];

@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, TWILIGHT_TRIVIA,
-  KPOP_TRIVIA, getLeaderboard, saveScore
+  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 
 // --- Types ---
@@ -261,7 +261,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight' | 'trivia-kpop';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight' | 'trivia-kpop' | 'trivia-twilight-mc';
 
 const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
   const [currentQ, setCurrentQ] = useState(0);
@@ -592,9 +592,16 @@ const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: str
   );
 };
 
-// --- Multiple Choice Quiz View (K-Pop) ---
+// --- Multiple Choice Quiz View (Generic) ---
 
-const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
+const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
+  setView: (v: ViewType) => void,
+  questions: MCTriviaQuestion[],
+  title: string,
+  scoreLabel: string,
+  grades: { threshold: number; label: string; color: string }[],
+  key?: string
+}) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
@@ -603,7 +610,6 @@ const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string 
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
 
-  const questions = KPOP_TRIVIA;
   const q = questions[currentQ];
   const total = questions.length;
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
@@ -643,7 +649,7 @@ const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string 
 
   const handleSaveScore = () => {
     if (playerName.trim().length >= 2) {
-      saveScore(playerName.trim(), correctCount, total, 'K-Pop: Demon Hunters');
+      saveScore(playerName.trim(), correctCount, total, scoreLabel);
       setScoreSaved(true);
       setShowNamePrompt(false);
     }
@@ -651,12 +657,9 @@ const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string 
 
   if (finished) {
     const pct = Math.round((correctCount / total) * 100);
-    let grade = '';
-    let gradeColor = '';
-    if (pct >= 90) { grade = 'Demon Hunter Elite'; gradeColor = 'text-amber-400'; }
-    else if (pct >= 70) { grade = 'Saja Superfan'; gradeColor = 'text-purple-400'; }
-    else if (pct >= 50) { grade = 'K-Pop Casual'; gradeColor = 'text-blue-400'; }
-    else { grade = 'Trainee'; gradeColor = 'text-slate-400'; }
+    const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
+    const grade = gradeEntry.label;
+    const gradeColor = gradeEntry.color;
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
@@ -719,7 +722,7 @@ const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string 
               <ArrowLeft className="size-4" />
             </button>
             <div>
-              <h2 className="text-xl font-black text-white tracking-tight italic uppercase">K-Pop: Demon Hunters</h2>
+              <h2 className="text-xl font-black text-white tracking-tight italic uppercase">{title}</h2>
               <p className="text-xs text-slate-500 font-bold">Question {currentQ + 1} of {total}</p>
             </div>
           </div>
@@ -950,16 +953,32 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                 ) : universe.title}
               </h4>
               <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (universe.id === 'twilight') setView('trivia-twilight');
-                  if (universe.id === 'kpop') setView('trivia-kpop');
-                }}
-                className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
-              >
-                {universe.buttonText}
-              </button>
+              {universe.id === 'twilight' ? (
+                <div className="flex gap-2 w-full">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setView('trivia-twilight'); }}
+                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all text-sm"
+                  >
+                    📖 Vol. I
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setView('trivia-twilight-mc'); }}
+                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all text-sm"
+                  >
+                    🧠 Vol. II
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (universe.id === 'kpop') setView('trivia-kpop');
+                  }}
+                  className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
+                >
+                  {universe.buttonText}
+                </button>
+              )}
             </div>
             <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
               {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
@@ -1277,7 +1296,19 @@ export default function App() {
         ) : view === 'trivia-twilight' ? (
           <TriviaQuizView key="trivia-twilight" setView={setView} />
         ) : view === 'trivia-kpop' ? (
-          <MCQuizView key="trivia-kpop" setView={setView} />
+          <MCQuizView key="trivia-kpop" setView={setView} questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
+            { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400' },
+            { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400' },
+            { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400' },
+            { threshold: 0, label: 'Trainee', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-twilight-mc' ? (
+          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. II" scoreLabel="Twilight Vol. II" grades={[
+            { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400' },
+            { threshold: 70, label: 'Forks Insider', color: 'text-purple-400' },
+            { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400' },
+            { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400' },
+          ]} />
         ) : (
           <DashboardView key="dashboard" />
         )}
