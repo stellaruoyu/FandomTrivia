@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, TWILIGHT_TRIVIA,
-  getLeaderboard, saveScore
+  KPOP_TRIVIA, getLeaderboard, saveScore
 } from './constants';
 
 // --- Types ---
@@ -261,7 +261,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight' | 'trivia-kpop';
 
 const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
   const [currentQ, setCurrentQ] = useState(0);
@@ -592,6 +592,234 @@ const TriviaQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: str
   );
 };
 
+// --- Multiple Choice Quiz View (K-Pop) ---
+
+const MCQuizView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
+  const [currentQ, setCurrentQ] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
+  const [finished, setFinished] = useState(false);
+  const [playerName, setPlayerName] = useState('');
+  const [showNamePrompt, setShowNamePrompt] = useState(false);
+  const [scoreSaved, setScoreSaved] = useState(false);
+
+  const questions = KPOP_TRIVIA;
+  const q = questions[currentQ];
+  const total = questions.length;
+  const correctCount = Object.values(scores).filter(s => s === 'correct').length;
+  const answeredCount = Object.keys(scores).length;
+  const isUnknown = q.answer === '???';
+
+  const handleSelect = (option: string) => {
+    if (selected) return; // already answered
+    setSelected(option);
+    if (isUnknown) {
+      // No known answer — auto-mark correct (fun mode)
+      setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
+    } else {
+      const isCorrect = option.toLowerCase() === q.answer.toLowerCase();
+      setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
+    }
+  };
+
+  const handleNext = () => {
+    if (currentQ < total - 1) {
+      setCurrentQ(prev => prev + 1);
+      setSelected(null);
+    } else {
+      setFinished(true);
+    }
+  };
+
+  const handleRestart = () => {
+    setCurrentQ(0);
+    setSelected(null);
+    setScores({});
+    setFinished(false);
+    setScoreSaved(false);
+    setShowNamePrompt(false);
+    setPlayerName('');
+  };
+
+  const handleSaveScore = () => {
+    if (playerName.trim().length >= 2) {
+      saveScore(playerName.trim(), correctCount, total, 'K-Pop: Demon Hunters');
+      setScoreSaved(true);
+      setShowNamePrompt(false);
+    }
+  };
+
+  if (finished) {
+    const pct = Math.round((correctCount / total) * 100);
+    let grade = '';
+    let gradeColor = '';
+    if (pct >= 90) { grade = 'Demon Hunter Elite'; gradeColor = 'text-amber-400'; }
+    else if (pct >= 70) { grade = 'Saja Superfan'; gradeColor = 'text-purple-400'; }
+    else if (pct >= 50) { grade = 'K-Pop Casual'; gradeColor = 'text-blue-400'; }
+    else { grade = 'Trainee'; gradeColor = 'text-slate-400'; }
+
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
+            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto">
+              <Trophy className="size-12 text-amber-400" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
+            <div className="space-y-2">
+              <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
+                {correctCount}/{total}
+              </p>
+              <p className="text-slate-400 font-medium">Questions Correct ({pct}%)</p>
+            </div>
+            <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>{grade}</p>
+            <div className="w-full max-w-md mx-auto space-y-2">
+              <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
+                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${pct}%` }} />
+                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${100 - pct}%` }} />
+              </div>
+              <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                <span className="text-green-400">{correctCount} Correct</span>
+                <span className="text-red-400">{total - correctCount} Incorrect</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {!scoreSaved && !showNamePrompt && (
+            <button onClick={() => setShowNamePrompt(true)} className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all">
+              <Star className="size-4" /> Save to Leaderboard
+            </button>
+          )}
+          {showNamePrompt && (
+            <div className="flex flex-col items-center gap-3 max-w-sm mx-auto w-full">
+              <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} placeholder="Enter your name..." className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center" maxLength={20} />
+              <button onClick={handleSaveScore} disabled={playerName.trim().length < 2} className="w-full bg-amber-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed">Submit Score</button>
+            </div>
+          )}
+          {scoreSaved && (
+            <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2"><Check className="size-4" /> Score saved!</p>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <button onClick={handleRestart} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30"><RotateCcw className="size-4" /> Play Again</button>
+            <button onClick={() => setView('landing')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"><ArrowLeft className="size-4" /> Back to Home</button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setView('landing')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+              <ArrowLeft className="size-4" />
+            </button>
+            <div>
+              <h2 className="text-xl font-black text-white tracking-tight italic uppercase">K-Pop: Demon Hunters</h2>
+              <p className="text-xs text-slate-500 font-bold">Question {currentQ + 1} of {total}</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-xs font-black text-white">{answeredCount}/{total}</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase">Answered</p>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-primary to-purple-400 transition-all duration-300 rounded-full" style={{ width: `${((currentQ + 1) / total) * 100}%` }} />
+        </div>
+
+        {/* Question Card */}
+        <AnimatePresence mode="wait">
+          <motion.div key={currentQ} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }} className="bg-card-dark rounded-2xl border border-white/10 p-8 shadow-2xl space-y-6">
+            <div className="flex items-start gap-4">
+              <span className="flex-shrink-0 size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-sm">
+                {currentQ + 1}
+              </span>
+              <h3 className="text-xl font-bold text-white leading-relaxed pt-1">{q.question}</h3>
+            </div>
+
+            {isUnknown && !selected && (
+              <div className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
+                ⚡ Fun mode — no confirmed answer. Pick your best guess!
+              </div>
+            )}
+
+            {/* Options */}
+            <div className="grid gap-3">
+              {q.options.map((option, i) => {
+                let optionStyle = 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 text-white';
+                if (selected) {
+                  if (!isUnknown && option.toLowerCase() === q.answer.toLowerCase()) {
+                    optionStyle = 'bg-green-500/10 border-green-500/30 text-green-400';
+                  } else if (option === selected && !isUnknown && option.toLowerCase() !== q.answer.toLowerCase()) {
+                    optionStyle = 'bg-red-500/10 border-red-500/30 text-red-400';
+                  } else if (option === selected && isUnknown) {
+                    optionStyle = 'bg-primary/10 border-primary/30 text-primary';
+                  } else {
+                    optionStyle = 'bg-white/[0.02] border-white/5 text-slate-600';
+                  }
+                }
+                return (
+                  <button
+                    key={i}
+                    onClick={() => handleSelect(option)}
+                    disabled={!!selected}
+                    className={`w-full text-left px-6 py-4 rounded-xl border font-bold transition-all flex items-center gap-4 ${optionStyle} disabled:cursor-default`}
+                  >
+                    <span className="size-8 rounded-lg bg-white/5 flex items-center justify-center text-xs font-black shrink-0">
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    {option}
+                    {selected && !isUnknown && option.toLowerCase() === q.answer.toLowerCase() && <Check className="size-4 ml-auto text-green-400" />}
+                    {selected && option === selected && !isUnknown && option.toLowerCase() !== q.answer.toLowerCase() && <X className="size-4 ml-auto text-red-400" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Next button after selecting */}
+            {selected && (
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                onClick={handleNext}
+                className="w-full py-4 bg-primary text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+              >
+                {currentQ === total - 1 ? 'See Results' : 'Next Question'}
+                <ChevronRight className="size-4" />
+              </motion.button>
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Question dots */}
+        <div className="flex items-center justify-center gap-1.5 flex-wrap">
+          {questions.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setCurrentQ(i); setSelected(scores[i] !== undefined ? 'locked' : null); }}
+              className={`size-2.5 rounded-full transition-all ${i === currentQ
+                ? 'bg-primary scale-150'
+                : scores[i] === 'correct'
+                  ? 'bg-green-500'
+                  : scores[i] === 'incorrect'
+                    ? 'bg-red-500'
+                    : 'bg-white/20 hover:bg-white/40'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
   <motion.div
     initial={{ opacity: 0 }}
@@ -726,6 +954,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                 onClick={(e) => {
                   e.stopPropagation();
                   if (universe.id === 'twilight') setView('trivia-twilight');
+                  if (universe.id === 'kpop') setView('trivia-kpop');
                 }}
                 className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
               >
@@ -1047,6 +1276,8 @@ export default function App() {
           <LandingView key="landing" setView={setView} />
         ) : view === 'trivia-twilight' ? (
           <TriviaQuizView key="trivia-twilight" setView={setView} />
+        ) : view === 'trivia-kpop' ? (
+          <MCQuizView key="trivia-kpop" setView={setView} />
         ) : (
           <DashboardView key="dashboard" />
         )}

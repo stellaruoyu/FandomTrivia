@@ -326,3 +326,95 @@ export const TWILIGHT_TRIVIA: TriviaQuestion[] = [
     insight: 'This setting reinforces Mike\'s "golden retriever" identity as a child of the local business class.',
   },
 ];
+
+// --- Multiple Choice Trivia Type ---
+
+export interface MCTriviaQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
+
+// --- K-Pop: Demon Hunters Trivia ---
+
+export const KPOP_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What was the name of the singing (and demon-hunting) group that Celine was part of?",
+    options: ["Moonlight Maidens", "Sunlight Sisters", "Starlight Songbirds", "Twilight Trio"],
+    answer: "Sunlight Sisters",
+  },
+  {
+    id: 2,
+    question: "What did Mira wear to the Met Gala?",
+    options: ["Bird cage", "Garbage bag", "Sleeping bag", "Christmas lights"],
+    answer: "Sleeping bag",
+  },
+  {
+    id: 3,
+    question: "When Jinu tells Gwi-Ma about wanting to form a boyband to take down Huntr/x, what does Jinu want in return?",
+    options: ["A Record Contract", "To become mortal", "His memories erased", "His Freedom", "To reunite with his mom and sister", "Fame And Fortune", "The ability to see the future"],
+    answer: "His memories erased",
+  },
+  {
+    id: 4,
+    question: "When she first drools over the Saja Boys, which of these things do Zoey's eyes NOT turn into?",
+    options: ["Waterfall", "Corn", "Abs", "Hearts"],
+    answer: "Waterfall",
+  },
+  {
+    id: 5,
+    question: "Finish these lyrics: \"You're all I can think of / Every _____________.\"",
+    options: ["Day I Wake Up", "Beat Of My Heart", "drop I drink up", "Moment I See You"],
+    answer: "???",
+  },
+  {
+    id: 6,
+    question: "Which member of the Saja Boys wins the Spicy Challenge while appearing on Play Games with Us?",
+    options: ["Abby", "Baby", "Romance", "Mystery"],
+    answer: "???",
+  },
+  {
+    id: 7,
+    question: "When they first meet, what does Derpy Tiger give Rumi?",
+    options: ["A bracelet from Jinu", "A plant", "A stuffed animal", "A note from Jinu"],
+    answer: "???",
+  },
+  {
+    id: 8,
+    question: "What's depicted on Rumi's pajama pants that Jinu makes fun of?",
+    options: ["Smiley faces and penguins", "Hearts and otters", "Elephants and cookies", "Teddy bears and trains"],
+    answer: "???",
+  },
+  {
+    id: 9,
+    question: "At the signing event, what does a young fan give Jinu?",
+    options: ["A drawing", "Homemade cookies", "A bouquet of roses", "A Jinu doll"],
+    answer: "???",
+  },
+  {
+    id: 10,
+    question: "Bobby reveals which member of Huntr/x is Mystery shipped with on the internet?",
+    options: ["Rumi", "Mira", "Zoey", "Mira and Zoey"],
+    answer: "???",
+  },
+  {
+    id: 11,
+    question: "Where did Jinu's bird get its hat?",
+    options: ["From The Monkey", "Found it in a forest", "Traded For Berries", "Traded their soul for it", "Found It In Forest", "Took it off of one of Zoey's toys", "Stole it from the tiger"],
+    answer: "???",
+  },
+  {
+    id: 12,
+    question: "Finish these lyrics: \"We dreamin' hard, we came so far _________.\"",
+    options: ["We Can't Turn Back", "Now I believe", "We're Reaching Stars", "We'll Never Stop", "Now I can achieve"],
+    answer: "???",
+  },
+  {
+    id: 13,
+    question: "What's the last thing Jinu tells Rumi?",
+    options: ["\"You gave me my soul back.\"", "\"You were right.\"", "\"And now, I give it to you.\"", "\"You were more important.\""],
+    answer: "???",
+  },
+];
