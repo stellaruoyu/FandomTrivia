@@ -13,8 +13,9 @@ import {
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
-  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
+  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
+import ParticleCanvas from './ParticleCanvas';
 
 // --- Types ---
 
@@ -261,8 +262,49 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random';
 
+
+// --- Harry Potter Book Selector ---
+
+const HPBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h2>
+        <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from both!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1–6", icon: "⚡", view: 'trivia-harry-potter' as ViewType, gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1–6", icon: "🐍", view: 'trivia-harry-potter-cos' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both books", icon: "🎲", view: 'trivia-harry-potter-random' as ViewType, gradient: 'from-purple-600/20 to-blue-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+        ].map(book => (
+          <motion.button
+            key={book.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView(book.view)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{book.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
 
 // --- Multiple Choice Quiz View (Generic) ---
 
@@ -334,8 +376,13 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
     const gradeColor = gradeEntry.color;
 
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
+        <ParticleCanvas mode="celebration" colors={
+          title.toLowerCase().includes('twilight') ? ['rgba(148,197,233,', 'rgba(200,220,240,', 'rgba(180,200,220,', 'rgba(255,255,255,', 'rgba(100,150,200,']
+            : title.toLowerCase().includes('k-pop') ? ['rgba(255,0,200,', 'rgba(180,0,255,', 'rgba(255,100,200,', 'rgba(0,255,200,', 'rgba(255,255,255,']
+              : ['rgba(255,215,0,', 'rgba(255,180,50,', 'rgba(168,140,255,', 'rgba(255,255,255,', 'rgba(255,100,100,']
+        } />
+        <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
             <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto">
               <Trophy className="size-12 text-amber-400" />
@@ -516,6 +563,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
   >
     {/* Hero */}
     <section className="relative w-full py-20 px-6 overflow-hidden">
+      <ParticleCanvas mode="ambient" className="opacity-60" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/40 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px]"></div>
@@ -620,7 +668,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
           >
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-              style={{ backgroundImage: `url(${universe.image})` }}
+              style={{ backgroundImage: `url("${universe.image}")` }}
             ></div>
             <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
             <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">
@@ -642,6 +690,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                   e.stopPropagation();
                   if (universe.id === 'twilight') setView('trivia-twilight-mc');
                   if (universe.id === 'kpop') setView('trivia-kpop');
+                  if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
                 }}
                 className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
               >
@@ -760,7 +809,7 @@ const DashboardView = ({ key }: { key?: string }) => {
                   <div className="relative h-48 rounded-xl overflow-hidden">
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${t.image})` }}
+                      style={{ backgroundImage: `url("${t.image}")` }}
                     ></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-card-dark via-transparent to-transparent"></div>
                     <div className="absolute top-3 left-3 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-[9px] font-black text-white uppercase tracking-widest border border-white/10">
@@ -974,6 +1023,29 @@ export default function App() {
             { threshold: 70, label: 'Forks Insider', color: 'text-purple-400' },
             { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400' },
             { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter' ? (
+          <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-cos' ? (
+          <MCQuizView key="trivia-harry-potter-cos" setView={setView} questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-select' ? (
+          <HPBookSelector key="hp-select" setView={setView} />
+        ) : view === 'trivia-harry-potter-random' ? (
+          <MCQuizView key={`trivia-harry-potter-random-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Random Mix" scoreLabel="Harry Potter: Random Mix" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
           ]} />
         ) : (
           <DashboardView key="dashboard" />
