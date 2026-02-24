@@ -14,6 +14,18 @@ This document divides responsibilities for adding new trivia quizzes to FandomTr
    Q: [Your question here]
    A: [The answer]
    Insight: [A fun fact or context about why this answer matters]
+   Source Evidence: [Direct quote or reference backing your answer
+                     — e.g., book page number, chapter, episode, etc.]
+   ```
+
+   **Source Evidence Example (Twilight):**
+   ```
+   Q: What year was Edward's Volvo manufactured?
+   A: Late 1950s or early 1960s
+   Insight: Edward's car history is a fun detail that hints at his age.
+   Source Evidence: "He bought it in 1984, I think… Well, no. I think it
+                     was new in the early sixties or late fifties at the
+                     earliest," he admitted sheepishly. — Chapter 1
    ```
 3. **Decide the quiz metadata**:
    - Quiz name (e.g., "Harry Potter")
@@ -121,7 +133,9 @@ Use this checklist **each time** a new quiz is added:
 |----------|------|-----------|--------|
 | Twilight | Vol. I — Open-Ended | 30 | ✅ Live |
 | Twilight | Vol. II — Multiple Choice | 10 | ✅ Live |
-| K-Pop: Demon Hunters | Multiple Choice | 13 (9 in Fun Mode) | ✅ Live |
+| K-Pop: Demon Hunters | Multiple Choice | 13 | ✅ Live |
+| Harry Potter: Sorcerer's Stone | Multiple Choice | 20 | ✅ Live |
+| Harry Potter: Chamber of Secrets | Multiple Choice | 20 | ✅ Live |
 | Harry Potter | — | — | ⬜ Not started |
 
 ---
