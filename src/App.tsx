@@ -16,6 +16,7 @@ import {
   KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
+import { supabase } from './supabaseClient';
 
 // --- Types ---
 
@@ -45,18 +46,25 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
     setError('');
 
     try {
-      const res = await fetch('/api/user/set-username', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username }),
-      });
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError('Not authenticated');
+        return;
+      }
 
-      const data = await res.json();
+      const { error: upsertError } = await supabase
+        .from('profiles')
+        .update({ username })
+        .eq('id', user.id);
 
-      if (res.ok) {
-        onComplete(username);
+      if (upsertError) {
+        if (upsertError.message.includes('duplicate') || upsertError.code === '23505') {
+          setError('Username already taken');
+        } else {
+          setError(upsertError.message || 'Failed to set username');
+        }
       } else {
-        setError(data.error || 'Failed to set username');
+        onComplete(username);
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');
@@ -947,54 +955,74 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
 
-  const fetchUser = async () => {
-    try {
-      const res = await fetch('/api/user/me');
-      const data = await res.json();
-      if (data.user) {
-        setUser(data.user);
-        if (!data.user.username) {
-          setShowUsernameModal(true);
-        }
-      } else {
-        setUser(null);
-      }
-    } catch (err) {
-      console.error('Failed to fetch user:', err);
+  // Load user profile from Supabase
+  const loadUserProfile = async (supabaseUser: any) => {
+    if (!supabaseUser) {
+      setUser(null);
+      return;
+    }
+
+    // Fetch the profile to get the username
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('username, display_name, avatar_url')
+      .eq('id', supabaseUser.id)
+      .single();
+
+    const appUser: User = {
+      id: supabaseUser.id,
+      email: supabaseUser.email || '',
+      name: profile?.display_name || supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || '',
+      picture: profile?.avatar_url || supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture || '',
+      username: profile?.username || null,
+    };
+
+    setUser(appUser);
+
+    if (!appUser.username) {
+      setShowUsernameModal(true);
     }
   };
 
   useEffect(() => {
-    fetchUser();
-
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === 'OAUTH_AUTH_SUCCESS') {
-        fetchUser();
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        loadUserProfile(session.user);
       }
-    };
+    });
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    // Listen for auth state changes (login, logout, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        loadUserProfile(session.user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleLogin = async () => {
-    try {
-      const res = await fetch('/api/auth/google/url');
-      const { url } = await res.json();
-      window.open(url, 'google_auth', 'width=500,height=600');
-    } catch (err) {
-      console.error('Failed to get auth URL:', err);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    if (error) {
+      console.error('Login failed:', error.message);
     }
   };
 
   const handleLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
-      setView('landing');
-    } catch (err) {
-      console.error('Logout failed:', err);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Logout failed:', error.message);
     }
+    setUser(null);
+    setView('landing');
   };
 
   return (
