@@ -13,7 +13,9 @@ import {
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
-  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA, getLeaderboard, saveScore, MCTriviaQuestion
+  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
+  HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
+  getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
@@ -270,7 +272,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random';
 
 
 // --- Harry Potter Book Selector ---
@@ -285,11 +287,16 @@ const HPBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: str
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h2>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from both!</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
           { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1–6", icon: "⚡", view: 'trivia-harry-potter' as ViewType, gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
           { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1–6", icon: "🐍", view: 'trivia-harry-potter-cos' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both books", icon: "🎲", view: 'trivia-harry-potter-random' as ViewType, gradient: 'from-purple-600/20 to-blue-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+          { label: "Book 3", title: "Prisoner of Azkaban", desc: "20 random questions", icon: "🐺", view: 'trivia-harry-potter-poa' as ViewType, gradient: 'from-slate-600/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
+          { label: "Book 4", title: "Goblet of Fire", desc: "20 random questions", icon: "🏆", view: 'trivia-harry-potter-gof' as ViewType, gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 5", title: "Order of the Phoenix", desc: "20 random questions", icon: "📜", view: 'trivia-harry-potter-ootp' as ViewType, gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "🧪", view: 'trivia-harry-potter-hbp' as ViewType, gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+          { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "⏃", view: 'trivia-harry-potter-dh' as ViewType, gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "🎲", view: 'trivia-harry-potter-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
@@ -1066,10 +1073,45 @@ export default function App() {
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
           ]} />
+        ) : view === 'trivia-harry-potter-poa' ? (
+          <MCQuizView key={`trivia-harry-potter-poa-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_POA_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Prisoner of Azkaban" scoreLabel="Harry Potter: Prisoner of Azkaban" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-gof' ? (
+          <MCQuizView key={`trivia-harry-potter-gof-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_GOF_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Goblet of Fire" scoreLabel="Harry Potter: Goblet of Fire" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-ootp' ? (
+          <MCQuizView key={`trivia-harry-potter-ootp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_OOTP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Order of the Phoenix" scoreLabel="Harry Potter: Order of the Phoenix" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-hbp' ? (
+          <MCQuizView key={`trivia-harry-potter-hbp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_HBP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Half-Blood Prince" scoreLabel="Harry Potter: Half-Blood Prince" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
+        ) : view === 'trivia-harry-potter-dh' ? (
+          <MCQuizView key={`trivia-harry-potter-dh-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Deathly Hallows" scoreLabel="Harry Potter: Deathly Hallows" grades={[
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+          ]} />
         ) : view === 'trivia-harry-potter-select' ? (
           <HPBookSelector key="hp-select" setView={setView} />
         ) : view === 'trivia-harry-potter-random' ? (
-          <MCQuizView key={`trivia-harry-potter-random-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Random Mix" scoreLabel="Harry Potter: Random Mix" grades={[
+          <MCQuizView key={`trivia-harry-potter-random-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Random Mix" scoreLabel="Harry Potter: Random Mix" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
