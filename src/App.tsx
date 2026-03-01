@@ -9,12 +9,14 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
-  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
+  KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, TWILIGHT_BOOK_TRIVIA, NEW_MOON_TRIVIA, ECLIPSE_TRIVIA, BREAKING_DAWN_TRIVIA, MIDNIGHT_SUN_TRIVIA, LIFE_AND_DEATH_TRIVIA,
+  HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
+  THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -121,80 +123,122 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
   onLogin: () => void,
   onLogout: () => void,
   onResetUsername?: () => void
-}) => (
-  <header className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
-    <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
-      <div
-        className="flex items-center gap-3 group cursor-pointer"
-        onClick={() => setView('landing')}
-      >
-        <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(127,19,236,0.5)]">
-          <Zap className="size-6 fill-current" />
+}) => {
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowAccountMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
+      <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
+        <div
+          className="flex items-center gap-3 group cursor-pointer"
+          onClick={() => setView('landing')}
+        >
+          <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(127,19,236,0.5)]">
+            <Zap className="size-6 fill-current" />
+          </div>
+          <h1 className={`text-xl font-bold tracking-tight text-white ${isDashboard ? 'uppercase italic font-black' : ''}`}>
+            Fandom<span className="text-primary">Trivia</span>
+          </h1>
         </div>
-        <h1 className={`text-xl font-bold tracking-tight text-white ${isDashboard ? 'uppercase italic font-black' : ''}`}>
-          Fandom<span className="text-primary">Trivia</span>
-        </h1>
-      </div>
 
-      <nav className="hidden md:flex items-center gap-10">
-        {(isDashboard ? DASHBOARD_NAV_LINKS : NAV_LINKS).map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className={`text-sm font-semibold hover:text-primary transition-colors ${isDashboard ? 'uppercase tracking-widest text-xs' : ''} ${(link as any).active ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
-          >
-            {link.name}
-          </a>
-        ))}
-      </nav>
-
-      <div className="flex items-center gap-4">
-        {isDashboard && (
-          <div className="hidden lg:flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-            <Star className="size-4 text-amber-400 fill-amber-400" />
-            <span className="text-xs font-black">2,450 XP</span>
-          </div>
-        )}
-        <button className="hidden sm:flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors mr-4">
-          <Search className="size-5" />
-        </button>
-
-        {user ? (
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 bg-white/5 border border-white/10 pl-2 pr-4 py-1.5 rounded-full">
-              <img src={user.picture} alt={user.name} className="size-8 rounded-full border border-white/20" />
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-white uppercase tracking-tight leading-none">@{user.username || 'new_fan'}</span>
-                  {onResetUsername && (
-                    <button onClick={onResetUsername} className="text-slate-500 hover:text-white transition-colors" title="Change Username">
-                      <RotateCcw className="size-3" />
-                    </button>
-                  )}
-                </div>
-                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{user.name}</span>
-              </div>
-            </div>
-            <button
-              onClick={onLogout}
-              className="size-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-red-500/20 hover:text-red-500 transition-all"
+        <nav className="hidden md:flex items-center gap-10">
+          {(isDashboard ? DASHBOARD_NAV_LINKS : NAV_LINKS).map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-semibold hover:text-primary transition-colors ${isDashboard ? 'uppercase tracking-widest text-xs' : ''} ${(link as any).active ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
             >
-              <LogOut className="size-5" />
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={onLogin}
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
-          >
-            <UserIcon className="size-4" />
-            Login
+              {link.name}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-4">
+          {isDashboard && (
+            <div className="hidden lg:flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+              <Star className="size-4 text-amber-400 fill-amber-400" />
+              <span className="text-xs font-black">2,450 XP</span>
+            </div>
+          )}
+          <button className="hidden sm:flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors mr-4">
+            <Search className="size-5" />
           </button>
-        )}
+
+          {user ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setShowAccountMenu(prev => !prev)}
+                className="flex items-center gap-3 bg-white/5 border border-white/10 pl-2 pr-4 py-1.5 rounded-full hover:bg-white/10 transition-all cursor-pointer"
+              >
+                <img src={user.picture} alt={user.name} className="size-8 rounded-full border border-white/20" />
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] font-black text-white uppercase tracking-tight leading-none">@{user.username || 'new_fan'}</span>
+                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{user.name}</span>
+                </div>
+              </button>
+
+              <AnimatePresence>
+                {showAccountMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-56 bg-[#141414] border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+                  >
+                    <div className="p-3 border-b border-white/10">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+                        <Settings className="size-3" />
+                        Account Settings
+                      </p>
+                    </div>
+                    <div className="p-1.5">
+                      {onResetUsername && (
+                        <button
+                          onClick={() => { onResetUsername(); setShowAccountMenu(false); }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all"
+                        >
+                          <RotateCcw className="size-4 text-primary" />
+                          Change Username
+                        </button>
+                      )}
+                      <button
+                        onClick={() => { onLogout(); setShowAccountMenu(false); }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                      >
+                        <LogOut className="size-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <button
+              onClick={onLogin}
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
+            >
+              <UserIcon className="size-4" />
+              Login
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  </header>
-);
+    </header>
+  );
+};
 
 const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
@@ -280,8 +324,60 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random';
 
+
+// --- Twilight Book Selector ---
+
+const TWILIGHT_GRADES = [
+  { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400', character: { name: 'Edward Cullen', image: '/images/Cullen Family.jpg', desc: 'You know every detail. You must be able to read minds!' } },
+  { threshold: 70, label: 'Forks Insider', color: 'text-purple-400', character: { name: 'Alice Cullen', image: '/images/Cullen Family.jpg', desc: 'Your foresight is impeccable. You saw these answers coming.' } },
+  { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400', character: { name: 'Bella Swan', image: '/images/Cullen Family.jpg', desc: 'You are just starting your supernatural journey into Forks.' } },
+  { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400', character: { name: 'Charlie Swan', image: '/images/Cullen Family.jpg', desc: 'You have no idea what is going on out there in the woods.' } },
+];
+
+const TwilightBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-200">Volume</span></h2>
+        <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+        {[
+          { label: "Book 1", title: "Twilight", desc: `${TWILIGHT_BOOK_TRIVIA.length} questions`, icon: "🍎", view: 'trivia-twilight-book' as ViewType, gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 2", title: "New Moon", desc: `${NEW_MOON_TRIVIA.length} questions`, icon: "🌑", view: 'trivia-newmoon' as ViewType, gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 3", title: "Eclipse", desc: `${ECLIPSE_TRIVIA.length} questions`, icon: "🌘", view: 'trivia-eclipse' as ViewType, gradient: 'from-indigo-600/20 to-violet-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Book 4", title: "Breaking Dawn", desc: `${BREAKING_DAWN_TRIVIA.length} questions`, icon: "🌅", view: 'trivia-breakingdawn' as ViewType, gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+          { label: "Companion", title: "Midnight Sun", desc: `${MIDNIGHT_SUN_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-midnightsun' as ViewType, gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Companion", title: "Life and Death", desc: `${LIFE_AND_DEATH_TRIVIA.length} questions`, icon: "🔄", view: 'trivia-lifeanddeath' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random from all books", icon: "🎲", view: 'trivia-twilight-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+        ].map(book => (
+          <motion.button
+            key={book.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView(book.view)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{book.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
 
 // --- Harry Potter Book Selector ---
 
@@ -305,6 +401,55 @@ const HPBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: str
           { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "🧪", view: 'trivia-harry-potter-hbp' as ViewType, gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
           { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "⏃", view: 'trivia-harry-potter-dh' as ViewType, gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
           { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "🎲", view: 'trivia-harry-potter-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+        ].map(book => (
+          <motion.button
+            key={book.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView(book.view)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{book.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
+
+// --- Three-Body Problem Book Selector ---
+
+const THREE_BODY_GRADES = [
+  { threshold: 90, label: 'Wallfacer', color: 'text-indigo-400', character: { name: 'Luo Ji', image: '/images/threebody.jpg', desc: 'You have seen through the Dark Forest. The Trisolarans fear your intellect.' } },
+  { threshold: 70, label: 'Swordholder', color: 'text-purple-400', character: { name: 'Cheng Xin', image: '/images/threebody.jpg', desc: 'You hold the fate of humanity in your hands with great empathy.' } },
+  { threshold: 50, label: 'ETO Member', color: 'text-red-400', character: { name: 'Ye Wenjie', image: '/images/threebody.jpg', desc: 'You are disillusioned with humanity, but you seek the truth.' } },
+  { threshold: 0, label: 'Bug', color: 'text-slate-400', character: { name: 'Da Shi', image: '/images/threebody.jpg', desc: 'You may be a bug to them, but bugs have never been truly defeated.' } },
+];
+
+const ThreeBodyBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-200">Era</span></h2>
+        <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: "Book 1", title: "The Three-Body Problem", desc: `${THREE_BODY_PROBLEM_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-three-body-problem' as ViewType, gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "The Dark Forest", desc: `${THE_DARK_FOREST_TRIVIA.length} questions`, icon: "🌲", view: 'trivia-the-dark-forest' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Book 3", title: "Death's End", desc: `${DEATHS_END_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-deaths-end' as ViewType, gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 3 books", icon: "🎲", view: 'trivia-three-body-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
@@ -729,9 +874,10 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (universe.id === 'twilight') setView('trivia-twilight-mc');
+                  if (universe.id === 'twilight') setView('trivia-twilight-select');
                   if (universe.id === 'kpop') setView('trivia-kpop');
                   if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
+                  if (universe.id === 'three-body') setView('trivia-three-body-select');
                 }}
                 className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
               >
@@ -1063,13 +1209,24 @@ export default function App() {
             { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have potential, but the demons are still faster.' } },
             { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Keep practicing your moves before entering the supernatural zone.' } },
           ]} />
+        ) : view === 'trivia-twilight-select' ? (
+          <TwilightBookSelector key="twilight-select" setView={setView} />
         ) : view === 'trivia-twilight-mc' ? (
-          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={[
-            { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400', character: { name: 'Edward Cullen', image: '/images/Cullen Family.jpg', desc: 'You know every detail. You must be able to read minds!' } },
-            { threshold: 70, label: 'Forks Insider', color: 'text-purple-400', character: { name: 'Alice Cullen', image: '/images/Cullen Family.jpg', desc: 'Your foresight is impeccable. You saw these answers coming.' } },
-            { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400', character: { name: 'Bella Swan', image: '/images/Cullen Family.jpg', desc: 'You are just starting your supernatural journey into Forks.' } },
-            { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400', character: { name: 'Charlie Swan', image: '/images/Cullen Family.jpg', desc: 'You have no idea what is going on out there in the woods.' } },
-          ]} />
+          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-twilight-book' ? (
+          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-newmoon' ? (
+          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-eclipse' ? (
+          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-breakingdawn' ? (
+          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-midnightsun' ? (
+          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-lifeanddeath' ? (
+          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} />
+        ) : view === 'trivia-twilight-random' ? (
+          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} />
         ) : view === 'trivia-harry-potter' ? (
           <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
@@ -1128,6 +1285,16 @@ export default function App() {
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
+        ) : view === 'trivia-three-body-select' ? (
+          <ThreeBodyBookSelector key="three-body-select" setView={setView} />
+        ) : view === 'trivia-three-body-problem' ? (
+          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} />
+        ) : view === 'trivia-the-dark-forest' ? (
+          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} />
+        ) : view === 'trivia-deaths-end' ? (
+          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} />
+        ) : view === 'trivia-three-body-random' ? (
+          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} />
         ) : (
           <DashboardView key="dashboard" />
         )}
