@@ -114,12 +114,13 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
+const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername }: {
   isDashboard: boolean,
   setView: (v: ViewType) => void,
   user: User | null,
   onLogin: () => void,
-  onLogout: () => void
+  onLogout: () => void,
+  onResetUsername?: () => void
 }) => (
   <header className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10">
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
@@ -163,7 +164,14 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout }: {
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 pl-2 pr-4 py-1.5 rounded-full">
               <img src={user.picture} alt={user.name} className="size-8 rounded-full border border-white/20" />
               <div className="flex flex-col">
-                <span className="text-[10px] font-black text-white uppercase tracking-tight leading-none">@{user.username || 'new_fan'}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black text-white uppercase tracking-tight leading-none">@{user.username || 'new_fan'}</span>
+                  {onResetUsername && (
+                    <button onClick={onResetUsername} className="text-slate-500 hover:text-white transition-colors" title="Change Username">
+                      <RotateCcw className="size-3" />
+                    </button>
+                  )}
+                </div>
                 <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{user.name}</span>
               </div>
             </div>
@@ -328,7 +336,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
-  grades: { threshold: number; label: string; color: string }[],
+  grades: { threshold: number; label: string; color: string; character?: { name: string; image: string; desc: string } }[],
   key?: string
 }) => {
   const [currentQ, setCurrentQ] = useState(0);
@@ -389,6 +397,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
     const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
+    const character = gradeEntry.character;
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
@@ -399,17 +408,34 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
         } />
         <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
-            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto">
-              <Trophy className="size-12 text-amber-400" />
+            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto overflow-hidden shadow-2xl">
+              {character ? (
+                <img src={character.image} alt={character.name} className="w-full h-full object-cover" />
+              ) : (
+                <Trophy className="size-12 text-amber-400" />
+              )}
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
-            <div className="space-y-2">
+
+            {character && (
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl backdrop-blur-md max-w-md mx-auto transform hover:scale-105 transition-transform">
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Your Result Character</p>
+                <h3 className={`text-3xl font-black italic uppercase tracking-tight ${gradeColor}`}>{character.name}</h3>
+                <p className="text-slate-300 text-sm mt-3 leading-relaxed font-medium">{character.desc}</p>
+              </div>
+            )}
+
+            <div className="space-y-2 pt-2">
               <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
                 {correctCount}/{total}
               </p>
               <p className="text-slate-400 font-medium">Questions Correct ({pct}%)</p>
             </div>
-            <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>{grade}</p>
+
+            {!character && (
+              <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>{grade}</p>
+            )}
+
             <div className="w-full max-w-md mx-auto space-y-2">
               <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
                 <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${pct}%` }} />
@@ -722,22 +748,6 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
       </div>
     </section>
 
-    {/* Newsletter */}
-    <section className="max-w-7xl mx-auto px-6 mb-32">
-      <div className="relative bg-primary rounded-3xl p-12 overflow-hidden flex flex-col items-center text-center gap-6">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-        <h3 className="text-4xl font-black text-white leading-tight">Think you're a Super Fan?</h3>
-        <p className="text-white/80 text-lg max-w-xl font-medium">Join our community to get notified about new trivia drops, special limited-time events, and global tournaments.</p>
-        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-          <input
-            type="email"
-            className="flex-1 bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/40 font-medium"
-            placeholder="Enter your email"
-          />
-          <button className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-slate-100 transition-colors">Join Now</button>
-        </div>
-      </div>
-    </section>
   </motion.div>
 );
 
@@ -1040,6 +1050,7 @@ export default function App() {
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}
+        onResetUsername={() => setShowUsernameModal(true)}
       />
 
       <AnimatePresence mode="wait">
@@ -1047,17 +1058,17 @@ export default function App() {
           <LandingView key="landing" setView={setView} />
         ) : view === 'trivia-kpop' ? (
           <MCQuizView key="trivia-kpop" setView={setView} questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
-            { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400' },
-            { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400' },
-            { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400' },
-            { threshold: 0, label: 'Trainee', color: 'text-slate-400' },
+            { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
+            { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Your instincts are sharp and your beats are lethal.' } },
+            { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have potential, but the demons are still faster.' } },
+            { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Keep practicing your moves before entering the supernatural zone.' } },
           ]} />
         ) : view === 'trivia-twilight-mc' ? (
           <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={[
-            { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400' },
-            { threshold: 70, label: 'Forks Insider', color: 'text-purple-400' },
-            { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400' },
-            { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400' },
+            { threshold: 90, label: 'Cullen-Level Expert', color: 'text-amber-400', character: { name: 'Edward Cullen', image: '/images/Cullen Family.jpg', desc: 'You know every detail. You must be able to read minds!' } },
+            { threshold: 70, label: 'Forks Insider', color: 'text-purple-400', character: { name: 'Alice Cullen', image: '/images/Cullen Family.jpg', desc: 'Your foresight is impeccable. You saw these answers coming.' } },
+            { threshold: 50, label: 'Curious Newcomer', color: 'text-blue-400', character: { name: 'Bella Swan', image: '/images/Cullen Family.jpg', desc: 'You are just starting your supernatural journey into Forks.' } },
+            { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400', character: { name: 'Charlie Swan', image: '/images/Cullen Family.jpg', desc: 'You have no idea what is going on out there in the woods.' } },
           ]} />
         ) : view === 'trivia-harry-potter' ? (
           <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
@@ -1075,47 +1086,47 @@ export default function App() {
           ]} />
         ) : view === 'trivia-harry-potter-poa' ? (
           <MCQuizView key={`trivia-harry-potter-poa-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_POA_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Prisoner of Azkaban" scoreLabel="Harry Potter: Prisoner of Azkaban" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : view === 'trivia-harry-potter-gof' ? (
           <MCQuizView key={`trivia-harry-potter-gof-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_GOF_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Goblet of Fire" scoreLabel="Harry Potter: Goblet of Fire" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : view === 'trivia-harry-potter-ootp' ? (
           <MCQuizView key={`trivia-harry-potter-ootp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_OOTP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Order of the Phoenix" scoreLabel="Harry Potter: Order of the Phoenix" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : view === 'trivia-harry-potter-hbp' ? (
           <MCQuizView key={`trivia-harry-potter-hbp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_HBP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Half-Blood Prince" scoreLabel="Harry Potter: Half-Blood Prince" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : view === 'trivia-harry-potter-dh' ? (
           <MCQuizView key={`trivia-harry-potter-dh-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Deathly Hallows" scoreLabel="Harry Potter: Deathly Hallows" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : view === 'trivia-harry-potter-select' ? (
           <HPBookSelector key="hp-select" setView={setView} />
         ) : view === 'trivia-harry-potter-random' ? (
           <MCQuizView key={`trivia-harry-potter-random-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Random Mix" scoreLabel="Harry Potter: Random Mix" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
+            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
+            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
+            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
+            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
           ]} />
         ) : (
           <DashboardView key="dashboard" />
