@@ -50,6 +50,15 @@ export const UNIVERSES = [
     image: '/images/threebody.jpg',
     buttonText: 'Enter the Dark Forest',
     icon: 'Search'
+  },
+  {
+    id: 'zootopia',
+    title: 'Zootopia',
+    tags: ['Animation', 'Mystery'],
+    description: 'Anyone can be anything. Uncover conspiracies and explore the urban jungle.',
+    image: '/images/zootopia.jpg',
+    buttonText: 'Enter the Urban Jungle',
+    icon: 'Search'
   }
 ];
 
@@ -4544,5 +4553,102 @@ export const DEATHS_END_TRIVIA: MCTriviaQuestion[] = [
     options: ["True", "False"],
     answer: "True",
     evidence: "\"During the first few days, even mobile phone use was forbidden, and antennas around the world were forcibly shut down. Such a move... was widely supported by the populace.\" — Death's End: Excerpt from A Past Outside of Time: Nyctohylophobia"
+  }
+];
+
+export const ZOOTOPIA_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "To facilitate the realistic movement and shading of the various animal species, which specific fur-controlling software was developed by Disney's IT engineers?",
+    options: ["Hyperion", "Bonsai", "iGroom", "Nitro"],
+    answer: "iGroom",
+    evidence: "\"Therefore, the studio's IT engineers developed the fur-controlling software 'iGroom', which gave character designers precise control over the brushing, shaping, and shading of fur...\" — Zootopia - Wikipedia: Animation"
+  },
+  {
+    id: 2,
+    question: "The Disney Story Trust facilitated a major narrative overhaul in November 2014; who was the original lead character before this role reversal?",
+    options: ["Judy Hopps", "Nick Wilde", "Mayor Lionheart", "Chief Bogo"],
+    answer: "Nick Wilde",
+    evidence: "\"...changed the film into a contemporary police procedural in which Nick Wilde was the lead role and Judy Hopps was essentially his sidekick.\" — Zootopia - Wikipedia: Writing"
+  },
+  {
+    id: 3,
+    question: "The technical complexity of the film's animation is evidenced by the fact that the two lead characters, Judy Hopps and Nick Wilde, were each created with around 2.5 million individual hairs.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Characters with noteworthy numbers of strands of hair or fur included both of the two lead characters, Judy Hopps and Nick Wilde, who each had around 2.5 million hairs...\" — Zootopia - Wikipedia: Animation"
+  },
+  {
+    id: 4,
+    question: "In the German market, the film was released under the alternative title 'Zoomania' to avoid confusion with a 2010 children's book.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"In Germany, the film was titled Zoomania due to a children's book by German author Kay Fischer titled Zootopolis released in 2010...\" — Zootopia - Wikipedia: Alternative titles"
+  },
+  {
+    id: 5,
+    question: "The fearsome Tundratown crime boss Mr. Big—a character designed as an homage to Vito Corleone in 'The Godfather'—belongs to which specific animal species?",
+    options: ["Arctic Shrew", "Least Weasel", "North American River Otter", "Fennec Fox"],
+    answer: "Arctic Shrew",
+    evidence: "\"Maurice LaMarche as Mr. Big, a fearsome Arctic shrew crime boss in Tundratown served by a group of polar bears. The character is an homage to Marlon Brando's role as Vito Corleone in The Godfather.\" — Zootopia - Wikipedia: Voice cast"
+  },
+  {
+    id: 6,
+    question: "At the Zootopia Department of Mammal Vehicles (DMV), what is the name of the female three-toed sloth who works alongside Flash Slothmore?",
+    options: ["Nangi", "Dharma", "Fru Fru", "Priscilla"],
+    answer: "Priscilla",
+    evidence: "\"Kristen Bell as Priscilla, a three-toed sloth and Flash's co-worker at the DMV.\" — Zootopia - Wikipedia: Voice cast"
+  }
+];
+
+export const ZOOTOPIA_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What specific species is Gary De'Snake, the individual pursued by Judy and Nick throughout the film?",
+    options: ["Plumed basilisk", "Pit viper", "Green iguana", "Giant anteater"],
+    answer: "Pit viper",
+    evidence: "\"a hooded creature infiltrates the party and reveals himself to be a pit viper named Gary De'Snake.\" — Zootopia 2 Wikipedia: Plot"
+  },
+  {
+    id: 2,
+    question: "What is the name of the specialized ZPD unit headed by Captain Fern Hoggbottom?",
+    options: ["T.U.S.K. unit", "Marsh Market Task Force", "Zootennial Security", "The Zebros"],
+    answer: "T.U.S.K. unit",
+    evidence: "\"Michelle Gomez as Captain Fern Hoggbottom, a razorback who is the head of the ZPD's T.U.S.K. unit\" — Zootopia 2 Wikipedia: Voice cast"
+  },
+  {
+    id: 3,
+    question: "According to the historical revelations in the film, the original founder and weather wall engineer of Zootopia was Ebenezer Lynxley.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Gary and Pawbert reveal to Judy that Gary's great-grandmother, Agnes, was not only the original author of the journal, but also the true founder of Zootopia, and the engineer behind the weather walls.\" — Zootopia 2 Wikipedia: Plot"
+  },
+  {
+    id: 4,
+    question: "The 'Zebros' ZPD officers, Gene Zebraxton and Gene Zebrowski, are identified as a pair of plains zebras.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Joe 'Roman Reigns' Anoa'i and Phil 'CM Punk' Brooks as Gene Zebraxton and Gene Zebrowski, a pair of plains zebra ZPD cops known as the 'Zebros'\" — Zootopia 2 Wikipedia: Voice cast"
+  },
+  {
+    id: 5,
+    question: "Where do Judy and Nick encounter the hidden community of reptiles led by the basilisk named Jesús?",
+    options: ["Tundratown", "Sahara Square", "Marsh Market", "Mystic Springs Oasis"],
+    answer: "Marsh Market",
+    evidence: "\"Nibbles leads them to Marsh Market, a secluded area of Zootopia where reptiles hide. There, they meet a basilisk named Jesús\" — Zootopia 2 Wikipedia: Plot"
+  },
+  {
+    id: 6,
+    question: "What is the professional role of the character Dr. Fuzzby?",
+    options: ["ZPD Captain", "Quokka psychotherapist", "News reporter", "Climate engineer"],
+    answer: "Quokka psychotherapist",
+    evidence: "\"Quinta Brunson as Dr. Fuzzby, a quokka psychotherapist at partners' therapy\" — Zootopia 2 Wikipedia: Voice cast"
+  },
+  {
+    id: 7,
+    question: "A prison scene reference to 'Silence of the Lambs' was cut down from its original four-minute length to avoid slowing the film's pacing.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Originally, the Silence of the Lambs prison scene reference was four minutes long and taken verbatim from that film but was cut down because children were considered unlikely to understand the reference, and because it slowed the pacing.\" — Zootopia 2 Wikipedia: Production"
   }
 ];

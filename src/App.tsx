@@ -17,6 +17,7 @@ import {
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
+  ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   getLeaderboard, saveScore, MCTriviaQuestion
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -324,7 +325,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random';
+type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random';
 
 
 // --- Twilight Book Selector ---
@@ -463,6 +464,54 @@ const ThreeBodyBookSelector = ({ setView }: { setView: (v: ViewType) => void, ke
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
               <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
               <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
+
+// --- Zootopia Movie Selector ---
+
+const ZOOTOPIA_GRADES = [
+  { threshold: 90, label: 'Chief of Police', color: 'text-blue-400', character: { name: 'Chief Bogo', image: '/images/zootopia.jpg', desc: 'Outstanding! You command the respect of the entire ZPD.' } },
+  { threshold: 70, label: 'Star Detective', color: 'text-purple-400', character: { name: 'Judy Hopps', image: '/images/zootopia.jpg', desc: 'You never give up and it shows. Case closed!' } },
+  { threshold: 50, label: 'Hustler', color: 'text-amber-400', character: { name: 'Nick Wilde', image: '/images/zootopia.jpg', desc: 'You know your way around the city, but might need to study the fine print.' } },
+  { threshold: 0, label: 'DMV Sloth', color: 'text-slate-400', character: { name: 'Flash Slothmore', image: '/images/zootopia.jpg', desc: 'You... might... need... more... time...' } },
+];
+
+const ZootopiaSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">Investigation</span></h2>
+        <p className="text-slate-400 font-medium">Select a movie case file or test your luck with a random mix!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Case 1", title: "Zootopia", desc: `${ZOOTOPIA_TRIVIA.length} questions`, icon: "🐰", view: 'trivia-zootopia' as ViewType, gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Case 2", title: "Zootopia 2", desc: `${ZOOTOPIA_2_TRIVIA.length} questions`, icon: "🐍", view: 'trivia-zootopia-2' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Case File", desc: "15 random questions from both", icon: "🎲", view: 'trivia-zootopia-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+        ].map(movie => (
+          <motion.button
+            key={movie.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView(movie.view)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${movie.gradient} border ${movie.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{movie.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{movie.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{movie.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{movie.desc}</p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
               Start Quiz <ArrowRight className="size-3" />
@@ -780,7 +829,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
           transition={{ delay: 0.2 }}
           className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
         >
-          Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, and K-Pop: Demon Hunters.
+          Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, and Zootopia.
         </motion.p>
         <motion.div
           initial={{ y: 20, opacity: 0 }}
@@ -878,6 +927,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                   if (universe.id === 'kpop') setView('trivia-kpop');
                   if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
                   if (universe.id === 'three-body') setView('trivia-three-body-select');
+                  if (universe.id === 'zootopia') setView('trivia-zootopia-select');
                 }}
                 className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
               >
@@ -1295,6 +1345,14 @@ export default function App() {
           <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} />
         ) : view === 'trivia-three-body-random' ? (
           <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} />
+        ) : view === 'trivia-zootopia-select' ? (
+          <ZootopiaSelector key="zootopia-select" setView={setView} />
+        ) : view === 'trivia-zootopia' ? (
+          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} />
+        ) : view === 'trivia-zootopia-2' ? (
+          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} />
+        ) : view === 'trivia-zootopia-random' ? (
+          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} />
         ) : (
           <DashboardView key="dashboard" />
         )}
