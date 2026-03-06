@@ -96,7 +96,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="e.g. shadow_slayer"
               className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold"
               disabled={loading}
@@ -649,7 +649,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
           )}
           {showNamePrompt && (
             <div className="flex flex-col items-center gap-3 max-w-sm mx-auto w-full">
-              <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} placeholder="Enter your name..." className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center" maxLength={20} />
+              <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Enter your name..." className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center" maxLength={20} />
               <button onClick={handleSaveScore} disabled={playerName.trim().length < 2} className="w-full bg-amber-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed">Submit Score</button>
             </div>
           )}
