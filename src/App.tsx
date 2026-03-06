@@ -184,7 +184,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
               >
                 <img src={user.picture} alt={user.name} className="size-8 rounded-full border border-white/20" />
                 <div className="flex flex-col text-left">
-                  <span className="text-[10px] font-black text-white uppercase tracking-tight leading-none">@{user.username || 'new_fan'}</span>
+                  <span className="text-[10px] font-black text-white tracking-tight leading-none">@{user.username || 'new_fan'}</span>
                   <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{user.name}</span>
                 </div>
               </button>
