@@ -30,8 +30,15 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .animate-float {
@@ -45,4 +52,42 @@
 
 .twilight-quiz-card:hover {
   box-shadow: 0 0 80px rgba(127, 19, 236, 0.12), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Google Translate Custom Theme Resets --- */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+#google_translate_element select {
+  background-color: #111111;
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+#google_translate_element select:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(127, 19, 236, 0.5);
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0px;
 }

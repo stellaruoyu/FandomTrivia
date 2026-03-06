@@ -318,6 +318,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
     </div>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-bold uppercase tracking-widest`}>
       <p>© 2024 {isDashboard ? 'PROHUB ESPORTS INC.' : 'Fandom Trivia Inc. All rights reserved.'}</p>
+      <div id="google_translate_element" className="my-2 md:my-0"></div>
       <p>Crafted with <span className="text-primary">♥</span> for fans everywhere.</p>
     </div>
   </footer>
