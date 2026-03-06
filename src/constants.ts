@@ -111,45 +111,7 @@ const LEADERBOARD_COLORS = [
   'from-blue-400 to-blue-600',
 ];
 
-export function getLeaderboard(): LeaderboardEntry[] {
-  try {
-    const raw = localStorage.getItem('fandomtrivia_scores');
-    if (!raw) return [];
-    const scores: { name: string; score: number; total: number; quiz: string; date: string }[] = JSON.parse(raw);
-    // Aggregate best score per player
-    const best: Record<string, { score: number; quiz: string }> = {};
-    for (const s of scores) {
-      if (!best[s.name] || s.score > best[s.name].score) {
-        best[s.name] = { score: s.score, quiz: s.quiz };
-      }
-    }
-    return Object.entries(best)
-      .sort((a, b) => b[1].score - a[1].score)
-      .slice(0, 5)
-      .map(([name, data], i) => ({
-        id: String(i + 1).padStart(2, '0'),
-        name,
-        fandom: data.quiz,
-        points: data.score.toLocaleString(),
-        initials: name.slice(0, 2).toUpperCase(),
-        color: LEADERBOARD_COLORS[i % LEADERBOARD_COLORS.length],
-        score: data.score,
-      }));
-  } catch {
-    return [];
-  }
-}
 
-export function saveScore(name: string, score: number, total: number, quiz: string) {
-  try {
-    const raw = localStorage.getItem('fandomtrivia_scores');
-    const scores = raw ? JSON.parse(raw) : [];
-    scores.push({ name, score, total, quiz, date: new Date().toISOString() });
-    localStorage.setItem('fandomtrivia_scores', JSON.stringify(scores));
-  } catch {
-    // silently fail
-  }
-}
 
 // --- Trivia Types ---
 

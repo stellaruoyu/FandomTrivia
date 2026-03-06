@@ -9,7 +9,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -18,7 +18,7 @@ import {
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
-  getLeaderboard, saveScore, MCTriviaQuestion
+  MCTriviaQuestion
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
@@ -325,7 +325,7 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random';
+type ViewType = 'landing' | 'dashboard' | 'rankings' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random';
 
 
 // --- Twilight Book Selector ---
@@ -525,21 +525,21 @@ const ZootopiaSelector = ({ setView }: { setView: (v: ViewType) => void, key?: s
 
 // --- Multiple Choice Quiz View (Generic) ---
 
-const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
+const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
   setView: (v: ViewType) => void,
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
   grades: { threshold: number; label: string; color: string; character?: { name: string; image: string; desc: string } }[],
+  user: User | null,
   key?: string
 }) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
   const [finished, setFinished] = useState(false);
-  const [playerName, setPlayerName] = useState('');
-  const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const q = questions[currentQ];
   const total = questions.length;
@@ -574,15 +574,30 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
     setScores({});
     setFinished(false);
     setScoreSaved(false);
-    setShowNamePrompt(false);
-    setPlayerName('');
   };
 
-  const handleSaveScore = () => {
-    if (playerName.trim().length >= 2) {
-      saveScore(playerName.trim(), correctCount, total, scoreLabel);
+  const handleSaveScore = async () => {
+    if (!user) {
+      alert("You must be logged in to save your score.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('scores')
+        .insert({
+          user_id: user.id,
+          quiz_id: scoreLabel,
+          score: correctCount,
+          total: total
+        });
+      if (error) throw error;
       setScoreSaved(true);
-      setShowNamePrompt(false);
+    } catch (err: any) {
+      console.error(err);
+      alert('Failed to save score: ' + err.message);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -642,19 +657,19 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades }: {
             </div>
           </motion.div>
 
-          {!scoreSaved && !showNamePrompt && (
-            <button onClick={() => setShowNamePrompt(true)} className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all">
-              <Star className="size-4" /> Save to Leaderboard
+          {!scoreSaved ? (
+            <button
+              onClick={handleSaveScore}
+              disabled={saving}
+              className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all disabled:opacity-50"
+            >
+              <Star className="size-4" />
+              {saving ? 'Saving...' : 'Save to Leaderboard'}
             </button>
-          )}
-          {showNamePrompt && (
-            <div className="flex flex-col items-center gap-3 max-w-sm mx-auto w-full">
-              <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Enter your name..." className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold text-center" maxLength={20} />
-              <button onClick={handleSaveScore} disabled={playerName.trim().length < 2} className="w-full bg-amber-500 text-black py-3 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-400 transition-all disabled:opacity-30 disabled:cursor-not-allowed">Submit Score</button>
-            </div>
-          )}
-          {scoreSaved && (
-            <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2"><Check className="size-4" /> Score saved!</p>
+          ) : (
+            <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+              <Check className="size-4" /> Score saved!
+            </p>
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -844,7 +859,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
             <PlayCircle className="size-6" />
             Start Quiz Now
           </button>
-          <button className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+          <button onClick={() => setView('rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
             View Rankings
           </button>
         </motion.div>
@@ -949,7 +964,41 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
 
 const DashboardView = ({ key }: { key?: string }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const leaderboard = getLeaderboard();
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTopScores = async () => {
+      const { data } = await supabase
+        .from('scores')
+        .select('id, score, total, quiz_id, user_id, profiles(username)')
+        .order('score', { ascending: false })
+        .limit(5);
+
+      if (data) {
+        setLeaderboard(data.map((row, i) => {
+          // Type casting to handle Supabase's generated typs for foreign relations
+          const profile = row.profiles as unknown as { username: string } | null;
+          return {
+            id: String(i + 1).padStart(2, '0'),
+            name: profile?.username || 'Unknown',
+            fandom: row.quiz_id,
+            points: row.score.toLocaleString(),
+            initials: (profile?.username || 'U').slice(0, 2).toUpperCase(),
+            color: [
+              'from-amber-400 to-amber-600',
+              'from-slate-300 to-slate-500',
+              'from-orange-400 to-orange-600',
+              'from-emerald-400 to-emerald-600',
+              'from-purple-400 to-purple-600',
+              'from-blue-400 to-blue-600',
+            ][i % 6],
+            score: row.score,
+          };
+        }));
+      }
+    };
+    fetchTopScores();
+  }, []);
 
   const scrollTournaments = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -1163,6 +1212,131 @@ const DashboardView = ({ key }: { key?: string }) => {
   );
 };
 
+// --- Rankings View ---
+const RankingsView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
+  const [scores, setScores] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('scores')
+          .select(`
+            id,
+            score,
+            total,
+            quiz_id,
+            created_at,
+            user_id,
+            profiles(username)
+          `)
+          .order('score', { ascending: false });
+
+        if (error) throw error;
+
+        // Group by quiz_id
+        const groupedByQuiz: Record<string, any[]> = {};
+
+        if (data) {
+          data.forEach(row => {
+            const qid = row.quiz_id;
+            if (!groupedByQuiz[qid]) {
+              groupedByQuiz[qid] = [];
+            }
+
+            // Only add if this user doesn't already have a higher/equal score in this quiz list
+            const existingUserScoreIndex = groupedByQuiz[qid].findIndex(s => s.user_id === row.user_id);
+            if (existingUserScoreIndex === -1) {
+              groupedByQuiz[qid].push(row);
+            }
+          });
+        }
+
+        // Convert to an array of quizzes with their top scores
+        const finalRankings = Object.entries(groupedByQuiz).map(([quiz_id, userScores]) => ({
+          quiz_id,
+          scores: userScores.slice(0, 10) // Top 10 per quiz
+        }));
+
+        setScores(finalRankings);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRankings();
+  }, []);
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="flex items-center gap-4 border-b border-white/10 pb-6">
+          <button onClick={() => setView('landing')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+            <ArrowLeft className="size-4" />
+          </button>
+          <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <Trophy className="size-8 text-amber-400" />
+            Global Rankings
+          </h2>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-20 text-slate-400 font-bold animate-pulse">
+            Loading top scores...
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 text-red-400 font-bold">
+            Failed to load rankings: {error}
+          </div>
+        ) : scores.length === 0 ? (
+          <div className="text-center py-20 text-slate-400 font-bold">
+            No scores recorded yet. Be the first!
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {scores.map((quizData) => (
+              <div key={quizData.quiz_id} className="space-y-4">
+                <h3 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400 flex items-center gap-2">
+                  <Hash className="size-5" /> {quizData.quiz_id}
+                </h3>
+                <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden backdrop-blur-sm">
+                  {quizData.scores.map((scoreRow: any, idx: number) => (
+                    <div key={scoreRow.id} className="flex items-center justify-between p-4 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className={`size-8 rounded-full flex items-center justify-center font-black text-sm ${idx === 0 ? 'bg-amber-500 text-black' : idx === 1 ? 'bg-slate-300 text-black' : idx === 2 ? 'bg-amber-700 text-white' : 'bg-white/10 text-white'}`}>
+                          #{idx + 1}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white">{scoreRow.profiles?.username || 'Unknown User'}</p>
+                          <p className="text-xs text-slate-500 font-medium">#{scoreRow.user_id.substring(0, 8)}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
+                          {scoreRow.score} / {scoreRow.total}
+                        </p>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                          {Math.round((scoreRow.score / scoreRow.total) * 100)}%
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 export default function App() {
   const [view, setView] = useState<ViewType>('landing');
   const [user, setUser] = useState<User | null>(null);
@@ -1252,80 +1426,82 @@ export default function App() {
       <AnimatePresence mode="wait">
         {view === 'landing' ? (
           <LandingView key="landing" setView={setView} />
+        ) : view === 'rankings' ? (
+          <RankingsView key="rankings" setView={setView} />
         ) : view === 'trivia-kpop' ? (
           <MCQuizView key="trivia-kpop" setView={setView} questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
             { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
             { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Your instincts are sharp and your beats are lethal.' } },
             { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have potential, but the demons are still faster.' } },
             { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Keep practicing your moves before entering the supernatural zone.' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-twilight-select' ? (
           <TwilightBookSelector key="twilight-select" setView={setView} />
         ) : view === 'trivia-twilight-mc' ? (
-          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-twilight-book' ? (
-          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-newmoon' ? (
-          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-eclipse' ? (
-          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-breakingdawn' ? (
-          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-midnightsun' ? (
-          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-lifeanddeath' ? (
-          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} />
+          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-twilight-random' ? (
-          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} />
+          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} user={user} />
         ) : view === 'trivia-harry-potter' ? (
           <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-cos' ? (
           <MCQuizView key="trivia-harry-potter-cos" setView={setView} questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-poa' ? (
           <MCQuizView key={`trivia-harry-potter-poa-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_POA_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Prisoner of Azkaban" scoreLabel="Harry Potter: Prisoner of Azkaban" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-gof' ? (
           <MCQuizView key={`trivia-harry-potter-gof-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_GOF_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Goblet of Fire" scoreLabel="Harry Potter: Goblet of Fire" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-ootp' ? (
           <MCQuizView key={`trivia-harry-potter-ootp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_OOTP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Order of the Phoenix" scoreLabel="Harry Potter: Order of the Phoenix" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-hbp' ? (
           <MCQuizView key={`trivia-harry-potter-hbp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_HBP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Half-Blood Prince" scoreLabel="Harry Potter: Half-Blood Prince" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-dh' ? (
           <MCQuizView key={`trivia-harry-potter-dh-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Deathly Hallows" scoreLabel="Harry Potter: Deathly Hallows" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-harry-potter-select' ? (
           <HPBookSelector key="hp-select" setView={setView} />
         ) : view === 'trivia-harry-potter-random' ? (
@@ -1334,25 +1510,25 @@ export default function App() {
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} />
+          ]} user={user} />
         ) : view === 'trivia-three-body-select' ? (
           <ThreeBodyBookSelector key="three-body-select" setView={setView} />
         ) : view === 'trivia-three-body-problem' ? (
-          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} />
+          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} />
         ) : view === 'trivia-the-dark-forest' ? (
-          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} />
+          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} />
         ) : view === 'trivia-deaths-end' ? (
-          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} />
+          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} />
         ) : view === 'trivia-three-body-random' ? (
-          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} />
+          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} user={user} />
         ) : view === 'trivia-zootopia-select' ? (
           <ZootopiaSelector key="zootopia-select" setView={setView} />
         ) : view === 'trivia-zootopia' ? (
-          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} />
+          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} />
         ) : view === 'trivia-zootopia-2' ? (
-          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} />
+          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} />
         ) : view === 'trivia-zootopia-random' ? (
-          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} />
+          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} user={user} />
         ) : (
           <DashboardView key="dashboard" />
         )}
