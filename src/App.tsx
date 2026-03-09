@@ -9,7 +9,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -814,161 +814,206 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
   );
 };
 
+const FeedbackBanner = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="relative z-40 bg-gradient-to-r from-primary/20 via-purple-500/20 to-accent/20 border-b border-primary/30 backdrop-blur-md"
+    >
+      <div className="max-w-[1600px] mx-auto px-6 py-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="size-6 rounded-full bg-primary/20 flex items-center justify-center">
+              <Megaphone className="size-3 text-primary animate-pulse" />
+            </div>
+            <p className="text-xs font-bold text-white/90">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">Beta Feedback:</span> Help us improve your experience!
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <a
+              href="mailto:contact@fandomtrivia.com?subject=FandomTrivia%20Beta%20Feedback"
+              className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary/90 text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(127,19,236,0.5)]"
+            >
+              Give Feedback
+            </a>
+            <button
+              onClick={() => setIsVisible(false)}
+              className="size-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors text-slate-400 hover:text-white"
+              aria-label="Close banner"
+            >
+              <X className="size-3" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="pt-20"
   >
-    {/* Hero */}
-    <section className="relative w-full py-20 px-6 overflow-hidden">
-      <ParticleCanvas mode="ambient" className="opacity-60" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/40 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px]"></div>
-      </div>
-      <div className="max-w-5xl mx-auto text-center space-y-8">
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
-          Join 12.4K Active Players
-        </motion.div>
-        <motion.h2
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white leading-[1.1]"
-        >
-          The Ultimate <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Fandom Trivia</span>
-        </motion.h2>
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
-        >
-          Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, and Zootopia.
-        </motion.p>
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <button
-            onClick={() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' })}
-            className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
-          >
-            <PlayCircle className="size-6" />
-            Start Quiz Now
-          </button>
-          <button onClick={() => setView('rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-            View Rankings
-          </button>
-        </motion.div>
-      </div>
-    </section>
-
-    {/* Stats Bar */}
-    <section className="max-w-7xl mx-auto px-6 mb-20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { icon: Users, label: 'Active Players', value: '12,482', color: 'text-blue-500', bg: 'bg-blue-500/10' },
-          { icon: Trophy, label: 'Quizzes Taken', value: '1.2M+', color: 'text-primary', bg: 'bg-primary/10' },
-          { icon: Star, label: 'Global Rankings', value: '#1 Hub', color: 'text-amber-500', bg: 'bg-amber-500/10' },
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="bg-white/5 border border-white/10 p-8 rounded-2xl flex items-center gap-6"
-          >
-            <div className={`size-14 rounded-xl ${stat.bg} flex items-center justify-center ${stat.color}`}>
-              <stat.icon className="size-8" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
-              <p className="text-3xl font-black text-white">{stat.value}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-
-    {/* Universe Grid */}
-    <section id="universes" className="max-w-7xl mx-auto px-6 pb-32">
-      <div className="flex items-end justify-between mb-10">
-        <div className="space-y-2">
-          <h3 className="text-3xl font-extrabold text-white">Choose Your Universe</h3>
-          <p className="text-slate-400 font-medium">Select a category to begin your journey into fandom trivia.</p>
+    <FeedbackBanner />
+    <div className="pt-20">
+      {/* Hero */}
+      <section className="relative w-full py-20 px-6 overflow-hidden">
+        <ParticleCanvas mode="ambient" className="opacity-60" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/40 rounded-full blur-[120px]"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px]"></div>
         </div>
-        <a href="#" className="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline">
-          View All Categories
-          <ArrowRight className="size-5" />
-        </a>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {UNIVERSES.map((universe, i) => (
+        <div className="max-w-5xl mx-auto text-center space-y-8">
           <motion.div
-            key={universe.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest"
           >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-              style={{ backgroundImage: `url("${universe.image}")` }}
-            ></div>
-            <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
-            <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">
-              <div className="flex items-center gap-2">
-                {universe.tags.map(tag => (
-                  <span key={tag} className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-widest border border-white/20">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <h4 className={`text-4xl font-extrabold text-white tracking-tight ${universe.isSpecial ? 'leading-none' : ''}`}>
-                {universe.isSpecial ? (
-                  <>K-Pop: <br /><span className="text-primary">Demon Hunters</span></>
-                ) : universe.title}
-              </h4>
-              <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (universe.id === 'twilight') setView('trivia-twilight-select');
-                  if (universe.id === 'kpop') setView('trivia-kpop');
-                  if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
-                  if (universe.id === 'three-body') setView('trivia-three-body-select');
-                  if (universe.id === 'zootopia') setView('trivia-zootopia-select');
-                }}
-                className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
-              >
-                {universe.buttonText}
-              </button>
-            </div>
-            <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-              {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
-              {universe.icon === 'Wand2' && <Wand2 className="text-white/50 size-10" />}
-              {universe.icon === 'Zap' && <Zap className="text-primary/70 size-10 fill-current" />}
-            </div>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            Join 12.4K Active Players
           </motion.div>
-        ))}
-      </div>
-    </section>
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white leading-[1.1]"
+          >
+            The Ultimate <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Fandom Trivia</span>
+          </motion.h2>
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
+          >
+            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, and Zootopia.
+          </motion.p>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <button
+              onClick={() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
+            >
+              <PlayCircle className="size-6" />
+              Start Quiz Now
+            </button>
+            <button onClick={() => setView('rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+              View Rankings
+            </button>
+          </motion.div>
+        </div>
+      </section>
 
+      {/* Stats Bar */}
+      <section className="max-w-7xl mx-auto px-6 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { icon: Users, label: 'Active Players', value: '12,482', color: 'text-blue-500', bg: 'bg-blue-500/10' },
+            { icon: Trophy, label: 'Quizzes Taken', value: '1.2M+', color: 'text-primary', bg: 'bg-primary/10' },
+            { icon: Star, label: 'Global Rankings', value: '#1 Hub', color: 'text-amber-500', bg: 'bg-amber-500/10' },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-white/5 border border-white/10 p-8 rounded-2xl flex items-center gap-6"
+            >
+              <div className={`size-14 rounded-xl ${stat.bg} flex items-center justify-center ${stat.color}`}>
+                <stat.icon className="size-8" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
+                <p className="text-3xl font-black text-white">{stat.value}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Universe Grid */}
+      <section id="universes" className="max-w-7xl mx-auto px-6 pb-32">
+        <div className="flex items-end justify-between mb-10">
+          <div className="space-y-2">
+            <h3 className="text-3xl font-extrabold text-white">Choose Your Universe</h3>
+            <p className="text-slate-400 font-medium">Select a category to begin your journey into fandom trivia.</p>
+          </div>
+          <a href="#" className="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline">
+            View All Categories
+            <ArrowRight className="size-5" />
+          </a>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {UNIVERSES.map((universe, i) => (
+            <motion.div
+              key={universe.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url("${universe.image}")` }}
+              ></div>
+              <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
+              <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">
+                <div className="flex items-center gap-2">
+                  {universe.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-widest border border-white/20">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h4 className={`text-4xl font-extrabold text-white tracking-tight ${universe.isSpecial ? 'leading-none' : ''}`}>
+                  {universe.isSpecial ? (
+                    <>K-Pop: <br /><span className="text-primary">Demon Hunters</span></>
+                  ) : universe.title}
+                </h4>
+                <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (universe.id === 'twilight') setView('trivia-twilight-select');
+                    if (universe.id === 'kpop') setView('trivia-kpop');
+                    if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
+                    if (universe.id === 'three-body') setView('trivia-three-body-select');
+                    if (universe.id === 'zootopia') setView('trivia-zootopia-select');
+                  }}
+                  className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
+                >
+                  {universe.buttonText}
+                </button>
+              </div>
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
+                {universe.icon === 'Wand2' && <Wand2 className="text-white/50 size-10" />}
+                {universe.icon === 'Zap' && <Zap className="text-primary/70 size-10 fill-current" />}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+    </div>
   </motion.div>
 );
 
