@@ -158,6 +158,15 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
             <a
               key={link.name}
               href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                if (link.name === 'Home') setView('landing');
+                else if (link.name === 'Leaderboards') setView('rankings');
+                else if (link.name === 'Categories') {
+                  setView('landing');
+                  setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                }
+              }}
               className={`text-sm font-semibold hover:text-primary transition-colors ${isDashboard ? 'uppercase tracking-widest text-xs' : ''} ${(link as any).active ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
             >
               {link.name}
@@ -242,7 +251,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
 };
 
 
-const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
+const Footer = ({ isDashboard, setView }: { isDashboard: boolean, setView: (v: ViewType) => void }) => (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto grid grid-cols-1 md:grid-cols-4 gap-12`}>
       <div className="col-span-1 md:col-span-2 space-y-6">
@@ -287,8 +296,8 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
           ) : (
             <>
               <li><a href="#" className="hover:text-primary transition-colors">How it works</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Leaderboards</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Categories</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('rankings'); }} className="hover:text-primary transition-colors">Leaderboards</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Rewards</a></li>
             </>
           )}
@@ -1546,7 +1555,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <Footer isDashboard={view === 'dashboard'} />
+      <Footer isDashboard={view === 'dashboard'} setView={setView} />
     </div>
   );
 }
