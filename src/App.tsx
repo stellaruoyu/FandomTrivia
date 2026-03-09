@@ -181,9 +181,6 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
               <span className="text-xs font-black">2,450 XP</span>
             </div>
           )}
-          <button className="hidden sm:flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors mr-4">
-            <Search className="size-5" />
-          </button>
 
           {user ? (
             <div className="relative" ref={menuRef}>
