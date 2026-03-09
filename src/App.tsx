@@ -811,7 +811,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
   );
 };
 
-const FeedbackWidget = () => {
+const FeedbackWidget = ({ user }: { user: User | null }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
@@ -820,8 +820,11 @@ const FeedbackWidget = () => {
     e.preventDefault();
     if (!message.trim()) return;
 
+    const userEmail = user?.email || 'Unlogged in user';
+    const emailBody = `From: ${userEmail}\n\n${message}`;
+
     // Using mailto to simulate sending for now
-    window.location.href = `mailto:contact@fandomtrivia.com?subject=FandomTrivia%20Beta%20Feedback&body=${encodeURIComponent(message)}`;
+    window.location.href = `mailto:ruoyu.zheng2016@gmail.com?subject=From%20FandomTrivia&body=${encodeURIComponent(emailBody)}`;
 
     setSent(true);
     setTimeout(() => {
@@ -1656,7 +1659,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <FeedbackWidget />
+      <FeedbackWidget user={user} />
       <Footer isDashboard={view === 'dashboard'} setView={setView} />
     </div>
   );
