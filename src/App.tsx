@@ -241,6 +241,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
   );
 };
 
+
 const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto grid grid-cols-1 md:grid-cols-4 gap-12`}>
@@ -318,7 +319,6 @@ const Footer = ({ isDashboard }: { isDashboard: boolean }) => (
     </div>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-bold uppercase tracking-widest`}>
       <p>© 2024 {isDashboard ? 'PROHUB ESPORTS INC.' : 'Fandom Trivia Inc. All rights reserved.'}</p>
-      <div id="google_translate_element" className="my-2 md:my-0"></div>
       <p>Crafted with <span className="text-primary">♥</span> for fans everywhere.</p>
     </div>
   </footer>
@@ -1226,13 +1226,13 @@ const RankingsView = ({ setView }: { setView: (v: ViewType) => void, key?: strin
         const { data, error } = await supabase
           .from('scores')
           .select(`
-            id,
-            score,
-            total,
-            quiz_id,
-            created_at,
-            user_id,
-            profiles(username)
+          id,
+          score,
+          total,
+          quiz_id,
+          created_at,
+          user_id,
+          profiles(username)
           `)
           .order('score', { ascending: false });
 
