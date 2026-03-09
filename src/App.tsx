@@ -921,7 +921,6 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
   >
-    <FeedbackWidget />
     <div className="pt-20">
       {/* Hero */}
       <section className="relative w-full py-20 px-6 overflow-hidden">
@@ -1657,6 +1656,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      <FeedbackWidget />
       <Footer isDashboard={view === 'dashboard'} setView={setView} />
     </div>
   );
