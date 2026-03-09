@@ -9,7 +9,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, MessageCircle, Send
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -811,47 +811,107 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
   );
 };
 
-const FeedbackBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
+const FeedbackWidget = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
 
-  if (!isVisible) return null;
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+
+    // Using mailto to simulate sending for now
+    window.location.href = `mailto:contact@fandomtrivia.com?subject=FandomTrivia%20Beta%20Feedback&body=${encodeURIComponent(message)}`;
+
+    setSent(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setSent(false);
+      setMessage('');
+    }, 2000);
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="relative z-40 bg-gradient-to-r from-primary/20 via-purple-500/20 to-accent/20 border-b border-primary/30 backdrop-blur-md"
-    >
-      <div className="max-w-[1600px] mx-auto px-6 py-2">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="size-6 rounded-full bg-primary/20 flex items-center justify-center">
-              <Megaphone className="size-3 text-primary animate-pulse" />
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="mb-4 w-80 bg-card-dark border border-white/10 shadow-2xl rounded-2xl overflow-hidden flex flex-col"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-primary to-purple-600 p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="size-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <Megaphone className="size-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-white font-black italic text-sm leading-none">Feedback</h4>
+                  <p className="text-white/70 text-[10px] uppercase font-bold tracking-widest mt-0.5">We're listening</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="size-8 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center transition-colors text-white"
+              >
+                <X className="size-4" />
+              </button>
             </div>
-            <p className="text-xs font-bold text-white/90">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">Beta Feedback:</span> Help us improve your experience!
-            </p>
-          </div>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="mailto:contact@fandomtrivia.com?subject=FandomTrivia%20Beta%20Feedback"
-              className="px-4 py-1.5 rounded-full bg-primary hover:bg-primary/90 text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(127,19,236,0.5)]"
-            >
-              Give Feedback
-            </a>
-            <button
-              onClick={() => setIsVisible(false)}
-              className="size-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors text-slate-400 hover:text-white"
-              aria-label="Close banner"
-            >
-              <X className="size-3" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+            {/* Content */}
+            <div className="p-5 bg-card-dark relative">
+              {sent ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-6 text-center space-y-3"
+                >
+                  <div className="size-12 bg-green-500/10 border border-green-500/20 text-green-500 rounded-full flex items-center justify-center">
+                    <Check className="size-6" />
+                  </div>
+                  <div>
+                    <p className="font-black text-white italic tracking-tight">Thanks for reaching out!</p>
+                    <p className="text-xs text-slate-400 mt-1 font-medium">Your feedback makes us better.</p>
+                  </div>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                    Have an idea for a new feature? Found a bug? Let us know!
+                  </p>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Tell us what you think..."
+                    className="w-full h-28 bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 resize-none font-medium transition-all"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                  >
+                    Send Feedback
+                    <Send className="size-3" />
+                  </button>
+                </form>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className="size-14 rounded-full bg-primary text-white flex items-center justify-center shadow-[0_0_20px_rgba(127,19,236,0.5)] border border-white/10 z-50 transition-all hover:bg-primary/90"
+      >
+        <MessageCircle className="size-6" />
+      </motion.button>
+    </div>
   );
 };
 
@@ -861,7 +921,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
   >
-    <FeedbackBanner />
+    <FeedbackWidget />
     <div className="pt-20">
       {/* Hero */}
       <section className="relative w-full py-20 px-6 overflow-hidden">
