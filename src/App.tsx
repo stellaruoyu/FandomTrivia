@@ -35,6 +35,85 @@ interface User {
 
 // --- Components ---
 
+const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) => {
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('scores')
+          .select('id, score, total, quiz_id, created_at')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setHistory(data || []);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHistory();
+  }, [user.id]);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
+      >
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center gap-3">
+            <BookOpen className="size-6 text-emerald-400" />
+            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Quiz History</h3>
+          </div>
+          <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+          {loading ? (
+            <div className="text-center py-10 text-slate-400 font-bold animate-pulse">Loading history...</div>
+          ) : error ? (
+            <div className="text-center py-10 text-red-400 font-bold">Error: {error}</div>
+          ) : history.length === 0 ? (
+            <div className="text-center py-10 text-slate-400 flex flex-col items-center gap-3">
+              <Trophy className="size-10 text-slate-600" />
+              <p className="font-bold">No quizzes taken yet.</p>
+            </div>
+          ) : (
+            history.map((item) => (
+              <div key={item.id} className="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between hover:bg-white/10 transition-colors">
+                <div>
+                  <h4 className="font-bold text-white text-lg">{item.quiz_id}</h4>
+                  <p className="text-xs text-slate-500 font-medium">
+                    {new Date(item.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+                    {item.score} / {item.total}
+                  </p>
+                  <p className="text-[10px] uppercase font-bold text-slate-400">
+                    {Math.round((item.score / item.total) * 100)}%
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void }) => {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
@@ -117,13 +196,14 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername }: {
+const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory }: {
   isDashboard: boolean,
   setView: (v: ViewType) => void,
   user: User | null,
   onLogin: () => void,
   onLogout: () => void,
-  onResetUsername?: () => void
+  onResetUsername?: () => void,
+  onShowHistory?: () => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -211,6 +291,15 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
                       </p>
                     </div>
                     <div className="p-1.5">
+                      {onShowHistory && (
+                        <button
+                          onClick={() => { onShowHistory(); setShowAccountMenu(false); }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all"
+                        >
+                          <BookOpen className="size-4 text-emerald-400" />
+                          Quiz History
+                        </button>
+                      )}
                       {onResetUsername && (
                         <button
                           onClick={() => { onResetUsername(); setShowAccountMenu(false); }}
@@ -1455,6 +1544,7 @@ export default function App() {
   const [view, setView] = useState<ViewType>('landing');
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
 
   // Load user profile from Supabase
   const loadUserProfile = async (supabaseUser: any) => {
@@ -1535,7 +1625,12 @@ export default function App() {
         onLogin={handleLogin}
         onLogout={handleLogout}
         onResetUsername={() => setShowUsernameModal(true)}
+        onShowHistory={() => setShowHistoryModal(true)}
       />
+
+      {showHistoryModal && user && (
+        <HistoryModal user={user} onClose={() => setShowHistoryModal(false)} />
+      )}
 
       <AnimatePresence mode="wait">
         {view === 'landing' ? (
