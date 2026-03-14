@@ -633,17 +633,26 @@ const playCorrectSound = () => {
     gain.connect(ctx.destination);
     
     // Use a softer sine wave tone and lower the frequencies.
+    // Happy double-hop! (like "da-ding!")
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(440, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+    
+    // First soft, low note
+    osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+    // Quick jump to a higher note
+    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
     
     // Lower volume and smoother envelope
     gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05); // softer peak
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+    gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05); // softer peak
+    // dip for the hop
+    gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.1); 
+    // peak for the second note
+    gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.15); 
+    // fade out
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
     
     osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.4);
+    osc.stop(ctx.currentTime + 0.3);
   } catch (e) {
     console.error('Audio playback failed:', e);
   }
@@ -652,14 +661,21 @@ const playCorrectSound = () => {
 const playIncorrectSound = () => {
   try {
     const msg = new SpeechSynthesisUtterance("uh oh, try again next time!");
-    // Make the pitch higher and slightly faster for a more cheerful/"peppy" tone
-    msg.pitch = 1.8; 
-    msg.rate = 1.2;
+    // Maximize pitch, keep rate slightly fast but smooth
+    msg.pitch = 2.0; 
+    msg.rate = 1.3;
+    msg.volume = 0.6; // lower volume so it's softer
     
-    // Optionally look for a more friendly sounding female voice if available
+    // Prioritize even happier/softer voices if available
     const voices = window.speechSynthesis.getVoices();
     const englishVoices = voices.filter(v => v.lang.startsWith('en'));
-    const femaleVoice = englishVoices.find(v => v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Zira'));
+    const femaleVoice = englishVoices.find(v => 
+      v.name.includes('Google UK English Female') || 
+      v.name.includes('Samantha') || 
+      v.name.includes('Siri') || 
+      v.name.includes('Zira') ||
+      v.name.includes('Female')
+    );
     if (femaleVoice) {
        msg.voice = femaleVoice;
     }
