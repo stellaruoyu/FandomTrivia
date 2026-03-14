@@ -632,16 +632,18 @@ const playCorrectSound = () => {
     osc.connect(gain);
     gain.connect(ctx.destination);
     
+    // Use a softer sine wave tone and lower the frequencies.
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(440, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
     
+    // Lower volume and smoother envelope
     gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.05); // softer peak
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
     
     osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.5);
+    osc.stop(ctx.currentTime + 0.4);
   } catch (e) {
     console.error('Audio playback failed:', e);
   }
@@ -650,8 +652,18 @@ const playCorrectSound = () => {
 const playIncorrectSound = () => {
   try {
     const msg = new SpeechSynthesisUtterance("uh oh, try again next time!");
-    msg.pitch = 1.2;
-    msg.rate = 1.1;
+    // Make the pitch higher and slightly faster for a more cheerful/"peppy" tone
+    msg.pitch = 1.8; 
+    msg.rate = 1.2;
+    
+    // Optionally look for a more friendly sounding female voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+    const femaleVoice = englishVoices.find(v => v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Zira'));
+    if (femaleVoice) {
+       msg.voice = femaleVoice;
+    }
+
     window.speechSynthesis.cancel(); // Cancel any currently playing speech
     window.speechSynthesis.speak(msg);
   } catch (e) {
