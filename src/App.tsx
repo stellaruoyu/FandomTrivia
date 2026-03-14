@@ -621,6 +621,44 @@ const ZootopiaSelector = ({ setView }: { setView: (v: ViewType) => void, key?: s
 
 // --- Multiple Choice Quiz View (Generic) ---
 
+const playCorrectSound = () => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1);
+    
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
+  } catch (e) {
+    console.error('Audio playback failed:', e);
+  }
+};
+
+const playIncorrectSound = () => {
+  try {
+    const msg = new SpeechSynthesisUtterance("uh oh, try again next time!");
+    msg.pitch = 1.2;
+    msg.rate = 1.1;
+    window.speechSynthesis.cancel(); // Cancel any currently playing speech
+    window.speechSynthesis.speak(msg);
+  } catch (e) {
+    console.error('Speech synthesis failed:', e);
+  }
+};
+
 const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
   setView: (v: ViewType) => void,
   questions: MCTriviaQuestion[],
@@ -649,9 +687,15 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
     if (isUnknown) {
       // No known answer — auto-mark correct (fun mode)
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
+      playCorrectSound();
     } else {
       const isCorrect = option.toLowerCase() === q.answer.toLowerCase();
       setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
+      if (isCorrect) {
+        playCorrectSound();
+      } else {
+        playIncorrectSound();
+      }
     }
   };
 
