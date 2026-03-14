@@ -18,7 +18,7 @@ import {
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
-  MCTriviaQuestion
+  MCTriviaQuestion, BADGES, Badge
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
@@ -114,6 +114,112 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
   );
 };
 
+const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[], onClose: () => void }) => {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-4xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
+      >
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center gap-3">
+            <Star className="size-6 text-amber-400 fill-amber-400" />
+            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Your Badges</h3>
+          </div>
+          <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto pr-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {BADGES.map((badge) => {
+              const isUnlocked = unlockedBadgeIds.includes(badge.id);
+              return (
+                <div 
+                  key={badge.id} 
+                  className={`relative p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center gap-3
+                    ${isUnlocked 
+                      ? 'bg-white/5 border-white/20 hover:bg-white/10 shadow-lg' 
+                      : 'bg-black/40 border-white/5 opacity-60 grayscale hover:grayscale-0'
+                    }`}
+                >
+                  <div className={`size-16 rounded-full flex items-center justify-center shadow-inner
+                    ${isUnlocked ? 'bg-gradient-to-br from-white/10 to-white/5' : 'bg-white/5'}
+                  `}>
+                    {/* Render matching lucide icon dynamically based on string if possible, or fallback manually. 
+                        For simplicity in this app, we hardcode the mapping. */}
+                    {badge.icon === 'Droplets' && <Droplets className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                    {badge.icon === 'Star' && <Star className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
+                    {badge.icon === 'Wand2' && <Wand2 className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                    {badge.icon === 'Zap' && <Zap className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
+                    {badge.icon === 'Globe' && <Globe className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                    {badge.icon === 'Search' && <Search className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-black tracking-tight text-white text-sm">{badge.name}</h4>
+                    <p className="text-[10px] text-slate-400 font-medium leading-tight mt-1">{badge.description}</p>
+                  </div>
+                  
+                  {!isUnlocked && (
+                    <div className="absolute top-2 right-2">
+                      <div className="bg-black/60 rounded-full p-1 border border-white/10">
+                        {/* Assuming a Lock icon isn't imported, using an X or just a small dark circle */}
+                        <div className="size-3 rounded-full bg-slate-700 flex items-center justify-center">
+                          <div className="w-1 h-1.5 border-t border-l border-r border-slate-400 rounded-t-sm mb-1" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+const BadgeNotification = ({ badge, onClose }: { badge: Badge, onClose: () => void, key?: string | number }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000); // Auto-close after 5 seconds
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ y: -100, opacity: 0, scale: 0.9 }}
+      animate={{ y: 20, opacity: 1, scale: 1 }}
+      exit={{ y: -100, opacity: 0, scale: 0.9 }}
+      className="fixed top-0 left-0 right-0 z-[110] flex justify-center pointer-events-none px-4"
+    >
+      <div className="bg-card-dark border border-amber-500/30 p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm w-full pointer-events-auto backdrop-blur-md">
+        <div className={`size-12 rounded-full flex items-center justify-center shrink-0 bg-gradient-to-br from-white/10 to-white/5 shadow-inner`}>
+          {badge.icon === 'Droplets' && <Droplets className={`size-6 ${badge.color}`} />}
+          {badge.icon === 'Star' && <Star className={`size-6 ${badge.color} fill-current`} />}
+          {badge.icon === 'Wand2' && <Wand2 className={`size-6 ${badge.color}`} />}
+          {badge.icon === 'Zap' && <Zap className={`size-6 ${badge.color} fill-current`} />}
+          {badge.icon === 'Globe' && <Globe className={`size-6 ${badge.color}`} />}
+          {badge.icon === 'Search' && <Search className={`size-6 ${badge.color}`} />}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-0.5">Badge Unlocked!</p>
+          <h4 className="font-bold text-white text-sm truncate">{badge.name}</h4>
+          <p className="text-xs text-slate-400 truncate">{badge.description}</p>
+        </div>
+        <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors shrink-0">
+          <X className="size-4 text-slate-400" />
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
 const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void }) => {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
@@ -196,14 +302,15 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory }: {
+const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges }: {
   isDashboard: boolean,
   setView: (v: ViewType) => void,
   user: User | null,
   onLogin: () => void,
   onLogout: () => void,
   onResetUsername?: () => void,
-  onShowHistory?: () => void
+  onShowHistory?: () => void,
+  onShowBadges?: () => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -261,6 +368,17 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
               <span className="text-xs font-black">2,450 XP</span>
             </div>
           )}
+          
+          {/* Always show badges button if callback is provided, even if logged out */}
+          {onShowBadges && (
+            <button
+              onClick={onShowBadges}
+              className="flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/20 px-4 py-2 rounded-lg font-bold text-sm transition-all"
+            >
+              <Star className="size-4 fill-amber-500" />
+              <span className="hidden sm:inline">My Badges</span>
+            </button>
+          )}
 
           {user ? (
             <div className="relative" ref={menuRef}>
@@ -291,6 +409,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
                       </p>
                     </div>
                     <div className="p-1.5">
+
                       {onShowHistory && (
                         <button
                           onClick={() => { onShowHistory(); setShowAccountMenu(false); }}
@@ -660,40 +779,41 @@ const playCorrectSound = () => {
 
 const playIncorrectSound = () => {
   try {
-    const msg = new SpeechSynthesisUtterance("uh oh, try again next time!");
-    // Maximize pitch, keep rate slightly fast but smooth
-    msg.pitch = 2.0; 
-    msg.rate = 1.3;
-    msg.volume = 0.6; // lower volume so it's softer
-    
-    // Prioritize even happier/softer voices if available
-    const voices = window.speechSynthesis.getVoices();
-    const englishVoices = voices.filter(v => v.lang.startsWith('en'));
-    const femaleVoice = englishVoices.find(v => 
-      v.name.includes('Google UK English Female') || 
-      v.name.includes('Samantha') || 
-      v.name.includes('Siri') || 
-      v.name.includes('Zira') ||
-      v.name.includes('Female')
-    );
-    if (femaleVoice) {
-       msg.voice = femaleVoice;
-    }
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-    window.speechSynthesis.cancel(); // Cancel any currently playing speech
-    window.speechSynthesis.speak(msg);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    // Deep bell-like "dong" sound
+    osc.type = 'sine';
+    
+    // Lower frequency for the "dong"
+    osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
+    
+    // Volume envelope: sharp attack, long decay
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05); 
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+    
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.8);
   } catch (e) {
-    console.error('Speech synthesis failed:', e);
+    console.error('Audio playback failed:', e);
   }
 };
 
-const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
+const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQuizComplete }: {
   setView: (v: ViewType) => void,
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
   grades: { threshold: number; label: string; color: string; character?: { name: string; image: string; desc: string } }[],
   user: User | null,
+  onQuizComplete?: (quizId: string, scorePct: number) => void,
   key?: string
 }) => {
   const [currentQ, setCurrentQ] = useState(0);
@@ -733,6 +853,9 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user }: {
       setSelected(null);
     } else {
       setFinished(true);
+      if (onQuizComplete) {
+        onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100));
+      }
     }
   };
 
@@ -1617,33 +1740,55 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [showBadgesModal, setShowBadgesModal] = useState(false);
+  const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
+  const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
 
   // Load user profile from Supabase
   const loadUserProfile = async (supabaseUser: any) => {
-    if (!supabaseUser) {
-      setUser(null);
-      return;
-    }
+    try {
+      let { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', supabaseUser.id)
+        .single();
 
-    // Fetch the profile to get the username
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('username, display_name, avatar_url')
-      .eq('id', supabaseUser.id)
-      .single();
+      if (error && error.code === 'PGRST116') {
+        // Profile doesn't exist, create it
+        const { data: newProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert([{
+            id: supabaseUser.id,
+            email: supabaseUser.user_metadata.email || supabaseUser.email,
+            name: supabaseUser.user_metadata.full_name || supabaseUser.email?.split('@')[0],
+            picture: supabaseUser.user_metadata.avatar_url || 'https://via.placeholder.com/150'
+          }])
+          .select()
+          .single();
 
-    const appUser: User = {
-      id: supabaseUser.id,
-      email: supabaseUser.email || '',
-      name: profile?.display_name || supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || '',
-      picture: profile?.avatar_url || supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture || '',
-      username: profile?.username || null,
-    };
+        if (insertError) throw insertError;
+        data = newProfile;
+      } else if (error) {
+        throw error;
+      }
 
-    setUser(appUser);
+      // Map the fetched profile data to the User type
+      const appUser: User = {
+        id: data.id,
+        email: data.email || '',
+        name: data.display_name || data.name || '', // Use display_name if available, otherwise name
+        picture: data.avatar_url || data.picture || '',
+        username: data.username || null,
+      };
 
-    if (!appUser.username) {
-      setShowUsernameModal(true);
+      setUser(appUser);
+
+      if (!appUser.username) {
+        setShowUsernameModal(true);
+      }
+    } catch (err: any) {
+      console.error('Error loading profile:', err.message);
+      setUser(null); // Ensure user is null if profile loading fails
     }
   };
 
@@ -1667,6 +1812,71 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Retroactively load badges based on past quizzes
+  useEffect(() => {
+    if (!user) {
+      setUnlockedBadgeIds([]);
+      return;
+    }
+
+    const loadPastBadges = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('scores')
+          .select('score, total, quiz_id')
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          const preEarnedIds = new Set<string>();
+          
+          data.forEach(item => {
+             const scorePct = Math.round((item.score / item.total) * 100);
+             
+             BADGES.forEach(badge => {
+                if (preEarnedIds.has(badge.id)) return;
+                
+                let unlocked = false;
+                if (badge.id === 'first_blood') {
+                  unlocked = true; 
+                }
+                if (badge.id === 'perfect_score' && scorePct === 100) {
+                  unlocked = true;
+                }
+                
+                if (badge.targetQuiz) {
+                  const titleLower = item.quiz_id.toLowerCase();
+                  if (titleLower.includes(badge.targetQuiz.replace('-', ' '))) {
+                    unlocked = true;
+                  } else if (badge.targetQuiz === 'harry-potter' && titleLower.includes('harry potter')) {
+                    unlocked = true;
+                  } else if (badge.targetQuiz === 'twilight' && (titleLower.includes('twilight') || titleLower.includes('eclipse') || titleLower.includes('new moon') || titleLower.includes('breaking dawn') || titleLower.includes('midnight sun') || titleLower.includes('life and death'))) {
+                    unlocked = true;
+                  } else if (badge.targetQuiz === 'three-body' && (titleLower.includes('three-body') || titleLower.includes('dark forest') || titleLower.includes('death\'s end'))) {
+                    unlocked = true;
+                  } else if (badge.targetQuiz === 'zootopia' && titleLower.includes('zootopia')) {
+                    unlocked = true;
+                  } else if (badge.targetQuiz === 'kpop' && titleLower.includes('k-pop')) {
+                    unlocked = true;
+                  }
+                }
+
+                if (unlocked) {
+                  preEarnedIds.add(badge.id);
+                }
+             });
+          });
+          setUnlockedBadgeIds(Array.from(preEarnedIds));
+        }
+      } catch (err) {
+        console.error('Failed to load past badge history', err);
+      }
+    };
+
+    loadPastBadges();
+  }, [user]);
+
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -1685,7 +1895,57 @@ export default function App() {
       console.error('Logout failed:', error.message);
     }
     setUser(null);
+    setUnlockedBadgeIds([]);
     setView('landing');
+  };
+
+  const evaluateBadges = (quizId: string, scorePct: number) => {
+    const newlyUnlocked: Badge[] = [];
+
+    BADGES.forEach(badge => {
+      if (unlockedBadgeIds.includes(badge.id)) return; // Already unlocked
+
+      let unlocked = false;
+
+      // First quiz
+      if (badge.id === 'first_blood') {
+        unlocked = true; 
+      }
+      
+      // Perfect score
+      if (badge.id === 'perfect_score' && scorePct === 100) {
+        unlocked = true;
+      }
+
+      // Universe completion badges
+      if (badge.targetQuiz) {
+        const titleLower = quizId.toLowerCase();
+        if (titleLower.includes(badge.targetQuiz.replace('-', ' '))) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'harry-potter' && titleLower.includes('harry potter')) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'twilight' && (titleLower.includes('twilight') || titleLower.includes('eclipse') || titleLower.includes('new moon') || titleLower.includes('breaking dawn') || titleLower.includes('midnight sun') || titleLower.includes('life and death'))) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'three-body' && (titleLower.includes('three-body') || titleLower.includes('dark forest') || titleLower.includes('death\'s end'))) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'zootopia' && titleLower.includes('zootopia')) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'kpop' && titleLower.includes('k-pop')) {
+          unlocked = true;
+        }
+      }
+
+      if (unlocked) {
+        newlyUnlocked.push(badge);
+      }
+    });
+
+    if (newlyUnlocked.length > 0) {
+      setUnlockedBadgeIds(prev => [...prev, ...newlyUnlocked.map(b => b.id)]);
+      
+      // Add newly unlocked badges to the queue
+      setBadgeQueue(prev => [...prev, ...newlyUnlocked]);
+    }
   };
 
   return (
@@ -1698,10 +1958,25 @@ export default function App() {
         onLogout={handleLogout}
         onResetUsername={() => setShowUsernameModal(true)}
         onShowHistory={() => setShowHistoryModal(true)}
+        onShowBadges={() => setShowBadgesModal(true)}
       />
+
+      <AnimatePresence>
+        {badgeQueue.length > 0 && (
+          <BadgeNotification 
+            key={badgeQueue[0].id}
+            badge={badgeQueue[0]} 
+            onClose={() => setBadgeQueue(prev => prev.slice(1))} 
+          />
+        )}
+      </AnimatePresence>
 
       {showHistoryModal && user && (
         <HistoryModal user={user} onClose={() => setShowHistoryModal(false)} />
+      )}
+
+      {showBadgesModal && (
+        <BadgesModal unlockedBadgeIds={unlockedBadgeIds} onClose={() => setShowBadgesModal(false)} />
       )}
 
       <AnimatePresence mode="wait">
@@ -1715,74 +1990,74 @@ export default function App() {
             { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Your instincts are sharp and your beats are lethal.' } },
             { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have potential, but the demons are still faster.' } },
             { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Keep practicing your moves before entering the supernatural zone.' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-twilight-select' ? (
           <TwilightBookSelector key="twilight-select" setView={setView} />
         ) : view === 'trivia-twilight-mc' ? (
-          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-twilight-book' ? (
-          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-newmoon' ? (
-          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-eclipse' ? (
-          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-breakingdawn' ? (
-          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-midnightsun' ? (
-          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-lifeanddeath' ? (
-          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-twilight-random' ? (
-          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} user={user} />
+          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter' ? (
           <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-cos' ? (
           <MCQuizView key="trivia-harry-potter-cos" setView={setView} questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-poa' ? (
           <MCQuizView key={`trivia-harry-potter-poa-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_POA_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Prisoner of Azkaban" scoreLabel="Harry Potter: Prisoner of Azkaban" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-gof' ? (
           <MCQuizView key={`trivia-harry-potter-gof-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_GOF_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Goblet of Fire" scoreLabel="Harry Potter: Goblet of Fire" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-ootp' ? (
           <MCQuizView key={`trivia-harry-potter-ootp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_OOTP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Order of the Phoenix" scoreLabel="Harry Potter: Order of the Phoenix" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-hbp' ? (
           <MCQuizView key={`trivia-harry-potter-hbp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_HBP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Half-Blood Prince" scoreLabel="Harry Potter: Half-Blood Prince" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-dh' ? (
           <MCQuizView key={`trivia-harry-potter-dh-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Deathly Hallows" scoreLabel="Harry Potter: Deathly Hallows" grades={[
             { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-harry-potter-select' ? (
           <HPBookSelector key="hp-select" setView={setView} />
         ) : view === 'trivia-harry-potter-random' ? (
@@ -1791,25 +2066,25 @@ export default function App() {
             { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
             { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
             { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} />
+          ]} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-three-body-select' ? (
           <ThreeBodyBookSelector key="three-body-select" setView={setView} />
         ) : view === 'trivia-three-body-problem' ? (
-          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} />
+          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-the-dark-forest' ? (
-          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} />
+          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-deaths-end' ? (
-          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} />
+          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-three-body-random' ? (
-          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} user={user} />
+          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-zootopia-select' ? (
           <ZootopiaSelector key="zootopia-select" setView={setView} />
         ) : view === 'trivia-zootopia' ? (
-          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} />
+          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-zootopia-2' ? (
-          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} />
+          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-zootopia-random' ? (
-          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} user={user} />
+          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : (
           <DashboardView key="dashboard" />
         )}

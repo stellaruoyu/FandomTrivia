@@ -13,6 +13,75 @@ export const DASHBOARD_NAV_LINKS = [
   { name: 'Marketplace', href: '#' },
 ];
 
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  // We'll evaluate conditions dynamically, so we can use a string identifying the requirement type
+  targetQuiz?: string;
+  targetScore?: number;
+  isUniverseCompletion?: boolean; 
+}
+
+export const BADGES: Badge[] = [
+  {
+    id: 'first_blood',
+    name: 'First Blood',
+    description: 'Complete your first quiz.',
+    icon: 'Droplets',
+    color: 'text-red-400'
+  },
+  {
+    id: 'perfect_score',
+    name: 'Perfectionist',
+    description: 'Get a 100% perfect score on any quiz.',
+    icon: 'Star',
+    color: 'text-amber-400'
+  },
+  {
+    id: 'twilight_fan',
+    name: 'Forks Resident',
+    description: 'Complete any Twilight universe quiz.',
+    icon: 'Droplets', // Or moon/apple depending on what's available
+    color: 'text-slate-300',
+    targetQuiz: 'twilight'
+  },
+  {
+    id: 'potter_head',
+    name: 'Hogwarts Student',
+    description: 'Complete any Harry Potter universe quiz.',
+    icon: 'Wand2',
+    color: 'text-amber-500',
+    targetQuiz: 'harry-potter'
+  },
+  {
+    id: 'kpop_stan',
+    name: 'Demon Hunter',
+    description: 'Complete the K-Pop Demon Hunters quiz.',
+    icon: 'Zap',
+    color: 'text-purple-400',
+    targetQuiz: 'kpop'
+  },
+  {
+    id: 'three_body_expert',
+    name: 'Wallfacer',
+    description: 'Complete any Three-Body Problem quiz.',
+    icon: 'Globe',
+    color: 'text-indigo-400',
+    targetQuiz: 'three-body'
+  },
+  {
+    id: 'zootopia_cop',
+    name: 'ZPD Officer',
+    description: 'Complete any Zootopia quiz.',
+    icon: 'Search',
+    color: 'text-green-400',
+    targetQuiz: 'zootopia'
+  }
+];
+
 export const UNIVERSES = [
   {
     id: 'twilight',
