@@ -1875,7 +1875,7 @@ export default function App() {
     };
 
     loadPastBadges();
-  }, [user]);
+  }, [user?.id]);
 
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
