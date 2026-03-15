@@ -127,9 +127,30 @@ const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[]
             <Star className="size-6 text-amber-400 fill-amber-400" />
             <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Your Badges</h3>
           </div>
-          <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
-            <X className="size-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={async () => {
+                const text = `I've unlocked ${unlockedBadgeIds.length} badges on FandomTrivia! Can you beat my score?`;
+                try {
+                  if (navigator.share) {
+                    await navigator.share({ title: 'My FandomTrivia Badges', text, url: window.location.href });
+                  } else if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(`${text} ${window.location.href}`);
+                    alert('Copied to clipboard!');
+                  }
+                } catch (e) {
+                  console.error('Share failed', e);
+                }
+              }}
+              className="size-8 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-full flex items-center justify-center transition-all cursor-pointer text-slate-300"
+              title="Share Badges"
+            >
+              <Share2 className="size-4" />
+            </button>
+            <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+              <X className="size-4" />
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto pr-2">
@@ -368,17 +389,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
               <span className="text-xs font-black">2,450 XP</span>
             </div>
           )}
-          
           {/* Always show badges button if callback is provided, even if logged out */}
-          {onShowBadges && (
-            <button
-              onClick={onShowBadges}
-              className="flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/20 px-4 py-2 rounded-lg font-bold text-sm transition-all"
-            >
-              <Star className="size-4 fill-amber-500" />
-              <span className="hidden sm:inline">My Badges</span>
-            </button>
-          )}
 
           {user ? (
             <div className="relative" ref={menuRef}>
@@ -417,6 +428,15 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
                         >
                           <BookOpen className="size-4 text-emerald-400" />
                           Quiz History
+                        </button>
+                      )}
+                      {onShowBadges && (
+                        <button
+                          onClick={() => { onShowBadges(); setShowAccountMenu(false); }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all"
+                        >
+                          <Star className="size-4 text-amber-400 fill-amber-400" />
+                          My Badges
                         </button>
                       )}
                       {onResetUsername && (
