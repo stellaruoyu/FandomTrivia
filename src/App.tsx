@@ -496,12 +496,19 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
         </p>
         <div className="flex items-center gap-4">
           <button 
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({ title: 'FandomTrivia', url: window.location.href });
-              } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Copied link to clipboard!');
+            type="button"
+            onClick={async () => {
+              try {
+                if (navigator.share) {
+                  await navigator.share({ title: 'FandomTrivia', url: window.location.href });
+                } else if (navigator.clipboard) {
+                  await navigator.clipboard.writeText(window.location.href);
+                  alert('Copied link to clipboard!');
+                } else {
+                  alert('Sharing is not supported on this browser.');
+                }
+              } catch (e) {
+                console.error("Share failed", e);
               }
             }} 
             className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all cursor-pointer"
@@ -510,7 +517,7 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
           </button>
           <div className="relative size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all overflow-hidden cursor-pointer group">
             <Globe className="size-5 group-hover:scale-110 transition-transform" />
-            <div className="absolute inset-0 opacity-0 overflow-hidden" id="google_translate_element" style={{ transform: 'scale(10)', transformOrigin: 'top left' }}></div>
+            <div className="absolute inset-0 opacity-0 overflow-hidden flex items-center justify-center" id="google_translate_element"></div>
           </div>
           {isDashboard && (
             <a href="#" className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all">
@@ -566,7 +573,7 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
       </div>
     </div>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-bold uppercase tracking-widest`}>
-      <p>© 2024 {isDashboard ? 'PROHUB ESPORTS INC. ALL RIGHTS RESERVED.' : 'FANDOM TRIVIA INC. ALL RIGHTS RESERVED.'}</p>
+      <p>© 2026 {isDashboard ? 'PROHUB ESPORTS INC. ALL RIGHTS RESERVED.' : 'FANDOM TRIVIA INC. ALL RIGHTS RESERVED.'}</p>
       <p>CRAFTED WITH <span className="text-primary">♥</span> FOR FANS EVERYWHERE.</p>
     </div>
   </footer>

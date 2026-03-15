@@ -29,10 +29,13 @@ body {
   background-color: transparent !important;
   border: none !important;
   padding: 0 !important;
+  margin: 0 !important;
   font-size: 0 !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
+  display: block !important;
+  width: 40px !important;
+  height: 40px !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
 }
 .goog-te-gadget-simple > span {
   display: none !important;
