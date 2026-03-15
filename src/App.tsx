@@ -1299,10 +1299,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
             <h3 className="text-3xl font-extrabold text-white">Choose Your Universe</h3>
             <p className="text-slate-400 font-medium">Select a category to begin your journey into fandom trivia.</p>
           </div>
-          <a href="#" className="hidden sm:flex items-center gap-2 text-primary font-bold hover:underline">
-            View All Categories
-            <ArrowRight className="size-5" />
-          </a>
+
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {UNIVERSES.map((universe, i) => (
