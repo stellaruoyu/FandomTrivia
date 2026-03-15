@@ -455,8 +455,31 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
   );
 };
 
+const InfoModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
+    >
+      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+        <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{title}</h3>
+        <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+          <X className="size-4" />
+        </button>
+      </div>
+      <div className="flex-1 overflow-y-auto space-y-4 pr-2 text-slate-300 text-sm leading-relaxed whitespace-pre-line">
+        {content}
+      </div>
+    </motion.div>
+  </div>
+);
 
-const Footer = ({ isDashboard, setView }: { isDashboard: boolean, setView: (v: ViewType) => void }) => (
+const Footer = ({ isDashboard, setView, onShowInfo }: { 
+  isDashboard: boolean, 
+  setView: (v: ViewType) => void,
+  onShowInfo: (title: string, content: string) => void
+}) => (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto grid grid-cols-1 md:grid-cols-4 gap-12`}>
       <div className="col-span-1 md:col-span-2 space-y-6">
@@ -472,12 +495,23 @@ const Footer = ({ isDashboard, setView }: { isDashboard: boolean, setView: (v: V
           The premier destination for fandom enthusiasts. Competitive trivia for the stories you love most.
         </p>
         <div className="flex items-center gap-4">
-          <a href="#" className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all">
+          <button 
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: 'FandomTrivia', url: window.location.href });
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Copied link to clipboard!');
+              }
+            }} 
+            className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all cursor-pointer"
+          >
             <Share2 className="size-5" />
-          </a>
-          <a href="#" className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all">
-            <Globe className="size-5" />
-          </a>
+          </button>
+          <div className="relative size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all overflow-hidden cursor-pointer group">
+            <Globe className="size-5 group-hover:scale-110 transition-transform" />
+            <div className="absolute inset-0 opacity-0 overflow-hidden" id="google_translate_element" style={{ transform: 'scale(10)', transformOrigin: 'top left' }}></div>
+          </div>
           {isDashboard && (
             <a href="#" className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all">
               <MessageSquare className="size-5" />
@@ -500,10 +534,10 @@ const Footer = ({ isDashboard, setView }: { isDashboard: boolean, setView: (v: V
             </>
           ) : (
             <>
-              <li><a href="#" className="hover:text-primary transition-colors">How it works</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100); }} className="hover:text-primary transition-colors">How it works</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setView('rankings'); }} className="hover:text-primary transition-colors">Leaderboards</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Rewards</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
             </>
           )}
         </ul>
@@ -523,17 +557,17 @@ const Footer = ({ isDashboard, setView }: { isDashboard: boolean, setView: (v: V
             </>
           ) : (
             <>
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Privacy Policy', 'Your privacy is important to us. We do not share your data. This is a placeholder for the full privacy policy.'); }} className="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Terms of Service', 'By using FandomTrivia, you agree to our terms. Play fair and respect other players.'); }} className="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Cookie Policy', 'We use cookies to improve your experience and track your session state for quizzes.'); }} className="hover:text-primary transition-colors">Cookie Policy</a></li>
             </>
           )}
         </ul>
       </div>
     </div>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-bold uppercase tracking-widest`}>
-      <p>© 2024 {isDashboard ? 'PROHUB ESPORTS INC.' : 'Fandom Trivia Inc. All rights reserved.'}</p>
-      <p>Crafted with <span className="text-primary">♥</span> for fans everywhere.</p>
+      <p>© 2024 {isDashboard ? 'PROHUB ESPORTS INC. ALL RIGHTS RESERVED.' : 'FANDOM TRIVIA INC. ALL RIGHTS RESERVED.'}</p>
+      <p>CRAFTED WITH <span className="text-primary">♥</span> FOR FANS EVERYWHERE.</p>
     </div>
   </footer>
 );
@@ -1738,6 +1772,7 @@ export default function App() {
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
+  const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
 
@@ -2098,8 +2133,22 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {modalInfo && (
+          <InfoModal
+            title={modalInfo.title}
+            content={modalInfo.content}
+            onClose={() => setModalInfo(null)}
+          />
+        )}
+      </AnimatePresence>
+
       <FeedbackWidget user={user} />
-      <Footer isDashboard={view === 'dashboard'} setView={setView} />
+      <Footer 
+        isDashboard={view === 'dashboard'} 
+        setView={setView} 
+        onShowInfo={(title, content) => setModalInfo({title, content})} 
+      />
     </div>
   );
 }

@@ -15,6 +15,43 @@
   }
 }
 
+/* Google Translate Customization */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-te-gadget-icon {
+  display: none !important;
+}
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.goog-te-gadget-simple > span {
+  display: none !important;
+}
+.goog-te-menu-value {
+  color: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  font-size: 0 !important;
+}
+.goog-te-menu-value span {
+  display: none !important;
+}
+.goog-te-menu-frame {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 8px !important;
+}
+
 .glass-nav {
   background: rgba(11, 11, 11, 0.8);
   backdrop-filter: blur(12px);
