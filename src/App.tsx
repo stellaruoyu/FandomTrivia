@@ -498,6 +498,65 @@ const InfoModal = ({ title, content, onClose }: { title: string, content: string
   </div>
 );
 
+const LegalPage = ({ title, children, setView }: { title: string, children: React.ReactNode, setView: (v: ViewType) => void }) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 min-h-screen">
+    <div className="max-w-3xl mx-auto space-y-8">
+      <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+        <ArrowLeft className="size-4" /> Back to Home
+      </button>
+      <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase italic">{title}</h2>
+      <div className="bg-white/5 border border-white/10 p-8 rounded-3xl space-y-6 text-slate-300 text-sm leading-relaxed doc-content">
+        {children}
+      </div>
+    </div>
+  </motion.div>
+);
+
+const PrivacyPolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <LegalPage title="Privacy Policy" setView={setView}>
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">1. Information We Collect</h3>
+    <p>We collect information you provide directly to us when you create an account, update your profile, participate in quizzes, or communicate with us. This may include your username, email address, profile picture, and quiz performance data.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">2. How We Use Your Information</h3>
+    <p>We use the information we collect to provide, maintain, and improve our services. This includes calculating leaderboard rankings, awarding badges, and personalizing your experience on FandomTrivia.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">3. Data Security</h3>
+    <p>We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access. However, no data transmission over the internet or information storage technology can be guaranteed to be 100% secure.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">4. Contact Us</h3>
+    <p>If you have any questions about this Privacy Policy, please contact us at privacy@fandomtrivia.com.</p>
+  </LegalPage>
+);
+
+const TermsOfServiceView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <LegalPage title="Terms of Service" setView={setView}>
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">1. Acceptance of Terms</h3>
+    <p>By accessing or using FandomTrivia, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">2. User Conduct</h3>
+    <p>You agree not to use the service for any unlawful purpose or in any way that interrupts, damages, or impairs the service. Cheating, exploiting bugs, or using automated scripts to complete quizzes is strictly prohibited and will result in account termination.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">3. Intellectual Property</h3>
+    <p>All trivia content is created by fans and relates to publicly available franchises. We do not claim ownership over the underlying characters or universes, which remain the property of their respective creators and copyright holders.</p>
+
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">4. Modifications to Service</h3>
+    <p>We reserve the right to modify or discontinue, temporarily or permanently, the service with or without notice.</p>
+  </LegalPage>
+);
+
+const CookiePolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+  <LegalPage title="Cookie Policy" setView={setView}>
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">1. What Are Cookies</h3>
+    <p>Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide a better user experience.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">2. How We Use Cookies</h3>
+    <p>We use essential cookies to maintain your session, keep you logged in, and securely track your quiz progress. Without these cookies, the core functionality of FandomTrivia would not work properly.</p>
+    
+    <h3 className="text-xl font-bold text-white mt-8 mb-4">3. Managing Cookies</h3>
+    <p>Most web browsers allow you to control cookies through their settings preferences. However, if you limit the ability of websites to set cookies, you may worsen your overall user experience and lose the ability to access certain features of FandomTrivia.</p>
+  </LegalPage>
+);
+
 const Footer = ({ isDashboard, setView, onShowInfo }: { 
   isDashboard: boolean, 
   setView: (v: ViewType) => void,
@@ -587,9 +646,9 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
             </>
           ) : (
             <>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Privacy Policy', 'Your privacy is important to us. We do not share your data. This is a placeholder for the full privacy policy.'); }} className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Terms of Service', 'By using FandomTrivia, you agree to our terms. Play fair and respect other players.'); }} className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Cookie Policy', 'We use cookies to improve your experience and track your session state for quizzes.'); }} className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('privacy-policy'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('terms-of-service'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('cookie-policy'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Cookie Policy</a></li>
             </>
           )}
         </ul>
@@ -604,7 +663,7 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
 
 // --- Views ---
 
-type ViewType = 'landing' | 'dashboard' | 'rankings' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random';
+type ViewType = 'landing' | 'dashboard' | 'rankings' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random' | 'privacy-policy' | 'terms-of-service' | 'cookie-policy';
 
 
 // --- Twilight Book Selector ---
@@ -2147,6 +2206,12 @@ export default function App() {
           <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
         ) : view === 'trivia-zootopia-random' ? (
           <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
+        ) : view === 'privacy-policy' ? (
+          <PrivacyPolicyView key="privacy-policy" setView={setView} />
+        ) : view === 'terms-of-service' ? (
+          <TermsOfServiceView key="terms-of-service" setView={setView} />
+        ) : view === 'cookie-policy' ? (
+          <CookiePolicyView key="cookie-policy" setView={setView} />
         ) : (
           <DashboardView key="dashboard" />
         )}
