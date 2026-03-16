@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
@@ -326,9 +328,8 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo }: {
+const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo }: {
   isDashboard: boolean,
-  setView: (v: ViewType) => void,
   user: User | null,
   onLogin: () => void,
   onLogout: () => void,
@@ -339,6 +340,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -355,7 +357,7 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
       <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
         <div
           className="flex items-center gap-3 group cursor-pointer"
-          onClick={() => setView('landing')}
+          onClick={() => navigate('/')}
         >
           <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(127,19,236,0.5)]">
             <Zap className="size-6 fill-current" />
@@ -372,10 +374,10 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
               href={link.href}
               onClick={(e) => {
                 e.preventDefault();
-                if (link.name === 'Home') setView('landing');
-                else if (link.name === 'Leaderboards') setView('rankings');
+                if (link.name === 'Home') navigate('/');
+                else if (link.name === 'Leaderboards') navigate('/rankings');
                 else if (link.name === 'Categories') {
-                  setView('landing');
+                  navigate('/');
                   setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100);
                 }
               }}
@@ -499,10 +501,16 @@ const InfoModal = ({ title, content, onClose }: { title: string, content: string
   </div>
 );
 
-const LegalPage = ({ title, children, setView }: { title: string, children: React.ReactNode, setView: (v: ViewType) => void }) => (
-  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 min-h-screen">
+const LegalPage = ({ title, children }: { title: string, children: React.ReactNode }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 max-w-2xl mx-auto space-y-10">
+      <Helmet>
+        <title>{title} | Fandom Trivia</title>
+        <meta name="description" content={`Read our ${title} to understand your rights and our policies at Fandom Trivia.`} />
+      </Helmet>
     <div className="max-w-3xl mx-auto space-y-8">
-      <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+      <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
         <ArrowLeft className="size-4" /> Back to Home
       </button>
       <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase italic">{title}</h2>
@@ -511,10 +519,11 @@ const LegalPage = ({ title, children, setView }: { title: string, children: Reac
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
-const PrivacyPolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
-  <LegalPage title="Privacy Policy" setView={setView}>
+const PrivacyPolicyView = ({ key }: { key?: string }) => (
+  <LegalPage title="Privacy Policy">
     <h3 className="text-xl font-bold text-white mt-8 mb-4">1. Information We Collect</h3>
     <p>We collect information you provide directly to us when you create an account, update your profile, participate in quizzes, or communicate with us. This may include your username, email address, profile picture, and quiz performance data.</p>
     
@@ -529,8 +538,8 @@ const PrivacyPolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: 
   </LegalPage>
 );
 
-const TermsOfServiceView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
-  <LegalPage title="Terms of Service" setView={setView}>
+const TermsOfServiceView = ({ key }: { key?: string }) => (
+  <LegalPage title="Terms of Service">
     <h3 className="text-xl font-bold text-white mt-8 mb-4">1. Acceptance of Terms</h3>
     <p>By accessing or using FandomTrivia, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.</p>
     
@@ -545,8 +554,8 @@ const TermsOfServiceView = ({ setView }: { setView: (v: ViewType) => void, key?:
   </LegalPage>
 );
 
-const CookiePolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
-  <LegalPage title="Cookie Policy" setView={setView}>
+const CookiePolicyView = ({ key }: { key?: string }) => (
+  <LegalPage title="Cookie Policy">
     <h3 className="text-xl font-bold text-white mt-8 mb-4">1. What Are Cookies</h3>
     <p>Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide a better user experience.</p>
     
@@ -558,11 +567,12 @@ const CookiePolicyView = ({ setView }: { setView: (v: ViewType) => void, key?: s
   </LegalPage>
 );
 
-const Footer = ({ isDashboard, setView, onShowInfo }: { 
+const Footer = ({ isDashboard, onShowInfo }: { 
   isDashboard: boolean, 
-  setView: (v: ViewType) => void,
   onShowInfo: (title: string, content: string) => void
-}) => (
+}) => {
+  const navigate = useNavigate();
+  return (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto grid grid-cols-1 md:grid-cols-4 gap-12`}>
       <div className="col-span-1 md:col-span-2 space-y-6">
@@ -625,8 +635,8 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
           ) : (
             <>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', 'Select a universe, test your fan knowledge with our detailed trivia questions, earn points, and unlock exclusive badges to prove you are the ultimate fan!'); }} className="hover:text-primary transition-colors">How it works</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('rankings'); }} className="hover:text-primary transition-colors">Leaderboards</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
+              <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
             </>
           )}
@@ -647,9 +657,9 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
             </>
           ) : (
             <>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('privacy-policy'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('terms-of-service'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('cookie-policy'); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><Link to="/privacy-policy" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/cookie-policy" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover:text-primary transition-colors">Cookie Policy</Link></li>
             </>
           )}
         </ul>
@@ -660,12 +670,11 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
       <p>CRAFTED WITH <span className="text-primary">♥</span> FOR FANS EVERYWHERE.</p>
     </div>
   </footer>
-);
+  );
+};
 
 // --- Views ---
-
-type ViewType = 'landing' | 'dashboard' | 'rankings' | 'trivia-twilight-mc' | 'trivia-twilight-select' | 'trivia-twilight-book' | 'trivia-newmoon' | 'trivia-eclipse' | 'trivia-breakingdawn' | 'trivia-midnightsun' | 'trivia-lifeanddeath' | 'trivia-twilight-random' | 'trivia-kpop' | 'trivia-harry-potter' | 'trivia-harry-potter-cos' | 'trivia-harry-potter-poa' | 'trivia-harry-potter-gof' | 'trivia-harry-potter-ootp' | 'trivia-harry-potter-hbp' | 'trivia-harry-potter-dh' | 'trivia-harry-potter-select' | 'trivia-harry-potter-random' | 'trivia-three-body-select' | 'trivia-three-body-problem' | 'trivia-the-dark-forest' | 'trivia-deaths-end' | 'trivia-three-body-random' | 'trivia-zootopia-select' | 'trivia-zootopia' | 'trivia-zootopia-2' | 'trivia-zootopia-random' | 'privacy-policy' | 'terms-of-service' | 'cookie-policy';
-
+// Removed ViewType since we are using React Router now
 
 // --- Twilight Book Selector ---
 
@@ -676,31 +685,37 @@ const TWILIGHT_GRADES = [
   { threshold: 0, label: 'Just Arrived in Forks', color: 'text-slate-400', character: { name: 'Charlie Swan', image: '/images/Cullen Family.jpg', desc: 'You have no idea what is going on out there in the woods.' } },
 ];
 
-const TwilightBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+const TwilightBookSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
       <div className="text-center space-y-3">
-        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-200">Volume</span></h2>
+        <Helmet>
+          <title>Twilight Trivia | Choose Your Book</title>
+          <meta name="description" content="Select from Twilight, New Moon, Eclipse, Breaking Dawn, and more. Prove your Cullen-level expertise." />
+        </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
-          { label: "Book 1", title: "Twilight", desc: `${TWILIGHT_BOOK_TRIVIA.length} questions`, icon: "🍎", view: 'trivia-twilight-book' as ViewType, gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Book 2", title: "New Moon", desc: `${NEW_MOON_TRIVIA.length} questions`, icon: "🌑", view: 'trivia-newmoon' as ViewType, gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 3", title: "Eclipse", desc: `${ECLIPSE_TRIVIA.length} questions`, icon: "🌘", view: 'trivia-eclipse' as ViewType, gradient: 'from-indigo-600/20 to-violet-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Book 4", title: "Breaking Dawn", desc: `${BREAKING_DAWN_TRIVIA.length} questions`, icon: "🌅", view: 'trivia-breakingdawn' as ViewType, gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-          { label: "Companion", title: "Midnight Sun", desc: `${MIDNIGHT_SUN_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-midnightsun' as ViewType, gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-          { label: "Companion", title: "Life and Death", desc: `${LIFE_AND_DEATH_TRIVIA.length} questions`, icon: "🔄", view: 'trivia-lifeanddeath' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random from all books", icon: "🎲", view: 'trivia-twilight-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "Twilight", desc: `${TWILIGHT_BOOK_TRIVIA.length} questions`, icon: "🍎", view: 'trivia-twilight-book', gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 2", title: "New Moon", desc: `${NEW_MOON_TRIVIA.length} questions`, icon: "🌑", view: 'trivia-newmoon', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 3", title: "Eclipse", desc: `${ECLIPSE_TRIVIA.length} questions`, icon: "🌘", view: 'trivia-eclipse', gradient: 'from-indigo-600/20 to-violet-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Book 4", title: "Breaking Dawn", desc: `${BREAKING_DAWN_TRIVIA.length} questions`, icon: "🌅", view: 'trivia-breakingdawn', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+          { label: "Companion", title: "Midnight Sun", desc: `${MIDNIGHT_SUN_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-midnightsun', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Companion", title: "Life and Death", desc: `${LIFE_AND_DEATH_TRIVIA.length} questions`, icon: "🔄", view: 'trivia-lifeanddeath', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random from all books", icon: "🎲", view: 'trivia-twilight-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.title}
             whileHover={{ scale: 1.03, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setView(book.view)}
+            onClick={() => navigate(`/${book.view}`)}
             className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
           >
             <div className="text-4xl">{book.icon}</div>
@@ -717,36 +732,43 @@ const TwilightBookSelector = ({ setView }: { setView: (v: ViewType) => void, key
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
 // --- Harry Potter Book Selector ---
 
-const HPBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+const HPBookSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
       <div className="text-center space-y-3">
-        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h2>
+        <Helmet>
+          <title>Harry Potter Trivia | Choose Your Book</title>
+          <meta name="description" content="From Sorcerer's Stone to Deathly Hallows. Test your Harry Potter knowledge and earn your wizarding badges." />
+        </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from both!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
-          { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1–6", icon: "⚡", view: 'trivia-harry-potter' as ViewType, gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1–6", icon: "🐍", view: 'trivia-harry-potter-cos' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Book 3", title: "Prisoner of Azkaban", desc: "20 random questions", icon: "🐺", view: 'trivia-harry-potter-poa' as ViewType, gradient: 'from-slate-600/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
-          { label: "Book 4", title: "Goblet of Fire", desc: "20 random questions", icon: "🏆", view: 'trivia-harry-potter-gof' as ViewType, gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Book 5", title: "Order of the Phoenix", desc: "20 random questions", icon: "📜", view: 'trivia-harry-potter-ootp' as ViewType, gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-          { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "🧪", view: 'trivia-harry-potter-hbp' as ViewType, gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
-          { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "⏃", view: 'trivia-harry-potter-dh' as ViewType, gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "🎲", view: 'trivia-harry-potter-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1–6", icon: "⚡", view: 'trivia-harry-potter', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1–6", icon: "🐍", view: 'trivia-harry-potter-cos', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Book 3", title: "Prisoner of Azkaban", desc: "20 random questions", icon: "🐺", view: 'trivia-harry-potter-poa', gradient: 'from-slate-600/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
+          { label: "Book 4", title: "Goblet of Fire", desc: "20 random questions", icon: "🏆", view: 'trivia-harry-potter-gof', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 5", title: "Order of the Phoenix", desc: "20 random questions", icon: "📜", view: 'trivia-harry-potter-ootp', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "🧪", view: 'trivia-harry-potter-hbp', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+          { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "⏃", view: 'trivia-harry-potter-dh', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "🎲", view: 'trivia-harry-potter-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
             whileHover={{ scale: 1.03, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setView(book.view)}
+            onClick={() => navigate(`/${book.view}`)}
             className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
           >
             <div className="text-4xl">{book.icon}</div>
@@ -763,7 +785,8 @@ const HPBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: str
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
 // --- Three-Body Problem Book Selector ---
 
@@ -774,28 +797,34 @@ const THREE_BODY_GRADES = [
   { threshold: 0, label: 'Bug', color: 'text-slate-400', character: { name: 'Da Shi', image: '/images/threebody.jpg', desc: 'You may be a bug to them, but bugs have never been truly defeated.' } },
 ];
 
-const ThreeBodyBookSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+const ThreeBodyBookSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
       <div className="text-center space-y-3">
-        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-200">Era</span></h2>
+        <Helmet>
+          <title>Three-Body Problem Trivia | Choose Your Era</title>
+          <meta name="description" content="Test your knowledge of the Trisolaran crisis. From the Red Coast to Death's End." />
+        </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: "Book 1", title: "The Three-Body Problem", desc: `${THREE_BODY_PROBLEM_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-three-body-problem' as ViewType, gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 2", title: "The Dark Forest", desc: `${THE_DARK_FOREST_TRIVIA.length} questions`, icon: "🌲", view: 'trivia-the-dark-forest' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Book 3", title: "Death's End", desc: `${DEATHS_END_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-deaths-end' as ViewType, gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 3 books", icon: "🎲", view: 'trivia-three-body-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "The Three-Body Problem", desc: `${THREE_BODY_PROBLEM_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-three-body-problem', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "The Dark Forest", desc: `${THE_DARK_FOREST_TRIVIA.length} questions`, icon: "🌲", view: 'trivia-the-dark-forest', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Book 3", title: "Death's End", desc: `${DEATHS_END_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-deaths-end', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 3 books", icon: "🎲", view: 'trivia-three-body-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
             whileHover={{ scale: 1.03, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setView(book.view)}
+            onClick={() => navigate(`/${book.view}`)}
             className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
           >
             <div className="text-4xl">{book.icon}</div>
@@ -812,7 +841,8 @@ const ThreeBodyBookSelector = ({ setView }: { setView: (v: ViewType) => void, ke
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
 // --- Zootopia Movie Selector ---
 
@@ -823,27 +853,33 @@ const ZOOTOPIA_GRADES = [
   { threshold: 0, label: 'DMV Sloth', color: 'text-slate-400', character: { name: 'Flash Slothmore', image: '/images/zootopia.jpg', desc: 'You... might... need... more... time...' } },
 ];
 
-const ZootopiaSelector = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+const ZootopiaSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
       <div className="text-center space-y-3">
-        <button onClick={() => setView('landing')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">Investigation</span></h2>
+        <Helmet>
+          <title>Zootopia Trivia | Choose Your Case</title>
+          <meta name="description" content="Solve cases from Zootopia and Zootopia 2. Test your knowledge of the city where anyone can be anything." />
+        </Helmet>
         <p className="text-slate-400 font-medium">Select a movie case file or test your luck with a random mix!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Case 1", title: "Zootopia", desc: `${ZOOTOPIA_TRIVIA.length} questions`, icon: "🐰", view: 'trivia-zootopia' as ViewType, gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Case 2", title: "Zootopia 2", desc: `${ZOOTOPIA_2_TRIVIA.length} questions`, icon: "🐍", view: 'trivia-zootopia-2' as ViewType, gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Random", title: "Mixed Case File", desc: "15 random questions from both", icon: "🎲", view: 'trivia-zootopia-random' as ViewType, gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Case 1", title: "Zootopia", desc: `${ZOOTOPIA_TRIVIA.length} questions`, icon: "🐰", view: 'trivia-zootopia', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Case 2", title: "Zootopia 2", desc: `${ZOOTOPIA_2_TRIVIA.length} questions`, icon: "🐍", view: 'trivia-zootopia-2', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Case File", desc: "15 random questions from both", icon: "🎲", view: 'trivia-zootopia-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(movie => (
           <motion.button
             key={movie.label}
             whileHover={{ scale: 1.03, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setView(movie.view)}
+            onClick={() => navigate(`/${movie.view}`)}
             className={`text-left p-6 rounded-2xl bg-gradient-to-br ${movie.gradient} border ${movie.border} transition-all duration-300 space-y-4 group`}
           >
             <div className="text-4xl">{movie.icon}</div>
@@ -860,7 +896,8 @@ const ZootopiaSelector = ({ setView }: { setView: (v: ViewType) => void, key?: s
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
 // --- Multiple Choice Quiz View (Generic) ---
 
@@ -930,8 +967,7 @@ const playIncorrectSound = () => {
   }
 };
 
-const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQuizComplete }: {
-  setView: (v: ViewType) => void,
+const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete }: {
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
@@ -947,6 +983,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQui
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const navigate = useNavigate();
   const q = questions[currentQ];
   const total = questions.length;
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
@@ -1025,6 +1062,10 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQui
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
+        <Helmet>
+          <title>{title} Quiz Complete | Fandom Trivia</title>
+          <meta name="description" content={`You've completed the ${title} quiz! See your score and common rank in Fandom Trivia.`} />
+        </Helmet>
         <ParticleCanvas mode="celebration" colors={
           title.toLowerCase().includes('twilight') ? ['rgba(148,197,233,', 'rgba(200,220,240,', 'rgba(180,200,220,', 'rgba(255,255,255,', 'rgba(100,150,200,']
             : title.toLowerCase().includes('k-pop') ? ['rgba(255,0,200,', 'rgba(180,0,255,', 'rgba(255,100,200,', 'rgba(0,255,200,', 'rgba(255,255,255,']
@@ -1089,7 +1130,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQui
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <button onClick={handleRestart} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30"><RotateCcw className="size-4" /> Play Again</button>
-            <button onClick={() => setView('landing')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"><ArrowLeft className="size-4" /> Back to Home</button>
+            <button onClick={() => navigate('/')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"><ArrowLeft className="size-4" /> Back to Home</button>
           </div>
         </div>
       </motion.div>
@@ -1102,7 +1143,7 @@ const MCQuizView = ({ setView, questions, title, scoreLabel, grades, user, onQui
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => setView('landing')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+            <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
               <ArrowLeft className="size-4" />
             </button>
             <div>
@@ -1326,7 +1367,9 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
   );
 };
 
-const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => (
+const LandingView = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -1381,7 +1424,7 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
               <PlayCircle className="size-6" />
               Start Quiz Now
             </button>
-            <button onClick={() => setView('rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+            <button onClick={() => navigate('/rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
               View Rankings
             </button>
           </motion.div>
@@ -1457,11 +1500,11 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (universe.id === 'twilight') setView('trivia-twilight-select');
-                    if (universe.id === 'kpop') setView('trivia-kpop');
-                    if (universe.id === 'harry-potter') setView('trivia-harry-potter-select');
-                    if (universe.id === 'three-body') setView('trivia-three-body-select');
-                    if (universe.id === 'zootopia') setView('trivia-zootopia-select');
+                    if (universe.id === 'twilight') navigate('/trivia-twilight-select');
+                    if (universe.id === 'kpop') navigate('/trivia-kpop');
+                    if (universe.id === 'harry-potter') navigate('/trivia-harry-potter-select');
+                    if (universe.id === 'three-body') navigate('/trivia-three-body-select');
+                    if (universe.id === 'zootopia') navigate('/trivia-zootopia-select');
                   }}
                   className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                 >
@@ -1479,7 +1522,8 @@ const LandingView = ({ setView }: { setView: (v: ViewType) => void, key?: string
       </section>
     </div>
   </motion.div>
-);
+  );
+};
 
 const DashboardView = ({ key }: { key?: string }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1536,6 +1580,10 @@ const DashboardView = ({ key }: { key?: string }) => {
       exit={{ opacity: 0 }}
       className="pt-24 pb-20"
     >
+      <Helmet>
+        <title>Pro Hub Dashboard | Fandom Trivia</title>
+        <meta name="description" content="View your stats, achievements, and the latest tournament rankings." />
+      </Helmet>
       <section className="max-w-[1600px] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Content */}
@@ -1732,7 +1780,8 @@ const DashboardView = ({ key }: { key?: string }) => {
 };
 
 // --- Rankings View ---
-const RankingsView = ({ setView }: { setView: (v: ViewType) => void, key?: string }) => {
+const RankingsView = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
   const [scores, setScores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1794,9 +1843,13 @@ const RankingsView = ({ setView }: { setView: (v: ViewType) => void, key?: strin
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <Helmet>
+        <title>Global Rankings | Fandom Trivia</title>
+        <meta name="description" content="See who the ultimate fans are. Check top scores for Twilight, Three-Body, Harry Potter, and more." />
+      </Helmet>
       <div className="max-w-4xl mx-auto space-y-10">
         <div className="flex items-center gap-4 border-b border-white/10 pb-6">
-          <button onClick={() => setView('landing')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+          <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
             <ArrowLeft className="size-4" />
           </button>
           <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
@@ -1857,7 +1910,8 @@ const RankingsView = ({ setView }: { setView: (v: ViewType) => void, key?: strin
 };
 
 export default function App() {
-  const [view, setView] = useState<ViewType>('landing');
+  const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -2018,7 +2072,7 @@ export default function App() {
     }
     setUser(null);
     setUnlockedBadgeIds([]);
-    setView('landing');
+    navigate('/');
   };
 
   const evaluateBadges = (quizId: string, scorePct: number) => {
@@ -2073,8 +2127,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
       <Navbar
-        isDashboard={view === 'dashboard'}
-        setView={setView}
+        isDashboard={location.pathname === '/dashboard'}
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}
@@ -2102,122 +2155,129 @@ export default function App() {
         <BadgesModal unlockedBadgeIds={unlockedBadgeIds} onClose={() => setShowBadgesModal(false)} />
       )}
 
-      <AnimatePresence mode="wait">
-        {view === 'landing' ? (
-          <LandingView key="landing" setView={setView} />
-        ) : view === 'rankings' ? (
-          <RankingsView key="rankings" setView={setView} />
-        ) : view === 'trivia-kpop' ? (
-          <MCQuizView key="trivia-kpop" setView={setView} questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
-            { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
-            { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Your instincts are sharp and your beats are lethal.' } },
-            { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'You have potential, but the demons are still faster.' } },
-            { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: '/images/Soda Pop and How It\'s Done.jpg', desc: 'Keep practicing your moves before entering the supernatural zone.' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-twilight-select' ? (
-          <TwilightBookSelector key="twilight-select" setView={setView} />
-        ) : view === 'trivia-twilight-mc' ? (
-          <MCQuizView key="trivia-twilight-mc" setView={setView} questions={TWILIGHT_MC_TRIVIA} title="Twilight: Vol. I" scoreLabel="Twilight Vol. I" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-twilight-book' ? (
-          <MCQuizView key="trivia-twilight-book" setView={setView} questions={TWILIGHT_BOOK_TRIVIA} title="Twilight" scoreLabel="Twilight" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-newmoon' ? (
-          <MCQuizView key="trivia-newmoon" setView={setView} questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-eclipse' ? (
-          <MCQuizView key="trivia-eclipse" setView={setView} questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-breakingdawn' ? (
-          <MCQuizView key="trivia-breakingdawn" setView={setView} questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-midnightsun' ? (
-          <MCQuizView key="trivia-midnightsun" setView={setView} questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-lifeanddeath' ? (
-          <MCQuizView key="trivia-lifeanddeath" setView={setView} questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-twilight-random' ? (
-          <MCQuizView key={`trivia-twilight-random-${Date.now()}`} setView={setView} questions={[...TWILIGHT_MC_TRIVIA, ...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Twilight: Random Mix" scoreLabel="Twilight: Random Mix" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter' ? (
-          <MCQuizView key="trivia-harry-potter" setView={setView} questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-cos' ? (
-          <MCQuizView key="trivia-harry-potter-cos" setView={setView} questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400' },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400' },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400' },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400' },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-poa' ? (
-          <MCQuizView key={`trivia-harry-potter-poa-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_POA_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Prisoner of Azkaban" scoreLabel="Harry Potter: Prisoner of Azkaban" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-gof' ? (
-          <MCQuizView key={`trivia-harry-potter-gof-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_GOF_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Goblet of Fire" scoreLabel="Harry Potter: Goblet of Fire" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-ootp' ? (
-          <MCQuizView key={`trivia-harry-potter-ootp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_OOTP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Order of the Phoenix" scoreLabel="Harry Potter: Order of the Phoenix" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-hbp' ? (
-          <MCQuizView key={`trivia-harry-potter-hbp-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_HBP_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Half-Blood Prince" scoreLabel="Harry Potter: Half-Blood Prince" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-dh' ? (
-          <MCQuizView key={`trivia-harry-potter-dh-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Deathly Hallows" scoreLabel="Harry Potter: Deathly Hallows" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-harry-potter-select' ? (
-          <HPBookSelector key="hp-select" setView={setView} />
-        ) : view === 'trivia-harry-potter-random' ? (
-          <MCQuizView key={`trivia-harry-potter-random-${Date.now()}`} setView={setView} questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Harry Potter: Random Mix" scoreLabel="Harry Potter: Random Mix" grades={[
-            { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Hermione Granger', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Brilliant! You probably read Hogwarts: A History in your spare time.' } },
-            { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Harry Potter', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Excellent instincts! You have a natural talent for defense and history.' } },
-            { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Ron Weasley', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Not bad, but you might want to borrow Hermione\'s notes.' } },
-            { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Neville Longbottom', image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg', desc: 'Did you forget to use your Remembrall?' } },
-          ]} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-three-body-select' ? (
-          <ThreeBodyBookSelector key="three-body-select" setView={setView} />
-        ) : view === 'trivia-three-body-problem' ? (
-          <MCQuizView key="trivia-three-body-problem" setView={setView} questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-the-dark-forest' ? (
-          <MCQuizView key="trivia-the-dark-forest" setView={setView} questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-deaths-end' ? (
-          <MCQuizView key="trivia-deaths-end" setView={setView} questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-three-body-random' ? (
-          <MCQuizView key={`trivia-three-body-random-${Date.now()}`} setView={setView} questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 20).map((q, i) => ({ ...q, id: i + 1 }))} title="Three-Body: Random Mix" scoreLabel="Three-Body: Random Mix" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-zootopia-select' ? (
-          <ZootopiaSelector key="zootopia-select" setView={setView} />
-        ) : view === 'trivia-zootopia' ? (
-          <MCQuizView key="trivia-zootopia" setView={setView} questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-zootopia-2' ? (
-          <MCQuizView key="trivia-zootopia-2" setView={setView} questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'trivia-zootopia-random' ? (
-          <MCQuizView key={`trivia-zootopia-random-${Date.now()}`} setView={setView} questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => Math.random() - 0.5).slice(0, 15).map((q, i) => ({ ...q, id: i + 1 }))} title="Zootopia: Mixed Case" scoreLabel="Zootopia: Mixed Case" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />
-        ) : view === 'privacy-policy' ? (
-          <PrivacyPolicyView key="privacy-policy" setView={setView} />
-        ) : view === 'terms-of-service' ? (
-          <TermsOfServiceView key="terms-of-service" setView={setView} />
-        ) : view === 'cookie-policy' ? (
-          <CookiePolicyView key="cookie-policy" setView={setView} />
-        ) : (
-          <DashboardView key="dashboard" />
-        )}
-      </AnimatePresence>
+      <main>
+        <AnimatePresence mode="wait">
+          <Routes location={location}>
+            <Route path="/" element={<LandingView key="landing" />} />
+            <Route path="/rankings" element={<RankingsView key="rankings" />} />
+            <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
+              { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
+              { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
+              { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
+              { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-eclipse" element={<MCQuizView key="trivia-eclipse" questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-breakingdawn" element={<MCQuizView key="trivia-breakingdawn" questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-midnightsun" element={<MCQuizView key="trivia-midnightsun" questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-lifeanddeath" element={<MCQuizView key="trivia-lifeanddeath" questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-twilight-random" element={<MCQuizView 
+              key="trivia-twilight-random" 
+              questions={[...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              title="Twilight Mixed Challenge" 
+              scoreLabel="Twilight Mixed Challenge" 
+              grades={TWILIGHT_GRADES} 
+              user={user} 
+              onQuizComplete={evaluateBadges} 
+            />} />
+            <Route path="/trivia-harry-potter" element={<MCQuizView key="trivia-harry-potter" questions={HARRY_POTTER_TRIVIA} title="Harry Potter: Sorcerer's Stone" scoreLabel="Harry Potter: Sorcerer's Stone" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-cos" element={<MCQuizView key="trivia-harry-potter-cos" questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-poa" element={<MCQuizView key="trivia-harry-potter-poa" questions={HARRY_POTTER_POA_TRIVIA} title="HP: Prisoner of Azkaban" scoreLabel="HP: Prisoner of Azkaban" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-gof" element={<MCQuizView key="trivia-harry-potter-gof" questions={HARRY_POTTER_GOF_TRIVIA} title="HP: Goblet of Fire" scoreLabel="HP: Goblet of Fire" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-ootp" element={<MCQuizView key="trivia-harry-potter-ootp" questions={HARRY_POTTER_OOTP_TRIVIA} title="HP: Order of the Phoenix" scoreLabel="HP: Order of the Phoenix" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-hbp" element={<MCQuizView key="trivia-harry-potter-hbp" questions={HARRY_POTTER_HBP_TRIVIA} title="HP: Half-Blood Prince" scoreLabel="HP: Half-Blood Prince" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-dh" element={<MCQuizView key="trivia-harry-potter-dh" questions={HARRY_POTTER_DH_TRIVIA} title="HP: Deathly Hallows" scoreLabel="HP: Deathly Hallows" grades={[
+              { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+              { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+              { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+              { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-harry-potter-random" element={<MCQuizView 
+              key="trivia-harry-potter-random" 
+              questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              title="Harry Potter Mixed Challenge" 
+              scoreLabel="Harry Potter Mixed Challenge" 
+              grades={[
+                { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
+                { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
+                { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
+                { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
+              ]} 
+              user={user} 
+              onQuizComplete={evaluateBadges} 
+            />} />
+            <Route path="/trivia-three-body-problem" element={<MCQuizView key="trivia-three-body-problem" questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-the-dark-forest" element={<MCQuizView key="trivia-the-dark-forest" questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-three-body-random" element={<MCQuizView 
+              key="trivia-three-body-random" 
+              questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              title="Three-Body Mixed Challenge" 
+              scoreLabel="Three-Body Mixed Challenge" 
+              grades={THREE_BODY_GRADES} 
+              user={user} 
+              onQuizComplete={evaluateBadges} 
+            />} />
+            <Route path="/trivia-zootopia" element={<MCQuizView key="trivia-zootopia" questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-zootopia-2" element={<MCQuizView key="trivia-zootopia-2" questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-zootopia-random" element={<MCQuizView 
+              key="trivia-zootopia-random" 
+              questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15)} 
+              title="Zootopia Mixed Case File" 
+              scoreLabel="Zootopia Mixed Case File" 
+              grades={ZOOTOPIA_GRADES} 
+              user={user} 
+              onQuizComplete={evaluateBadges} 
+            />} />
+
+            {/* Selectors */}
+            <Route path="/selector-twilight" element={<TwilightBookSelector key="selector-twilight" />} />
+            <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
+            <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />
+            <Route path="/selector-zootopia" element={<ZootopiaSelector key="selector-zootopia" />} />
+
+            {/* Account */}
+            <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" />} />
+            
+            {/* Legal */}
+            <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
+            <Route path="/terms-of-service" element={<TermsOfServiceView key="terms" />} />
+            <Route path="/cookie-policy" element={<CookiePolicyView key="cookie" />} />
+          </Routes>
+        </AnimatePresence>
+      </main>
 
       <AnimatePresence>
         {showUsernameModal && (
@@ -2242,8 +2302,7 @@ export default function App() {
 
       <FeedbackWidget user={user} />
       <Footer 
-        isDashboard={view === 'dashboard'} 
-        setView={setView} 
+        isDashboard={location.pathname === '/dashboard'} 
         onShowInfo={(title, content) => setModalInfo({title, content})} 
       />
     </div>
