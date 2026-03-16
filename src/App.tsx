@@ -623,7 +623,7 @@ const Footer = ({ isDashboard, setView, onShowInfo }: {
             </>
           ) : (
             <>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100); }} className="hover:text-primary transition-colors">How it works</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', 'Select a universe, test your fan knowledge with our detailed trivia questions, earn points, and unlock exclusive badges to prove you are the ultimate fan!'); }} className="hover:text-primary transition-colors">How it works</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setView('rankings'); }} className="hover:text-primary transition-colors">Leaderboards</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setView('landing'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
