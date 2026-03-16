@@ -326,7 +326,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges }: {
+const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo }: {
   isDashboard: boolean,
   setView: (v: ViewType) => void,
   user: User | null,
@@ -334,7 +334,8 @@ const Navbar = ({ isDashboard, setView, user, onLogin, onLogout, onResetUsername
   onLogout: () => void,
   onResetUsername?: () => void,
   onShowHistory?: () => void,
-  onShowBadges?: () => void
+  onShowBadges?: () => void,
+  onShowInfo?: (title: string, content: string) => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -2080,6 +2081,7 @@ export default function App() {
         onResetUsername={() => setShowUsernameModal(true)}
         onShowHistory={() => setShowHistoryModal(true)}
         onShowBadges={() => setShowBadgesModal(true)}
+        onShowInfo={(title, content) => setModalInfo({title, content})}
       />
 
       <AnimatePresence>
