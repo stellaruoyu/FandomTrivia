@@ -130,12 +130,15 @@ const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[]
           <div className="flex items-center gap-2">
             <button 
               onClick={async () => {
-                const text = `I've unlocked ${unlockedBadgeIds.length} badges on FandomTrivia! Can you beat my score?`;
+                const badgeNames = BADGES.filter(b => unlockedBadgeIds.includes(b.id)).map(b => b.name).join(', ');
+                const text = unlockedBadgeIds.length > 0
+                  ? `I've unlocked ${unlockedBadgeIds.length} badges on FandomTrivia! (${badgeNames}) Can you beat my score?`
+                  : `I haven't unlocked any badges on FandomTrivia yet! Can you beat my score?`;
                 try {
                   if (navigator.share) {
-                    await navigator.share({ title: 'My FandomTrivia Badges', text, url: window.location.href });
+                    await navigator.share({ title: 'My FandomTrivia Badges', text });
                   } else if (navigator.clipboard) {
-                    await navigator.clipboard.writeText(`${text} ${window.location.href}`);
+                    await navigator.clipboard.writeText(text);
                     alert('Copied to clipboard!');
                   }
                 } catch (e) {
