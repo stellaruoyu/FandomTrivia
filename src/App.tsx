@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
@@ -1007,7 +1007,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       options: shuffle(q.options)
     }));
     setSessionQuestions(shuffled);
-  }, [questions, shuffleKey]);
+  }, [shuffleKey]); // Removed questions from dependencies to prevent infinite loops with unstable arrays
 
   const navigate = useNavigate();
 
@@ -1537,11 +1537,11 @@ const LandingView = ({ key }: { key?: string }) => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (universe.id === 'twilight') navigate('/trivia-twilight-select');
+                    if (universe.id === 'twilight') navigate('/selector-twilight');
                     if (universe.id === 'kpop') navigate('/trivia-kpop');
-                    if (universe.id === 'harry-potter') navigate('/trivia-harry-potter-select');
-                    if (universe.id === 'three-body') navigate('/trivia-three-body-select');
-                    if (universe.id === 'zootopia') navigate('/trivia-zootopia-select');
+                    if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
+                    if (universe.id === 'three-body') navigate('/selector-three-body');
+                    if (universe.id === 'zootopia') navigate('/selector-zootopia');
                   }}
                   className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                 >
@@ -1957,6 +1957,22 @@ export default function App() {
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
 
+  const twilightRandomQuestions = useMemo(() => 
+    [...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const hpRandomQuestions = useMemo(() => 
+    [...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const threeBodyRandomQuestions = useMemo(() => 
+    [...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const zootopiaRandomQuestions = useMemo(() => 
+    [...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
+  []);
+
   // Load user profile from Supabase
   const loadUserProfile = async (supabaseUser: any) => {
     try {
@@ -2212,7 +2228,7 @@ export default function App() {
             <Route path="/trivia-lifeanddeath" element={<MCQuizView key="trivia-lifeanddeath" questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-random" element={<MCQuizView 
               key="trivia-twilight-random" 
-              questions={[...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              questions={twilightRandomQuestions} 
               title="Twilight Mixed Challenge" 
               scoreLabel="Twilight Mixed Challenge" 
               grades={TWILIGHT_GRADES} 
@@ -2263,7 +2279,7 @@ export default function App() {
             ]} user={user} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-random" element={<MCQuizView 
               key="trivia-harry-potter-random" 
-              questions={[...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              questions={hpRandomQuestions} 
               title="Harry Potter Mixed Challenge" 
               scoreLabel="Harry Potter Mixed Challenge" 
               grades={[
@@ -2280,7 +2296,7 @@ export default function App() {
             <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-three-body-random" element={<MCQuizView 
               key="trivia-three-body-random" 
-              questions={[...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20)} 
+              questions={threeBodyRandomQuestions} 
               title="Three-Body Mixed Challenge" 
               scoreLabel="Three-Body Mixed Challenge" 
               grades={THREE_BODY_GRADES} 
@@ -2291,7 +2307,7 @@ export default function App() {
             <Route path="/trivia-zootopia-2" element={<MCQuizView key="trivia-zootopia-2" questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-zootopia-random" element={<MCQuizView 
               key="trivia-zootopia-random" 
-              questions={[...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15)} 
+              questions={zootopiaRandomQuestions} 
               title="Zootopia Mixed Case File" 
               scoreLabel="Zootopia Mixed Case File" 
               grades={ZOOTOPIA_GRADES} 
