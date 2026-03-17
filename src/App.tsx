@@ -899,6 +899,21 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
   );
 };
 
+// --- Utils ---
+
+/**
+ * Shuffles an array in place using the Fisher-Yates algorithm.
+ * Returns a new shuffled array.
+ */
+function shuffle<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 // --- Multiple Choice Quiz View (Generic) ---
 
 const playCorrectSound = () => {
@@ -982,10 +997,31 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [finished, setFinished] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [sessionQuestions, setSessionQuestions] = useState<MCTriviaQuestion[]>([]);
+  const [shuffleKey, setShuffleKey] = useState(0);
+
+  // Initialize and shuffle questions for this session
+  useEffect(() => {
+    const shuffled = shuffle(questions).map(q => ({
+      ...q,
+      options: shuffle(q.options)
+    }));
+    setSessionQuestions(shuffled);
+  }, [questions, shuffleKey]);
 
   const navigate = useNavigate();
-  const q = questions[currentQ];
-  const total = questions.length;
+
+  // Wait for session questions to be initialized
+  if (sessionQuestions.length === 0) {
+    return (
+      <div className="pt-28 pb-20 px-6 flex items-center justify-center">
+        <div className="text-slate-400 font-bold animate-pulse">Initializing Quiz...</div>
+      </div>
+    );
+  }
+
+  const q = sessionQuestions[currentQ];
+  const total = sessionQuestions.length;
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
   const isUnknown = q.answer === '???';
@@ -1026,6 +1062,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setScores({});
     setFinished(false);
     setScoreSaved(false);
+    setShuffleKey(prev => prev + 1); // Trigger re-shuffle
   };
 
   const handleSaveScore = async () => {
@@ -1240,7 +1277,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
         {/* Question dots */}
         <div className="flex items-center justify-center gap-1.5 flex-wrap">
-          {questions.map((_, i) => (
+          {sessionQuestions.map((_, i) => (
             <button
               key={i}
               onClick={() => { setCurrentQ(i); setSelected(scores[i] !== undefined ? 'locked' : null); }}
