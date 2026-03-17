@@ -1430,7 +1430,7 @@ const LandingView = ({ key }: { key?: string }) => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Join 12.4K Active Players
+            Build v1.0.1 • Join 12.4K Active Players
           </motion.div>
           <motion.h2
             initial={{ y: 20, opacity: 0 }}
@@ -1972,6 +1972,10 @@ export default function App() {
   const zootopiaRandomQuestions = useMemo(() => 
     [...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
+
+  useEffect(() => {
+    document.title = "Fandom Trivia | The Ultimate Fan Experience";
+  }, []);
 
   // Load user profile from Supabase
   const loadUserProfile = async (supabaseUser: any) => {
