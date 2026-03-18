@@ -1943,7 +1943,7 @@ const RankingsView = () => {
           </button>
           <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
             <Trophy className="size-8 text-amber-400" />
-            Global Rankings
+            Global Rankings ✨
           </h2>
         </div>
 
