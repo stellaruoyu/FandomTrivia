@@ -999,6 +999,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [saving, setSaving] = useState(false);
   const [sessionQuestions, setSessionQuestions] = useState<MCTriviaQuestion[]>([]);
   const [shuffleKey, setShuffleKey] = useState(0);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [completionTime, setCompletionTime] = useState<number | null>(null);
 
   // Initialize and shuffle questions for this session
   useEffect(() => {
@@ -1029,6 +1031,12 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const handleSelect = (option: string) => {
     if (selected) return; // already answered
     setSelected(option);
+    
+    // Start timer on first answer
+    if (startTime === null) {
+      setStartTime(Date.now());
+    }
+
     if (isUnknown) {
       // No known answer — auto-mark correct (fun mode)
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
@@ -1050,6 +1058,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       setSelected(null);
     } else {
       setFinished(true);
+      const endTime = Date.now();
+      const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
+      setCompletionTime(durationSeconds);
       if (onQuizComplete) {
         onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100));
       }
@@ -1062,6 +1073,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setScores({});
     setFinished(false);
     setScoreSaved(false);
+    setStartTime(null);
+    setCompletionTime(null);
     setShuffleKey(prev => prev + 1); // Trigger re-shuffle
   };
 
@@ -1078,7 +1091,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           user_id: user.id,
           quiz_id: scoreLabel,
           score: correctCount,
-          total: total
+          total: total,
+          completion_time: completionTime
         });
       if (error) throw error;
       setScoreSaved(true);
@@ -1562,6 +1576,13 @@ const LandingView = ({ key }: { key?: string }) => {
   );
 };
 
+const formatTime = (seconds: number | null) => {
+  if (seconds === null || seconds === undefined) return '--:--';
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
 const DashboardView = ({ key }: { key?: string }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
@@ -1570,8 +1591,9 @@ const DashboardView = ({ key }: { key?: string }) => {
     const fetchTopScores = async () => {
       const { data } = await supabase
         .from('scores')
-        .select('id, score, total, quiz_id, user_id, profiles(username)')
+        .select('id, score, total, quiz_id, user_id, completion_time, profiles(username)')
         .order('score', { ascending: false })
+        .order('completion_time', { ascending: true })
         .limit(5);
 
       if (data) {
@@ -1593,6 +1615,7 @@ const DashboardView = ({ key }: { key?: string }) => {
               'from-blue-400 to-blue-600',
             ][i % 6],
             score: row.score,
+            completion_time: row.completion_time
           };
         }));
       }
@@ -1749,9 +1772,13 @@ const DashboardView = ({ key }: { key?: string }) => {
                       <p className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors">{user.name}</p>
                       <p className="text-[10px] font-bold text-slate-500">{user.fandom}</p>
                     </div>
-                    <div className="text-right">
-                      <p className={`text-xs font-black ${user.id === '01' ? 'text-amber-400' : 'text-white'}`}>{user.points}</p>
-                      <p className="text-[9px] font-bold text-slate-500 uppercase">Points</p>
+                    <div className="text-right flex flex-col items-end">
+                      <div className="flex items-center gap-2">
+                        <p className={`text-xs font-black ${user.id === '01' ? 'text-amber-400' : 'text-white'}`}>{user.points}</p>
+                        <div className="size-1 rounded-full bg-slate-700"></div>
+                        <p className="text-[10px] font-bold text-slate-500">{formatTime(user.completion_time)}</p>
+                      </div>
+                      <p className="text-[9px] font-bold text-slate-500 uppercase">Score & Time</p>
                     </div>
                   </div>
                 ))}
@@ -1822,12 +1849,13 @@ const RankingsView = ({ key }: { key?: string }) => {
   const [scores, setScores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [rankingType, setRankingType] = useState<'accuracy' | 'speed'>('accuracy');
 
   useEffect(() => {
     const fetchRankings = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
+        let query = supabase
           .from('scores')
           .select(`
           id,
@@ -1836,9 +1864,21 @@ const RankingsView = ({ key }: { key?: string }) => {
           quiz_id,
           created_at,
           user_id,
+          completion_time,
           profiles(username)
-          `)
-          .order('score', { ascending: false });
+          `);
+
+        if (rankingType === 'accuracy') {
+          query = query
+            .order('score', { ascending: false })
+            .order('completion_time', { ascending: true });
+        } else {
+          query = query
+            .order('completion_time', { ascending: true })
+            .order('score', { ascending: false });
+        }
+
+        const { data, error } = await query;
 
         if (error) throw error;
 
@@ -1856,6 +1896,16 @@ const RankingsView = ({ key }: { key?: string }) => {
             const existingUserScoreIndex = groupedByQuiz[qid].findIndex(s => s.user_id === row.user_id);
             if (existingUserScoreIndex === -1) {
               groupedByQuiz[qid].push(row);
+            } else if (rankingType === 'speed') {
+                // In speed mode, if we find a faster time, replace it
+                if (row.completion_time < groupedByQuiz[qid][existingUserScoreIndex].completion_time) {
+                    groupedByQuiz[qid][existingUserScoreIndex] = row;
+                }
+            } else {
+                // In accuracy mode, if we find a higher score, replace it
+                if (row.score > groupedByQuiz[qid][existingUserScoreIndex].score) {
+                    groupedByQuiz[qid][existingUserScoreIndex] = row;
+                }
             }
           });
         }
@@ -1876,7 +1926,7 @@ const RankingsView = ({ key }: { key?: string }) => {
     };
 
     fetchRankings();
-  }, []);
+  }, [rankingType]);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
@@ -1893,6 +1943,21 @@ const RankingsView = ({ key }: { key?: string }) => {
             <Trophy className="size-8 text-amber-400" />
             Global Rankings
           </h2>
+        </div>
+
+        <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl w-fit">
+          <button
+            onClick={() => setRankingType('accuracy')}
+            className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${rankingType === 'accuracy' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white'}`}
+          >
+            Accuracy
+          </button>
+          <button
+            onClick={() => setRankingType('speed')}
+            className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${rankingType === 'speed' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white'}`}
+          >
+            Speed
+          </button>
         </div>
 
         {loading ? (
@@ -1927,12 +1992,24 @@ const RankingsView = ({ key }: { key?: string }) => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
-                          {scoreRow.score} / {scoreRow.total}
-                        </p>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                          {Math.round((scoreRow.score / scoreRow.total) * 100)}%
-                        </p>
+                        <div className="flex flex-col items-end">
+                          <p className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
+                            {rankingType === 'accuracy' ? `${scoreRow.score} / ${scoreRow.total}` : formatTime(scoreRow.completion_time)}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                              {rankingType === 'accuracy' ? `${Math.round((scoreRow.score / scoreRow.total) * 100)}%` : `Score: ${scoreRow.score}/${scoreRow.total}`}
+                            </p>
+                            {rankingType === 'accuracy' && (
+                              <>
+                                <div className="size-1 rounded-full bg-slate-700"></div>
+                                <p className="text-[10px] font-bold text-slate-500">
+                                  {formatTime(scoreRow.completion_time)}
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
