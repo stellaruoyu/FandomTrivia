@@ -1585,7 +1585,7 @@ const formatTime = (seconds: number | null) => {
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
-const DashboardView = ({ key }: { key?: string }) => {
+const DashboardView = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
@@ -1846,7 +1846,7 @@ const DashboardView = ({ key }: { key?: string }) => {
 };
 
 // --- Rankings View ---
-const RankingsView = ({ key }: { key?: string }) => {
+const RankingsView = () => {
   const navigate = useNavigate();
   const [scores, setScores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1947,7 +1947,7 @@ const RankingsView = ({ key }: { key?: string }) => {
           </h2>
         </div>
 
-        <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl w-fit">
+        <div id="leaderboard-toggle-container" className="flex items-center gap-2 bg-white/5 p-1 rounded-xl w-fit border border-white/10">
           <button
             onClick={() => setRankingType('accuracy')}
             className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${rankingType === 'accuracy' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white'}`}
