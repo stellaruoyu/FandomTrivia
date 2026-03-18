@@ -1446,7 +1446,7 @@ const LandingView = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Build v1.0.1 • Join 12.4K Active Players
+            Build v1.0.2 • Join 12.4K Active Players
           </motion.div>
           <motion.h2
             initial={{ y: 20, opacity: 0 }}
@@ -1936,6 +1936,9 @@ const RankingsView = () => {
         <title>Global Rankings | Fandom Trivia</title>
         <meta name="description" content="See who the ultimate fans are. Check top scores for Twilight, Three-Body, Harry Potter, and more." />
       </Helmet>
+      <div className="bg-red-600 text-white text-center py-2 font-black uppercase tracking-widest z-[1000] relative">
+        ROUTING TEST: YOU ARE ON RANKINGS PAGE
+      </div>
       <div className="max-w-4xl mx-auto space-y-10">
         <div className="flex items-center gap-4 border-b border-white/10 pb-6">
           <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
