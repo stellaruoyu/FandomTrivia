@@ -2034,6 +2034,7 @@ const RankingsView = () => {
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("DEBUG: App Render Path =", location.pathname);
   console.log("DEBUG - APP PATHNAME:", location.pathname);
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
@@ -2270,7 +2271,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
       <div className="fixed top-0 left-0 w-full bg-blue-600 text-white text-center py-1 text-xs font-black uppercase z-[10000]">
-        DEBUG: I AM APP COMPONENT
+        DEBUG: I AM APP COMPONENT | PATH: {location.pathname}
       </div>
       <Navbar
         isDashboard={location.pathname === '/dashboard'}
