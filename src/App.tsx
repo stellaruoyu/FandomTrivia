@@ -1420,7 +1420,7 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
   );
 };
 
-const LandingView = ({ key }: { key?: string }) => {
+const LandingView = () => {
   const navigate = useNavigate();
   return (
   <motion.div
@@ -2293,9 +2293,9 @@ export default function App() {
 
       <main>
         <AnimatePresence mode="wait">
-          <Routes location={location}>
-            <Route path="/" element={<LandingView key="landing" />} />
-            <Route path="/rankings" element={<RankingsView key="rankings" />} />
+          <Routes>
+            <Route path="/" element={<LandingView />} />
+            <Route path="/rankings" element={<RankingsView />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
               { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
               { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
