@@ -48,7 +48,7 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
         setLoading(true);
         const { data, error } = await supabase
           .from('scores')
-          .select('id, score, total, quiz_id, created_at')
+          .select('id, score, total, quiz_id, created_at, completion_time')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
 
@@ -95,8 +95,10 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
               <div key={item.id} className="bg-white/5 border border-white/10 p-4 rounded-xl flex items-center justify-between hover:bg-white/10 transition-colors">
                 <div>
                   <h4 className="font-bold text-white text-lg">{item.quiz_id}</h4>
-                  <p className="text-xs text-slate-500 font-medium">
+                  <p className="text-xs text-slate-500 font-medium flex items-center gap-2">
                     {new Date(item.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    <span className="size-1 rounded-full bg-slate-700"></span>
+                    <span>{formatTime(item.completion_time)}</span>
                   </p>
                 </div>
                 <div className="text-right">
