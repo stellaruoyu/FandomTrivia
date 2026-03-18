@@ -1429,6 +1429,9 @@ const LandingView = () => {
     exit={{ opacity: 0 }}
   >
     <div className="pt-20">
+      <div className="bg-purple-600 text-white text-center py-4 text-3xl font-black uppercase z-[9999] relative">
+        DEBUG: I AM LANDING VIEW
+      </div>
       {/* Hero */}
       <section className="relative w-full py-20 px-6 overflow-hidden">
         <ParticleCanvas mode="ambient" className="opacity-60" />
@@ -2266,6 +2269,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
+      <div className="fixed top-0 left-0 w-full bg-blue-600 text-white text-center py-1 text-xs font-black uppercase z-[10000]">
+        DEBUG: I AM APP COMPONENT
+      </div>
       <Navbar
         isDashboard={location.pathname === '/dashboard'}
         user={user}
