@@ -4,6 +4,18 @@ All notable changes to Fandom Trivia will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2026-03-17] - Speed Leaderboards & UI Refinements
+### Added
+- **Speed Leaderboards**: New leaderboard section for tracking and ranking quiz completion times.
+- **Quiz Timer**: Implemented `startTime` and `completionTime` logic in `MCQuizView` to accurately track quiz duration.
+- **Accuracy/Speed Toggles**: Added a sleek toggle system to the global rankings to switch between accuracy and speed views.
+- **Time in History**: Updated `HistoryModal` to display completion times for all past quiz attempts.
+
+### Changed
+- **Sorting Logic**: Optimized leaderboard sorting to use completion time as a tie-breaker for accuracy and vice versa.
+- **Dashboard Updates**: The "Live Leaderboard" sidebar now displays both score and time for top players.
+- **UI Consistency**: Integrated `formatTime` helper and updated entry layouts across Dashboard, Rankings, and History.
+
 ## [Unreleased]
 ### Added
 - Comprehensive strategic documentation: `agent.md`, `changelog.md`, and `vision.md`, incorporating insights from `ROADMAP.md` and `TASK_BREAKDOWN.md`.
