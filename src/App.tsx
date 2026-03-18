@@ -2304,7 +2304,7 @@ export default function App() {
 
       <main>
         <AnimatePresence mode="wait">
-          <Routes>
+          <Routes location={window.location}>
             <Route path="/rankings" element={<RankingsView />} />
             <Route path="/" element={<LandingView />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
