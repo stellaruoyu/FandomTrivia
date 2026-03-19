@@ -1948,7 +1948,7 @@ const RankingsView = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
       <Helmet>
-        <title>Global Rankings | Fandom Trivia</title>
+        <title>Global Rankings | Fandom Trivia (V2.0)</title>
         <meta name="description" content="See who the ultimate fans are. Check top scores for Twilight, Three-Body, Harry Potter, and more." />
       </Helmet>
       <div className="max-w-4xl mx-auto space-y-10">
