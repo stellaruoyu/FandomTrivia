@@ -11,7 +11,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -1143,11 +1143,25 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               </div>
             )}
 
-            <div className="space-y-2 pt-2">
-              <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                {correctCount}/{total}
-              </p>
-              <p className="text-slate-400 font-medium">Questions Correct ({pct}%)</p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-2">
+              <div className="space-y-1">
+                <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
+                  {correctCount}/{total}
+                </p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Questions Correct ({pct}%)</p>
+              </div>
+              
+              <div className="hidden md:block w-px h-16 bg-white/10"></div>
+              
+              <div className="space-y-1">
+                <div className="flex items-center justify-center gap-3 text-blue-400">
+                  <Clock className="size-8" />
+                  <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
+                    {formatTime(completionTime)}
+                  </p>
+                </div>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Total Time Spent</p>
+              </div>
             </div>
 
             {!character && (
@@ -1429,9 +1443,7 @@ const LandingView = () => {
     exit={{ opacity: 0 }}
   >
     <div className="pt-20">
-      <div className="bg-purple-600 text-white text-center py-4 text-3xl font-black uppercase z-[9999] relative">
-        DEBUG: I AM LANDING VIEW
-      </div>
+
       {/* Hero */}
       <section className="relative w-full py-20 px-6 overflow-hidden">
         <ParticleCanvas mode="ambient" className="opacity-60" />
@@ -1939,9 +1951,6 @@ const RankingsView = () => {
         <title>Global Rankings | Fandom Trivia</title>
         <meta name="description" content="See who the ultimate fans are. Check top scores for Twilight, Three-Body, Harry Potter, and more." />
       </Helmet>
-      <div className="bg-red-600 text-white text-center py-2 font-black uppercase tracking-widest z-[1000] relative">
-        ROUTING TEST: YOU ARE ON RANKINGS PAGE
-      </div>
       <div className="max-w-4xl mx-auto space-y-10">
         <div className="flex items-center gap-4 border-b border-white/10 pb-6">
           <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
@@ -1949,24 +1958,10 @@ const RankingsView = () => {
           </button>
           <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
             <Trophy className="size-8 text-amber-400" />
-            Global Rankings ✨
+            Global Rankings
           </h2>
         </div>
 
-        <div id="leaderboard-toggle-container" className="flex items-center gap-2 bg-white/5 p-1 rounded-xl w-fit border border-white/10">
-          <button
-            onClick={() => setRankingType('accuracy')}
-            className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${rankingType === 'accuracy' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white'}`}
-          >
-            Accuracy
-          </button>
-          <button
-            onClick={() => setRankingType('speed')}
-            className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${rankingType === 'speed' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-white'}`}
-          >
-            Speed
-          </button>
-        </div>
 
         {loading ? (
           <div className="text-center py-20 text-slate-400 font-bold animate-pulse">
@@ -2034,8 +2029,6 @@ const RankingsView = () => {
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("DEBUG: App Render Path =", location.pathname);
-  console.log("DEBUG - APP PATHNAME:", location.pathname);
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -2270,9 +2263,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
-      <div className="fixed top-0 left-0 w-full bg-blue-600 text-white text-center py-1 text-xs font-black uppercase z-[10000]">
-        DEBUG: I AM APP COMPONENT | PATH: {location.pathname}
-      </div>
+
       <Navbar
         isDashboard={location.pathname === '/dashboard'}
         user={user}
