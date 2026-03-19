@@ -1461,7 +1461,7 @@ const LandingView = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Build v1.0.2 • Join 12.4K Active Players
+            Build v1.1.0 • Join 12.5K Active Players
           </motion.div>
           <motion.h2
             initial={{ y: 20, opacity: 0 }}
