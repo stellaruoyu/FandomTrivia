@@ -11,7 +11,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -1952,14 +1952,41 @@ const RankingsView = () => {
         <meta name="description" content="See who the ultimate fans are. Check top scores for Twilight, Three-Body, Harry Potter, and more." />
       </Helmet>
       <div className="max-w-4xl mx-auto space-y-10">
-        <div className="flex items-center gap-4 border-b border-white/10 pb-6">
-          <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
-            <ArrowLeft className="size-4" />
-          </button>
-          <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <Trophy className="size-8 text-amber-400" />
-            Global Rankings
-          </h2>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
+          <div className="flex items-center gap-4">
+            <button onClick={() => navigate('/')} className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+              <ArrowLeft className="size-4" />
+            </button>
+            <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+              <Trophy className="size-8 text-amber-400" />
+              Global Rankings
+            </h2>
+          </div>
+
+          <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 self-start md:self-auto">
+            <button
+              onClick={() => setRankingType('accuracy')}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
+                rankingType === 'accuracy'
+                  ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                  : 'text-slate-500 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Target className="size-3.5" />
+              Accuracy
+            </button>
+            <button
+              onClick={() => setRankingType('speed')}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
+                rankingType === 'speed'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                  : 'text-slate-500 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Clock className="size-3.5" />
+              Speed
+            </button>
+          </div>
         </div>
 
 
@@ -1984,19 +2011,19 @@ const RankingsView = () => {
                 </h3>
                 <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden backdrop-blur-sm">
                   {quizData.scores.map((scoreRow: any, idx: number) => (
-                    <div key={scoreRow.id} className="flex items-center justify-between p-4 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                    <div key={scoreRow.id} className="flex items-center justify-between p-4 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors group">
                       <div className="flex items-center gap-4">
                         <div className={`size-8 rounded-full flex items-center justify-center font-black text-sm ${idx === 0 ? 'bg-amber-500 text-black' : idx === 1 ? 'bg-slate-300 text-black' : idx === 2 ? 'bg-amber-700 text-white' : 'bg-white/10 text-white'}`}>
                           #{idx + 1}
                         </div>
                         <div>
-                          <p className="font-bold text-white">{scoreRow.profiles?.username || 'Unknown User'}</p>
-                          <p className="text-xs text-slate-500 font-medium">#{scoreRow.user_id.substring(0, 8)}</p>
+                          <p className="font-bold text-white group-hover:text-primary transition-colors">{scoreRow.profiles?.username || 'Unknown User'}</p>
+                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">#{scoreRow.user_id.substring(0, 8)}</p>
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="flex flex-col items-end">
-                          <p className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
+                          <p className={`text-xl font-black text-transparent bg-clip-text ${rankingType === 'accuracy' ? 'bg-gradient-to-r from-green-400 to-emerald-300' : 'bg-gradient-to-r from-blue-400 to-indigo-300'}`}>
                             {rankingType === 'accuracy' ? `${scoreRow.score} / ${scoreRow.total}` : formatTime(scoreRow.completion_time)}
                           </p>
                           <div className="flex items-center gap-2">
