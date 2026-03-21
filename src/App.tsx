@@ -1885,6 +1885,10 @@ const RankingsView = () => {
           profiles(username)
           `);
 
+        if (rankingType === 'speed') {
+          query = query.not('completion_time', 'is', null);
+        }
+
         if (rankingType === 'accuracy') {
           query = query
             .order('score', { ascending: false })
@@ -1915,13 +1919,20 @@ const RankingsView = () => {
               groupedByQuiz[qid].push(row);
             } else if (rankingType === 'speed') {
                 // In speed mode, if we find a faster time, replace it
-                if (row.completion_time < groupedByQuiz[qid][existingUserScoreIndex].completion_time) {
+                const existingTime = groupedByQuiz[qid][existingUserScoreIndex].completion_time;
+                if (existingTime === null || row.completion_time < existingTime) {
                     groupedByQuiz[qid][existingUserScoreIndex] = row;
                 }
             } else {
                 // In accuracy mode, if we find a higher score, replace it
                 if (row.score > groupedByQuiz[qid][existingUserScoreIndex].score) {
                     groupedByQuiz[qid][existingUserScoreIndex] = row;
+                } else if (row.score === groupedByQuiz[qid][existingUserScoreIndex].score) {
+                    // Tie-breaker: better time
+                    const existingTime = groupedByQuiz[qid][existingUserScoreIndex].completion_time;
+                    if (existingTime === null || (row.completion_time !== null && row.completion_time < existingTime)) {
+                        groupedByQuiz[qid][existingUserScoreIndex] = row;
+                    }
                 }
             }
           });
