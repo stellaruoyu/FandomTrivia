@@ -21,6 +21,7 @@ import {
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
+  FROZEN_1_TRIVIA, FROZEN_2_TRIVIA, FROZEN_MIXED_TRIVIA,
   MCTriviaQuestion, BADGES, Badge
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -1435,6 +1436,61 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
   );
 };
 
+// --- Frozen Movie Selector ---
+
+const FROZEN_GRADES = [
+  { threshold: 90, label: 'Snow Queen', color: 'text-sky-300', character: { name: 'Elsa', image: '/images/frozen.jpg', desc: 'The cold never bothered you anyway! You are a master of Arendelle’s history.' } },
+  { threshold: 70, label: 'Fearless Optimist', color: 'text-fuchsia-400', character: { name: 'Anna', image: '/images/frozen.jpg', desc: 'You have a heart of gold. Your knowledge of the sisterhood is impressive!' } },
+  { threshold: 50, label: 'Warm Hug Expert', color: 'text-blue-200', character: { name: 'Olaf', image: '/images/frozen.jpg', desc: 'Some people are worth melting for. You know a fair bit, but keep exploring!' } },
+  { threshold: 0, label: 'Ice Harvester', color: 'text-slate-400', character: { name: 'Sven', image: '/images/frozen.jpg', desc: 'Reindeer are better than people. You might need to spend more time in the castle!' } },
+];
+
+const FrozenSelector = () => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Enter <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">Arendelle</span></h2>
+        <Helmet>
+          <title>Frozen Trivia | Choose Your Journey</title>
+          <meta name="description" content="Test your knowledge on Frozen and Frozen 2. Prove you're the ultimate Snow Master." />
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a chapter to test your knowledge, or take the Ultimate Challenge!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Chapter 1", title: "Frozen (2013)", desc: `${FROZEN_1_TRIVIA.length} questions`, icon: "❄️", view: 'trivia-frozen-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Chapter 2", title: "Frozen 2 (2019)", desc: `${FROZEN_2_TRIVIA.length} questions`, icon: "🍂", view: 'trivia-frozen-2', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "15 random questions from both films", icon: "🎲", view: 'trivia-frozen-random', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+        ].map(film => (
+          <motion.button
+            key={film.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${film.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{film.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Thaw Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 // --- Despicable Me Movie Selector ---
 
 const DESPICABLE_ME_GRADES = [
@@ -2161,6 +2217,10 @@ export default function App() {
     [...DESPICABLE_ME_1_TRIVIA, ...DESPICABLE_ME_2_TRIVIA, ...DESPICABLE_ME_3_TRIVIA, ...DESPICABLE_ME_4_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
+  const frozenRandomQuestions = useMemo(() => 
+    [...FROZEN_1_TRIVIA, ...FROZEN_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
+  []);
+
   useEffect(() => {
     document.title = "Fandom Trivia | The Ultimate Fan Experience";
   }, []);
@@ -2520,6 +2580,12 @@ export default function App() {
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />
             <Route path="/selector-zootopia" element={<ZootopiaSelector />} />
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
+            <Route path="/selector-frozen" element={<FrozenSelector />} />
+            
+            {/* Frozen Trivia */}
+            <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
 
             {/* Account */}
             <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" />} />

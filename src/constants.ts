@@ -1,4 +1,4 @@
-import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink } from 'lucide-react';
+import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake } from 'lucide-react';
 
 export const NAV_LINKS = [
   { name: 'Home', href: '#' },
@@ -87,6 +87,22 @@ export const BADGES: Badge[] = [
     icon: 'Zap',
     color: 'text-yellow-400',
     targetQuiz: 'despicable-me'
+  },
+  {
+    id: 'zootopia-master',
+    name: 'Zootopia Master',
+    description: 'Solve all Zootopia 2 mysteries.',
+    icon: 'Search',
+    color: 'text-blue-400',
+    targetQuiz: 'zootopia-2'
+  },
+  {
+    id: 'ice-master',
+    name: 'Ice Master',
+    description: 'Thaw the frozen heart of Arendelle.',
+    icon: 'Star',
+    color: 'text-sky-300',
+    targetQuiz: 'frozen'
   }
 ];
 
@@ -145,6 +161,15 @@ export const UNIVERSES = [
     image: '/images/despicable-me.jpg',
     buttonText: 'Join the Minions',
     icon: 'Zap'
+  },
+  {
+    id: 'frozen',
+    title: 'Frozen',
+    tags: ['Animation', 'Musical', 'Disney'],
+    description: 'Journey to Arendelle and the Enchanted Forest. Test your knowledge on Elsa, Anna, and the elemental spirits.',
+    image: '/images/frozen.jpg',
+    buttonText: 'Join the Sisters',
+    icon: 'Snowflake'
   }
 ];
 
@@ -5037,3 +5062,139 @@ export const DESPICABLE_ME_MIXED_TRIVIA: MCTriviaQuestion[] = [
   ...DESPICABLE_ME_4_TRIVIA
 ];
 
+export const FROZEN_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which specific software tool was developed by Disney engineers to allow artists to sculpt Elsa's 420,000 hair strands?",
+    options: ["Matterhorn", "Flourish", "Tonic", "Snow Batcher"],
+    answer: "Tonic",
+    evidence: "Tonic was a specialized program enabling artists to sculpt characters' hair, accommodating Elsa's high strand count."
+  },
+  {
+    id: 2,
+    question: "What was the estimated rendering time for a single frame of the ice palace construction sequence?",
+    options: ["12 hours", "30 hours", "48 hours", "120 hours"],
+    answer: "30 hours",
+    evidence: "It required 30 hours to render each frame, with 4,000 computers rendering one frame at a time."
+  },
+  {
+    id: 3,
+    question: "How much was Phase 4 Films required to pay Disney for retitling 'The Legend of Sarila' to 'Frozen Land'?",
+    options: ["$50,000", "$100,000", "$250,000", "$500,000"],
+    answer: "$100,000",
+    evidence: "Phase 4 was required to pay Disney $100,000 in a legal settlement following the trademark-infringement lawsuit."
+  },
+  {
+    id: 4,
+    question: "Which musical number did Robert Lopez identify as the 'structural linchpin' composed just five months before release?",
+    options: ["Let It Go", "Do You Want to Build a Snowman?", "For the First Time in Forever", "Love is an Open Door"],
+    answer: "For the First Time in Forever",
+    evidence: "Lopez described 'For the First Time in Forever' as the linchpin that finally made the film's narrative flow gel."
+  },
+  {
+    id: 5,
+    question: "Who provided the singing voice for the 5-year-old Princess Anna?",
+    options: ["Livvy Stubenrauch", "Agatha Lee Monn", "Katie Lopez", "Eva Bella"],
+    answer: "Katie Lopez",
+    evidence: "While Livvy Stubenrauch voiced young Anna, Katie Lopez provided her singing voice."
+  },
+  {
+    id: 6,
+    question: "At the start of the main narrative journey, what is the established age of Princess Anna?",
+    options: ["16", "18", "21", "19"],
+    answer: "18",
+    evidence: "Anna is introduced as a fearless and optimistic 18-year-old princess."
+  },
+  {
+    id: 7,
+    question: "The 'Matterhorn' snow-simulator tool utilized the Material Point Method with assistance from researchers at which university?",
+    options: ["MIT", "Stanford", "UCLA", "Caltech"],
+    answer: "UCLA",
+    evidence: "Disney engineers collaborated with mathematics researchers from UCLA to develop the Matterhorn simulator."
+  },
+  {
+    id: 8,
+    question: "True or False: The visual design of Arendelle was primarily based on Norwegian cultural research.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Art director Michael Giaimo focused on Norway, as 80 percent of the appealing visuals were from that country."
+  },
+  {
+    id: 9,
+    question: "True or False: In early script versions, Elsa kidnapped Anna from her own wedding to freeze her heart.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Early drafts depicted Elsa as an explicitly evil character who kidnapped Anna."
+  },
+  {
+    id: 10,
+    question: "True or False: 2D artwork was used for specific magical elements like snow sculptures and freezing fountains.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "In addition to 3D effects, filmmakers used 2D artwork for Elsa's magic and snow sculptures."
+  }
+];
+
+export const FROZEN_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What primary catalyst initiates Elsa's journey into the unknown in the 2019 sequel?",
+    options: ["Ancient scrolls", "A melodious voice only she can hear", "A warning from Pabbie", "A diplomatic request"],
+    answer: "A melodious voice only she can hear",
+    evidence: "A mysterious voice invites Elsa to the Enchanted Forest, serving as the sequel's main catalyst."
+  },
+  {
+    id: 2,
+    question: "To what destination does the 'secret siren' lead Elsa and her companions?",
+    options: ["North Mountain", "Kingdom of Weselton", "Enchanted Forest", "Valley of the Living Rock"],
+    answer: "Enchanted Forest",
+    evidence: "Elsa follows the voice into the unknown Enchanted Forest, a perpetually misty realm."
+  },
+  {
+    id: 3,
+    question: "Which group of people does the royal party encounter living in the Enchanted Forest?",
+    options: ["Weseltonians", "Northuldra", "Rock Trolls", "Southern Isles Navy"],
+    answer: "Northuldra",
+    evidence: "The party encounters the Northuldra tribe, who live in harmony with the forest spirits."
+  },
+  {
+    id: 4,
+    question: "Who is the salamander-like spirit of fire introduced in the Enchanted Forest?",
+    options: ["Gale", "Bruni", "Nokk", "Pabbie"],
+    answer: "Bruni",
+    evidence: "Bruni is the adorable salamander-like fire spirit that Elsa befriends."
+  },
+  {
+    id: 5,
+    question: "Which four entities represent the elemental spirits of nature in Frozen 2?",
+    options: ["Trolls and Wolves", "Nokk, Gale, Earth Giants, and Bruni", "Oaken and Sven", "Marshmallow and Snowgies"],
+    answer: "Nokk, Gale, Earth Giants, and Bruni",
+    evidence: "The four elemental spirits are the Nokk (water), Gale (wind), Earth Giants (earth), and Bruni (fire)."
+  },
+  {
+    id: 6,
+    question: "True or False: Frozen 2 outgrossed the original 2013 film at the global box office.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Frozen 2 became the highest-grossing animated film at the time, surpassing the original."
+  },
+  {
+    id: 7,
+    question: "True or False: Elsa's character model in the sequel features 420,000 computer-generated hair strands.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Elsa's hair model was upgraded and maintained its high fidelity with 420k strands."
+  },
+  {
+    id: 8,
+    question: "True or False: Disney has announced that both Frozen 3 and Frozen 4 are in development.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "CEO Bob Iger confirmed that Frozen 3 is slated for 2027 and a fourth film is planned."
+  }
+];
+
+export const FROZEN_MIXED_TRIVIA: MCTriviaQuestion[] = [
+  ...FROZEN_1_TRIVIA,
+  ...FROZEN_2_TRIVIA
+];
