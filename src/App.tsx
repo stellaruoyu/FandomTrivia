@@ -20,6 +20,7 @@ import {
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
+  DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
   MCTriviaQuestion, BADGES, Badge
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -1434,6 +1435,63 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
   );
 };
 
+// --- Despicable Me Movie Selector ---
+
+const DESPICABLE_ME_GRADES = [
+  { threshold: 90, label: 'Anti-Villain Legend', color: 'text-yellow-400', character: { name: 'Felonious Gru', image: '/images/despicable-me.jpg', desc: 'Bello! You are the mastermind. Even the Bank of Evil would be impressed.' } },
+  { threshold: 70, label: 'Super Agent', color: 'text-blue-400', character: { name: 'Lucy Wilde', image: '/images/despicable-me.jpg', desc: 'Lipstick taser! Your instincts are sharp and your knowledge is vast.' } },
+  { threshold: 50, label: 'Minion in Training', color: 'text-yellow-300', character: { name: 'Stuart', image: '/images/despicable-me.jpg', desc: 'Banana! You are getting there, but you might need more jelly.' } },
+  { threshold: 0, label: 'Fresh Recruit', color: 'text-slate-400', character: { name: 'Jerry', image: '/images/despicable-me.jpg', desc: 'Whaaat? You are still figuring out which end is up. Keep practicing!' } },
+];
+
+const DespicableMeSelector = () => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-200">Mission</span></h2>
+        <Helmet>
+          <title>Despicable Me Trivia | Choose Your Film</title>
+          <meta name="description" content="Test your knowledge on Despicable Me 1, 2, 3, and 4. Prove you're the ultimate Minion Master." />
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try the Mixed Challenge!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Film 1", title: "Despicable Me", desc: `${DESPICABLE_ME_1_TRIVIA.length} questions`, icon: "🌙", view: 'trivia-despicableme-1', gradient: 'from-blue-600/20 to-indigo-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Film 2", title: "Despicable Me 2", desc: `${DESPICABLE_ME_2_TRIVIA.length} questions`, icon: "🧪", view: 'trivia-despicableme-2', gradient: 'from-purple-600/20 to-indigo-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+          { label: "Film 3", title: "Despicable Me 3", desc: `${DESPICABLE_ME_3_TRIVIA.length} questions`, icon: "💎", view: 'trivia-despicableme-3', gradient: 'from-pink-600/20 to-rose-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+          { label: "Film 4", title: "Despicable Me 4", desc: `${DESPICABLE_ME_4_TRIVIA.length} questions`, icon: "🪳", view: 'trivia-despicableme-4', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-despicableme-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+        ].map(film => (
+          <motion.button
+            key={film.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${film.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{film.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 const LandingView = () => {
   const navigate = useNavigate();
   return (
@@ -1573,6 +1631,7 @@ const LandingView = () => {
                     if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
                     if (universe.id === 'three-body') navigate('/selector-three-body');
                     if (universe.id === 'zootopia') navigate('/selector-zootopia');
+                    if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
                   }}
                   className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                 >
@@ -2098,6 +2157,10 @@ export default function App() {
     [...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
 
+  const despicableMeRandomQuestions = useMemo(() => 
+    [...DESPICABLE_ME_1_TRIVIA, ...DESPICABLE_ME_2_TRIVIA, ...DESPICABLE_ME_3_TRIVIA, ...DESPICABLE_ME_4_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
   useEffect(() => {
     document.title = "Fandom Trivia | The Ultimate Fan Experience";
   }, []);
@@ -2444,12 +2507,19 @@ export default function App() {
               user={user} 
               onQuizComplete={evaluateBadges} 
             />} />
+            <Route path="/trivia-despicableme-1" element={<MCQuizView key="trivia-despicableme-1" questions={DESPICABLE_ME_1_TRIVIA} title="Despicable Me" scoreLabel="Despicable Me" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-2" element={<MCQuizView key="trivia-despicableme-2" questions={DESPICABLE_ME_2_TRIVIA} title="Despicable Me 2" scoreLabel="Despicable Me 2" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-3" element={<MCQuizView key="trivia-despicableme-3" questions={DESPICABLE_ME_3_TRIVIA} title="Despicable Me 3" scoreLabel="Despicable Me 3" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-4" element={<MCQuizView key="trivia-despicableme-4" questions={DESPICABLE_ME_4_TRIVIA} title="Despicable Me 4" scoreLabel="Despicable Me 4" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-random" element={<MCQuizView key="trivia-despicableme-random" questions={despicableMeRandomQuestions} title="Despicable Me Mixed Challenge" scoreLabel="Despicable Me Mixed Challenge" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+
 
             {/* Selectors */}
             <Route path="/selector-twilight" element={<TwilightBookSelector key="selector-twilight" />} />
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />
-            <Route path="/selector-zootopia" element={<ZootopiaSelector key="selector-zootopia" />} />
+            <Route path="/selector-zootopia" element={<ZootopiaSelector />} />
+            <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
 
             {/* Account */}
             <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" />} />

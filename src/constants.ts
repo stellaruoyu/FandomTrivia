@@ -79,6 +79,14 @@ export const BADGES: Badge[] = [
     icon: 'Search',
     color: 'text-green-400',
     targetQuiz: 'zootopia'
+  },
+  {
+    id: 'minion_master',
+    name: 'Minion Master',
+    description: 'Complete any Despicable Me universe quiz.',
+    icon: 'Zap',
+    color: 'text-yellow-400',
+    targetQuiz: 'despicable-me'
   }
 ];
 
@@ -128,6 +136,15 @@ export const UNIVERSES = [
     image: '/images/zootopia.jpg',
     buttonText: 'Enter the Urban Jungle',
     icon: 'Search'
+  },
+  {
+    id: 'despicable-me',
+    title: 'Despicable Me',
+    tags: ['Animation', 'Comedy'],
+    description: 'Bello! Join Gru, the Minions, and the girls in their hilarious heist to steal the moon and save the world.',
+    image: '/images/despicable-me.jpg',
+    buttonText: 'Join the Minions',
+    icon: 'Zap'
   }
 ];
 
@@ -4683,3 +4700,340 @@ export const ZOOTOPIA_2_TRIVIA: MCTriviaQuestion[] = [
     evidence: "\"Originally, the Silence of the Lambs prison scene reference was four minutes long and taken verbatim from that film but was cut down because children were considered unlikely to understand the reference, and because it slowed the pacing.\" — Zootopia 2 Wikipedia: Production"
   }
 ];
+
+// --- Despicable Me Trivia ---
+
+export const DESPICABLE_ME_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which individual is credited with the 'Original Story' for the 2010 foundational film Despicable Me?",
+    options: ["Cinco Paul", "Ken Daurio", "Sergio Pablos", "Chris Renaud"],
+    answer: "Sergio Pablos",
+    evidence: "\"Despicable Me... based on an original story by Sergio Pablos.\" — Despicable Me (2010): Production/Crew"
+  },
+  {
+    id: 2,
+    question: "In the narrative of the first film, who serves as the primary technical antagonist to Gru?",
+    options: ["Mr. Perkins", "Vector", "Dr. Nefario", "Balthazar Bratt"],
+    answer: "Vector",
+    evidence: "\"Victor 'Vector' Perkins is the main antagonist of the 2010 animated film Despicable Me.\" — Despicable Me (2010): Characters"
+  },
+  {
+    id: 3,
+    question: "What is the specific amount of money Gru requests as a loan from the Bank of Evil for his moon heist?",
+    options: ["5 million dollars", "10 million dollars", "50 million dollars", "100 million dollars"],
+    answer: "10 million dollars",
+    evidence: "\"Gru goes to the Bank of Evil... and asks Mr. Perkins for a loan of 10 million dollars.\" — Despicable Me (2010): Plot"
+  },
+  {
+    id: 4,
+    question: "Vector's introductory villainous feat involved the theft of which iconic monument?",
+    options: ["The Eiffel Tower", "The Great Pyramid of Giza", "The Statue of Liberty", "The Golden Gate Bridge"],
+    answer: "The Great Pyramid of Giza",
+    evidence: "\"Vector manages to steal the Great Pyramid of Giza and replaces it with an inflatable replica.\" — Despicable Me (2010): Plot"
+  },
+  {
+    id: 5,
+    question: "Which of the three orphan girls famously asks 'Can I drink this?' regarding a mysterious liquid in Gru's lab?",
+    options: ["Margo", "Edith", "Agnes", "Lucy"],
+    answer: "Edith",
+    evidence: "\"Edith: 'Can I drink this?' *Nefario: 'Do you want to explode?'*\" — Despicable Me (2010): Dialogue"
+  },
+  {
+    id: 6,
+    question: "What specific commercial product does Gru use as a 'Trojan Horse' to infiltrate Vector's fortress?",
+    options: ["Vacuum cleaners", "Box of cookies", "Pizza delivery", "Magazine subscriptions"],
+    answer: "Box of cookies",
+    evidence: "\"Gru decides to adopt the girls so they can sell cookies to Vector and help him infiltrate the fortress.\" — Despicable Me (2010): Plot"
+  },
+  {
+    id: 7,
+    question: "Gru's plan to steal the moon was inspired by his childhood dream of being an astronaut.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Flashbacks show young Gru dreaming of going to the moon and being an astronaut.\" — Despicable Me (2010): Backstory"
+  },
+  {
+    id: 8,
+    question: "The architectural design of Gru's airship is loosely inspired by which real-world reconnaissance aircraft?",
+    options: ["U-2", "SR-71 Blackbird", "B-2 Spirit", "F-117 Nighthawk"],
+    answer: "SR-71 Blackbird",
+    evidence: "\"The design of Gru's airship... takes inspiration from the sleek, dark aesthetic of the SR-71 Blackbird.\" — Despicable Me (2010): Design"
+  },
+  {
+    id: 9,
+    question: "Vector is revealed to be the son of Mr. Perkins, the head of the Bank of Evil.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Mr. Perkins reveals that Vector is his son, Victor.\" — Despicable Me (2010): Plot"
+  },
+  {
+    id: 10,
+    question: "The shrink ray technology was originally stolen by Gru from a top-secret laboratory in South America.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Gru steals a shrink ray from a secret lab in East Asia, only for Vector to steal it from him immediately after.\" — Despicable Me (2010): Plot"
+  },
+  {
+    id: 11,
+    question: "Gru's mother is portrayed as a retired martial artist who is highly critical of her son.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Gru's mother is shown practicing karate and dismissively judging Gru's accomplishments.\" — Despicable Me (2010): Characters"
+  },
+  {
+    id: 12,
+    question: "Vector's real name is Victor Perkins.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Victor is 'Vector's' birth name.\" — Despicable Me (2010): Characters"
+  },
+  {
+    id: 13,
+    question: "The three orphan sisters are named Margo, Edith, and Alice.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"The girls are Margo, Edith, and Agnes.\" — Despicable Me (2010): Characters"
+  },
+  {
+    id: 14,
+    question: "Dr. Nefario is the elderly gadget-man who assists Gru in his villainous endeavors.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Dr. Nefario is Gru's long-time associate and scientist.\" — Despicable Me (2010): Characters"
+  },
+  {
+    id: 15,
+    question: "The Minions were originally designed to be large, human-like henchmen before their design was simplified into the iconic yellow capsules.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Early concept art for the Minions showed them as much more human-looking before they evolved into the yellow creatures we know today.\" — Despicable Me (2010): Production"
+  }
+];
+
+export const DESPICABLE_ME_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What is the designation of the potent chemical mutagen stolen from the secret lab in the Arctic?",
+    options: ["PX-41", "VX-9", "Compound V", "Serum 7"],
+    answer: "PX-41",
+    evidence: "\"A secret laboratory in the Arctic is stolen by a mysterious ship using a giant magnet... the lab contained a mutagen known as PX-41.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 2,
+    question: "Which Anti-Villain League (AVL) agent is responsible for 'kidnapping' Gru into their headquarters?",
+    options: ["Lucy Wilde", "Valerie Da Vinci", "Jillian", "Shannon"],
+    answer: "Lucy Wilde",
+    evidence: "\"Agent Lucy Wilde of the AVL 'kidnaps' Gru and takes him to their underwater base.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 3,
+    question: "What is the true identity of Eduardo Perez, the owner of Salsa & Salsa?",
+    options: ["El Macho", "The Scarlet Overkill", "Vector", "Balthazar Bratt"],
+    answer: "El Macho",
+    evidence: "\"Gru becomes convinced that Eduardo is a supervillain named El Macho, who was presumed dead.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 4,
+    question: "In the mall mission, which undercover business does Gru operate alongside Lucy?",
+    options: ["Bake My Day", "The Cookie Jar", "Eagle Hair Club", "Salsa & Salsa"],
+    answer: "Bake My Day",
+    evidence: "\"Gru and Lucy go undercover at a cupcake shop called 'Bake My Day' in the Paradise Mall.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 5,
+    question: "Who is the director of the Anti-Villain League?",
+    options: ["Silas Ramsbottom", "Nick Fury", "Valerie Da Vinci", "Arthur Perkins"],
+    answer: "Silas Ramsbottom",
+    evidence: "\"Silas Ramsbottom is the director of the AVL.\" — Despicable Me 2 (2013): Characters"
+  },
+  {
+    id: 6,
+    question: "Dr. Nefario leaves Gru's employment because he misses working for a more 'evil' boss.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Dr. Nefario decides to leave Gru to return to evil work, eventually joining El Macho.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 7,
+    question: "The mutated Minions (Evil Minions) are characterized by their purple color and wild, frizzy hair.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The PX-41 serum transforms the yellow minions into indestructible, purple, wild creatures.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 8,
+    question: "Gru's primary love interest in the second film is a neighbor named Jillian.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Jillian is the neighbor who tries to set Gru up on dates, but his true love interest is Lucy Wilde.\" — Despicable Me 2 (2013): Plot"
+  },
+  {
+    id: 9,
+    question: "El Macho's pet is a highly aggressive chicken named Pollito.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Pollito is El Macho's guard chicken who attacks Gru in the shop.\" — Despicable Me 2 (2013): Characters"
+  },
+  {
+    id: 10,
+    question: "The film concludes with the wedding of Gru and Lucy Wilde.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The film ends with Gru and Lucy's wedding and the girls finally having a mother.\" — Despicable Me 2 (2013): Plot"
+  }
+];
+
+export const DESPICABLE_ME_3_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Who is the 1980s-themed villain who attempts to steal the world's largest diamond?",
+    options: ["Balthazar Bratt", "Maxime Le Mal", "El Macho", "Vector"],
+    answer: "Balthazar Bratt",
+    evidence: "\"Balthazar Bratt, a former child star of the 80s, is the main antagonist.\" — Despicable Me 3 (2017): Plot"
+  },
+  {
+    id: 2,
+    question: "What is Balthazar Bratt's signature catchphrase used throughout his career and crimes?",
+    options: ["'I've been a bad boy!'", "'Bello!'", "'Vector!'", "'Freeze Ray!'"],
+    answer: "'I've been a bad boy!'",
+    evidence: "\"Bratt frequently says his child-star catchphrase: 'I've been a bad boy!'\" — Despicable Me 3 (2017): Dialogue"
+  },
+  {
+    id: 3,
+    question: "What is the name of Gru's long-lost twin brother?",
+    options: ["Dru", "Bru", "Gruff", "Gryff"],
+    answer: "Dru",
+    evidence: "\"Gru discovers he has a twin brother named Dru, who lives in Freedonia.\" — Despicable Me 3 (2017): Plot"
+  },
+  {
+    id: 4,
+    question: "In which fictional country does Gru's twin brother reside?",
+    options: ["Freedonia", "Genovia", "Latveria", "Sokovia"],
+    answer: "Freedonia",
+    evidence: "\"The family travels to Freedonia to meet Dru.\" — Despicable Me 3 (2017): Plot"
+  },
+  {
+    id: 5,
+    question: "Agnes becomes obsessed with finding which mythical creature in the forests of Freedonia?",
+    options: ["A unicorn", "A dragon", "A phoenix", "A yeti"],
+    answer: "A unicorn",
+    evidence: "\"Agnes goes on a quest to find a real unicorn in the forest.\" — Despicable Me 3 (2017): Plot"
+  },
+  {
+    id: 6,
+    question: "Balthazar Bratt was essentially a child star who became a villain after his show was cancelled during puberty.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Bratt was the star of 'Evil Bratt' until he hit puberty and the show was cancelled, leading to his villainy.\" — Despicable Me 3 (2017): Backstory"
+  },
+  {
+    id: 7,
+    question: "Gru and Dru's father was revealed to be a highly successful world-class villain known as 'The Bald Terror'.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Dru reveals to Gru that their father was a legendary villain who was proud of Gru but disappointed in Dru.\" — Despicable Me 3 (2017): Backstory"
+  },
+  {
+    id: 8,
+    question: "Clive is a human henchman who serves as Balthazar Bratt's choreographer.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Clive is a robot who helps Bratt with his gadgets and music.\" — Despicable Me 3 (2017): Characters"
+  },
+  {
+    id: 9,
+    question: "The Minions collectively decide to leave Gru and eventually end up in a high-security prison.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The Minions quit working for Gru and are later arrested for trespassing at a talent show.\" — Despicable Me 3 (2017): Plot"
+  },
+  {
+    id: 10,
+    question: "Balthazar Bratt utilizes a specialized combat suit and high-tech bubble gum as his primary weapons.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Bratt uses pink expanding bubble gum to trap his enemies and lift buildings.\" — Despicable Me 3 (2017): Plot"
+  }
+];
+
+export const DESPICABLE_ME_4_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Who is the primary antagonist of Despicable Me 4, a former school rival of Gru?",
+    options: ["Maxime Le Mal", "Balthazar Bratt", "Vector", "El Macho"],
+    answer: "Maxime Le Mal",
+    evidence: "\"Maxime Le Mal is the villain who seeks revenge on Gru.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 2,
+    question: "What is the name of the villainous academy where Gru and his rival were educated?",
+    options: ["Lycée Pas Bon", "Villain High", "Evil Institute", "Pas de Chance"],
+    answer: "Lycée Pas Bon",
+    evidence: "\"Gru and Maxime attended a school for villains called Lycée Pas Bon.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 3,
+    question: "Which character comes out of 'retirement' to lead the AVL once again in response to the new threat?",
+    options: ["Silas Ramsbottom", "Lucy Wilde", "Dr. Nefario", "Arthur Perkins"],
+    answer: "Silas Ramsbottom",
+    evidence: "\"Silas Ramsbottom returns to lead the AVL when Maxime escapes prison.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 4,
+    question: "What is the collective name given to the five Minions who are enhanced with superpowers by the AVL?",
+    options: ["Mega Minions", "Super Minions", "Ultra Minions", "Marvelous Minions"],
+    answer: "Mega Minions",
+    evidence: "\"Five minions—Dave, Mel, Gus, Tim, and Jerry—are given powers to become 'Mega Minions'.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 5,
+    question: "Into which idyllic, safe-house town is Gru's family relocated by the AVL?",
+    options: ["Mayflower", "Springfield", "Pleasantville", "Sunnydale"],
+    answer: "Mayflower",
+    evidence: "\"The family is moved to a safe house in the town of Mayflower.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 6,
+    question: "Maxime Le Mal undergoes a physical transformation into a human-cockroach hybrid using his own technology.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Maxime enhances himself with cockroach DNA, giving him super strength and abilities.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 7,
+    question: "Gru Jr. is the newborn biological son of Gru and Lucy Wilde.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The film introduces Gru Jr., the infant son of Gru and Lucy.\" — Despicable Me 4 (2024): Characters"
+  },
+  {
+    id: 8,
+    question: "Poppy Prescott is revealed to be a double agent working for the Anti-Villain League.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Poppy is an aspiring villain and a neighbor who blackmails Gru into helping her with a heist.\" — Despicable Me 4 (2024): Plot"
+  },
+  {
+    id: 9,
+    question: "The Mega Minions story arc serves as a direct parody of modern superhero team films like The Avengers and Fantastic Four.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The Mega Minions' powers and actions directly lampoon tropes from superhero movies.\" — Despicable Me 4 (2024): Production"
+  },
+  {
+    id: 10,
+    question: "The rivalry between Maxime and Gru originated when Gru stole Maxime's talent show act in school.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Maxime has held a grudge since school when Gru stole his performance act.\" — Despicable Me 4 (2024): Backstory"
+  }
+];
+
+export const DESPICABLE_ME_MIXED_TRIVIA: MCTriviaQuestion[] = [
+  ...DESPICABLE_ME_1_TRIVIA,
+  ...DESPICABLE_ME_2_TRIVIA,
+  ...DESPICABLE_ME_3_TRIVIA,
+  ...DESPICABLE_ME_4_TRIVIA
+];
+
