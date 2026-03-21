@@ -1888,10 +1888,10 @@ const RankingsView = () => {
         if (rankingType === 'accuracy') {
           query = query
             .order('score', { ascending: false })
-            .order('completion_time', { ascending: true });
+            .order('completion_time', { ascending: true, nullsFirst: false });
         } else {
           query = query
-            .order('completion_time', { ascending: true })
+            .order('completion_time', { ascending: true, nullsFirst: false })
             .order('score', { ascending: false });
         }
 
@@ -2030,13 +2030,20 @@ const RankingsView = () => {
                             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
                               {rankingType === 'accuracy' ? `${Math.round((scoreRow.score / scoreRow.total) * 100)}%` : `Score: ${scoreRow.score}/${scoreRow.total}`}
                             </p>
-                            {rankingType === 'accuracy' && (
-                              <>
-                                <div className="size-1 rounded-full bg-slate-700"></div>
-                                <p className="text-[10px] font-bold text-slate-500">
-                                  {formatTime(scoreRow.completion_time)}
-                                </p>
-                              </>
+                            {rankingType === 'speed' ? (
+                               <>
+                                 <div className="size-1 rounded-full bg-slate-700"></div>
+                                 <p className="text-[10px] font-bold text-slate-500">
+                                   {Math.round((scoreRow.score / scoreRow.total) * 100)}%
+                                 </p>
+                               </>
+                            ) : (
+                               <>
+                                 <div className="size-1 rounded-full bg-slate-700"></div>
+                                 <p className="text-[10px] font-bold text-slate-500">
+                                   {formatTime(scoreRow.completion_time)}
+                                 </p>
+                               </>
                             )}
                           </div>
                         </div>
