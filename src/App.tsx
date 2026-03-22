@@ -11,7 +11,7 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -1688,6 +1688,7 @@ const LandingView = () => {
                     if (universe.id === 'three-body') navigate('/selector-three-body');
                     if (universe.id === 'zootopia') navigate('/selector-zootopia');
                     if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
+                    if (universe.id === 'frozen') navigate('/selector-frozen');
                   }}
                   className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                 >
@@ -1698,6 +1699,8 @@ const LandingView = () => {
                 {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
                 {universe.icon === 'Wand2' && <Wand2 className="text-white/50 size-10" />}
                 {universe.icon === 'Zap' && <Zap className="text-primary/70 size-10 fill-current" />}
+                {universe.icon === 'Search' && <Search className="text-white/50 size-10" />}
+                {universe.icon === 'Snowflake' && <Snowflake className="text-sky-300/50 size-10" />}
               </div>
             </motion.div>
           ))}
