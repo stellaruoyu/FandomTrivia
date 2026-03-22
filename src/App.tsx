@@ -11,7 +11,8 @@ import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
-  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake
+  BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
+  Volume2, VolumeX
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -332,7 +333,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo }: {
+const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound }: {
   isDashboard: boolean,
   user: User | null,
   onLogin: () => void,
@@ -340,7 +341,9 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   onResetUsername?: () => void,
   onShowHistory?: () => void,
   onShowBadges?: () => void,
-  onShowInfo?: (title: string, content: string) => void
+  onShowInfo?: (title: string, content: string) => void,
+  soundEnabled: boolean,
+  onToggleSound: () => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -429,7 +432,14 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
                         Account Settings
                       </p>
                     </div>
-                    <div className="p-1.5">
+                    <div className="p-1.5 space-y-1">
+                      <button
+                        onClick={() => { onToggleSound(); }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all"
+                      >
+                        {soundEnabled ? <Volume2 className="size-4 text-primary" /> : <VolumeX className="size-4 text-slate-500" />}
+                        {soundEnabled ? 'Turn Sound Off' : 'Turn Sound On'}
+                      </button>
 
                       {onShowHistory && (
                         <button
@@ -2199,6 +2209,18 @@ export default function App() {
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('soundEnabled');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  const toggleSound = () => {
+    setSoundEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('soundEnabled', JSON.stringify(next));
+      return next;
+    });
+  };
 
   const twilightRandomQuestions = useMemo(() => 
     [...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
@@ -2444,6 +2466,8 @@ export default function App() {
         onShowHistory={() => setShowHistoryModal(true)}
         onShowBadges={() => setShowBadgesModal(true)}
         onShowInfo={(title, content) => setModalInfo({title, content})}
+        soundEnabled={soundEnabled}
+        onToggleSound={toggleSound}
       />
 
       <AnimatePresence>
