@@ -931,6 +931,7 @@ function shuffle<T>(array: T[]): T[] {
 // --- Multiple Choice Quiz View (Generic) ---
 
 const playCorrectSound = () => {
+  if (localStorage.getItem('soundEnabled') === 'false') return;
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContext) return;
@@ -968,6 +969,7 @@ const playCorrectSound = () => {
 };
 
 const playIncorrectSound = () => {
+  if (localStorage.getItem('soundEnabled') === 'false') return;
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContext) return;
