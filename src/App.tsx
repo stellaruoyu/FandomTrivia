@@ -12,11 +12,12 @@ import {
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
-  Volume2, VolumeX
+  Volume2, VolumeX, Sparkles
 } from 'lucide-react';
 import {
-  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
+  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, DAILY_QUIZZES,
   KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, TWILIGHT_BOOK_TRIVIA, NEW_MOON_TRIVIA, ECLIPSE_TRIVIA, BREAKING_DAWN_TRIVIA, MIDNIGHT_SUN_TRIVIA, LIFE_AND_DEATH_TRIVIA,
+
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
@@ -1560,7 +1561,90 @@ const DespicableMeSelector = () => {
   );
 };
 
+
+// --- Daily Mystery Quiz Component ---
+
+
+const DailyMysteryQuiz = () => {
+  const navigate = useNavigate();
+  
+  const dailyQuiz = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
+    let hash = 0;
+    for (let i = 0; i < today.length; i++) {
+      hash = ((hash << 5) - hash) + today.charCodeAt(i);
+      hash |= 0;
+    }
+    const index = Math.abs(hash) % DAILY_QUIZZES.length;
+    return DAILY_QUIZZES[index];
+  }, []);
+
+  return (
+    <motion.section 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="max-w-7xl mx-auto px-6 mb-20"
+    >
+      <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/10 shadow-2xl group">
+        {/* Background Decorative Elements */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${dailyQuiz.color} opacity-30 transition-opacity duration-700 group-hover:opacity-40`}></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[80px]"></div>
+        
+        <div className="relative z-10 flex flex-col lg:flex-row items-center gap-10 p-8 md:p-12 lg:p-16">
+          {/* Image Container */}
+          <div className="w-full lg:w-2/5 aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative">
+            <img 
+              src={dailyQuiz.image} 
+              alt={dailyQuiz.title} 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div className="absolute bottom-4 left-4 flex items-center gap-2">
+              <div className="px-3 py-1 rounded-full bg-primary/80 backdrop-blur-md text-[10px] font-black text-white uppercase tracking-widest border border-white/20">
+                Today's Mystery
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.2em] text-xs">
+                <Sparkles className="size-4 animate-pulse" />
+                Featured Challenge
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-tight">
+                Daily Mystery Quiz <br /> Challenge is... <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">{dailyQuiz.title}</span>
+              </h2>
+            </div>
+            
+            <p className="text-lg text-slate-400 font-medium max-w-2xl">
+              {dailyQuiz.description}
+            </p>
+
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <button
+                onClick={() => navigate(dailyQuiz.path)}
+                className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-black text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2 group/btn"
+              >
+                Start Quiz Now!
+                <ArrowRight className="size-6 transition-transform group-hover/btn:translate-x-1" />
+              </button>
+              <div className="text-slate-500 text-xs font-bold uppercase tracking-widest hidden sm:block">
+                Ends at Midnight
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
 const LandingView = () => {
+
   const navigate = useNavigate();
   return (
   <motion.div
@@ -1653,7 +1737,11 @@ const LandingView = () => {
         </div>
       </section>
 
+
+      <DailyMysteryQuiz />
+
       {/* Universe Grid */}
+
       <section id="universes" className="max-w-7xl mx-auto px-6 pb-32">
         <div className="flex items-end justify-between mb-10">
           <div className="space-y-2">
