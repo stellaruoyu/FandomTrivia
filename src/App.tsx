@@ -1623,14 +1623,8 @@ const DailyMysteryQuiz = () => {
   const navigate = useNavigate();
   
   const dailyQuiz = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    let hash = 0;
-    for (let i = 0; i < today.length; i++) {
-      hash = ((hash << 5) - hash) + today.charCodeAt(i);
-      hash |= 0;
-    }
-    const index = Math.abs(hash) % DAILY_QUIZZES.length;
-    return DAILY_QUIZZES[index];
+    // Hardcoded to Twilight: Book 1 as requested for the current state
+    return DAILY_QUIZZES[0];
   }, []);
 
   return (
@@ -1657,7 +1651,7 @@ const DailyMysteryQuiz = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div className="absolute bottom-4 left-4 flex items-center gap-2">
               <div className="px-3 py-1 rounded-full bg-primary/80 backdrop-blur-md text-[10px] font-black text-white uppercase tracking-widest border border-white/20">
-                Today's Mystery
+                Today's Challenge
               </div>
             </div>
           </div>
@@ -1670,7 +1664,7 @@ const DailyMysteryQuiz = () => {
                 Featured Challenge
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-tight">
-                Daily Mystery Quiz <br /> Challenge is... <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">{dailyQuiz.title}</span>
+                Today's Daily <br /> Challenge is... <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">{dailyQuiz.title}</span>
               </h2>
             </div>
             
