@@ -999,13 +999,14 @@ const playIncorrectSound = () => {
   }
 };
 
-const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete }: {
+const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
   grades: { threshold: number; label: string; color: string; character?: { name: string; image: string; desc: string } }[],
   user: User | null,
-  onQuizComplete?: (quizId: string, scorePct: number) => void,
+  onQuizComplete?: (quizId: string, scorePct: number, isDaily: boolean) => void,
+  isDaily?: boolean,
   key?: string
 }) => {
   const [currentQ, setCurrentQ] = useState(0);
@@ -1079,7 +1080,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
       setCompletionTime(durationSeconds);
       if (onQuizComplete) {
-        onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100));
+        onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
       }
     }
   };
@@ -1109,7 +1110,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           quiz_id: scoreLabel,
           score: correctCount,
           total: total,
-          completion_time: completionTime
+          completion_time: completionTime,
+          is_daily_challenge: !!isDaily
         });
       if (error) throw error;
       setScoreSaved(true);
@@ -1626,9 +1628,10 @@ const DailyMysteryQuiz = () => {
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <button
-                onClick={() => navigate(dailyQuiz.path)}
+                onClick={() => navigate(dailyQuiz.path, { state: { isDaily: true } })}
                 className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-black text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2 group/btn"
               >
+
                 Start Quiz Now!
                 <ArrowRight className="size-6 transition-transform group-hover/btn:translate-x-1" />
               </button>
@@ -2495,10 +2498,60 @@ export default function App() {
     navigate('/');
   };
 
-  const evaluateBadges = (quizId: string, scorePct: number) => {
+  const evaluateBadges = async (quizId: string, scorePct: number, isDaily: boolean = false) => {
     const newlyUnlocked: Badge[] = [];
+    
+    // Check if user is logged in for streak calculation
+    if (isDaily && user) {
+      try {
+        const { data: dailyScores, error } = await supabase
+          .from('scores')
+          .select('created_at')
+          .eq('user_id', user.id)
+          .eq('is_daily_challenge', true)
+          .order('created_at', { ascending: false });
+
+        if (!error && dailyScores) {
+          // Get unique days (YYYY-MM-DD)
+          const distinctDays = Array.from(new Set(dailyScores.map(s => 
+            new Date(s.created_at).toISOString().split('T')[0]
+          )));
+
+          // Current streak calculation
+          let streak = 0;
+          const todayStr = new Date().toISOString().split('T')[0];
+          
+          // Check if today is in the list (it should be since we just saved it)
+          if (distinctDays[0] === todayStr) {
+            streak = 1;
+            for (let i = 0; i < distinctDays.length - 1; i++) {
+              const current = new Date(distinctDays[i]);
+              const previous = new Date(distinctDays[i+1]);
+              const diffTime = Math.abs(current.getTime() - previous.getTime());
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              
+              if (diffDays === 1) {
+                streak++;
+              } else {
+                break;
+              }
+            }
+          }
+
+          // Streak Milestone Unlocks
+          if (streak >= 1 && !unlockedBadgeIds.includes('streak_1')) newlyUnlocked.push(BADGES.find(b => b.id === 'streak_1')!);
+          if (streak >= 5 && !unlockedBadgeIds.includes('streak_5')) newlyUnlocked.push(BADGES.find(b => b.id === 'streak_5')!);
+          if (streak >= 10 && !unlockedBadgeIds.includes('streak_10')) newlyUnlocked.push(BADGES.find(b => b.id === 'streak_10')!);
+          if (streak >= 30 && !unlockedBadgeIds.includes('streak_30')) newlyUnlocked.push(BADGES.find(b => b.id === 'streak_30')!);
+        }
+      } catch (err) {
+        console.error('Error calculating streak:', err);
+      }
+    }
 
     BADGES.forEach(badge => {
+      // Skip the ones we just added manually via streak logic
+      if (newlyUnlocked.some(nb => nb.id === badge.id)) return;
       if (unlockedBadgeIds.includes(badge.id)) return; // Already unlocked
 
       let unlocked = false;
@@ -2588,14 +2641,14 @@ export default function App() {
               { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
               { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
               { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-eclipse" element={<MCQuizView key="trivia-eclipse" questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-breakingdawn" element={<MCQuizView key="trivia-breakingdawn" questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-midnightsun" element={<MCQuizView key="trivia-midnightsun" questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-lifeanddeath" element={<MCQuizView key="trivia-lifeanddeath" questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-eclipse" element={<MCQuizView key="trivia-eclipse" questions={ECLIPSE_TRIVIA} title="Eclipse" scoreLabel="Eclipse" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-breakingdawn" element={<MCQuizView key="trivia-breakingdawn" questions={BREAKING_DAWN_TRIVIA} title="Breaking Dawn" scoreLabel="Breaking Dawn" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-midnightsun" element={<MCQuizView key="trivia-midnightsun" questions={MIDNIGHT_SUN_TRIVIA} title="Midnight Sun" scoreLabel="Midnight Sun" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-lifeanddeath" element={<MCQuizView key="trivia-lifeanddeath" questions={LIFE_AND_DEATH_TRIVIA} title="Life and Death" scoreLabel="Life and Death" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-random" element={<MCQuizView 
               key="trivia-twilight-random" 
               questions={twilightRandomQuestions} 
@@ -2610,43 +2663,43 @@ export default function App() {
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-cos" element={<MCQuizView key="trivia-harry-potter-cos" questions={HARRY_POTTER_COS_TRIVIA} title="Harry Potter: Chamber of Secrets" scoreLabel="Harry Potter: Chamber of Secrets" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'Muggle-Born Learner', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-poa" element={<MCQuizView key="trivia-harry-potter-poa" questions={HARRY_POTTER_POA_TRIVIA} title="HP: Prisoner of Azkaban" scoreLabel="HP: Prisoner of Azkaban" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-gof" element={<MCQuizView key="trivia-harry-potter-gof" questions={HARRY_POTTER_GOF_TRIVIA} title="HP: Goblet of Fire" scoreLabel="HP: Goblet of Fire" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-ootp" element={<MCQuizView key="trivia-harry-potter-ootp" questions={HARRY_POTTER_OOTP_TRIVIA} title="HP: Order of the Phoenix" scoreLabel="HP: Order of the Phoenix" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-hbp" element={<MCQuizView key="trivia-harry-potter-hbp" questions={HARRY_POTTER_HBP_TRIVIA} title="HP: Half-Blood Prince" scoreLabel="HP: Half-Blood Prince" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-dh" element={<MCQuizView key="trivia-harry-potter-dh" questions={HARRY_POTTER_DH_TRIVIA} title="HP: Deathly Hallows" scoreLabel="HP: Deathly Hallows" grades={[
               { threshold: 90, label: 'Dumbledore-Level Genius', color: 'text-amber-400', character: { name: 'Albus Dumbledore', image: '/images/dumbledore.jpg', desc: 'Your wisdom is legendary. Even the restricted section has no secrets from you.' } },
               { threshold: 70, label: 'Prefect Material', color: 'text-purple-400', character: { name: 'Hermione Granger', image: '/images/hermione.jpg', desc: 'Impressive! You have clearly spent your time in the library wisely.' } },
               { threshold: 50, label: 'O.W.L. Candidate', color: 'text-blue-400', character: { name: 'Harry Potter', image: '/images/harry.jpg', desc: 'You have potential, but you might need some more practice with your wand-work.' } },
               { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
-            ]} user={user} onQuizComplete={evaluateBadges} />} />
+            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-harry-potter-random" element={<MCQuizView 
               key="trivia-harry-potter-random" 
               questions={hpRandomQuestions} 
@@ -2659,11 +2712,12 @@ export default function App() {
                 { threshold: 0, label: 'Muggle', color: 'text-slate-400', character: { name: 'Dudley Dursley', image: '/images/dudley.jpg', desc: 'Is there a bit of magic in you? It does not seem like it yet.' } },
               ]} 
               user={user} 
+              isDaily={location.state?.isDaily} 
               onQuizComplete={evaluateBadges} 
             />} />
-            <Route path="/trivia-three-body-problem" element={<MCQuizView key="trivia-three-body-problem" questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-the-dark-forest" element={<MCQuizView key="trivia-the-dark-forest" questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-three-body-problem" element={<MCQuizView key="trivia-three-body-problem" questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-the-dark-forest" element={<MCQuizView key="trivia-the-dark-forest" questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-three-body-random" element={<MCQuizView 
               key="trivia-three-body-random" 
               questions={threeBodyRandomQuestions} 
@@ -2671,10 +2725,11 @@ export default function App() {
               scoreLabel="Three-Body Mixed Challenge" 
               grades={THREE_BODY_GRADES} 
               user={user} 
+              isDaily={location.state?.isDaily} 
               onQuizComplete={evaluateBadges} 
             />} />
-            <Route path="/trivia-zootopia" element={<MCQuizView key="trivia-zootopia" questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-zootopia-2" element={<MCQuizView key="trivia-zootopia-2" questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-zootopia" element={<MCQuizView key="trivia-zootopia" questions={ZOOTOPIA_TRIVIA} title="Zootopia" scoreLabel="Zootopia" grades={ZOOTOPIA_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-zootopia-2" element={<MCQuizView key="trivia-zootopia-2" questions={ZOOTOPIA_2_TRIVIA} title="Zootopia 2" scoreLabel="Zootopia 2" grades={ZOOTOPIA_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-zootopia-random" element={<MCQuizView 
               key="trivia-zootopia-random" 
               questions={zootopiaRandomQuestions} 
@@ -2682,13 +2737,14 @@ export default function App() {
               scoreLabel="Zootopia Mixed Case File" 
               grades={ZOOTOPIA_GRADES} 
               user={user} 
+              isDaily={location.state?.isDaily} 
               onQuizComplete={evaluateBadges} 
             />} />
-            <Route path="/trivia-despicableme-1" element={<MCQuizView key="trivia-despicableme-1" questions={DESPICABLE_ME_1_TRIVIA} title="Despicable Me" scoreLabel="Despicable Me" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-despicableme-2" element={<MCQuizView key="trivia-despicableme-2" questions={DESPICABLE_ME_2_TRIVIA} title="Despicable Me 2" scoreLabel="Despicable Me 2" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-despicableme-3" element={<MCQuizView key="trivia-despicableme-3" questions={DESPICABLE_ME_3_TRIVIA} title="Despicable Me 3" scoreLabel="Despicable Me 3" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-despicableme-4" element={<MCQuizView key="trivia-despicableme-4" questions={DESPICABLE_ME_4_TRIVIA} title="Despicable Me 4" scoreLabel="Despicable Me 4" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-despicableme-random" element={<MCQuizView key="trivia-despicableme-random" questions={despicableMeRandomQuestions} title="Despicable Me Mixed Challenge" scoreLabel="Despicable Me Mixed Challenge" grades={DESPICABLE_ME_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-1" element={<MCQuizView key="trivia-despicableme-1" questions={DESPICABLE_ME_1_TRIVIA} title="Despicable Me" scoreLabel="Despicable Me" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-2" element={<MCQuizView key="trivia-despicableme-2" questions={DESPICABLE_ME_2_TRIVIA} title="Despicable Me 2" scoreLabel="Despicable Me 2" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-3" element={<MCQuizView key="trivia-despicableme-3" questions={DESPICABLE_ME_3_TRIVIA} title="Despicable Me 3" scoreLabel="Despicable Me 3" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-4" element={<MCQuizView key="trivia-despicableme-4" questions={DESPICABLE_ME_4_TRIVIA} title="Despicable Me 4" scoreLabel="Despicable Me 4" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-despicableme-random" element={<MCQuizView key="trivia-despicableme-random" questions={despicableMeRandomQuestions} title="Despicable Me Mixed Challenge" scoreLabel="Despicable Me Mixed Challenge" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
 
             {/* Selectors */}
@@ -2700,9 +2756,9 @@ export default function App() {
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             
             {/* Frozen Trivia */}
-            <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
             {/* Account */}
             <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" />} />

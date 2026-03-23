@@ -1,4 +1,4 @@
-import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake } from 'lucide-react';
+import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake, Sparkles } from 'lucide-react';
 
 export const NAV_LINKS = [
   { name: 'Home', href: '#' },
