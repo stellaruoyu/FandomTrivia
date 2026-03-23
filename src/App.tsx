@@ -13,7 +13,7 @@ import {
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
-  Volume2, VolumeX, Sparkles
+  Volume2, VolumeX, Sparkles, Car
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, DAILY_QUIZZES,
@@ -1051,6 +1051,77 @@ const playIncorrectSound = () => {
   }
 };
 
+const RaceTrack = ({ 
+  mode, 
+  userScore, 
+  total, 
+  userName, 
+  teammateName,
+  opponentNames,
+  opponentScore 
+}: { 
+  mode: 'team' | 'versus', 
+  userScore: number, 
+  total: number, 
+  userName: string,
+  teammateName?: string,
+  opponentNames: string[],
+  opponentScore: number
+}) => {
+  const userProgress = (userScore / total) * 100;
+  const opponentProgress = (opponentScore / total) * 100;
+
+  return (
+    <div className="absolute top-4 right-4 z-[60] w-64 space-y-2 pointer-events-none md:w-80">
+      {/* Track Background */}
+      <div className="relative h-16 bg-black/40 border border-white/20 rounded-2xl overflow-hidden backdrop-blur-xl shadow-2xl">
+        <div className="absolute inset-0 flex items-center justify-around opacity-20 pointer-events-none">
+          {[...Array(8)].map((_, i) => <div key={i} className="w-px h-full bg-white/50 border-r border-dotted border-white/20" />)}
+        </div>
+        
+        {/* Opponent Car */}
+        <motion.div 
+          animate={{ left: `${Math.min(opponentProgress, 85)}%` }}
+          transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+          className="absolute top-1 flex flex-col items-center gap-0.5"
+        >
+          <div className="bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)] px-2 py-0.5 rounded-full mb-0.5">
+            <p className="text-[9px] font-black text-white whitespace-nowrap uppercase tracking-tighter shadow-sm">
+              {opponentNames.join(' & ')}
+            </p>
+          </div>
+          <Car className="size-6 text-red-500 fill-red-500 shadow-xl" />
+        </motion.div>
+
+        {/* Player Car */}
+        <motion.div 
+          animate={{ left: `${Math.min(userProgress, 85)}%` }}
+          transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+          className="absolute bottom-1 flex flex-col items-center gap-0.5"
+        >
+          <Car className="size-6 text-primary fill-primary shadow-xl" />
+          <div className="bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)] px-2 py-0.5 rounded-full mt-0.5">
+            <p className="text-[9px] font-black text-white whitespace-nowrap uppercase tracking-tighter shadow-sm">
+              {[userName, teammateName].filter(Boolean).join(' & ')}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+      
+      <div className="flex justify-between items-center px-2">
+        <div className="flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
+          <div className="size-1.5 rounded-full bg-primary animate-pulse" />
+          <span className="text-[9px] font-black text-white uppercase tracking-widest opacity-80">Your Team</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/20">
+          <span className="text-[9px] font-black text-red-500 uppercase tracking-widest opacity-80">Rivals</span>
+          <div className="size-1.5 rounded-full bg-red-500 animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
   questions: MCTriviaQuestion[],
   title: string,
@@ -1061,6 +1132,12 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   isDaily?: boolean,
   key?: string
 }) => {
+  const [gameState, setGameState] = useState<'mode_selection' | 'searching' | 'playing'>('mode_selection');
+  const [gameMode, setGameMode] = useState<'single' | 'team' | 'versus' | null>(null);
+  const [foundPlayers, setFoundPlayers] = useState(1);
+  const [opponentScore, setOpponentScore] = useState(0);
+  const [opponentNames, setOpponentNames] = useState<string[]>([]);
+  const [teammateName, setTeammateName] = useState<string | null>(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
@@ -1072,6 +1149,62 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
 
+  // Initialize opponents and teammates
+  useEffect(() => {
+    if (gameState === 'searching') {
+      const allMocks = ['TriviaMaster42', 'FandomFanatic', 'QuizzicalWizard', 'GalacticGamer', 'MysterySolver', 'LoreSeeker', 'EchoCullen', 'PotterHead99', 'TrisolaranTourist', 'ZootopiaZPD'];
+      const shuffled = shuffle(allMocks);
+      
+      if (gameMode === 'versus') {
+        setOpponentNames([shuffled[0]]);
+        setTeammateName(null);
+      } else if (gameMode === 'team') {
+        setOpponentNames([shuffled[0], shuffled[1]]);
+        setTeammateName(shuffled[2]);
+      }
+    }
+  }, [gameState, gameMode]);
+
+  // Opponent progress simulation
+  useEffect(() => {
+    if (gameState === 'playing' && (gameMode === 'team' || gameMode === 'versus') && !finished) {
+      const timer = setInterval(() => {
+        setOpponentScore(prev => {
+          if (prev >= questions.length) {
+            clearInterval(timer);
+            return questions.length;
+          }
+          // Slow progress for simulation
+          return Math.random() > 0.6 ? prev + 1 : prev;
+        });
+      }, 3000);
+      return () => clearInterval(timer);
+    }
+  }, [gameState, gameMode, finished, questions.length]);
+
+  // Matchmaking simulation
+  useEffect(() => {
+    if (gameState === 'searching') {
+      const timer = setInterval(() => {
+        setFoundPlayers(prev => {
+          const next = prev + 1;
+          if (gameMode === 'versus' && next >= 2) {
+             clearInterval(timer);
+             setTimeout(() => setGameState('playing'), 500);
+             return 2;
+          }
+          if (gameMode === 'team' && next >= 4) {
+             clearInterval(timer);
+             setTimeout(() => setGameState('playing'), 500);
+             return 4;
+          }
+          return next;
+        });
+      }, 1500);
+      return () => clearInterval(timer);
+    }
+  }, [gameState, gameMode]);
+
   // Initialize and shuffle questions for this session
   useEffect(() => {
     const shuffled = shuffle(questions).map(q => ({
@@ -1082,6 +1215,87 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   }, [shuffleKey]); // Removed questions from dependencies to prevent infinite loops with unstable arrays
 
   const navigate = useNavigate();
+
+  // Mode Selection Screen
+  if (gameState === 'mode_selection') {
+    return (
+      <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full space-y-8 p-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50"></div>
+          <div className="relative z-10 space-y-6">
+            <div className="flex justify-center">
+              <div className="size-20 bg-primary/20 rounded-2xl flex items-center justify-center animate-pulse">
+                <Trophy className="size-10 text-primary" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Choose Your Mode</h2>
+              <p className="text-slate-400 font-medium">How would you like to tackle the <span className="text-primary">{title}</span> universe?</p>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4 pt-4">
+              {[
+                { id: 'single', name: 'Single Playing', desc: 'Face the challenge alone and top the leaderboards.', icon: UserIcon, color: 'from-blue-600/20 to-indigo-600/20', border: 'hover:border-blue-400/50' },
+                { id: 'team', name: 'Team Mode', desc: 'Gather your crew. Number of players must be even.', icon: Users, color: 'from-emerald-600/20 to-teal-600/20', border: 'hover:border-emerald-400/50' },
+                { id: 'versus', name: 'Versus Mode', desc: '1v1 Battle. Prove you are the superior fan.', icon: Zap, color: 'from-amber-600/20 to-red-600/20', border: 'hover:border-amber-400/50' },
+              ].map(mode => (
+                <button
+                  key={mode.id}
+                  onClick={() => {
+                    setGameMode(mode.id as any);
+                    if (mode.id === 'single') setGameState('playing');
+                    else setGameState('searching');
+                  }}
+                  className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border border-white/10 ${mode.border} transition-all duration-300 text-left group`}
+                >
+                  <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                    <mode.icon className="size-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white leading-none">{mode.name}</h3>
+                    <p className="text-xs text-slate-400 mt-1">{mode.desc}</p>
+                  </div>
+                  <ArrowRight className="size-4 ml-auto text-white/30 group-hover:text-white transition-all group-hover:translate-x-1" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Searching Screen
+  if (gameState === 'searching') {
+    return (
+      <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
+          <div className="relative">
+            <div className="size-32 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Users className="size-10 text-primary animate-pulse" />
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white italic uppercase tracking-wider animate-pulse">
+              please wait, searching 4 avaliable players...
+            </h2>
+            <div className="flex items-center justify-center gap-3">
+              {[...Array(gameMode === 'team' ? 4 : 2)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`size-3 rounded-full transition-all duration-500 ${i < foundPlayers ? 'bg-primary scale-125 shadow-lg shadow-primary/50' : 'bg-white/10'}`}
+                />
+              ))}
+            </div>
+            <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">
+              {gameMode === 'team' ? `Players Found: ${foundPlayers} / 4 (Waiting for even team)` : `Matchmaking: ${foundPlayers} / 2`}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   // Wait for session questions to be initialized
   if (sessionQuestions.length === 0) {
@@ -1146,6 +1360,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setStartTime(null);
     setCompletionTime(null);
     setShuffleKey(prev => prev + 1); // Trigger re-shuffle
+    setGameState('mode_selection');
+    setGameMode(null);
+    setFoundPlayers(1);
+    setOpponentScore(0);
   };
 
   const handleSaveScore = async () => {
@@ -1274,8 +1492,20 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
-      <div className="max-w-3xl mx-auto space-y-8">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
+      {/* Race Mode UI shown during quiz if team/versus */}
+      {(gameMode === 'team' || gameMode === 'versus') && (
+        <RaceTrack 
+          mode={gameMode}
+          userScore={correctCount}
+          total={total}
+          userName={user?.email?.split('@')[0] || 'Guest'}
+          teammateName={teammateName || undefined}
+          opponentNames={opponentNames}
+          opponentScore={opponentScore}
+        />
+      )}
+      <div className="max-w-3xl mx-auto space-y-8 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
