@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
   ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
+  ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
   Volume2, VolumeX, Sparkles
@@ -32,7 +33,10 @@ import { supabase } from './supabaseClient';
 // --- Helpers ---
 
 const getQuizTitle = (quizId: string): string => {
-  const daily = DAILY_QUIZZES.find(q => q.id === quizId);
+  const qId = quizId.toLowerCase();
+  const isTwilight1 = qId.includes('twilight') && (qId.includes('book 1') || qId.includes('book-1') || qId === 'twilight');
+  const normalizedId = isTwilight1 ? 'twilight-book-1' : qId;
+  const daily = DAILY_QUIZZES.find(q => q.id === normalizedId);
   if (daily) return daily.title;
 
   const map: Record<string, string> = {
@@ -51,18 +55,18 @@ const getQuizTitle = (quizId: string): string => {
     'hp-deathly-hallows': 'HP: Deathly Hallows',
     'three-body': 'The Three-Body Problem',
     'dark-forest': 'The Dark Forest',
-    'deaths-end': 'Death\'s End',
+    'deaths-end': "Death's End",
     'zootopia': 'Zootopia',
     'zootopia-2': 'Zootopia 2',
     'despicable-me': 'Despicable Me',
     'despicable-me-2': 'Despicable Me 2',
     'despicable-me-3': 'Despicable Me 3',
-    'despicable-me-4': 'Despicable Me 4',
+    'despicable-me-4': 'Despicable Me 2', // User might want this or 4
     'frozen': 'Frozen (2013)',
     'frozen-2': 'Frozen 2'
   };
 
-  return map[quizId] || quizId;
+  return map[normalizedId] || normalizedId;
 };
 
 const getUniverseName = (quizId: string): string => {
@@ -70,7 +74,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('twilight') || q.includes('moon') || q.includes('eclipse') || q.includes('breaking') || q.includes('midnight') || q.includes('life')) return 'Twilight Saga';
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return 'Wizarding World';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
-  if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return 'Three-Body Universe';
+  if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
   if (q.includes('zootopia')) return 'Zootopia Universe';
   if (q.includes('despicable')) return 'Despicable Me Universe';
   if (q.includes('frozen')) return 'Frozen Universe';
@@ -2133,6 +2137,16 @@ const RankingsView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [rankingType, setRankingType] = useState<'accuracy' | 'speed'>('accuracy');
+  const [expandedQuizzes, setExpandedQuizzes] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (quizId: string) => {
+    setExpandedQuizzes(prev => {
+      const next = new Set(prev);
+      if (next.has(quizId)) next.delete(quizId);
+      else next.add(quizId);
+      return next;
+    });
+  };
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -2174,8 +2188,13 @@ const RankingsView = () => {
 
         if (data) {
           data.forEach(row => {
-            const universe = getUniverseName(row.quiz_id);
-            const qid = row.quiz_id;
+            // NORMALIZE ID for merging (e.g. twilight and twilight-book-1)
+            const rowId = row.quiz_id.toLowerCase();
+            const isTwilight1 = rowId.includes('twilight') && (rowId.includes('book 1') || rowId.includes('book-1') || rowId === 'twilight');
+            const canonicalId = isTwilight1 ? 'twilight-book-1' : rowId;
+            
+            const universe = getUniverseName(canonicalId);
+            const qid = canonicalId;
             
             if (!universeGroups[universe]) {
               universeGroups[universe] = {};
@@ -2211,7 +2230,7 @@ const RankingsView = () => {
           universe,
           quizzes: Object.entries(quizzes).map(([quiz_id, userScores]) => ({
             quiz_id,
-            scores: userScores.slice(0, 10)
+            scores: userScores // Keep ALL scores here, we'll slice in rendering
           }))
         }));
 
@@ -2271,7 +2290,6 @@ const RankingsView = () => {
           </div>
         </div>
 
-
         {loading ? (
           <div className="text-center py-20 text-slate-400 font-bold animate-pulse">
             Loading top scores...
@@ -2298,72 +2316,85 @@ const RankingsView = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-12">
-                  {universeGroup.quizzes.map((quizData: any) => (
-                    <div key={quizData.quiz_id} className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 flex items-center gap-2">
-                          <Hash className="size-4 text-primary" /> {getQuizTitle(quizData.quiz_id)}
-                        </h4>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Top 10 Rankings</span>
-                      </div>
-                      <div className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden backdrop-blur-md shadow-2xl">
-                        {quizData.scores.map((scoreRow: any, idx: number) => (
-                          <div key={scoreRow.id} className="flex items-center justify-between p-5 border-b border-white/5 last:border-0 hover:bg-white/10 transition-all group relative overflow-hidden">
-                            {idx === 0 && <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 shadow-[2px_0_10px_rgba(245,158,11,0.5)]"></div>}
-                            <div className="flex items-center gap-5">
-                              <div className={`size-10 rounded-2xl flex items-center justify-center font-black text-lg shadow-lg rotate-3 group-hover:rotate-0 transition-transform ${
-                                idx === 0 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-black' : 
-                                idx === 1 ? 'bg-gradient-to-br from-slate-300 to-slate-500 text-black' : 
-                                idx === 2 ? 'bg-gradient-to-br from-amber-700 to-amber-900 text-white' : 
-                                'bg-white/5 text-slate-400 border border-white/10'
-                              }`}>
-                                {idx + 1}
-                              </div>
-                              <div>
-                                <p className="font-extrabold text-white text-lg group-hover:text-primary transition-colors flex items-center gap-2">
-                                  {scoreRow.profiles?.username || 'Unknown User'}
-                                  {idx === 0 && <Trophy className="size-4 text-amber-500 animate-bounce" />}
-                                </p>
-                                <div className="flex items-center gap-2 mt-0.5">
-                                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-2 py-0.5 rounded">Player</span>
-                                  <div className="size-1 rounded-full bg-slate-700"></div>
-                                  <p className="text-[10px] text-slate-500 font-bold">{new Date(scoreRow.created_at).toLocaleDateString()}</p>
+                  {universeGroup.quizzes.map((quizData: any) => {
+                    const isExpanded = expandedQuizzes.has(quizData.quiz_id);
+                    const scoresToShow = isExpanded ? quizData.scores : quizData.scores.slice(0, 10);
+                    const hasMore = quizData.scores.length > 10;
+
+                    return (
+                      <div key={quizData.quiz_id} className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 flex items-center gap-2">
+                            <Hash className="size-4 text-primary" /> {getQuizTitle(quizData.quiz_id)}
+                          </h4>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                            {isExpanded ? `All ${quizData.scores.length} Rankings` : 'Top 10 Rankings'}
+                          </span>
+                        </div>
+                        <div className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden backdrop-blur-md shadow-2xl">
+                          {scoresToShow.map((scoreRow: any, idx: number) => (
+                            <div key={scoreRow.id} className="flex items-center justify-between p-5 border-b border-white/5 last:border-0 hover:bg-white/10 transition-all group relative overflow-hidden">
+                              {idx === 0 && <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 shadow-[2px_0_10px_rgba(245,158,11,0.5)]"></div>}
+                              <div className="flex items-center gap-5">
+                                <div className={`size-10 rounded-2xl flex items-center justify-center font-black text-lg shadow-lg rotate-3 group-hover:rotate-0 transition-transform ${
+                                  idx === 0 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-black' : 
+                                  idx === 1 ? 'bg-gradient-to-br from-slate-300 to-slate-500 text-black' : 
+                                  idx === 2 ? 'bg-gradient-to-br from-amber-700 to-amber-900 text-white' : 
+                                  'bg-white/5 text-slate-400 border border-white/10'
+                                }`}>
+                                  {idx + 1}
                                 </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="flex flex-col items-end gap-1">
-                                <p className={`text-2xl font-black italic tracking-tighter leading-none ${rankingType === 'accuracy' ? 'text-primary' : 'text-blue-400'}`}>
-                                  {rankingType === 'accuracy' ? `${Math.round((scoreRow.score / scoreRow.total) * 100)}%` : formatTime(scoreRow.completion_time)}
-                                </p>
-                                <div className="flex items-center gap-3">
-                                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                    {rankingType === 'accuracy' ? `Score: ${scoreRow.score}/${scoreRow.total}` : `${Math.round((scoreRow.score / scoreRow.total) * 100)}% Accuracy`}
+                                <div className="min-w-0">
+                                  <p className="font-extrabold text-white text-lg group-hover:text-primary transition-colors flex items-center gap-2 truncate">
+                                    {scoreRow.profiles?.username || 'Unknown User'}
+                                    {idx === 0 && <Trophy className="size-4 text-amber-500 animate-bounce flex-shrink-0" />}
                                   </p>
-                                  {(rankingType === 'accuracy' && scoreRow.completion_time) && (
-                                    <>
-                                      <div className="size-1 rounded-full bg-slate-700"></div>
-                                      <p className="text-[10px] font-black text-slate-500">
-                                        {formatTime(scoreRow.completion_time)}
-                                      </p>
-                                    </>
-                                  )}
-                                  {(rankingType === 'speed') && (
-                                    <>
-                                      <div className="size-1 rounded-full bg-slate-700"></div>
-                                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                        {scoreRow.score}/{scoreRow.total}
-                                      </p>
-                                    </>
-                                  )}
+                                  <div className="flex items-center gap-2 mt-0.5 whitespace-nowrap">
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-2 py-0.5 rounded">Player</span>
+                                    <div className="size-1 rounded-full bg-slate-700"></div>
+                                    <p className="text-[10px] text-slate-500 font-bold">{new Date(scoreRow.created_at).toLocaleDateString()}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="text-right flex-shrink-0">
+                                <div className="flex flex-col items-end gap-1">
+                                  <p className={`text-2xl font-black italic tracking-tighter leading-none ${rankingType === 'accuracy' ? 'text-primary' : 'text-blue-400'}`}>
+                                    {rankingType === 'accuracy' ? `${Math.round((scoreRow.score / scoreRow.total) * 100)}%` : formatTime(scoreRow.completion_time)}
+                                  </p>
+                                  <div className="flex items-center gap-2 whitespace-nowrap">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                      {rankingType === 'accuracy' ? `Score: ${scoreRow.score}/${scoreRow.total}` : `${Math.round((scoreRow.score / scoreRow.total) * 100)}% Acc`}
+                                    </p>
+                                    {(rankingType === 'accuracy' && scoreRow.completion_time) && (
+                                      <>
+                                        <div className="size-1 rounded-full bg-slate-700"></div>
+                                        <p className="text-[10px] font-black text-slate-500">
+                                          {formatTime(scoreRow.completion_time)}
+                                        </p>
+                                      </>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
+                        
+                        {hasMore && (
+                          <button
+                            onClick={() => toggleExpand(quizData.quiz_id)}
+                            className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2"
+                          >
+                            {isExpanded ? (
+                              <><ChevronUp className="size-4" /> Show Top 10 Only</>
+                            ) : (
+                              <><ChevronDown className="size-4" /> See All {quizData.scores.length} Rankings</>
+                            )}
+                          </button>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))}
