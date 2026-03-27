@@ -1141,6 +1141,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [roomId, setRoomId] = useState<string | null>(null);
   const lobbyChannelRef = useRef<any>(null);
   const roomChannelRef = useRef<any>(null);
+  const [roomCode, setRoomCode] = useState('');
+  const [pendingMode, setPendingMode] = useState<'team' | 'versus' | null>(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
@@ -1148,7 +1150,6 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [sessionQuestions, setSessionQuestions] = useState<MCTriviaQuestion[]>([]);
-  const total = sessionQuestions.length;
   const [shuffleKey, setShuffleKey] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
@@ -1160,13 +1161,14 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       options: shuffle(q.options)
     }));
     setSessionQuestions(shuffled);
-  }, [shuffleKey]); // Removed questions from dependencies to prevent infinite loops with unstable arrays
+  }, [shuffleKey, questions]);
 
   // Bot Simulation Logic
   useEffect(() => {
-    if (gameMode !== 'bot' || gameState !== 'playing' || finished) return;
+    if (gameMode !== 'bot' || gameState !== 'playing' || finished || sessionQuestions.length === 0) return;
 
     let timeoutId: any;
+    const total = sessionQuestions.length;
 
     const nextBotAction = () => {
       const delay = 3000 + Math.random() * 4000; // 3-7 seconds
@@ -1178,13 +1180,13 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           }
           return prev;
         });
-        nextBotAction();
+        if (!finished) nextBotAction();
       }, delay);
     };
 
     nextBotAction();
     return () => clearTimeout(timeoutId);
-  }, [gameMode, gameState, finished, total]);
+  }, [gameMode, gameState, finished, sessionQuestions.length]);
 
   // Handle startTime initialization when game starts
   useEffect(() => {
@@ -1218,31 +1220,100 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                 { id: 'bot', name: 'You vs Bot', desc: 'Can you beat our AI fan? no waiting required.', icon: Zap, color: 'from-purple-600/20 to-pink-600/20', border: 'hover:border-purple-400/50' },
                 { id: 'team', name: 'Team Mode', desc: 'Gather your crew. Number of players must be even.', icon: Users, color: 'from-emerald-600/20 to-teal-600/20', border: 'hover:border-emerald-400/50' },
                 { id: 'versus', name: 'Versus Mode', desc: '1v1 Battle. Prove you are the superior fan.', icon: Zap, color: 'from-amber-600/20 to-red-600/20', border: 'hover:border-amber-400/50' },
-              ].map(mode => (
-                <button
-                  key={mode.id}
-                  onClick={() => {
-                    setGameMode(mode.id as any);
-                    if (mode.id === 'single') setGameState('playing');
-                    else if (mode.id === 'bot') {
-                      setOpponentNames(['Trivia Bot']);
-                      setGameState('playing');
-                    }
-                    else setGameState('searching');
-                  }}
-                  className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border border-white/10 ${mode.border} transition-all duration-300 text-left group`}
-                >
-                  <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                    <mode.icon className="size-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white leading-none">{mode.name}</h3>
-                    <p className="text-xs text-slate-400 mt-1">{mode.desc}</p>
-                  </div>
-                  <ArrowRight className="size-4 ml-auto text-white/30 group-hover:text-white transition-all group-hover:translate-x-1" />
-                </button>
-              ))}
+              ].map((mode) => {
+                const Icon = mode.icon;
+                const isSelected = pendingMode === mode.id;
+                
+                return (
+                  <button
+                    key={mode.id}
+                    onClick={() => {
+                      if (mode.id === 'single') {
+                        setGameMode('single');
+                        setGameState('playing');
+                        setPendingMode(null);
+                      } else if (mode.id === 'bot') {
+                        setGameMode('bot');
+                        setOpponentNames(['Trivia Bot']);
+                        setGameState('playing');
+                        setPendingMode(null);
+                      } else {
+                        setPendingMode(mode.id as 'team' | 'versus');
+                      }
+                    }}
+                    className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border transition-all duration-300 text-left group ${
+                      isSelected 
+                        ? 'border-primary shadow-lg shadow-primary/20 scale-[1.02]' 
+                        : 'border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Icon className="size-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white leading-none">{mode.name}</h3>
+                      <p className="text-xs text-slate-400 mt-1">{mode.desc}</p>
+                    </div>
+                    <ArrowRight className="size-4 ml-auto text-white/30 group-hover:text-white transition-all group-hover:translate-x-1" />
+                  </button>
+                );
+              })}
             </div>
+
+            {/* Private Match Code Input (Conditional) */}
+            <AnimatePresence>
+              {pendingMode && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
+                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                  className="pt-6 border-t border-white/5 space-y-4 overflow-hidden"
+                >
+                  <div className="flex items-center justify-between px-2">
+                    <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+                      <Hash className="size-3" />
+                      <span>Private Room Code (Optional)</span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+                        setRoomCode(code);
+                      }}
+                      className="text-[10px] font-black text-primary hover:text-primary/80 uppercase tracking-widest transition-colors flex items-center gap-1"
+                    >
+                      <Zap className="size-3" />
+                      Generate Code
+                    </button>
+                  </div>
+
+                  <div className="relative group">
+                    <input 
+                      type="text" 
+                      placeholder="E.G. TEAM-SUPREME" 
+                      value={roomCode}
+                      onChange={e => setRoomCode(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, ''))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white font-black placeholder:text-slate-700 focus:outline-none focus:border-primary/50 transition-all uppercase tracking-widest text-center group-hover:bg-white/[0.08]"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setGameMode(pendingMode);
+                      setGameState('searching');
+                    }}
+                    className="w-full py-4 bg-primary text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group/join"
+                  >
+                    <span>Enter Lobby</span>
+                    <ArrowRight className="size-4 transition-transform group-hover/join:translate-x-1" />
+                  </button>
+
+                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed px-2 text-center">
+                    Matchmaking will only connect you with players using the same code. <br/>
+                    Leave empty for public matchmaking.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>
@@ -1291,8 +1362,17 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   }
 
   const q = sessionQuestions[currentQ];
+  const total = sessionQuestions.length;
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
+
+  if (!q || !q.options) {
+    return (
+      <div className="pt-28 pb-20 px-6 flex items-center justify-center">
+        <div className="text-slate-400 font-bold">Question data missing. Returning home...</div>
+      </div>
+    );
+  }
   const isUnknown = q.answer === '???';
 
   // --- Realtime Matchmaking ---
@@ -1305,7 +1385,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       return;
     }
 
-    const lobbyId = `lobby-${scoreLabel}-${gameMode}`;
+    const lobbyId = roomCode 
+      ? `lobby-${scoreLabel}-${gameMode}-${roomCode}` 
+      : `lobby-${scoreLabel}-${gameMode}`;
     const channel = supabase.channel(lobbyId, {
       config: { presence: { key: user?.id || 'guest-' + Math.random().toString(36).slice(2, 7) } }
     });
@@ -1360,7 +1442,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       channel.unsubscribe();
       lobbyChannelRef.current = null;
     };
-  }, [gameState, gameMode, scoreLabel, user?.id, user?.email]);
+  }, [gameState, gameMode, scoreLabel, user?.id, user?.email, roomCode]);
 
   // --- Realtime Quiz Sync ---
   useEffect(() => {
@@ -3077,7 +3159,7 @@ export default function App() {
 
       <main>
         <AnimatePresence mode="wait">
-          <Routes location={window.location}>
+          <Routes location={location}>
             <Route path="/rankings" element={<RankingsView />} />
             <Route path="/" element={<LandingView />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
