@@ -1333,7 +1333,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           </div>
           <div className="space-y-4">
             <h2 className="text-2xl font-black text-white italic uppercase tracking-wider animate-pulse">
-              please wait, searching {gameMode === 'team' ? 4 : 2} avaliable players...
+              please wait, searching for { (gameMode === 'team' ? 4 : 2) - foundPlayers } more player{(gameMode === 'team' ? 4 : 2) - foundPlayers !== 1 ? 's' : ''}...
             </h2>
             <div className="flex items-center justify-center gap-3">
               {[...Array(gameMode === 'team' ? 4 : 2)].map((_, i) => (
@@ -1385,9 +1385,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       return;
     }
 
+    const cleanScoreLabel = scoreLabel.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
     const lobbyId = roomCode 
-      ? `lobby-${scoreLabel}-${gameMode}-${roomCode}` 
-      : `lobby-${scoreLabel}-${gameMode}`;
+      ? `lobby-${cleanScoreLabel}-${gameMode}-${roomCode}` 
+      : `lobby-${cleanScoreLabel}-${gameMode}`;
     const channel = supabase.channel(lobbyId, {
       config: { presence: { key: user?.id || 'guest-' + Math.random().toString(36).slice(2, 7) } }
     });
