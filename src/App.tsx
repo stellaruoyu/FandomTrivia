@@ -1915,8 +1915,19 @@ const DailyMysteryQuiz = () => {
   const navigate = useNavigate();
   
   const dailyQuiz = useMemo(() => {
-    // Hardcoded to Twilight: Book 1 as requested for the current state
-    return DAILY_QUIZZES[0];
+    const today = new Date();
+    // Use local date for the seed (YYYY-MM-DD format as a string)
+    const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    
+    // Simple deterministic hash for better "randomness" than a cycle
+    let hash = 0;
+    for (let i = 0; i < dateStr.length; i++) {
+        hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+    }
+    
+    const index = Math.abs(hash) % DAILY_QUIZZES.length;
+    return DAILY_QUIZZES[index];
   }, []);
 
   return (
