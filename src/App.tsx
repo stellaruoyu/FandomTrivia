@@ -1060,7 +1060,7 @@ const RaceTrack = ({
   opponentNames,
   opponentScore 
 }: { 
-  mode: 'team' | 'versus', 
+  mode: 'team' | 'versus' | 'bot', 
   userScore: number, 
   total: number, 
   userName: string,
@@ -1133,7 +1133,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   key?: string
 }) => {
   const [gameState, setGameState] = useState<'mode_selection' | 'searching' | 'playing'>('mode_selection');
-  const [gameMode, setGameMode] = useState<'single' | 'team' | 'versus' | null>(null);
+  const [gameMode, setGameMode] = useState<'single' | 'team' | 'versus' | 'bot' | null>(null);
   const [foundPlayers, setFoundPlayers] = useState(1);
   const [opponentScore, setOpponentScore] = useState(0);
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
@@ -1148,11 +1148,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [sessionQuestions, setSessionQuestions] = useState<MCTriviaQuestion[]>([]);
+  const total = sessionQuestions.length;
   const [shuffleKey, setShuffleKey] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
-
-  // Matchmaking and Sync via Supabase Realtime logic moved below
 
   // Initialize and shuffle questions for this session
   useEffect(() => {
@@ -1162,6 +1161,31 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     }));
     setSessionQuestions(shuffled);
   }, [shuffleKey]); // Removed questions from dependencies to prevent infinite loops with unstable arrays
+
+  // Bot Simulation Logic
+  useEffect(() => {
+    if (gameMode !== 'bot' || gameState !== 'playing' || finished) return;
+
+    const interval = setInterval(() => {
+      setOpponentScore(prev => {
+        if (prev >= total) {
+          clearInterval(interval);
+          return prev;
+        }
+        // Bot has a 70% chance to "answer" correctly every 4-8 seconds
+        return Math.random() > 0.3 ? prev + 1 : prev;
+      });
+    }, 4000 + Math.random() * 4000);
+
+    return () => clearInterval(interval);
+  }, [gameMode, gameState, finished, total]);
+
+  // Handle startTime initialization when game starts
+  useEffect(() => {
+    if (gameState === 'playing' && !startTime) {
+      setStartTime(Date.now());
+    }
+  }, [gameState, startTime]);
 
   const navigate = useNavigate();
 
@@ -1185,6 +1209,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
             <div className="grid grid-cols-1 gap-4 pt-4">
               {[
                 { id: 'single', name: 'Single Playing', desc: 'Face the challenge alone and top the leaderboards.', icon: UserIcon, color: 'from-blue-600/20 to-indigo-600/20', border: 'hover:border-blue-400/50' },
+                { id: 'bot', name: 'You vs Bot', desc: 'Can you beat our AI fan? no waiting required.', icon: Zap, color: 'from-purple-600/20 to-pink-600/20', border: 'hover:border-purple-400/50' },
                 { id: 'team', name: 'Team Mode', desc: 'Gather your crew. Number of players must be even.', icon: Users, color: 'from-emerald-600/20 to-teal-600/20', border: 'hover:border-emerald-400/50' },
                 { id: 'versus', name: 'Versus Mode', desc: '1v1 Battle. Prove you are the superior fan.', icon: Zap, color: 'from-amber-600/20 to-red-600/20', border: 'hover:border-amber-400/50' },
               ].map(mode => (
@@ -1193,6 +1218,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                   onClick={() => {
                     setGameMode(mode.id as any);
                     if (mode.id === 'single') setGameState('playing');
+                    else if (mode.id === 'bot') {
+                      setOpponentNames(['Trivia Bot']);
+                      setGameState('playing');
+                    }
                     else setGameState('searching');
                   }}
                   className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border border-white/10 ${mode.border} transition-all duration-300 text-left group`}
@@ -1256,7 +1285,6 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   }
 
   const q = sessionQuestions[currentQ];
-  const total = sessionQuestions.length;
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
   const isUnknown = q.answer === '???';
@@ -1555,8 +1583,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
-      {/* Race Mode UI shown during quiz if team/versus */}
-      {(gameMode === 'team' || gameMode === 'versus') && (
+      {/* Race Mode UI shown during quiz if team/versus/bot */}
+      {(gameMode === 'team' || gameMode === 'versus' || gameMode === 'bot') && (
         <RaceTrack 
           mode={gameMode}
           userScore={correctCount}
