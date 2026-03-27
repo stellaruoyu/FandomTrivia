@@ -1166,18 +1166,24 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   useEffect(() => {
     if (gameMode !== 'bot' || gameState !== 'playing' || finished) return;
 
-    const interval = setInterval(() => {
-      setOpponentScore(prev => {
-        if (prev >= total) {
-          clearInterval(interval);
-          return prev;
-        }
-        // Bot has a 70% chance to "answer" correctly every 4-8 seconds
-        return Math.random() > 0.3 ? prev + 1 : prev;
-      });
-    }, 4000 + Math.random() * 4000);
+    let timeoutId: any;
 
-    return () => clearInterval(interval);
+    const nextBotAction = () => {
+      const delay = 3000 + Math.random() * 4000; // 3-7 seconds
+      timeoutId = setTimeout(() => {
+        setOpponentScore(prev => {
+          if (prev < total) {
+            // Bot has a 70% chance to score
+            return Math.random() > 0.3 ? prev + 1 : prev;
+          }
+          return prev;
+        });
+        nextBotAction();
+      }, delay);
+    };
+
+    nextBotAction();
+    return () => clearTimeout(timeoutId);
   }, [gameMode, gameState, finished, total]);
 
   // Handle startTime initialization when game starts
@@ -1256,7 +1262,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           </div>
           <div className="space-y-4">
             <h2 className="text-2xl font-black text-white italic uppercase tracking-wider animate-pulse">
-              please wait, searching 4 avaliable players...
+              please wait, searching {gameMode === 'team' ? 4 : 2} avaliable players...
             </h2>
             <div className="flex items-center justify-center gap-3">
               {[...Array(gameMode === 'team' ? 4 : 2)].map((_, i) => (
@@ -1291,7 +1297,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   // --- Realtime Matchmaking ---
   useEffect(() => {
-    if (gameState !== 'searching' || !gameMode || gameMode === 'single') {
+    if (gameState !== 'searching' || !gameMode || gameMode === 'single' || gameMode === 'bot') {
       if (lobbyChannelRef.current) {
         lobbyChannelRef.current.unsubscribe();
         lobbyChannelRef.current = null;
@@ -1358,7 +1364,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   // --- Realtime Quiz Sync ---
   useEffect(() => {
-    if (gameState !== 'playing' || !roomId || gameMode === 'single') {
+    if (gameState !== 'playing' || !roomId || gameMode === 'single' || gameMode === 'bot') {
       if (roomChannelRef.current) {
         roomChannelRef.current.unsubscribe();
         roomChannelRef.current = null;
