@@ -1138,6 +1138,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [opponentScore, setOpponentScore] = useState(0);
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [teammateName, setTeammateName] = useState<string | null>(null);
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const lobbyChannelRef = useRef<any>(null);
+  const roomChannelRef = useRef<any>(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
@@ -1149,61 +1152,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
 
-  // Initialize opponents and teammates
-  useEffect(() => {
-    if (gameState === 'searching') {
-      const allMocks = ['TriviaMaster42', 'FandomFanatic', 'QuizzicalWizard', 'GalacticGamer', 'MysterySolver', 'LoreSeeker', 'EchoCullen', 'PotterHead99', 'TrisolaranTourist', 'ZootopiaZPD'];
-      const shuffled = shuffle(allMocks);
-      
-      if (gameMode === 'versus') {
-        setOpponentNames([shuffled[0]]);
-        setTeammateName(null);
-      } else if (gameMode === 'team') {
-        setOpponentNames([shuffled[0], shuffled[1]]);
-        setTeammateName(shuffled[2]);
-      }
-    }
-  }, [gameState, gameMode]);
-
-  // Opponent progress simulation
-  useEffect(() => {
-    if (gameState === 'playing' && (gameMode === 'team' || gameMode === 'versus') && !finished) {
-      const timer = setInterval(() => {
-        setOpponentScore(prev => {
-          if (prev >= questions.length) {
-            clearInterval(timer);
-            return questions.length;
-          }
-          // Slow progress for simulation
-          return Math.random() > 0.6 ? prev + 1 : prev;
-        });
-      }, 3000);
-      return () => clearInterval(timer);
-    }
-  }, [gameState, gameMode, finished, questions.length]);
-
-  // Matchmaking simulation
-  useEffect(() => {
-    if (gameState === 'searching') {
-      const timer = setInterval(() => {
-        setFoundPlayers(prev => {
-          const next = prev + 1;
-          if (gameMode === 'versus' && next >= 2) {
-             clearInterval(timer);
-             setTimeout(() => setGameState('playing'), 500);
-             return 2;
-          }
-          if (gameMode === 'team' && next >= 4) {
-             clearInterval(timer);
-             setTimeout(() => setGameState('playing'), 500);
-             return 4;
-          }
-          return next;
-        });
-      }, 1500);
-      return () => clearInterval(timer);
-    }
-  }, [gameState, gameMode]);
+  // Matchmaking and Sync via Supabase Realtime logic moved below
 
   // Initialize and shuffle questions for this session
   useEffect(() => {
@@ -1311,6 +1260,119 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
   const isUnknown = q.answer === '???';
+
+  // --- Realtime Matchmaking ---
+  useEffect(() => {
+    if (gameState !== 'searching' || !gameMode || gameMode === 'single') {
+      if (lobbyChannelRef.current) {
+        lobbyChannelRef.current.unsubscribe();
+        lobbyChannelRef.current = null;
+      }
+      return;
+    }
+
+    const lobbyId = `lobby-${scoreLabel}-${gameMode}`;
+    const channel = supabase.channel(lobbyId, {
+      config: { presence: { key: user?.id || 'guest-' + Math.random().toString(36).slice(2, 7) } }
+    });
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const pEntries = Object.entries(state);
+        const pValues = pEntries.map(([ref, presences]) => ({ ref, ...(presences[0] as any) }));
+        const pCount = pValues.length;
+        setFoundPlayers(pCount);
+
+        const target = gameMode === 'team' ? 4 : 2;
+        if (pCount >= target) {
+          const sortedPlayers = pValues.sort((a, b) => a.ref.localeCompare(b.ref)).slice(0, target);
+          const mid = sortedPlayers.map(p => p.ref).join('');
+          setRoomId(mid);
+
+          const members = sortedPlayers.map(p => p.username || 'Guest');
+          const myName = user?.email?.split('@')[0] || 'Guest';
+          
+          if (gameMode === 'versus') {
+            setOpponentNames([members.find(m => m !== myName) || 'Rival']);
+            setTeammateName(null);
+          } else if (gameMode === 'team') {
+            const myId = user?.id || '';
+            const myIndex = sortedPlayers.findIndex(p => p.ref.includes(myId));
+            if (myIndex < 2) {
+              setTeammateName(members[myIndex === 0 ? 1 : 0]);
+              setOpponentNames([members[2], members[3]]);
+            } else {
+              setTeammateName(members[myIndex === 2 ? 3 : 2]);
+              setOpponentNames([members[0], members[1]]);
+            }
+          }
+          setTimeout(() => setGameState('playing'), 1500);
+        }
+      })
+      .subscribe(async (status) => {
+        console.log(`Lobby Channel Status (${lobbyId}):`, status);
+        if (status === 'SUBSCRIBED') {
+          const trackStatus = await channel.track({
+            username: user?.email?.split('@')[0] || 'Guest',
+            online_at: new Date().toISOString(),
+          });
+          console.log('Lobby Track Status:', trackStatus);
+        }
+      });
+
+    lobbyChannelRef.current = channel;
+    return () => {
+      channel.unsubscribe();
+      lobbyChannelRef.current = null;
+    };
+  }, [gameState, gameMode, scoreLabel, user?.id, user?.email]);
+
+  // --- Realtime Quiz Sync ---
+  useEffect(() => {
+    if (gameState !== 'playing' || !roomId || gameMode === 'single') {
+      if (roomChannelRef.current) {
+        roomChannelRef.current.unsubscribe();
+        roomChannelRef.current = null;
+      }
+      return;
+    }
+
+    const channel = supabase.channel(`room-${roomId}`, {
+      config: { broadcast: { self: false } }
+    });
+
+    channel
+      .on('broadcast', { event: 'score_update' }, ({ payload }) => {
+        console.log('Received Broadcast:', payload);
+        setOpponentScore(payload.score);
+        if (opponentNames.length === 0) setOpponentNames([payload.username]);
+      })
+      .subscribe((status) => {
+        console.log(`Room Channel Status (room-${roomId}):`, status);
+      });
+
+    roomChannelRef.current = channel;
+    return () => {
+      channel.unsubscribe();
+      roomChannelRef.current = null;
+    };
+  }, [gameState, roomId]);
+
+  // --- Broadcast local score updates ---
+  useEffect(() => {
+    if (gameState === 'playing' && roomChannelRef.current) {
+      roomChannelRef.current.send({
+        type: 'broadcast',
+        event: 'score_update',
+        payload: { 
+          username: user?.email?.split('@')[0] || 'Guest', 
+          score: correctCount,
+          total: sessionQuestions.length
+        }
+      });
+    }
+  }, [correctCount, sessionQuestions.length, gameState]);
 
   const handleSelect = (option: string) => {
     if (selected) return; // already answered
