@@ -1056,15 +1056,13 @@ const RaceTrack = ({
   userScore, 
   total, 
   userName, 
-  teammateName,
   opponentNames,
   opponentScore 
 }: { 
-  mode: 'team' | 'versus' | 'bot', 
+  mode: 'bot', 
   userScore: number, 
   total: number, 
   userName: string,
-  teammateName?: string,
   opponentNames: string[],
   opponentScore: number
 }) => {
@@ -1102,7 +1100,7 @@ const RaceTrack = ({
           <Car className="size-6 text-primary fill-primary shadow-xl" />
           <div className="bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)] px-2 py-0.5 rounded-full mt-0.5">
             <p className="text-[9px] font-black text-white whitespace-nowrap uppercase tracking-tighter shadow-sm">
-              {[userName, teammateName].filter(Boolean).join(' & ')}
+              {userName}
             </p>
           </div>
         </motion.div>
@@ -1111,10 +1109,10 @@ const RaceTrack = ({
       <div className="flex justify-between items-center px-2">
         <div className="flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
           <div className="size-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[9px] font-black text-white uppercase tracking-widest opacity-80">Your Team</span>
+          <span className="text-[9px] font-black text-white uppercase tracking-widest opacity-80">You</span>
         </div>
         <div className="flex items-center gap-1.5 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/20">
-          <span className="text-[9px] font-black text-red-500 uppercase tracking-widest opacity-80">Rivals</span>
+          <span className="text-[9px] font-black text-red-500 uppercase tracking-widest opacity-80">Rival</span>
           <div className="size-1.5 rounded-full bg-red-500 animate-pulse" />
         </div>
       </div>
@@ -1132,17 +1130,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   isDaily?: boolean,
   key?: string
 }) => {
-  const [gameState, setGameState] = useState<'mode_selection' | 'searching' | 'playing'>('mode_selection');
-  const [gameMode, setGameMode] = useState<'single' | 'team' | 'versus' | 'bot' | null>(null);
-  const [foundPlayers, setFoundPlayers] = useState(1);
+  const [gameState, setGameState] = useState<'mode_selection' | 'playing'>('mode_selection');
+  const [gameMode, setGameMode] = useState<'single' | 'bot' | null>(null);
   const [opponentScore, setOpponentScore] = useState(0);
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
-  const [teammateName, setTeammateName] = useState<string | null>(null);
-  const [roomId, setRoomId] = useState<string | null>(null);
-  const lobbyChannelRef = useRef<any>(null);
-  const roomChannelRef = useRef<any>(null);
-  const [roomCode, setRoomCode] = useState('');
-  const [pendingMode, setPendingMode] = useState<'team' | 'versus' | null>(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
@@ -1218,11 +1209,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               {[
                 { id: 'single', name: 'Single Playing', desc: 'Face the challenge alone and top the leaderboards.', icon: UserIcon, color: 'from-blue-600/20 to-indigo-600/20', border: 'hover:border-blue-400/50' },
                 { id: 'bot', name: 'You vs Bot', desc: 'Can you beat our AI fan? no waiting required.', icon: Zap, color: 'from-purple-600/20 to-pink-600/20', border: 'hover:border-purple-400/50' },
-                { id: 'team', name: 'Team Mode', desc: 'Gather your crew. Number of players must be even.', icon: Users, color: 'from-emerald-600/20 to-teal-600/20', border: 'hover:border-emerald-400/50' },
-                { id: 'versus', name: 'Versus Mode', desc: '1v1 Battle. Prove you are the superior fan.', icon: Zap, color: 'from-amber-600/20 to-red-600/20', border: 'hover:border-amber-400/50' },
               ].map((mode) => {
                 const Icon = mode.icon;
-                const isSelected = pendingMode === mode.id;
+                const isSelected = gameMode === mode.id;
                 
                 return (
                   <button
@@ -1231,14 +1220,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                       if (mode.id === 'single') {
                         setGameMode('single');
                         setGameState('playing');
-                        setPendingMode(null);
                       } else if (mode.id === 'bot') {
                         setGameMode('bot');
                         setOpponentNames(['Trivia Bot']);
                         setGameState('playing');
-                        setPendingMode(null);
-                      } else {
-                        setPendingMode(mode.id as 'team' | 'versus');
                       }
                     }}
                     className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border transition-all duration-300 text-left group ${
@@ -1260,97 +1245,14 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               })}
             </div>
 
-            {/* Private Match Code Input (Conditional) */}
-            <AnimatePresence>
-              {pendingMode && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                  animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
-                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                  className="pt-6 border-t border-white/5 space-y-4 overflow-hidden"
-                >
-                  <div className="flex items-center justify-between px-2">
-                    <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
-                      <Hash className="size-3" />
-                      <span>Private Room Code (Optional)</span>
-                    </div>
-                    <button 
-                      onClick={() => {
-                        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-                        setRoomCode(code);
-                      }}
-                      className="text-[10px] font-black text-primary hover:text-primary/80 uppercase tracking-widest transition-colors flex items-center gap-1"
-                    >
-                      <Zap className="size-3" />
-                      Generate Code
-                    </button>
-                  </div>
-
-                  <div className="relative group">
-                    <input 
-                      type="text" 
-                      placeholder="E.G. TEAM-SUPREME" 
-                      value={roomCode}
-                      onChange={e => setRoomCode(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, ''))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white font-black placeholder:text-slate-700 focus:outline-none focus:border-primary/50 transition-all uppercase tracking-widest text-center group-hover:bg-white/[0.08]"
-                    />
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      setGameMode(pendingMode);
-                      setGameState('searching');
-                    }}
-                    className="w-full py-4 bg-primary text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group/join"
-                  >
-                    <span>Enter Lobby</span>
-                    <ArrowRight className="size-4 transition-transform group-hover/join:translate-x-1" />
-                  </button>
-
-                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed px-2 text-center">
-                    Matchmaking will only connect you with players using the same code. <br/>
-                    Leave empty for public matchmaking.
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Private Match Code Input (Removed) */}
           </div>
         </motion.div>
       </div>
     );
   }
 
-  // Searching Screen
-  if (gameState === 'searching') {
-    return (
-      <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-          <div className="relative">
-            <div className="size-32 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Users className="size-10 text-primary animate-pulse" />
-            </div>
-          </div>
-          <div className="space-y-4">
-            <h2 className="text-2xl font-black text-white italic uppercase tracking-wider animate-pulse">
-              please wait, searching for { (gameMode === 'team' ? 4 : 2) - foundPlayers } more player{(gameMode === 'team' ? 4 : 2) - foundPlayers !== 1 ? 's' : ''}...
-            </h2>
-            <div className="flex items-center justify-center gap-3">
-              {[...Array(gameMode === 'team' ? 4 : 2)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`size-3 rounded-full transition-all duration-500 ${i < foundPlayers ? 'bg-primary scale-125 shadow-lg shadow-primary/50' : 'bg-white/10'}`}
-                />
-              ))}
-            </div>
-            <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">
-              {gameMode === 'team' ? `Players Found: ${foundPlayers} / 4 (Waiting for even team)` : `Matchmaking: ${foundPlayers} / 2`}
-            </p>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
+  // Searching Screen (Removed since using bot/solo)
 
   // Wait for session questions to be initialized
   if (sessionQuestions.length === 0) {
@@ -1375,121 +1277,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   }
   const isUnknown = q.answer === '???';
 
-  // --- Realtime Matchmaking ---
-  useEffect(() => {
-    if (gameState !== 'searching' || !gameMode || gameMode === 'single' || gameMode === 'bot') {
-      if (lobbyChannelRef.current) {
-        lobbyChannelRef.current.unsubscribe();
-        lobbyChannelRef.current = null;
-      }
-      return;
-    }
+  // --- Realtime Logic (Deleted) ---
 
-    const cleanScoreLabel = scoreLabel.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-    const lobbyId = roomCode 
-      ? `lobby-${cleanScoreLabel}-${gameMode}-${roomCode}` 
-      : `lobby-${cleanScoreLabel}-${gameMode}`;
-    const channel = supabase.channel(lobbyId, {
-      config: { presence: { key: user?.id || 'guest-' + Math.random().toString(36).slice(2, 7) } }
-    });
-
-    channel
-      .on('presence', { event: 'sync' }, () => {
-        const state = channel.presenceState();
-        const pEntries = Object.entries(state);
-        const pValues = pEntries.map(([ref, presences]) => ({ ref, ...(presences[0] as any) }));
-        const pCount = pValues.length;
-        setFoundPlayers(pCount);
-
-        const target = gameMode === 'team' ? 4 : 2;
-        if (pCount >= target) {
-          const sortedPlayers = pValues.sort((a, b) => a.ref.localeCompare(b.ref)).slice(0, target);
-          const mid = sortedPlayers.map(p => p.ref).join('');
-          setRoomId(mid);
-
-          const members = sortedPlayers.map(p => p.username || 'Guest');
-          const myName = user?.email?.split('@')[0] || 'Guest';
-          
-          if (gameMode === 'versus') {
-            setOpponentNames([members.find(m => m !== myName) || 'Rival']);
-            setTeammateName(null);
-          } else if (gameMode === 'team') {
-            const myId = user?.id || '';
-            const myIndex = sortedPlayers.findIndex(p => p.ref.includes(myId));
-            if (myIndex < 2) {
-              setTeammateName(members[myIndex === 0 ? 1 : 0]);
-              setOpponentNames([members[2], members[3]]);
-            } else {
-              setTeammateName(members[myIndex === 2 ? 3 : 2]);
-              setOpponentNames([members[0], members[1]]);
-            }
-          }
-          setTimeout(() => setGameState('playing'), 1500);
-        }
-      })
-      .subscribe(async (status) => {
-        console.log(`Lobby Channel Status (${lobbyId}):`, status);
-        if (status === 'SUBSCRIBED') {
-          const trackStatus = await channel.track({
-            username: user?.email?.split('@')[0] || 'Guest',
-            online_at: new Date().toISOString(),
-          });
-          console.log('Lobby Track Status:', trackStatus);
-        }
-      });
-
-    lobbyChannelRef.current = channel;
-    return () => {
-      channel.unsubscribe();
-      lobbyChannelRef.current = null;
-    };
-  }, [gameState, gameMode, scoreLabel, user?.id, user?.email, roomCode]);
-
-  // --- Realtime Quiz Sync ---
-  useEffect(() => {
-    if (gameState !== 'playing' || !roomId || gameMode === 'single' || gameMode === 'bot') {
-      if (roomChannelRef.current) {
-        roomChannelRef.current.unsubscribe();
-        roomChannelRef.current = null;
-      }
-      return;
-    }
-
-    const channel = supabase.channel(`room-${roomId}`, {
-      config: { broadcast: { self: false } }
-    });
-
-    channel
-      .on('broadcast', { event: 'score_update' }, ({ payload }) => {
-        console.log('Received Broadcast:', payload);
-        setOpponentScore(payload.score);
-        if (opponentNames.length === 0) setOpponentNames([payload.username]);
-      })
-      .subscribe((status) => {
-        console.log(`Room Channel Status (room-${roomId}):`, status);
-      });
-
-    roomChannelRef.current = channel;
-    return () => {
-      channel.unsubscribe();
-      roomChannelRef.current = null;
-    };
-  }, [gameState, roomId]);
-
-  // --- Broadcast local score updates ---
-  useEffect(() => {
-    if (gameState === 'playing' && roomChannelRef.current) {
-      roomChannelRef.current.send({
-        type: 'broadcast',
-        event: 'score_update',
-        payload: { 
-          username: user?.email?.split('@')[0] || 'Guest', 
-          score: correctCount,
-          total: sessionQuestions.length
-        }
-      });
-    }
-  }, [correctCount, sessionQuestions.length, gameState]);
 
   const handleSelect = (option: string) => {
     if (selected) return; // already answered
@@ -1541,7 +1330,6 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setShuffleKey(prev => prev + 1); // Trigger re-shuffle
     setGameState('mode_selection');
     setGameMode(null);
-    setFoundPlayers(1);
     setOpponentScore(0);
   };
 
@@ -1672,14 +1460,13 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
-      {/* Race Mode UI shown during quiz if team/versus/bot */}
-      {(gameMode === 'team' || gameMode === 'versus' || gameMode === 'bot') && (
+      {/* Race Mode UI shown during quiz if bot */}
+      {(gameMode === 'bot') && (
         <RaceTrack 
           mode={gameMode}
           userScore={correctCount}
           total={total}
-          userName={user?.email?.split('@')[0] || 'Guest'}
-          teammateName={teammateName || undefined}
+          userName={user?.username || 'You'}
           opponentNames={opponentNames}
           opponentScore={opponentScore}
         />
