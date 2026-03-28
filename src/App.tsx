@@ -29,6 +29,7 @@ import {
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
+import { MultiplayerQuizView } from './MultiplayerQuizView';
 
 // --- Helpers ---
 
@@ -1131,7 +1132,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   key?: string
 }) => {
   const [gameState, setGameState] = useState<'mode_selection' | 'playing'>('mode_selection');
-  const [gameMode, setGameMode] = useState<'single' | 'bot' | null>(null);
+  const [gameMode, setGameMode] = useState<'single' | 'bot' | 'multiplayer' | null>(null);
   const [opponentScore, setOpponentScore] = useState(0);
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
@@ -1209,10 +1210,11 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               {[
                 { id: 'single', name: 'Single Playing', desc: 'Face the challenge alone and top the leaderboards.', icon: UserIcon, color: 'from-blue-600/20 to-indigo-600/20', border: 'hover:border-blue-400/50' },
                 { id: 'bot', name: 'You vs Bot', desc: 'Can you beat our AI fan? no waiting required.', icon: Zap, color: 'from-purple-600/20 to-pink-600/20', border: 'hover:border-purple-400/50' },
+                { id: 'multiplayer', name: 'Multiplayer', desc: 'Challenge friends in real-time. Create or join a room.', icon: Users, color: 'from-emerald-600/20 to-teal-600/20', border: 'hover:border-emerald-400/50' },
               ].map((mode) => {
                 const Icon = mode.icon;
                 const isSelected = gameMode === mode.id;
-                
+
                 return (
                   <button
                     key={mode.id}
@@ -1224,11 +1226,14 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                         setGameMode('bot');
                         setOpponentNames(['Trivia Bot']);
                         setGameState('playing');
+                      } else if (mode.id === 'multiplayer') {
+                        setGameMode('multiplayer');
+                        setGameState('playing');
                       }
                     }}
                     className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border transition-all duration-300 text-left group ${
-                      isSelected 
-                        ? 'border-primary shadow-lg shadow-primary/20 scale-[1.02]' 
+                      isSelected
+                        ? 'border-primary shadow-lg shadow-primary/20 scale-[1.02]'
                         : 'border-white/10 hover:border-white/20'
                     }`}
                   >
@@ -1252,7 +1257,20 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     );
   }
 
-  // Searching Screen (Removed since using bot/solo)
+  // ── Multiplayer Mode ──────────────────────────────────────────────────────────
+  if (gameMode === 'multiplayer') {
+    return (
+      <MultiplayerQuizView
+        questions={questions}
+        title={title}
+        user={user}
+        onBack={() => {
+          setGameMode(null);
+          setGameState('mode_selection');
+        }}
+      />
+    );
+  }
 
   // Wait for session questions to be initialized
   if (sessionQuestions.length === 0) {
