@@ -386,7 +386,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound }: {
+const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg }: {
   isDashboard: boolean,
   user: User | null,
   onLogin: () => void,
@@ -396,10 +396,13 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   onShowBadges?: () => void,
   onShowInfo?: (title: string, content: string) => void,
   soundEnabled: boolean,
-  onToggleSound: () => void
+  onToggleSound: () => void,
+  onTriggerEasterEgg?: () => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const clickCountRef = useRef(0);
+  const lastClickTimeRef = useRef(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -417,7 +420,21 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
       <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto px-6 h-20 flex items-center justify-between`}>
         <div
           className="flex items-center gap-3 group cursor-pointer"
-          onClick={() => navigate('/')}
+          onClick={() => {
+            const now = Date.now();
+            if (now - lastClickTimeRef.current < 800) {
+              clickCountRef.current += 1;
+            } else {
+              clickCountRef.current = 1;
+            }
+            lastClickTimeRef.current = now;
+
+            if (clickCountRef.current === 3) {
+              clickCountRef.current = 0;
+              onTriggerEasterEgg?.();
+            }
+            navigate('/');
+          }}
         >
           <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(127,19,236,0.5)]">
             <Zap className="size-6 fill-current" />
@@ -2739,6 +2756,60 @@ const RankingsView = () => {
   );
 };
 
+// --- Easter Egg Component ---
+
+const EMOJIS = ['❄️', '🪄', '⚡', '🧛', '🍌', '🚀', '🐰'];
+
+const EmojiRain = ({ onComplete }: { onComplete: () => void }) => {
+  const items = useMemo(() => {
+    return Array.from({ length: 80 }).map((_, i) => ({
+      id: i,
+      emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+      left: Math.random() * 100,
+      delay: Math.random() * 3,
+      duration: 3 + Math.random() * 4,
+      size: 30 + Math.random() * 40,
+      rotateStart: Math.random() * 360,
+      rotateEnd: Math.random() * 720 * (Math.random() > 0.5 ? 1 : -1)
+    }));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 8000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[999] overflow-hidden">
+      {items.map((item) => (
+        <motion.div
+          key={item.id}
+          initial={{ y: '-10vh', x: 0, rotate: item.rotateStart, opacity: 0 }}
+          animate={{ 
+            y: '110vh', 
+            rotate: item.rotateEnd,
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{ 
+            duration: item.duration, 
+            delay: item.delay,
+            ease: "easeIn",
+            opacity: { times: [0, 0.1, 0.9, 1], duration: item.duration }
+          }}
+          style={{ 
+            fontSize: `${item.size}px`, 
+            position: 'absolute',
+            left: `${item.left}vw`,
+            textShadow: '0 0 10px rgba(0,0,0,0.5)' 
+          }}
+        >
+          {item.emoji}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -2749,6 +2820,7 @@ export default function App() {
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
+  const [showEmojiRain, setShowEmojiRain] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(() => {
     const saved = localStorage.getItem('soundEnabled');
     return saved !== null ? JSON.parse(saved) : true;
@@ -3058,7 +3130,16 @@ export default function App() {
         onShowInfo={(title, content) => setModalInfo({title, content})}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}
+        onTriggerEasterEgg={() => {
+          if (location.pathname === '/') {
+            setShowEmojiRain(true);
+          }
+        }}
       />
+
+      <AnimatePresence>
+        {showEmojiRain && <EmojiRain onComplete={() => setShowEmojiRain(false)} />}
+      </AnimatePresence>
 
       <AnimatePresence>
         {badgeQueue.length > 0 && (
