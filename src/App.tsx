@@ -1137,6 +1137,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [scores, setScores] = useState<Record<number, 'correct' | 'incorrect'>>({});
+  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+  const [botAnswers, setBotAnswers] = useState<Record<number, string>>({});
+  const [botResults, setBotResults] = useState<Record<number, 'correct' | 'incorrect'>>({});
   const [finished, setFinished] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -1161,21 +1164,42 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     let timeoutId: any;
     const total = sessionQuestions.length;
 
-    const nextBotAction = () => {
+    const nextBotAction = (botIdx: number) => {
+      if (botIdx >= total) return;
+
       const delay = 3000 + Math.random() * 4000; // 3-7 seconds
       timeoutId = setTimeout(() => {
-        setOpponentScore(prev => {
-          if (prev < total) {
-            // Bot has a 70% chance to score
-            return Math.random() > 0.3 ? prev + 1 : prev;
-          }
-          return prev;
-        });
-        if (!finished) nextBotAction();
+        const question = sessionQuestions[botIdx];
+        if (!question) return;
+
+        const isCorrect = Math.random() > 0.3; // 70% chance to score
+        let pickedAnswer = question.answer;
+
+        if (!isCorrect) {
+          // Pick a random incorrect option
+          const incorrectOptions = question.options.filter(opt => opt.toLowerCase() !== question.answer.toLowerCase());
+          pickedAnswer = incorrectOptions.length > 0 
+            ? incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)]
+            : question.options[Math.floor(Math.random() * question.options.length)];
+        }
+        
+        setBotAnswers(prev => ({ ...prev, [botIdx]: pickedAnswer }));
+        setBotResults(prev => ({ 
+          ...prev, 
+          [botIdx]: isCorrect ? 'correct' : 'incorrect' 
+        }));
+        
+        if (isCorrect) {
+          setOpponentScore(prev => prev + 1);
+        }
+
+        if (!finished && botIdx + 1 < total) {
+          nextBotAction(botIdx + 1);
+        }
       }, delay);
     };
 
-    nextBotAction();
+    nextBotAction(0);
     return () => clearTimeout(timeoutId);
   }, [gameMode, gameState, finished, sessionQuestions.length]);
 
@@ -1292,10 +1316,12 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     if (isUnknown) {
       // No known answer — auto-mark correct (fun mode)
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
+      setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       playCorrectSound();
     } else {
       const isCorrect = option.toLowerCase() === q.answer.toLowerCase();
       setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
+      setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       if (isCorrect) {
         playCorrectSound();
       } else {
@@ -1323,6 +1349,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setCurrentQ(0);
     setSelected(null);
     setScores({});
+    setUserAnswers({});
+    setBotAnswers({});
+    setBotResults({});
     setFinished(false);
     setScoreSaved(false);
     setStartTime(null);
@@ -1380,6 +1409,20 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
         } />
         <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
+            {gameMode === 'bot' && (
+              <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className={`inline-block px-6 py-2 rounded-full border-2 font-black text-xs uppercase tracking-[0.2em] mb-4 shadow-xl backdrop-blur-md
+                  ${correctCount > opponentScore 
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-emerald-500/10' 
+                    : correctCount < opponentScore 
+                      ? 'bg-red-500/20 border-red-500/50 text-red-400 shadow-red-500/10' 
+                      : 'bg-amber-500/20 border-amber-500/50 text-amber-400 shadow-amber-500/10'}`}
+              >
+                {correctCount > opponentScore ? '🏆 You Won!' : correctCount < opponentScore ? '💀 Bot Won!' : '🤝 It\'s a Tie!'}
+              </motion.div>
+            )}
             <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto overflow-hidden shadow-2xl">
               {character ? (
                 <img src={character.image} alt={character.name} className="w-full h-full object-cover" />
@@ -1402,11 +1445,23 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                 <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
                   {correctCount}/{total}
                 </p>
-                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Questions Correct ({pct}%)</p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Your Score ({pct}%)</p>
               </div>
               
               <div className="hidden md:block w-px h-16 bg-white/10"></div>
               
+              {gameMode === 'bot' && (
+                <>
+                  <div className="space-y-1">
+                    <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
+                      {opponentScore}/{total}
+                    </p>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Bot Score ({Math.round((opponentScore / total) * 100)}%)</p>
+                  </div>
+                  <div className="hidden md:block w-px h-16 bg-white/10"></div>
+                </>
+              )}
+
               <div className="space-y-1">
                 <div className="flex items-center justify-center gap-3 text-blue-400">
                   <Clock className="size-8" />
@@ -1448,6 +1503,84 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               <Check className="size-4" /> Score saved!
             </p>
           )}
+
+          {/* Match Breakdown Section */}
+          <div className="mt-12 space-y-6 pt-12 border-t border-white/10">
+            <div className="flex flex-col items-center gap-2">
+              <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Match Breakdown</h3>
+              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest">
+                <div className="flex items-center gap-1.5 text-primary">
+                  <span className="size-2 rounded-full bg-primary" />
+                  You
+                </div>
+                <div className="flex items-center gap-1.5 text-red-500">
+                  <span className="size-2 rounded-full bg-red-500" />
+                  Bot
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-4 text-left max-w-xl mx-auto">
+              {sessionQuestions.map((question, idx) => {
+                const userRes = scores[idx];
+                const botRes = botResults[idx];
+                const userChoice = userAnswers[idx];
+                const botChoice = botAnswers[idx];
+                const isCorrect = userRes === 'correct';
+                const isBotCorrect = botRes === 'correct';
+                
+                return (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex gap-3">
+                        <span className="shrink-0 size-6 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-black text-slate-400">
+                          {idx + 1}
+                        </span>
+                        <p className="text-sm font-bold text-white leading-relaxed">{question.question}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      {/* Player Result */}
+                      <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-primary">You</span>
+                          {isCorrect ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />}
+                        </div>
+                        <p className={`text-xs font-bold leading-tight ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                          {userChoice || 'Skipped'}
+                        </p>
+                      </div>
+
+                      {/* Bot Result */}
+                      <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isBotCorrect ? 'bg-green-500/5 border-green-500/20' : botRes === 'incorrect' ? 'bg-red-500/5 border-red-500/20' : 'bg-white/5 border-white/10'}`}>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Bot</span>
+                          {isBotCorrect ? <Check className="size-3 text-green-400" /> : botRes === 'incorrect' ? <X className="size-3 text-red-400" /> : <Clock className="size-3 text-slate-500" />}
+                        </div>
+                        <p className={`text-xs font-bold leading-tight ${isBotCorrect ? 'text-green-400' : botRes === 'incorrect' ? 'text-red-400' : 'text-slate-500'}`}>
+                          {botChoice || (botRes === 'incorrect' ? 'Wrong' : 'Thinking...')}
+                        </p>
+                      </div>
+                    </div>
+
+                    {((!isCorrect && question.answer) || (!isBotCorrect && botRes === 'incorrect' && question.answer)) && (
+                      <div className="px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
+                        <Check className="size-3 text-emerald-400" />
+                        <p className="text-[10px] font-bold text-emerald-400">Correct: <span className="uppercase">{question.answer}</span></p>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <button onClick={handleRestart} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30"><RotateCcw className="size-4" /> Play Again</button>
