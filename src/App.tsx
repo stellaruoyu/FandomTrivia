@@ -1623,6 +1623,10 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [isHost, setIsHost] = useState(false);
   const [lobbyError, setLobbyError] = useState('');
   const [lobbyPlayers, setLobbyPlayers] = useState<{id: string, name: string, isHost: boolean}[]>([]);
+  const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
+  const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
+  const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
+
   const [opponentScore, setOpponentScore] = useState(0);
   const [teamScore, setTeamScore] = useState(0); // My team's overall score
   const [opponentTeamScore, setOpponentTeamScore] = useState(0); // Enemy team's overall score
@@ -1727,9 +1731,19 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   };
 
   const startRoomGame = async () => {
+    let finalQuestions = [];
+    if (showSpecificQuestions) {
+      if (hostSelectedIndices.length === 0) { setLobbyError('Please select at least one question!'); return; }
+      finalQuestions = hostSelectedIndices.map(i => questions[i]).map(q => ({ ...q, options: shuffle(q.options) }));
+    } else {
+      finalQuestions = shuffle(questions).map(q => ({ ...q, options: shuffle(q.options) })).slice(0, hostQuestionCount);
+    }
+
+    setSessionQuestions(finalQuestions);
+
     await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
     supabase.channel(`room:${roomCode}`).send({
-      type: 'broadcast', event: 'game_start', payload: { message: 'Go!' }
+      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions }
     });
     setMatchRoomId(`room:${roomCode}`);
     setGameState('playing');
@@ -1760,8 +1774,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
            if (myIndex !== -1) setMyTeamId(myIndex % 2 === 0 ? 'A' : 'B');
         }
       })
-      .on('broadcast', { event: 'game_start' }, () => {
-        if (!isHost) {
+      .on('broadcast', { event: 'game_start' }, ({ payload }) => {
+        if (!isHost && payload.questions) {
+          setSessionQuestions(payload.questions);
           setMatchRoomId(`room:${roomCode}`);
           setGameState('playing');
         }
@@ -1964,11 +1979,62 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
             ))}
           </div>
 
+          {isHost && (
+            <div className="bg-black/30 border border-white/10 p-5 rounded-2xl space-y-5 mb-8 text-left">
+              <div className="flex items-center justify-between">
+                <h3 className="text-white font-black uppercase tracking-[0.2em] text-sm">Match Settings</h3>
+                <button 
+                  onClick={() => setShowSpecificQuestions(!showSpecificQuestions)} 
+                  className="text-[10px] text-primary hover:text-white font-black uppercase tracking-widest transition-colors border border-primary/30 px-3 py-1.5 rounded-full"
+                >
+                  {showSpecificQuestions ? 'Use Random' : 'Pick Specific'}
+                </button>
+              </div>
+
+              {showSpecificQuestions ? (
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select Questions ({hostSelectedIndices.length})</p>
+                  <div className="max-h-48 overflow-y-auto space-y-1.5 border border-white/5 rounded-xl p-2 bg-white/5 custom-scrollbar">
+                    {questions.map((q, i) => (
+                      <label key={i} className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors group">
+                        <input 
+                          type="checkbox" 
+                          checked={hostSelectedIndices.includes(i)}
+                          onChange={(e) => {
+                            if (e.target.checked) setHostSelectedIndices([...hostSelectedIndices, i]);
+                            else setHostSelectedIndices(hostSelectedIndices.filter(idx => idx !== i));
+                          }}
+                          className="size-4 accent-primary cursor-pointer border-white/20 rounded"
+                        />
+                        <span className="text-xs font-bold text-slate-300 group-hover:text-white truncate flex-1">{q.question}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
+                  <label className="text-slate-400 font-bold text-[10px] uppercase tracking-widest pl-2">Number of Questions</label>
+                  <input 
+                    type="number" 
+                    min={1} 
+                    max={questions.length} 
+                    value={hostQuestionCount} 
+                    onChange={(e) => {
+                       const val = Number(e.target.value);
+                       setHostQuestionCount(val < 1 ? 1 : val > questions.length ? questions.length : val);
+                    }}
+                    className="bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white w-24 text-center font-black outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
           {isHost ? (
             <button 
               onClick={startRoomGame} 
               disabled={lobbyPlayers.length < 2 || lobbyPlayers.length > maxPlayers}
-              className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg border border-primary/50 text-lg mb-4"
+              className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg border border-primary/50 text-lg mb-4"
             >
               Start Game
             </button>
