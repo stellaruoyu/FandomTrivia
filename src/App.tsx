@@ -13,7 +13,7 @@ import {
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
-  Volume2, VolumeX, Sparkles, Car
+  Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, DAILY_QUIZZES,
@@ -89,9 +89,316 @@ interface User {
   name: string;
   picture: string;
   username: string | null;
+  avatar_config?: {
+    style: string;
+    color: string;
+    eyes: string;
+    mouth: string;
+    hair: string;
+    body: string;
+    accessory: string;
+    earring: string;
+    clip: string;
+  };
+  unlocked_avatar_items?: string[];
 }
 
 // --- Components ---
+
+const AVATAR_STYLES = [
+  { id: 'classic', name: 'Classic Circle', shape: 'circle' },
+  { id: 'robot', name: 'Bot Head', shape: 'square' },
+  { id: 'slime', name: 'Slime Blob', shape: 'blob' },
+  { id: 'star_fan', name: 'Star Fan', shape: 'star', unlockReason: 'Complete 3 quizzes with 100%' }
+];
+
+const AVATAR_COLORS = ['#7F13EC', '#EF4444', '#10B981', '#F59E0B', '#3B82F6', '#EC4899', '#6366F1'];
+
+const AVATAR_EYES = [
+  { id: 'happy', name: 'Classic Round', path: <g>
+    {/* Exact Match: Large White Oval with Dark Iris */}
+    <ellipse cx="5.5" cy="8" rx="1.5" ry="1.8" fill="white" stroke="rgba(0,0,0,0.05)" strokeWidth="0.2" />
+    <circle cx="5.8" cy="8.2" r="1.1" fill="#4B2C20" />
+    <circle cx="5.5" cy="7.2" r="0.4" fill="white" opacity="0.9" />
+    
+    <ellipse cx="10.5" cy="8" rx="1.5" ry="1.8" fill="white" stroke="rgba(0,0,0,0.05)" strokeWidth="0.2" />
+    <circle cx="10.2" cy="8.2" r="1.1" fill="#4B2C20" />
+    <circle cx="10.5" cy="7.2" r="0.4" fill="white" opacity="0.9" />
+  </g> },
+  { id: 'cool', name: 'Cool Shades', path: <g>
+    <path d="M3 8 a0.5 0.5 0 010.5 -0.5 h9 a0.5 0.5 0 010.5 0.5 v0.5 a0.5 0.5 0 01-0.5 0.5 h-9 a0.5 0.5 0 01-0.5 -0.5 z" fill="rgba(20,20,20,0.95)" />
+  </g>, unlockReason: 'Win 5 Bot Matches' },
+  { id: 'wide', name: 'Bright Eyes', path: <g>
+    <ellipse cx="5.5" cy="8" rx="1.6" ry="1.9" fill="white" />
+    <circle cx="5.5" cy="8" r="1.2" fill="#3B82F6" />
+    <circle cx="5.2" cy="7.2" r="0.4" fill="white" />
+    
+    <ellipse cx="10.5" cy="8" rx="1.6" ry="1.9" fill="white" />
+    <circle cx="10.5" cy="8" r="1.2" fill="#3B82F6" />
+    <circle cx="10.2" cy="7.2" r="0.4" fill="white" />
+  </g> },
+  { id: 'sparkle', name: 'Starry', path: <g>
+    <path d="M5 7L5.5 8 6 7 5.5 6z M10.5 7L11 8 11.5 7 11 6z" fill="#FBBF24" />
+  </g>, unlockReason: 'Complete 10 quizzes' }
+];
+
+const AVATAR_MOUTHS = [
+  { id: 'smile', name: 'Classic U', path: <path d="M7.2 11.2c0.2 0.3 1.4 0.3 1.6 0" stroke="#4B2C20" strokeWidth="0.6" fill="none" strokeLinecap="round" /> },
+  { id: 'neutral', name: 'Neutral', path: <path d="M7.4 11.5h1.2" stroke="#4B2C20" strokeWidth="0.6" fill="none" strokeLinecap="round" /> },
+  { id: 'ooh', name: 'Ooh!', path: <circle cx="8" cy="11.5" r="0.4" fill="#4B2C20" /> }
+];
+
+const AVATAR_ACCESSORIES = [
+  { id: 'none', name: 'None' },
+  { id: 'crown', name: 'Crown', path: <g>
+    <path d="M4 3l0.5 2 1.5-1.5 2 1.5 2-1.5 1.5 1.5 0.5-2v3h-8v-3z" fill="#FBBF24" />
+    <path d="M4.5 3.5l0.5 1.5M6 4.5l1-1M8.5 5l1-1" stroke="rgba(255,255,255,0.3)" strokeWidth="0.3" />
+  </g>, unlockReason: 'Get 5 Perfect Scores' },
+  { id: 'hat', name: 'Wizard Hat', path: <g>
+    <path d="M4 6c1-2 2-5 4-5s3 3 4 5H4z" fill="#4338CA" filter="url(#softShadow)" />
+    <path d="M6 3a0.2 0.2 0 110.4 0 0.2 0.2 0 11-0.4 0z" fill="white" opacity="0.6" />
+  </g>, unlockReason: 'Complete Twilight Quiz' },
+  { id: 'glasses', name: 'Glasses', path: <path d="M4 7.2c0.5 0.8 1.5 0.8 2 0m2 0c0.5 0.8 1.5 0.8 2 0 M8 7.2h0" stroke="rgba(0,0,0,0.8)" fill="none" strokeWidth="0.8" strokeLinecap="round" /> }
+];
+
+const AVATAR_HAIR = [
+  { id: 'bald', name: 'None' },
+  { id: 'bob', name: 'Straight Bob', path: <g>
+    {/* High-Fidelity Straight Bob with Bangs */}
+    <path d="M3 7.5c0-4.5 2.5-6.5 5-6.5s5 2 5 6.5v1.8c-0.2 2-1 4.2-5 4.2s-4.8-2.2-5-4.2v-1.8z" />
+    <path d="M3.2 7.2h9.6 M4 2.8c1-0.4 4-0.4 8 0s2.8 1.2 2.8 2.2" stroke="white" strokeWidth="0.4" opacity="0.2" fill="none" />
+    <path d="M3.5 7.5v1.2 M12.5 7.5v1.2" stroke="rgba(0,0,0,0.1)" strokeWidth="0.3" fill="none" />
+  </g> },
+  { id: 'short', name: 'Bowl Cut', path: <path d="M2.5 7.5c0-4.5 3-6.5 6.5-6.5s6.5 2 6.5 6.5v1h-13v-1z" /> },
+  { id: 'pigtails', name: 'Clumpy Pigtails', path: <g>
+    <path d="M2.5 8c0-5 3-7 6.5-7s6.5 2 6.5 7v1.5h-13v-1.5z M1 10.5c0-2.5 1-3.5 3-3.5s3 1 3 3.5v3h-6v-3z M11 10.5c0-2.5 1-3.5 3-3.5s3 1 3 3.5v3h-6v-3z" />
+  </g>, unlockReason: 'Complete 10 Quizzes' }
+];
+
+const AVATAR_BODIES = [
+  { id: 'boy_base', name: 'Boy Base', path: (
+    <g>
+      {/* Blue Gingham Shirt */}
+      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="url(#gingham)" stroke="rgba(0,0,0,0.1)" strokeWidth="0.2" />
+      <path d="M7 13.5v3" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
+      {/* White buttons */}
+      <circle cx="7" cy="14.2" r="0.15" fill="white" />
+      <circle cx="7" cy="15.2" r="0.15" fill="white" />
+    </g>
+  ) },
+  { id: 'girl_base', name: 'Girl Base', path: (
+    <g>
+      {/* Blue Gingham Shirt */}
+      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="url(#gingham)" stroke="rgba(0,0,0,0.1)" strokeWidth="0.2" />
+      <path d="M7 13.5v3" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
+      {/* White buttons */}
+      <path d="M7.4 13.5l-0.4 0.5-0.4-0.5z" fill="white" opacity="0.8" />
+    </g>
+  ) },
+  { id: 'summer_dress', name: 'Summer Dress', path: (
+    <g>
+      <path d="M5.5 12.5l-2.8 4.2h10.6l-2.8-4.2h-5z" fill="white" filter="url(#softShadow)" />
+      <path d="M5.5 12.5l-2.8 4.2h10.6l-2.8-4.2h-5z" fill="rgba(0,150,255,0.2)" />
+      <path d="M6 13.5l-1 1 M10 13.5l1 1" stroke="rgba(255,255,255,0.6)" strokeWidth="0.5" />
+    </g>
+  ), unlockReason: 'Complete 3 Quizzes' },
+  { id: 'princess', name: 'Princess Gown', path: (
+    <g>
+      <path d="M5.5 12h5l3.5 4.5h-12l3.5-4.5z" fill="white" filter="url(#softShadow)" />
+      <path d="M5.5 12h5l3.5 4.5h-12l3.5-4.5z" fill="rgba(255,100,200,0.3)" />
+      <path d="M8 12.5v3.5" stroke="rgba(255,255,255,0.4)" strokeWidth="0.4" />
+      <path d="M7.8 13.5a0.2 0.2 0 110.4 0 0.2 0.2 0 11-0.4 0z" fill="white" opacity="0.8" />
+    </g>
+  ), unlockReason: 'Get a Perfect Score' },
+  { id: 'striped_tee', name: 'Striped Tee', path: (
+    <g>
+      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" />
+      <path d="M5 14h6 M5 15h6" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6" />
+    </g>
+  ) },
+  { id: 'oxford', name: 'Oxford Shirt', path: (
+    <g>
+      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="white" />
+      <path d="M7.4 13.2l0.6 0.8 0.6-0.8" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="0.4" />
+      <path d="M8 14.2v2" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
+    </g>
+  ) },
+  { id: 'hoodie', name: 'Street Hoodie', path: (
+    <g>
+      <path d="M5 12.5c-1 0.5-1.5 3 0 4h6c1.5-1 1-3.5 0-4l-3-0.5-3 0.5z" fill="rgba(30,30,30,0.9)" />
+      <path d="M7 13.5l1 1 1-1" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+      <path d="M7.5 15.5h1v0.5h-1z" fill="white" opacity="0.2" />
+    </g>
+  ), unlockReason: 'Earn Points' }
+];
+
+const AVATAR_EARRINGS = [
+  { id: 'none', name: 'None' },
+  { id: 'stud', name: 'Silver Stud', path: <circle cx="1.8" cy="8.5" r="0.4" fill="#E2E8F0" /> },
+  { id: 'hoop', name: 'Gold Hoop', path: <path d="M1.8 9a0.8 0.8 0 100-0.1" stroke="#FBBF24" fill="none" strokeWidth="0.5" />, unlockReason: 'Score 90% on HP Quiz' }
+];
+
+const AVATAR_CLIPS = [
+  { id: 'none', name: 'None' },
+  { id: 'heart', name: 'Heart Clip', path: <path d="M12 5c0-1-1-1-1 0s1 1 1 1 1-1 1-1-1 0-1 0" fill="#EC4899" /> },
+  { id: 'star_pin', name: 'Star Pin', path: <path d="M13 3l.5 1 1 .5-1 .5-.5 1-.5-1-1-.5 1-.5.5-1z" fill="#FBBF24" />, unlockReason: 'Win a tie' }
+];
+
+const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: { 
+  config?: User['avatar_config'], 
+  animation?: 'idle' | 'victory' | 'sad',
+  size?: number 
+}) => {
+  const c = config || { 
+    style: 'classic', 
+    color: '#7F13EC', 
+    eyes: 'happy', 
+    mouth: 'smile', 
+    hair: 'short', 
+    body: 'boy_base', 
+    accessory: 'none', 
+    earring: 'none', 
+    clip: 'none' 
+  };
+  
+  const variants = {
+    idle: {
+      y: [0, -4, 0],
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+    },
+    victory: {
+      y: [0, -20, 0],
+      rotate: [0, -5, 5, -5, 5, 0],
+      scale: [1, 1.1, 1],
+      transition: { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
+    },
+    sad: {
+      y: [0, 5, 0],
+      scaleY: [1, 0.85, 1],
+      opacity: [1, 0.7, 1],
+      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+    }
+  };
+
+  const eyePath = AVATAR_EYES.find(e => e.id === c.eyes)?.path || AVATAR_EYES[0].path;
+  const mouthPath = AVATAR_MOUTHS.find(m => m.id === c.mouth)?.path || AVATAR_MOUTHS[0].path;
+  const hairPath = AVATAR_HAIR.find(h => h.id === c.hair)?.path;
+  const bodyPath = AVATAR_BODIES.find(b => b.id === c.body)?.path;
+  const accessoryPath = AVATAR_ACCESSORIES.find(a => a.id === c.accessory)?.path;
+  const earringPath = AVATAR_EARRINGS.find(e => e.id === c.earring)?.path;
+  const clipPath = AVATAR_CLIPS.find(cl => cl.id === c.clip)?.path;
+  
+  // Dynamic gradient IDs to avoid collisions
+  const skinGradId = `skinGrad-${c.color.replace('#', '')}`;
+
+  return (
+    <motion.div
+      variants={variants}
+      animate={animation}
+      style={{ width: size, height: size }}
+      className="relative flex items-center justify-center shrink-0"
+    >
+      <svg viewBox="0 0 16 16" className="w-full h-full drop-shadow-2xl overflow-visible">
+        <defs>
+          <radialGradient id={skinGradId} cx="40%" cy="40%" r="65%" fx="30%" fy="30%">
+            <stop offset="0%" stopColor={c.color} />
+            <stop offset="100%" stopColor={c.color} stopOpacity="0.85" />
+          </radialGradient>
+          
+          <pattern id="gingham" patternUnits="userSpaceOnUse" width="1.5" height="1.5">
+            <rect width="1.5" height="1.5" fill="white" />
+            <rect width="0.75" height="1.5" fill="#3B82F6" opacity="0.4" />
+            <rect width="1.5" height="0.75" fill="#3B82F6" opacity="0.4" />
+          </pattern>
+
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.2" />
+            <feOffset dx="0" dy="0.3" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0" />
+          </filter>
+        </defs>
+
+        {/* Neck Shadow */}
+        <g transform="translate(0, 0.5)" opacity="0.15">
+           <path d="M6.5 12.5h3v0.5h-3z" fill="black" filter="url(#softShadow)" />
+        </g>
+
+        {/* Body/Torso: Exact Match with Gingham Shirt */}
+        <g>
+          {bodyPath}
+        </g>
+        
+        {/* Head Layer (Back Hair) */}
+        <g transform="translate(0, -0.5)">
+          {c.hair !== 'bald' && (
+            <g fill="rgba(0,0,0,0.3)">
+              {hairPath}
+            </g>
+          )}
+
+          {/* Head Shape: Exact Picture Match (Squished Rounded Rect) */}
+          <g>
+            {/* Integrated Face & Ears path (Exact Match) */}
+            <path 
+              d="M3 7.5c0-4 2-5.5 5-5.5s5 1.5 5 5.5s-2 5.5-5 5.5s-5-1.5-5-5.5z M2 7.5c0-1.2 0.3-1.8 1-1.8v3.6c-0.7 0-1-0.6-1-1.8z M13 7.5c0-1.2-0.3-1.8-1-1.8v3.6c0.7 0 1-0.6 1-1.8z" 
+              fill={`url(#${skinGradId})`}
+            />
+            {/* Jawline Shadow */}
+            <path 
+              d="M3 8.5c1 1.5 2.5 2.5 5 2.5s4-1 5-2.5" 
+              fill="none" 
+              stroke="rgba(0,0,0,0.06)" 
+              strokeWidth="0.8" 
+              strokeLinecap="round" 
+            />
+            
+            {/* Soft Peach Blush (Airbrushed Radial) */}
+            <g opacity="0.15">
+              <radialGradient id="peachBlush" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#FB923C" />
+                <stop offset="100%" stopColor="#FB923C" stopOpacity="0" />
+              </radialGradient>
+              <ellipse cx="4.2" cy="8.8" rx="1.5" ry="1" fill="url(#peachBlush)" />
+              <ellipse cx="11.8" cy="8.8" rx="1.5" ry="1" fill="url(#peachBlush)" />
+            </g>
+          </g>
+
+          {/* High-Fidelity Features: Multi-layered for 3D effect */}
+          <g transform="translate(0, 0)">
+            {/* 3D Bean Nose */}
+            <radialGradient id="noseGrad" cx="40%" cy="40%" r="50%">
+              <stop offset="0%" stopColor="rgba(0,0,0,0.1)" />
+              <stop offset="100%" stopColor="rgba(0,0,0,0.25)" />
+            </radialGradient>
+            <path d="M7.4 9.5a0.6 0.4 0 101.2 0 0.6 0.4 0 10-1.2 0z" fill="url(#noseGrad)" filter="url(#softShadow)" />
+            
+            <g transform="translate(0, 0.3)">
+              {/* Feature paths (Eyes/Mouth) are now multi-colored paths */}
+              {eyePath}
+              {mouthPath}
+            </g>
+          </g>
+
+          {/* Front Hair */}
+          {c.hair !== 'bald' && (
+            <g fill="rgba(0,0,0,0.8)" opacity="0.9">
+              {hairPath}
+            </g>
+          )}
+          
+          {/* Accessories */}
+          {clipPath && <g transform="translate(-1, 0)">{clipPath}</g>}
+          {earringPath}
+          {accessoryPath && (
+            <g transform="translate(0, -1)">
+              {accessoryPath}
+            </g>
+          )}
+        </g>
+      </svg>
+    </motion.div>
+  );
+};
 
 const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) => {
   const [history, setHistory] = useState<any[]>([]);
@@ -168,6 +475,159 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
               </div>
             ))
           )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose: () => void, onSave: (config: User['avatar_config']) => void }) => {
+  const [config, setConfig] = useState(user.avatar_config || { 
+    style: 'classic', 
+    color: '#7F13EC', 
+    eyes: 'happy', 
+    mouth: 'smile', 
+    hair: 'short', 
+    body: 'basic', 
+    accessory: 'none', 
+    earring: 'none', 
+    clip: 'none' 
+  });
+  const [saving, setSaving] = useState(false);
+
+  const canUse = (itemId: string) => {
+    const defaultUnlocked = ['none', 'classic', 'happy', 'smile', 'wide', 'neutral', 'ooh', 'boy_base', 'girl_base', 'short', 'bald', '#7F13EC'];
+    if (defaultUnlocked.includes(itemId)) return true;
+    return user.unlocked_avatar_items?.includes(itemId);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    await onSave(config);
+    setSaving(false);
+  };
+
+  const categories = [
+    { id: 'body', icon: <UserIcon className="size-5" />, name: 'Identity', items: AVATAR_BODIES.filter(b => b.id.includes('base')) },
+    { id: 'wardrobe', icon: <Shirt className="size-5" />, name: 'Wardrobe', items: AVATAR_BODIES.filter(b => !b.id.includes('base')) },
+    { id: 'hair', icon: <Scissors className="size-5" />, name: 'Hair', items: AVATAR_HAIR },
+    { id: 'face', icon: <Smile className="size-5" />, name: 'Face', items: [...AVATAR_EYES, ...AVATAR_MOUTHS] },
+    { id: 'extra', icon: <Sparkles className="size-5" />, name: 'Extras', items: AVATAR_ACCESSORIES },
+    { id: 'color', icon: <Palette className="size-5" />, name: 'Skin', items: AVATAR_COLORS },
+  ];
+
+  const [activeTab, setActiveTab] = useState(categories[0].id);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-[#D1FAE5] border-4 border-[#059669]/20 p-8 rounded-[60px] max-w-4xl w-full max-h-[90vh] flex flex-col shadow-[0_20px_50px_rgba(5,150,105,0.2)] overflow-hidden relative"
+      >
+        {/* Decorative Leaf Pattern Background (simplified as circles) */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="absolute top-10 left-10 size-20 rounded-full bg-[#059669]" />
+          <div className="absolute top-60 right-20 size-16 rounded-full bg-[#059669]" />
+          <div className="absolute bottom-10 left-40 size-24 rounded-full bg-[#059669]" />
+        </div>
+
+        <div className="flex items-center justify-between mb-8 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="size-12 bg-white rounded-3xl flex items-center justify-center shadow-sm">
+              <Scissors className="size-6 text-[#059669]" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-black tracking-tight text-[#065F46]">Appearance</h3>
+              <p className="text-[10px] font-bold text-[#059669]/60 uppercase tracking-widest">Personalize Your Fan Identity</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="size-10 bg-white/40 hover:bg-white/60 rounded-full flex items-center justify-center transition-colors text-[#065F46]">
+            <X className="size-5" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-hidden flex flex-col md:flex-row gap-10">
+          {/* Preview Panel */}
+          <div className="w-full md:w-1/3 flex flex-col items-center justify-center bg-white/5 rounded-[32px] p-10 border border-white/5 relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none rounded-[32px]"></div>
+            <CustomizableAvatar config={config} animation="victory" size={200} />
+            <div className="mt-8 text-center">
+              <p className="text-lg font-black text-white italic uppercase tracking-tight">@{user.username}</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">Level 1 Trivia Fan</p>
+            </div>
+          </div>
+
+          {/* Selection Panel: Mint Bubble List */}
+          <div className="flex-1 flex flex-col overflow-hidden bg-white/40 rounded-[48px] border border-white/60 shadow-inner">
+            {/* Tabs: Exact Bubble Style */}
+            <div className="flex items-center gap-2 p-3 bg-white/20 border-b border-white/40">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(cat.id)}
+                  className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-[32px] transition-all ${activeTab === cat.id ? 'bg-[#10B981] text-white shadow-md' : 'text-[#065F46]/60 hover:text-[#065F46] hover:bg-white/30'}`}
+                >
+                  {cat.icon}
+                </button>
+              ))}
+            </div>
+
+            {/* Grid */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-custom">
+              {categories.filter(c => c.id === activeTab).map((cat) => (
+                <div key={cat.id} className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {activeTab === 'color' ? (
+                    (cat.items as string[]).map((clr) => (
+                      <button
+                        key={clr}
+                        onClick={() => setConfig({ ...config, color: clr })}
+                        className={`aspect-square rounded-2xl border-4 transition-all ${config.color === clr ? 'border-primary' : 'border-white/5 hover:border-white/20'}`}
+                        style={{ backgroundColor: clr }}
+                      />
+                    ))
+                  ) : (
+                    (cat.items as any[]).map((item) => {
+                      const idKey = activeTab === 'face' ? (AVATAR_EYES.some(e => e.id === item.id) ? 'eyes' : 'mouth') : activeTab === 'body' || activeTab === 'wardrobe' ? 'body' : activeTab === 'hair' ? 'hair' : activeTab === 'extra' ? 'accessory' : 'color';
+                      const isSelected = (config as any)[idKey] === item.id;
+                      const unlocked = canUse(item.id);
+                      
+                      return (
+                        <button
+                          key={item.id}
+                          disabled={!unlocked}
+                          onClick={() => setConfig({ ...config, [idKey]: item.id })}
+                          className={`group relative aspect-square p-2 rounded-3xl bg-white/60 border-4 transition-all flex flex-col items-center justify-center gap-2 ${isSelected ? 'border-[#10B981] bg-white' : 'border-transparent hover:border-white/40 hover:bg-white/80'} ${!unlocked ? 'opacity-40 grayscale cursor-not-allowed' : ''}`}
+                        >
+                          <CustomizableAvatar config={{ ...config, [idKey]: item.id }} size={50} />
+                          <span className="text-[9px] font-bold text-[#065F46]/70 uppercase tracking-tighter text-center line-clamp-1">{item.name}</span>
+                          {isSelected && <div className="absolute -top-1 -right-1 size-5 bg-[#10B981] rounded-full flex items-center justify-center shadow-sm"><Check className="size-3 text-white" /></div>}
+                          {!unlocked && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl backdrop-blur-[1px]">
+                              <div className="text-center p-1">
+                                <Lock className="size-3 text-red-100 mx-auto mb-1" />
+                                <span className="text-[6px] leading-tight text-white block opacity-80 uppercase font-black">{item.unlockReason || 'Locked'}</span>
+                              </div>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <button
+            disabled={saving}
+            onClick={handleSave}
+            className="bg-[#10B981] hover:bg-[#059669] disabled:opacity-50 text-white px-16 py-4 rounded-[40px] font-bold text-xl transition-all shadow-lg flex items-center justify-center gap-3 active:scale-95"
+          >
+            {saving ? 'Saving...' : 'Confirm.'}
+          </button>
         </div>
       </motion.div>
     </div>
@@ -386,7 +846,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg }: {
+const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg, onShowCustomAvatar }: {
   isDashboard: boolean,
   user: User | null,
   onLogin: () => void,
@@ -397,7 +857,8 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   onShowInfo?: (title: string, content: string) => void,
   soundEnabled: boolean,
   onToggleSound: () => void,
-  onTriggerEasterEgg?: () => void
+  onTriggerEasterEgg?: () => void,
+  onShowCustomAvatar?: () => void
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -529,6 +990,13 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
                           My Badges
                         </button>
                       )}
+                      <button
+                        onClick={() => { onShowCustomAvatar?.(); setShowAccountMenu(false); }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold text-slate-300 hover:bg-white/5 hover:text-white transition-all underline decoration-primary decoration-2 underline-offset-4"
+                      >
+                        <Sparkles className="size-4 text-primary" />
+                        Custom Avatar
+                      </button>
                       {onResetUsername && (
                         <button
                           onClick={() => { onResetUsername(); setShowAccountMenu(false); }}
@@ -1076,7 +1544,7 @@ const RaceTrack = ({
   opponentNames,
   opponentScore 
 }: { 
-  mode: 'bot', 
+  mode: 'bot' | 'versus' | 'team', 
   userScore: number, 
   total: number, 
   userName: string,
@@ -1147,9 +1615,19 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   isDaily?: boolean,
   key?: string
 }) => {
-  const [gameState, setGameState] = useState<'mode_selection' | 'playing'>('mode_selection');
-  const [gameMode, setGameMode] = useState<'single' | 'bot' | null>(null);
+  const [gameState, setGameState] = useState<'mode_selection' | 'lobby' | 'playing'>('mode_selection');
+  const [gameMode, setGameMode] = useState<'single' | 'bot' | 'versus' | 'team' | null>(null);
+  const [matchRoomId, setMatchRoomId] = useState<string | null>(null);
+  const [roomCode, setRoomCode] = useState('');
+  const [joinCodeInput, setJoinCodeInput] = useState('');
+  const [isHost, setIsHost] = useState(false);
+  const [lobbyError, setLobbyError] = useState('');
+  const [lobbyPlayers, setLobbyPlayers] = useState<{id: string, name: string, isHost: boolean}[]>([]);
   const [opponentScore, setOpponentScore] = useState(0);
+  const [teamScore, setTeamScore] = useState(0); // My team's overall score
+  const [opponentTeamScore, setOpponentTeamScore] = useState(0); // Enemy team's overall score
+  const [myTeamId, setMyTeamId] = useState<'A'|'B'|null>(null);
+  const [playerScores, setPlayerScores] = useState<Record<string, {score: number, team: 'A'|'B'|null}>>({});
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -1160,10 +1638,14 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [finished, setFinished] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [sessionUnlocks, setSessionUnlocks] = useState<string[]>([]);
   const [sessionQuestions, setSessionQuestions] = useState<MCTriviaQuestion[]>([]);
   const [shuffleKey, setShuffleKey] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
+
+  const correctCount = Object.values(scores).filter(s => s === 'correct').length;
+  const answeredCount = Object.keys(scores).length;
 
   // Initialize and shuffle questions for this session
   useEffect(() => {
@@ -1220,6 +1702,124 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     return () => clearTimeout(timeoutId);
   }, [gameMode, gameState, finished, sessionQuestions.length]);
 
+  // Room Creation & Joining Handlers
+  const createRoom = async () => {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const { error } = await supabase.from('rooms').insert({
+      code, host_id: user?.id || `anon-${code}`, status: 'waiting', quiz_id: scoreLabel
+    });
+    if (error) { setLobbyError('Failed to create room.'); return; }
+    setIsHost(true);
+    setRoomCode(code);
+    setLobbyError('');
+  };
+
+  const joinRoom = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = joinCodeInput.toUpperCase();
+    const { data, error } = await supabase.from('rooms').select('*').eq('code', code).single();
+    if (error || !data) { setLobbyError('Room not found.'); return; }
+    if (data.status !== 'waiting') { setLobbyError('Game has already started!'); return; }
+    if (data.quiz_id !== scoreLabel) { setLobbyError('This room is for a different quiz!'); return; }
+    setIsHost(false);
+    setRoomCode(code);
+    setLobbyError('');
+  };
+
+  const startRoomGame = async () => {
+    await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
+    supabase.channel(`room:${roomCode}`).send({
+      type: 'broadcast', event: 'game_start', payload: { message: 'Go!' }
+    });
+    setMatchRoomId(`room:${roomCode}`);
+    setGameState('playing');
+  };
+
+  // Realtime Lobby Logic
+  useEffect(() => {
+    if (gameState !== 'lobby' || !roomCode) return;
+
+    const channel = supabase.channel(`room:${roomCode}`, {
+      config: { presence: { key: user?.id || 'anon' } }
+    });
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const active: {id: string, name: string, isHost: boolean}[] = [];
+        for (const [key, presences] of Object.entries(state)) {
+           const pData = presences[0] as any;
+           if (pData) {
+             active.push({ id: key, name: pData.name, isHost: pData.isHost });
+           }
+        }
+        setLobbyPlayers(active);
+        
+        if (gameMode === 'team' && !myTeamId) {
+           const myIndex = active.findIndex(p => p.id === (user?.id || 'anon'));
+           if (myIndex !== -1) setMyTeamId(myIndex % 2 === 0 ? 'A' : 'B');
+        }
+      })
+      .on('broadcast', { event: 'game_start' }, () => {
+        if (!isHost) {
+          setMatchRoomId(`room:${roomCode}`);
+          setGameState('playing');
+        }
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await channel.track({
+            name: user?.username || user?.name || 'Guest Fan',
+            isHost: isHost
+          });
+        }
+      });
+
+    return () => {
+      channel.untrack().then(() => supabase.removeChannel(channel));
+    };
+  }, [gameState, roomCode, isHost, user, gameMode, myTeamId]);
+
+  // Realtime Gameplay Logic (Broadcast)
+  useEffect(() => {
+    if (gameState !== 'playing' || !matchRoomId || (gameMode !== 'versus' && gameMode !== 'team')) return;
+
+    const gameChannel = supabase.channel(matchRoomId);
+    
+    gameChannel
+      .on('broadcast', { event: 'score_update' }, ({ payload }) => {
+        const { userId, score, team } = payload;
+        const currentId = user?.id || 'anon';
+        if (userId === currentId) return;
+
+        if (gameMode === 'versus') {
+          setOpponentScore(score);
+        } else if (gameMode === 'team') {
+          setPlayerScores(prev => ({
+            ...prev,
+            [userId]: { score, team }
+          }));
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(gameChannel);
+    };
+  }, [gameState, matchRoomId, gameMode, user]);
+
+  // Broadcast our own score whenever it changes
+  useEffect(() => {
+    if (gameState === 'playing' && matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
+      const currentId = user?.id || 'anon';
+      supabase.channel(matchRoomId).send({
+        type: 'broadcast',
+        event: 'score_update',
+        payload: { userId: currentId, score: correctCount, team: myTeamId }
+      });
+    }
+  }, [correctCount, gameState, matchRoomId, gameMode, myTeamId, user]);
+
   // Handle startTime initialization when game starts
   useEffect(() => {
     if (gameState === 'playing' && !startTime) {
@@ -1250,6 +1850,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               {[
                 { id: 'single', name: 'Single Playing', desc: 'Face the challenge alone and top the leaderboards.', icon: UserIcon, color: 'from-blue-600/20 to-indigo-600/20', border: 'hover:border-blue-400/50' },
                 { id: 'bot', name: 'You vs Bot', desc: 'Can you beat our AI fan? no waiting required.', icon: Zap, color: 'from-purple-600/20 to-pink-600/20', border: 'hover:border-purple-400/50' },
+                { id: 'versus', name: '1v1 Mode', desc: 'Face off against another real player in a battle of wits.', icon: Target, color: 'from-orange-600/20 to-amber-600/20', border: 'hover:border-orange-400/50' },
+                { id: 'team', name: 'Team Mode', desc: 'Join forces in a 2v2 trivia showdown.', icon: Users, color: 'from-emerald-600/20 to-green-600/20', border: 'hover:border-emerald-400/50' },
               ].map((mode) => {
                 const Icon = mode.icon;
                 const isSelected = gameMode === mode.id;
@@ -1265,6 +1867,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                         setGameMode('bot');
                         setOpponentNames(['Trivia Bot']);
                         setGameState('playing');
+                      } else if (mode.id === 'versus' || mode.id === 'team') {
+                        setGameMode(mode.id as 'versus' | 'team');
+                        setGameState('lobby');
                       }
                     }}
                     className={`flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br ${mode.color} border transition-all duration-300 text-left group ${
@@ -1293,7 +1898,93 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     );
   }
 
-  // Searching Screen (Removed since using bot/solo)
+  // Lobby Screen
+  if (gameState === 'lobby') {
+    if (!roomCode) {
+      return (
+        <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full p-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl space-y-8">
+            <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Private Match</h2>
+            <p className="text-slate-400 font-medium">Create a new room or join an existing one using a 6-character code.</p>
+
+            <button onClick={createRoom} className="w-full bg-primary hover:bg-primary-dark text-white font-black py-4 rounded-xl shadow-lg border border-primary/50 uppercase tracking-widest transition-all">
+              Create New Room
+            </button>
+            
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-white/10"></div>
+              <span className="flex-shrink-0 mx-4 text-slate-500 font-bold text-xs uppercase tracking-widest">OR</span>
+              <div className="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <form onSubmit={joinRoom} className="space-y-4">
+              <input 
+                type="text" 
+                placeholder="ENTER 6-CHAR CODE" 
+                maxLength={6}
+                value={joinCodeInput}
+                onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
+                className="w-full bg-white/5 border border-white/20 text-white placeholder-slate-500 px-6 py-4 rounded-xl text-center font-black text-2xl tracking-[0.5em] uppercase focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+              />
+              <button disabled={joinCodeInput.length !== 6} type="submit" className="w-full bg-white/10 hover:bg-white/20 text-white font-black py-4 rounded-xl border border-white/20 uppercase tracking-widest transition-all disabled:opacity-50">
+                Join Room
+              </button>
+            </form>
+
+            <button onClick={() => setGameState('mode_selection')} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest pt-2">
+              Cancel
+            </button>
+
+            {lobbyError && (
+              <p className="text-red-400 font-bold text-sm bg-red-500/10 p-3 rounded-xl border border-red-500/20">{lobbyError}</p>
+            )}
+          </motion.div>
+        </div>
+      );
+    }
+
+    const maxPlayers = gameMode === 'versus' ? 2 : 4;
+
+    return (
+      <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full p-10 bg-card-dark border border-primary/30 rounded-3xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.2)]">
+          <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Room Code</h2>
+          <p className="text-5xl font-black text-primary tracking-[0.2em] mb-8">{roomCode}</p>
+          
+          <div className="space-y-4 mb-8 text-left">
+            <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
+              <span>Players ({lobbyPlayers.length}/{maxPlayers})</span>
+              {gameMode === 'team' && myTeamId && <span className="text-primary">You are on Team {myTeamId}</span>}
+            </div>
+            {lobbyPlayers.map(p => (
+              <div key={p.id} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl">
+                <span className="font-bold text-white text-lg">{p.name} {p.id === (user?.id || 'anon') && <span className="text-primary text-sm">(You)</span>}</span>
+                {p.isHost && <span className="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full font-black uppercase tracking-widest">Host</span>}
+              </div>
+            ))}
+          </div>
+
+          {isHost ? (
+            <button 
+              onClick={startRoomGame} 
+              disabled={lobbyPlayers.length < 2 || lobbyPlayers.length > maxPlayers}
+              className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg border border-primary/50 text-lg mb-4"
+            >
+              Start Game
+            </button>
+          ) : (
+            <div className="w-full p-4 border border-blue-500/30 bg-blue-500/10 rounded-xl mb-4">
+              <p className="text-blue-400 font-bold animate-pulse">Waiting for host to start...</p>
+            </div>
+          )}
+
+          <button onClick={() => { setRoomCode(''); setGameState('mode_selection'); }} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest">
+            Leave Room
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   // Wait for session questions to be initialized
   if (sessionQuestions.length === 0) {
@@ -1306,8 +1997,6 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   const q = sessionQuestions[currentQ];
   const total = sessionQuestions.length;
-  const correctCount = Object.values(scores).filter(s => s === 'correct').length;
-  const answeredCount = Object.keys(scores).length;
 
   if (!q || !q.options) {
     return (
@@ -1385,6 +2074,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       return;
     }
     setSaving(true);
+    const pct = Math.round((correctCount / total) * 100);
     try {
       const { error } = await supabase
         .from('scores')
@@ -1398,6 +2088,37 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
         });
       if (error) throw error;
       setScoreSaved(true);
+
+      // --- Avatar Unlock Logic ---
+      const newUnlocks: string[] = [];
+      const currentUnlocks = user.unlocked_avatar_items || [];
+
+      // Fetch all scores to check milestones
+      const { data: allScores } = await supabase
+        .from('scores')
+        .select('score, total, quiz_id')
+        .eq('user_id', user.id);
+
+      if (allScores) {
+        const totalQuizzes = allScores.length;
+        const perfectScores = allScores.filter(s => s.score === s.total).length;
+        const highScores = allScores.filter(s => (s.score / s.total) >= 0.8).length;
+
+        if (totalQuizzes >= 10 && !currentUnlocks.includes('sparkle')) newUnlocks.push('sparkle');
+        if (perfectScores >= 5 && !currentUnlocks.includes('crown')) newUnlocks.push('crown');
+        if (highScores >= 3 && pct === 100 && !currentUnlocks.includes('star_fan')) newUnlocks.push('star_fan');
+        if (scoreLabel.toLowerCase().includes('twilight') && !currentUnlocks.includes('hat')) newUnlocks.push('hat');
+      }
+
+      if (newUnlocks.length > 0) {
+        const updatedUnlocks = [...currentUnlocks, ...newUnlocks];
+        await supabase
+          .from('profiles')
+          .update({ unlocked_avatar_items: updatedUnlocks })
+          .eq('id', user.id);
+        
+        setSessionUnlocks(newUnlocks);
+      }
     } catch (err: any) {
       console.error(err);
       alert('Failed to save score: ' + err.message);
@@ -1440,12 +2161,15 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                 {correctCount > opponentScore ? '🏆 You Won!' : correctCount < opponentScore ? '💀 Bot Won!' : '🤝 It\'s a Tie!'}
               </motion.div>
             )}
-            <div className="inline-flex items-center justify-center size-24 rounded-full bg-gradient-to-br from-purple-600/30 to-blue-500/30 border border-white/10 mx-auto overflow-hidden shadow-2xl">
-              {character ? (
-                <img src={character.image} alt={character.name} className="w-full h-full object-cover" />
-              ) : (
-                <Trophy className="size-12 text-amber-400" />
-              )}
+            <div className="flex justify-center mb-6">
+              <div className="relative p-8 bg-white/5 rounded-full border border-white/10 shadow-2xl">
+                <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full"></div>
+                <CustomizableAvatar 
+                  config={user?.avatar_config} 
+                  animation={gameMode === 'bot' ? (correctCount > opponentScore ? 'victory' : (correctCount < opponentScore ? 'sad' : 'idle')) : (pct >= 80 ? 'victory' : 'idle')} 
+                  size={140} 
+                />
+              </div>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
 
@@ -1489,6 +2213,41 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                 <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Total Time Spent</p>
               </div>
             </div>
+
+            {/* Rewards Section */}
+            {(sessionUnlocks.length > 0) && (
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-2xl p-6 shadow-xl backdrop-blur-md max-w-md mx-auto"
+              >
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Trophy className="size-5 text-amber-400" />
+                  <h3 className="text-xl font-black uppercase italic tracking-tight text-white">Rewards Unlocked!</h3>
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                  {sessionUnlocks.map(item => (
+                    <div key={item} className="flex flex-col items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/10 min-w-[100px]">
+                      <Sparkles className="size-6 text-amber-300 animate-pulse" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {gameMode === 'bot' && (
+              <div className="w-full max-w-md mx-auto space-y-2">
+                <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
+                  <div className="h-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-500" style={{ width: `${(correctCount/total)*100}%` }} />
+                  <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${(opponentScore/total)*100}%` }} />
+                </div>
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                  <span className="text-green-400">You ({correctCount})</span>
+                  <span className="text-red-400">Bot ({opponentScore})</span>
+                </div>
+              </div>
+            )}
 
             {!character && (
               <p className={`text-2xl font-black italic uppercase tracking-tight ${gradeColor}`}>{grade}</p>
@@ -1563,7 +2322,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 pt-2">
+                    <div className={`grid ${gameMode === 'bot' ? 'grid-cols-2' : 'grid-cols-1'} gap-3 pt-2`}>
                       {/* Player Result */}
                       <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
                         <div className="flex items-center justify-between">
@@ -1575,19 +2334,21 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                         </p>
                       </div>
 
-                      {/* Bot Result */}
-                      <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isBotCorrect ? 'bg-green-500/5 border-green-500/20' : botRes === 'incorrect' ? 'bg-red-500/5 border-red-500/20' : 'bg-white/5 border-white/10'}`}>
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Bot</span>
-                          {isBotCorrect ? <Check className="size-3 text-green-400" /> : botRes === 'incorrect' ? <X className="size-3 text-red-400" /> : <Clock className="size-3 text-slate-500" />}
+                      {/* Bot Result - Only show if bot is playing */}
+                      {gameMode === 'bot' && (
+                        <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isBotCorrect ? 'bg-green-500/5 border-green-500/20' : botRes === 'incorrect' ? 'bg-red-500/5 border-red-500/20' : 'bg-white/5 border-white/10'}`}>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Bot</span>
+                            {isBotCorrect ? <Check className="size-3 text-green-400" /> : botRes === 'incorrect' ? <X className="size-3 text-red-400" /> : <Clock className="size-3 text-slate-500" />}
+                          </div>
+                          <p className={`text-xs font-bold leading-tight ${isBotCorrect ? 'text-green-400' : botRes === 'incorrect' ? 'text-red-400' : 'text-slate-500'}`}>
+                            {botChoice || (botRes === 'incorrect' ? 'Wrong' : 'Thinking...')}
+                          </p>
                         </div>
-                        <p className={`text-xs font-bold leading-tight ${isBotCorrect ? 'text-green-400' : botRes === 'incorrect' ? 'text-red-400' : 'text-slate-500'}`}>
-                          {botChoice || (botRes === 'incorrect' ? 'Wrong' : 'Thinking...')}
-                        </p>
-                      </div>
+                      )}
                     </div>
 
-                    {((!isCorrect && question.answer) || (!isBotCorrect && botRes === 'incorrect' && question.answer)) && (
+                    {((!isCorrect && question.answer) || (gameMode === 'bot' && !isBotCorrect && botRes === 'incorrect' && question.answer)) && (
                       <div className="px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
                         <Check className="size-3 text-emerald-400" />
                         <p className="text-[10px] font-bold text-emerald-400">Correct: <span className="uppercase">{question.answer}</span></p>
@@ -1608,17 +2369,20 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     );
   }
 
+  const derivedTeamScore = correctCount + Object.values(playerScores).reduce((sum: number, p: any) => p.team === myTeamId ? sum + p.score : sum, 0);
+  const derivedOpponentTeamScore = Object.values(playerScores).reduce((sum: number, p: any) => p.team !== myTeamId ? sum + p.score : sum, 0);
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
-      {/* Race Mode UI shown during quiz if bot */}
-      {(gameMode === 'bot') && (
+      {/* Race Mode UI shown during quiz if multiplayer or bot */}
+      {(gameMode && ['bot', 'versus', 'team'].includes(gameMode)) && (
         <RaceTrack 
-          mode={gameMode}
-          userScore={correctCount}
-          total={total}
-          userName={user?.username || 'You'}
-          opponentNames={opponentNames}
-          opponentScore={opponentScore}
+          mode={gameMode as 'bot' | 'versus' | 'team'}
+          userScore={gameMode === 'team' ? derivedTeamScore : correctCount}
+          total={gameMode === 'team' ? total * 2 : total} // team max is double
+          userName={gameMode === 'team' ? 'Your Team' : (user?.username || user?.name || 'You')}
+          opponentNames={gameMode === 'team' ? ['Rival Team'] : opponentNames}
+          opponentScore={gameMode === 'team' ? derivedOpponentTeamScore : opponentScore}
         />
       )}
       <div className="max-w-3xl mx-auto space-y-8 relative z-10">
@@ -1965,7 +2729,11 @@ const DespicableMeSelector = () => {
 // --- Daily Mystery Quiz Component ---
 
 
-const DailyMysteryQuiz = () => {
+const DailyMysteryQuiz = ({ setUser, setShowAvatarModal }: { 
+  setUser: React.Dispatch<React.SetStateAction<User | null>>, 
+  setShowAvatarModal: (show: boolean) => void,
+  key?: string
+}) => {
   const navigate = useNavigate();
   
   const dailyQuiz = useMemo(() => {
@@ -2029,16 +2797,15 @@ const DailyMysteryQuiz = () => {
               {dailyQuiz.description}
             </p>
 
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6">
               <button
-                onClick={() => navigate(dailyQuiz.path, { state: { isDaily: true } })}
-                className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-black text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2 group/btn"
+                onClick={() => navigate(dailyQuiz.path)}
+                className="bg-gradient-to-r from-primary to-purple-600 text-white font-black italic uppercase px-12 py-5 rounded-2xl flex items-center justify-center gap-3 hover:scale-105 transition-all duration-300 group shadow-xl shadow-primary/30"
               >
-
-                Start Quiz Now!
-                <ArrowRight className="size-6 transition-transform group-hover/btn:translate-x-1" />
+                Start Quiz Now! <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
               </button>
-              <div className="text-slate-500 text-xs font-bold uppercase tracking-widest hidden sm:block">
+              <div className="hidden sm:flex items-center gap-2 text-slate-500 font-black text-[10px] uppercase tracking-widest">
+                <Clock className="size-3" />
                 Ends at Midnight
               </div>
             </div>
@@ -2049,7 +2816,11 @@ const DailyMysteryQuiz = () => {
   );
 };
 
-const LandingView = () => {
+const LandingView = ({ setUser, setShowAvatarModal }: { 
+  setUser: React.Dispatch<React.SetStateAction<User | null>>, 
+  setShowAvatarModal: (show: boolean) => void,
+  key?: string
+}) => {
 
   const navigate = useNavigate();
   return (
@@ -2144,7 +2915,7 @@ const LandingView = () => {
       </section>
 
 
-      <DailyMysteryQuiz />
+      <DailyMysteryQuiz setUser={setUser} setShowAvatarModal={setShowAvatarModal} />
 
       {/* Universe Grid */}
 
@@ -2817,6 +3588,7 @@ export default function App() {
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
@@ -2825,6 +3597,22 @@ export default function App() {
     const saved = localStorage.getItem('soundEnabled');
     return saved !== null ? JSON.parse(saved) : true;
   });
+
+  const handleSaveAvatar = async (config: User['avatar_config']) => {
+    if (!user) return;
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ avatar_config: config })
+        .eq('id', user.id);
+
+      if (error) throw error;
+      setUser({ ...user, avatar_config: config });
+      setShowAvatarModal(false);
+    } catch (err: any) {
+      console.error('Error saving avatar:', err.message);
+    }
+  };
 
   const toggleSound = () => {
     setSoundEnabled(prev => {
@@ -2897,6 +3685,8 @@ export default function App() {
         name: data.display_name || data.name || '', // Use display_name if available, otherwise name
         picture: data.avatar_url || data.picture || '',
         username: data.username || null,
+        avatar_config: data.avatar_config || { style: 'classic', color: '#7F13EC', eyes: 'happy', mouth: 'smile', accessory: 'none' },
+        unlocked_avatar_items: data.unlocked_avatar_items || []
       };
 
       setUser(appUser);
@@ -3127,6 +3917,7 @@ export default function App() {
         onResetUsername={() => setShowUsernameModal(true)}
         onShowHistory={() => setShowHistoryModal(true)}
         onShowBadges={() => setShowBadgesModal(true)}
+        onShowCustomAvatar={() => setShowAvatarModal(true)}
         onShowInfo={(title, content) => setModalInfo({title, content})}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}
@@ -3159,11 +3950,15 @@ export default function App() {
         <BadgesModal unlockedBadgeIds={unlockedBadgeIds} onClose={() => setShowBadgesModal(false)} />
       )}
 
+      {showAvatarModal && user && (
+        <AvatarCustomizerModal user={user} onClose={() => setShowAvatarModal(false)} onSave={handleSaveAvatar} />
+      )}
+
       <main>
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView />} />
-            <Route path="/" element={<LandingView />} />
+            <Route path="/" element={<LandingView setUser={setUser} setShowAvatarModal={setShowAvatarModal} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
               { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
               { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
@@ -3289,7 +4084,7 @@ export default function App() {
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
             {/* Account */}
-            <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" />} />
+            <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} setShowAvatarModal={setShowAvatarModal} />} />
             
             {/* Legal */}
             <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
