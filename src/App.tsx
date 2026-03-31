@@ -92,61 +92,194 @@ interface User {
   avatar_config?: {
     style: string;
     color: string;
-    eyes: string;
-    mouth: string;
+    eyes: string | null;
+    mouth: string | null;
+    nose: string | null;
     hair: string;
     body: string;
-    accessory: string;
-    earring: string;
-    clip: string;
+    shirt: string | null;
+    pants: string | null;
+    shoes: string | null;
+    accessory: string | null;
+    earring: string | null;
+    clip: string | null;
   };
+
+
   unlocked_avatar_items?: string[];
 }
 
 // --- Components ---
 
+const AVATAR_BODIES = [
+  { id: 'girl_base', name: 'Girl Slim', gender: 'girl', path: <path d="M8 3c0.8 0 1.5 0.7 1.5 1.5S8.8 6 8 6 6.5 5.3 6.5 4.5 7.2 3 8 3z M8 6c-1.5 0-3 1-3 3v4h1v3h4v-3h1V9c0-2-1.5-3-3-3z" strokeLinejoin="round" /> },
+  { id: 'boy_base', name: 'Full-Body Muscular', gender: 'boy', path: (props: { skinGradId: string }) => (
+    <g>
+      {/* FULL BODY ANATOMICAL BASE (IMAGE #3) */}
+      {/* Traps/Neck Alignment */}
+      <path d="M6.5 4.5c1-1 2-1 3 0" stroke="#000" strokeWidth="0.3" fill="none" opacity="0.4" />
+      
+      {/* Torso: Broad Shoulders & Pecs */}
+      <path d="M8 5c-3.5 0-6.5 0.8-7 2s0.5 5.5 0.5 5.5l1.5 3h10l1.5-3s1-4.3 0.5-5.5-3.5-2-7-2z" fill={`url(#${props.skinGradId})`} stroke="#000" strokeWidth="0.4" />
+      
+      {/* Muscle Definition: Pec Shadows */}
+      <path d="M3.5 6.8c1.5 0.5 4.5 0.5 6 0 M3.5 8.2c1 0.4 2 0.5 3 0.5h3c1 0 2-0.1 3-0.5" stroke="url(#muscleShadow)" strokeWidth="0.3" fill="none" />
+      
+      {/* Abs: 6-Pack */}
+      <path d="M7 9.5h2 M7 10.8h2 M7 12.1h2" stroke="url(#muscleShadow)" strokeWidth="0.25" opacity="0.6" />
+      <path d="M8 9.2v3.5" stroke="url(#muscleShadow)" strokeWidth="0.2" opacity="0.3" />
+
+      {/* Arms: Biceps & Forearms */}
+      <g transform="translate(-0.5, 0)">
+        <path d="M1 7.2c-0.8 1-0.8 3 0 4l0.5 2.5 M15.5 7.2c0.8 1 0.8 3 0 4l-0.5 2.5" stroke="#000" strokeWidth="0.45" fill="none" />
+        {/* Hands/Fingers */}
+        <path d="M1.2 13.8l-0.4 0.6 M0.8 14.2l-0.4 0.6 M15.3 13.8l0.4 0.6 M15.7 14.2l0.4 0.6" stroke="#000" strokeWidth="0.3" />
+      </g>
+
+      {/* Legs: Quads & Feet */}
+      <path d="M4.5 13.5l-0.8 2.5 M11.5 13.5l0.8 2.5" stroke="#000" strokeWidth="0.5" fill="none" />
+      <path d="M3.2 16h2.5 M10.3 16h2.5" stroke="#000" strokeWidth="0.6" strokeLinecap="round" />
+    </g>
+  ) }
+
+
+];
+
 const AVATAR_STYLES = [
   { id: 'classic', name: 'Classic Circle', shape: 'circle' },
   { id: 'robot', name: 'Bot Head', shape: 'square' },
   { id: 'slime', name: 'Slime Blob', shape: 'blob' },
-  { id: 'star_fan', name: 'Star Fan', shape: 'star', unlockReason: 'Complete 3 quizzes with 100%' }
+  { id: 'star_fan', name: 'Star Fan', shape: 'star' }
 ];
 
-const AVATAR_COLORS = ['#7F13EC', '#EF4444', '#10B981', '#F59E0B', '#3B82F6', '#EC4899', '#6366F1'];
+
+const AVATAR_COLORS = ['#F1C27D', '#8D5524'];
 
 const AVATAR_EYES = [
-  { id: 'happy', name: 'Classic Round', path: <g>
-    {/* Exact Match: Large White Oval with Dark Iris */}
-    <ellipse cx="5.5" cy="8" rx="1.5" ry="1.8" fill="white" stroke="rgba(0,0,0,0.05)" strokeWidth="0.2" />
-    <circle cx="5.8" cy="8.2" r="1.1" fill="#4B2C20" />
-    <circle cx="5.5" cy="7.2" r="0.4" fill="white" opacity="0.9" />
-    
-    <ellipse cx="10.5" cy="8" rx="1.5" ry="1.8" fill="white" stroke="rgba(0,0,0,0.05)" strokeWidth="0.2" />
-    <circle cx="10.2" cy="8.2" r="1.1" fill="#4B2C20" />
-    <circle cx="10.5" cy="7.2" r="0.4" fill="white" opacity="0.9" />
+  // --- LEGENDARY REALISTIC GIRL EYES ---
+  { id: 'girl_eye_1', name: 'Ultra Blue', gender: 'girl', path: <g>
+    <path d="M4.2 6.8c1.2-1 3.2-1 4.4 0" stroke="#334155" strokeWidth="0.8" fill="none" opacity="0.6" />
+    <ellipse cx="6" cy="8.2" rx="1.8" ry="1.5" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="6.1" cy="8.3" r="1.1" fill="url(#eyeGradBlue)" />
+    <circle cx="5.8" cy="7.8" r="0.3" fill="white" opacity="0.9" />
+    <path d="M7.4 7.2c0.3-0.3 0.4-0.6 0.4-0.6 M7.6 7.5c0.2-0.2 0.3-0.5 0.3-0.5" stroke="#334155" strokeWidth="0.25" opacity="0.8" />
+    <ellipse cx="10.4" cy="8.2" rx="1.8" ry="1.5" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="10.3" cy="8.3" r="1.1" fill="url(#eyeGradBlue)" />
+    <circle cx="10" cy="7.8" r="0.3" fill="white" opacity="0.9" />
+    <path d="M11.8 7.2c0.3-0.3 0.4-0.6 0.4-0.6 M12 7.5c0.2-0.2 0.3-0.5 0.3-0.5" stroke="#334155" strokeWidth="0.25" opacity="0.8" />
   </g> },
-  { id: 'cool', name: 'Cool Shades', path: <g>
-    <path d="M3 8 a0.5 0.5 0 010.5 -0.5 h9 a0.5 0.5 0 010.5 0.5 v0.5 a0.5 0.5 0 01-0.5 0.5 h-9 a0.5 0.5 0 01-0.5 -0.5 z" fill="rgba(20,20,20,0.95)" />
-  </g>, unlockReason: 'Win 5 Bot Matches' },
-  { id: 'wide', name: 'Bright Eyes', path: <g>
-    <ellipse cx="5.5" cy="8" rx="1.6" ry="1.9" fill="white" />
-    <circle cx="5.5" cy="8" r="1.2" fill="#3B82F6" />
-    <circle cx="5.2" cy="7.2" r="0.4" fill="white" />
-    
-    <ellipse cx="10.5" cy="8" rx="1.6" ry="1.9" fill="white" />
-    <circle cx="10.5" cy="8" r="1.2" fill="#3B82F6" />
-    <circle cx="10.2" cy="7.2" r="0.4" fill="white" />
+  { id: 'girl_eye_2', name: 'Golden Brown', gender: 'girl', path: <g>
+    <path d="M4.5 7c1.5-1.2 3.5-1.2 5 0" stroke="#334155" strokeWidth="0.7" fill="none" opacity="0.5" />
+    <ellipse cx="6" cy="8.5" rx="1.6" ry="1.3" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="6" cy="8.5" r="1" fill="url(#eyeGradBrown)" />
+    <circle cx="5.7" cy="8" r="0.25" fill="white" opacity="0.8" />
+    <ellipse cx="10.4" cy="8.5" rx="1.6" ry="1.3" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="10.4" cy="8.5" r="1" fill="url(#eyeGradBrown)" />
+    <circle cx="10.1" cy="8" r="0.25" fill="white" opacity="0.8" />
   </g> },
-  { id: 'sparkle', name: 'Starry', path: <g>
-    <path d="M5 7L5.5 8 6 7 5.5 6z M10.5 7L11 8 11.5 7 11 6z" fill="#FBBF24" />
-  </g>, unlockReason: 'Complete 10 quizzes' }
+
+  // --- LEGENDARY MUSCULAR BOY EYES (FROM REFERENCE) ---
+  { id: 'boy_eye_1', name: 'Boy Slant Blue', gender: 'boy', path: <g>
+    <path d="M4 6.8c1-0.2 2-0.2 3 0" stroke="#000" strokeWidth="1.2" />
+    <path d="M8.8 6.8c1-0.2 2-0.2 3 0" stroke="#000" strokeWidth="1.2" />
+    <ellipse cx="6" cy="8.4" rx="1.8" ry="1.4" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="6" cy="8.4" r="1.1" fill="url(#eyeGradBlue)" />
+    <ellipse cx="10.4" cy="8.4" rx="1.8" ry="1.4" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="10.4" cy="8.4" r="1.1" fill="url(#eyeGradBlue)" />
+  </g> },
+  { id: 'boy_eye_2', name: 'Boy Angry Brown', gender: 'boy', path: <g>
+    <path d="M4 6.6l3 0.6 M9 7.2l3-0.6" stroke="#000" strokeWidth="1.8" />
+    <ellipse cx="6" cy="8.8" rx="1.5" ry="1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="6" cy="8.8" r="0.9" fill="url(#eyeGradBrown)" />
+    <ellipse cx="10.4" cy="8.8" rx="1.5" ry="1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="10.4" cy="8.8" r="0.9" fill="url(#eyeGradBrown)" />
+  </g> },
+  { id: 'boy_eye_3', name: 'Boy Calm Green', gender: 'boy', path: <g>
+    <path d="M4 7h3.2 M8.8 7h3.2" stroke="#000" strokeWidth="1" opacity="0.6" />
+    <ellipse cx="6" cy="8.6" rx="1.4" ry="1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="6" cy="8.6" r="0.8" fill="url(#eyeGradGreen)" />
+    <ellipse cx="10.4" cy="8.6" rx="1.4" ry="1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="10.4" cy="8.6" r="0.8" fill="url(#eyeGradGreen)" />
+  </g> },
+  { id: 'boy_eye_4', name: 'Boy Sharp Gray', gender: 'boy', path: <g>
+    <path d="M4 7.2h3 M9 7.2h3" stroke="#000" strokeWidth="1.5" />
+    <ellipse cx="6" cy="9" rx="1.6" ry="1.1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="6" cy="9" r="1" fill="url(#eyeGradGray)" />
+    <ellipse cx="10.4" cy="9" rx="1.6" ry="1.1" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="10.4" cy="9" r="1" fill="url(#eyeGradGray)" />
+  </g> },
+  { id: 'boy_eye_5', name: 'Boy Wide Blue', gender: 'boy', path: <g>
+    <ellipse cx="6" cy="8.5" rx="1.8" ry="1.6" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="6.1" cy="8.6" r="1.2" fill="url(#eyeGradBlue)" />
+    <circle cx="5.8" cy="8.1" r="0.3" fill="white" opacity="0.9" />
+    <ellipse cx="10.4" cy="8.5" rx="1.8" ry="1.6" fill="white" stroke="#000" strokeWidth="0.5" />
+    <circle cx="10.3" cy="8.6" r="1.2" fill="url(#eyeGradBlue)" />
+    <circle cx="10" cy="8.1" r="0.3" fill="white" opacity="0.9" />
+  </g> },
+  { id: 'boy_eye_6', name: 'Boy Squint Brown', gender: 'boy', path: <g>
+    <path d="M4.2 8h3.3 M8.5 8h3.3" stroke="#000" strokeWidth="1.2" />
+    <path d="M5 8.2a1.2 0.8 0 002 0 M9.4 8.2a1.2 0.8 0 002 0" fill="white" stroke="#000" strokeWidth="0.4" />
+    <circle cx="6" cy="8.2" r="0.6" fill="url(#eyeGradBrown)" />
+    <circle cx="10.4" cy="8.2" r="0.6" fill="url(#eyeGradBrown)" />
+  </g> },
+
+  
+  { id: 'happy', name: 'Classic Round', gender: 'both', path: <g>
+    <circle cx="5.8" cy="8.2" r="1.2" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="5.8" cy="8.2" r="0.8" fill="url(#eyeGradBrown)" />
+    <circle cx="10.2" cy="8.2" r="1.2" fill="white" stroke="#334155" strokeWidth="0.4" />
+    <circle cx="10.2" cy="8.2" r="0.8" fill="url(#eyeGradBrown)" />
+  </g> },
+  { id: 'cool', name: 'Cool Shades', gender: 'both', path: <g>
+    <path d="M3.5 7.5h9v2h-9z" fill="url(#glassGrad)" rx="0.5" stroke="#1e293b" strokeWidth="0.4" />
+    <path d="M3.8 8l3 .2 M8.8 8.2l3-.2" stroke="white" strokeWidth="0.4" opacity="0.25" />
+  </g> }
+];
+
+const AVATAR_NOSES = [
+  { id: 'none', name: 'None', gender: 'both' },
+  // --- MUSCULAR BOY NOSES ---
+  { id: 'boy_nose_1', name: 'Boy 3D Bridge', gender: 'boy', path: <g>
+    <path d="M7.8 8.2v1.5" stroke="url(#noseShadow)" strokeWidth="0.8" fill="none" />
+    <path d="M7.8 9.7h0.5" stroke="#000" strokeWidth="0.4" fill="none" />
+  </g> },
+  { id: 'boy_nose_2', name: 'Boy Wide Tip', gender: 'boy', path: <g>
+    <path d="M7.6 9.4c0.1 0.4 0.7 0.4 0.8 0" stroke="url(#noseShadow)" strokeWidth="0.6" fill="none" />
+  </g> },
+  { id: 'boy_nose_3', name: 'Boy Sharp', gender: 'boy', path: <path d="M8 8.4l-0.3 1.2h0.6z" fill="url(#noseShadow)" /> },
+  
+  { id: 'girl_nose_1', name: 'Girl Curved', gender: 'girl', path: <g>
+    <path d="M7.8 9.2c0.2 0.2 0.4 0.2 0.6 0" stroke="url(#noseShadow)" strokeWidth="0.5" fill="none" />
+    <path d="M7.7 9.4a0.3 0.3 0 010.8 0" stroke="#334155" strokeWidth="0.35" fill="none" />
+  </g> }
 ];
 
 const AVATAR_MOUTHS = [
-  { id: 'smile', name: 'Classic U', path: <path d="M7.2 11.2c0.2 0.3 1.4 0.3 1.6 0" stroke="#4B2C20" strokeWidth="0.6" fill="none" strokeLinecap="round" /> },
-  { id: 'neutral', name: 'Neutral', path: <path d="M7.4 11.5h1.2" stroke="#4B2C20" strokeWidth="0.6" fill="none" strokeLinecap="round" /> },
-  { id: 'ooh', name: 'Ooh!', path: <circle cx="8" cy="11.5" r="0.4" fill="#4B2C20" /> }
+  // --- MUSCULAR BOY MOUTHS ---
+  { id: 'boy_mouth_smile', name: 'Boy Smile', gender: 'boy', path: <path d="M7 10.2c0.5 0.5 1.5 0.5 2 0" stroke="#000" strokeWidth="0.8" fill="none" /> },
+  { id: 'boy_mouth_teeth', name: 'Boy Grin', gender: 'boy', path: <g>
+    <path d="M7 10.2h2c0 0.4-0.5 0.6-1 0.6s-1-0.2-1-0.6z" fill="white" stroke="#000" strokeWidth="0.4" />
+    <path d="M7.1 10.3h1.8" stroke="rgba(0,0,0,0.1)" strokeWidth="0.25" />
+  </g> },
+  { id: 'boy_mouth_open', name: 'Boy Open', gender: 'boy', path: <path d="M7.4 10.1a0.6 0.6 0 001.2 0z" fill="#991B1B" stroke="#000" strokeWidth="0.4" /> },
+  { id: 'boy_mouth_grit', name: 'Boy Grit', gender: 'boy', path: <rect x="7.4" y="10.2" width="1.2" height="0.4" rx="0.1" fill="white" stroke="#000" strokeWidth="0.4" /> },
+  { id: 'boy_mouth_whistle', name: 'Boy Whistle', gender: 'boy', path: <circle cx="8" cy="10.4" r="0.3" fill="none" stroke="#000" strokeWidth="0.6" /> },
+  { id: 'boy_mouth_kissy', name: 'Boy Kissy', gender: 'boy', path: <path d="M7.6 10.3c0.2 0.2 0.6 0.2 0.8 0 M7.7 10.5c0.1 0.1 0.4 0.1 0.6 0" stroke="#000" strokeWidth="0.4" fill="none" /> },
+  { id: 'boy_mouth_flat', name: 'Boy Flat', gender: 'boy', path: <path d="M7.4 10.5h1.2" stroke="#000" strokeWidth="0.8" strokeLinecap="round" /> },
+
+  
+  { id: 'girl_mouth_1', name: 'Glossy Smile', gender: 'girl', path: <g>
+    <path d="M7.2 9.8c0.4 0.6 1.2 0.6 1.6 0" stroke="#EC4899" strokeWidth="0.8" fill="white" />
+    <path d="M7.5 10.1c0.3 0.1 0.7 0.1 1 0" stroke="#F472B6" strokeWidth="0.35" fill="none" />
+  </g> },
+  { id: 'smile', name: 'Classic U', gender: 'both', path: <path d="M7.4 9.8c0.2 0.4 1 0.4 1.2 0" stroke="url(#mouthGrad)" strokeWidth="0.6" fill="none" strokeLinecap="round" /> }
 ];
+
+
+
+
+
+
 
 const AVATAR_ACCESSORIES = [
   { id: 'none', name: 'None' },
@@ -157,8 +290,10 @@ const AVATAR_ACCESSORIES = [
   { id: 'hat', name: 'Wizard Hat', path: <g>
     <path d="M4 6c1-2 2-5 4-5s3 3 4 5H4z" fill="#4338CA" filter="url(#softShadow)" />
     <path d="M6 3a0.2 0.2 0 110.4 0 0.2 0.2 0 11-0.4 0z" fill="white" opacity="0.6" />
-  </g>, unlockReason: 'Complete Twilight Quiz' },
-  { id: 'glasses', name: 'Glasses', path: <path d="M4 7.2c0.5 0.8 1.5 0.8 2 0m2 0c0.5 0.8 1.5 0.8 2 0 M8 7.2h0" stroke="rgba(0,0,0,0.8)" fill="none" strokeWidth="0.8" strokeLinecap="round" /> }
+  </g> },
+
+  { id: 'glasses', name: 'Glasses', path: <path d="M3.5 7.2c0.7 1 2 1 2.5 0m4 0c0.5 1 1.8 1 2.5 0 M8 7.2h0" stroke="rgba(0,0,0,0.8)" fill="none" strokeWidth="1" strokeLinecap="round" /> }
+
 ];
 
 const AVATAR_HAIR = [
@@ -169,80 +304,112 @@ const AVATAR_HAIR = [
     <path d="M3.2 7.2h9.6 M4 2.8c1-0.4 4-0.4 8 0s2.8 1.2 2.8 2.2" stroke="white" strokeWidth="0.4" opacity="0.2" fill="none" />
     <path d="M3.5 7.5v1.2 M12.5 7.5v1.2" stroke="rgba(0,0,0,0.1)" strokeWidth="0.3" fill="none" />
   </g> },
-  { id: 'short', name: 'Bowl Cut', path: <path d="M2.5 7.5c0-4.5 3-6.5 6.5-6.5s6.5 2 6.5 6.5v1h-13v-1z" /> },
-  { id: 'pigtails', name: 'Clumpy Pigtails', path: <g>
+  { id: 'short', name: 'Bowl Cut', gender: 'boy', path: <path d="M5 3c0-1.5 1-2.5 3-2.5s3 1 3 2.5v0.5H5V3z" /> },
+
+
+  { id: 'pigtails', name: 'Clumpy Pigtails', gender: 'girl', path: <g>
     <path d="M2.5 8c0-5 3-7 6.5-7s6.5 2 6.5 7v1.5h-13v-1.5z M1 10.5c0-2.5 1-3.5 3-3.5s3 1 3 3.5v3h-6v-3z M11 10.5c0-2.5 1-3.5 3-3.5s3 1 3 3.5v3h-6v-3z" />
-  </g>, unlockReason: 'Complete 10 Quizzes' }
+  </g> },
+  { id: 'muscular_short', name: 'Muscular Shag', gender: 'boy', path: <path d="M5 3.5c0-2 1-3 3-3s3 1 3 3.5v0.5H5V3.5z" /> }
 ];
 
-const AVATAR_BODIES = [
-  { id: 'boy_base', name: 'Boy Base', path: (
-    <g>
-      {/* Blue Gingham Shirt */}
-      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="url(#gingham)" stroke="rgba(0,0,0,0.1)" strokeWidth="0.2" />
-      <path d="M7 13.5v3" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
-      {/* White buttons */}
-      <circle cx="7" cy="14.2" r="0.15" fill="white" />
-      <circle cx="7" cy="15.2" r="0.15" fill="white" />
-    </g>
-  ) },
-  { id: 'girl_base', name: 'Girl Base', path: (
-    <g>
-      {/* Blue Gingham Shirt */}
-      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="url(#gingham)" stroke="rgba(0,0,0,0.1)" strokeWidth="0.2" />
-      <path d="M7 13.5v3" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
-      {/* White buttons */}
-      <path d="M7.4 13.5l-0.4 0.5-0.4-0.5z" fill="white" opacity="0.8" />
-    </g>
-  ) },
-  { id: 'summer_dress', name: 'Summer Dress', path: (
-    <g>
-      <path d="M5.5 12.5l-2.8 4.2h10.6l-2.8-4.2h-5z" fill="white" filter="url(#softShadow)" />
-      <path d="M5.5 12.5l-2.8 4.2h10.6l-2.8-4.2h-5z" fill="rgba(0,150,255,0.2)" />
-      <path d="M6 13.5l-1 1 M10 13.5l1 1" stroke="rgba(255,255,255,0.6)" strokeWidth="0.5" />
-    </g>
-  ), unlockReason: 'Complete 3 Quizzes' },
-  { id: 'princess', name: 'Princess Gown', path: (
-    <g>
-      <path d="M5.5 12h5l3.5 4.5h-12l3.5-4.5z" fill="white" filter="url(#softShadow)" />
-      <path d="M5.5 12h5l3.5 4.5h-12l3.5-4.5z" fill="rgba(255,100,200,0.3)" />
-      <path d="M8 12.5v3.5" stroke="rgba(255,255,255,0.4)" strokeWidth="0.4" />
-      <path d="M7.8 13.5a0.2 0.2 0 110.4 0 0.2 0.2 0 11-0.4 0z" fill="white" opacity="0.8" />
-    </g>
-  ), unlockReason: 'Get a Perfect Score' },
-  { id: 'striped_tee', name: 'Striped Tee', path: (
-    <g>
-      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" />
-      <path d="M5 14h6 M5 15h6" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6" />
-    </g>
-  ) },
-  { id: 'oxford', name: 'Oxford Shirt', path: (
-    <g>
-      <path d="M5.5 13c-1 0.5-1.5 2-1 3s1 0.5 3.5 0.5s4 0.5 4.5-0.5s0-2.5-1-3s-2.5-0.5-2.5-0.5s-2.5 0-3.5 0.5z" fill="white" />
-      <path d="M7.4 13.2l0.6 0.8 0.6-0.8" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="0.4" />
-      <path d="M8 14.2v2" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
-    </g>
-  ) },
-  { id: 'hoodie', name: 'Street Hoodie', path: (
-    <g>
-      <path d="M5 12.5c-1 0.5-1.5 3 0 4h6c1.5-1 1-3.5 0-4l-3-0.5-3 0.5z" fill="rgba(30,30,30,0.9)" />
-      <path d="M7 13.5l1 1 1-1" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
-      <path d="M7.5 15.5h1v0.5h-1z" fill="white" opacity="0.2" />
-    </g>
-  ), unlockReason: 'Earn Points' }
+
+
+
+
+const AVATAR_SHIRTS = [
+  // --- BOY MUSCULAR SHIRTS (FULL-BODY FIT) ---
+  { id: 'boy_shirt_1', name: 'Football Jersey', gender: 'boy', path: <g>
+    {/* Torso */}
+    <path d="M2.5 6.5h11l0.5 4.5H2l0.5-4.5z" fill="#166534" />
+    {/* Sleeves */}
+    <path d="M2.5 6.5l-2 2v2l2-1 M13.5 6.5l2 2v2l-2-1" fill="#166534" />
+    <text x="8" y="9.5" fill="white" fontSize="1.8" textAnchor="middle" fontWeight="bold">83</text>
+  </g> },
+  { id: 'boy_shirt_2', name: 'Premium Hoodie', gender: 'boy', path: <g>
+    <path d="M2 6c0-1 1-1.5 2-1.5h8c1 0 2 0.5 2 1.5v5.5h-12V6z" fill="#64748b" />
+    <path d="M2 7.5l-1 3v2 M14 7.5l1 3v2" stroke="#64748b" strokeWidth="1.5" fill="none" />
+    <path d="M7 6.5l1 1 1-1" stroke="white" strokeWidth="0.4" fill="none" opacity="0.3" />
+  </g> },
+  { id: 'boy_shirt_3', name: 'Red Flannel', gender: 'boy', path: <g>
+    <path d="M2.5 6h11v5.5h-11V6z" fill="url(#plaid-red)" />
+    {/* Open front look */}
+    <path d="M7.5 6v5.5 M8.5 6v5.5" stroke="rgba(0,0,0,0.2)" strokeWidth="0.4" />
+    <path d="M2.5 7.5l-1.5 3 M13.5 7.5l1.5 3" stroke="url(#plaid-red)" strokeWidth="1.2" fill="none" />
+  </g> },
+  { id: 'boy_shirt_4', name: 'Muscle Tank', gender: 'boy', path: <g>
+    <path d="M4 6.5h8l0.5 5h-9l0.5-5z" fill="#1e293b" />
+    <path d="M4 6.5c-1-1 0-2 0-2 M12 6.5c1-1 0-2 0-2" stroke="#1e293b" strokeWidth="0.8" fill="none" />
+  </g> },
+
+
+  { id: 'shirt', name: 'White T', gender: 'both', path: <path d="M5 6.5l-1 1v1h1v2h6v-2h1v-1l-1-1h-6z" fill="#fff" /> },
+  { id: 'polo', name: 'Blue Polo', gender: 'both', path: <g>
+    <path d="M5 6.5l-1 1v1h1v2h6v-2h1v-1l-1-1h-6z" fill="#2563eb" />
+    <path d="M7 6.5l1 1 1-1" stroke="#1d4ed8" strokeWidth="0.2" />
+  </g> },
+  { id: 'oxford', name: 'Oxford Shirt', gender: 'both', path: <g>
+    <path d="M5 6.5l-1 1v1h1v2h6v-2h1v-1l-1-1h-6z" fill="white" />
+    <path d="M7.4 6.6l0.6 0.8 0.6-0.8" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="0.4" />
+    <path d="M8 7.5v2.5" stroke="rgba(0,0,0,0.05)" strokeWidth="0.3" />
+  </g> },
+  { id: 'hoodie', name: 'Street Hoodie', gender: 'both', path: <g>
+    <path d="M4 6.5c-1 0.5-1 4 0 4h8c1-1 1-3.5 0-4l-4-0.5-4 0.5z" fill="rgba(30,30,30,0.9)" />
+    <path d="M7.5 7.5l0.5 0.5 0.5-0.5" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+  </g> },
+  { id: 'summer_dress', name: 'Summer Dress', gender: 'girl', path: <g>
+    <path d="M4 6l-2.4 4.5h12.8l-2.4-4.5z" fill="white" filter="url(#softShadow)" />
+    <path d="M4 6l-2.4 4.5h12.8l-2.4-4.5z" fill="rgba(0,150,255,0.2)" />
+  </g> },
+  { id: 'princess', name: 'Princess Gown', gender: 'girl', path: <g>
+    <path d="M4 5.5h8l3 5h-14z" fill="white" filter="url(#softShadow)" />
+    <path d="M4 5.5h8l3 5h-14z" fill="rgba(255,100,200,0.3)" />
+  </g> }
 ];
+
+const AVATAR_PANTS = [
+  // --- BOY MUSCULAR PANTS (FULL-BODY FIT) ---
+  { id: 'boy_pants_1', name: 'Blue Jeans', gender: 'boy', path: <path d="M2.5 10.5h11l0.5 5.5h-5.5l-0.5-2-0.5 2h-5.5l0.5-5.5z" fill="#1d4ed8" /> },
+  { id: 'boy_pants_2', name: 'Khaki Shorts', gender: 'boy', path: <path d="M2.5 10.5h11V14h-5.5l-0.5-1-0.5 1H2.5v-3.5z" fill="#d6d3d1" /> },
+  { id: 'boy_pants_3', name: 'Black Joggers', gender: 'boy', path: <path d="M2.5 10.5h11l0.5 5.5h-5.5l-0.5-1.5-0.5 1.5h-5.5l0.5-5.5z" fill="#1e293b" /> },
+  { id: 'boy_pants_4', name: 'Cargo Shorts', gender: 'boy', path: <g>
+    <path d="M2.5 10.5h11l0.2 4h-5.5l-0.5-1-0.5 1H2.5v-4z" fill="#71717a" />
+    <rect x="3" y="11.5" width="1.5" height="1.2" rx="0.2" fill="rgba(0,0,0,0.1)" />
+    <rect x="11.5" y="11.5" width="1.5" height="1.2" rx="0.2" fill="rgba(0,0,0,0.1)" />
+  </g> },
+
+
+
+  { id: 'pants_default', name: 'Basic Slacks', gender: 'both', path: <path d="M4.5 10.5h7l0.2 5h-3l-0.2-2-0.2 2h-3l0.2-5z" fill="#475569" /> }
+];
+
+const AVATAR_SHOES = [
+  // --- BOY MUSCULAR SHOES (FULL-BODY FIT) ---
+  { id: 'boy_shoes_1', name: 'Sneakers', gender: 'both', path: <g>
+    <path d="M2.5 15.2h3.5v0.8h-3.5z M10 15.2h3.5v0.8h-3.5z" fill="#fff" />
+    <path d="M2.5 15.2l0.5-0.8h2.5l0.5 0.8z M10 15.2l0.5-0.8h2.5l0.5 0.8z" fill="#1e293b" />
+  </g> }
+
+
+];
+
+
+
+
 
 const AVATAR_EARRINGS = [
   { id: 'none', name: 'None' },
   { id: 'stud', name: 'Silver Stud', path: <circle cx="1.8" cy="8.5" r="0.4" fill="#E2E8F0" /> },
-  { id: 'hoop', name: 'Gold Hoop', path: <path d="M1.8 9a0.8 0.8 0 100-0.1" stroke="#FBBF24" fill="none" strokeWidth="0.5" />, unlockReason: 'Score 90% on HP Quiz' }
+  { id: 'hoop', name: 'Gold Hoop', path: <path d="M1.8 9a0.8 0.8 0 100-0.1" stroke="#FBBF24" fill="none" strokeWidth="0.5" /> }
 ];
+
 
 const AVATAR_CLIPS = [
   { id: 'none', name: 'None' },
   { id: 'heart', name: 'Heart Clip', path: <path d="M12 5c0-1-1-1-1 0s1 1 1 1 1-1 1-1-1 0-1 0" fill="#EC4899" /> },
-  { id: 'star_pin', name: 'Star Pin', path: <path d="M13 3l.5 1 1 .5-1 .5-.5 1-.5-1-1-.5 1-.5.5-1z" fill="#FBBF24" />, unlockReason: 'Win a tie' }
+  { id: 'star_pin', name: 'Star Pin', path: <path d="M13 3l.5 1 1 .5-1 .5-.5 1-.5-1-1-.5 1-.5.5-1z" fill="#FBBF24" /> }
 ];
+
 
 const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: { 
   config?: User['avatar_config'], 
@@ -251,15 +418,21 @@ const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: {
 }) => {
   const c = config || { 
     style: 'classic', 
-    color: '#7F13EC', 
-    eyes: 'happy', 
-    mouth: 'smile', 
+    color: '#F1C27D', 
+    eyes: 'boy_eye_1', 
+    mouth: 'boy_mouth_smile', 
+    nose: 'boy_nose_1',
     hair: 'short', 
     body: 'boy_base', 
+    shirt: 'boy_shirt_1',
+    pants: 'boy_pants_1',
+    shoes: 'boy_shoes_1',
     accessory: 'none', 
     earring: 'none', 
     clip: 'none' 
   };
+  
+  const skinGradId = `skinGrad-${c.color.replace('#', '')}`;
   
   const variants = {
     idle: {
@@ -280,16 +453,27 @@ const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: {
     }
   };
 
-  const eyePath = AVATAR_EYES.find(e => e.id === c.eyes)?.path || AVATAR_EYES[0].path;
-  const mouthPath = AVATAR_MOUTHS.find(m => m.id === c.mouth)?.path || AVATAR_MOUTHS[0].path;
+  const eyePath = AVATAR_EYES.find(e => e.id === c.eyes)?.path;
+  const mouthPath = AVATAR_MOUTHS.find(m => m.id === c.mouth)?.path;
+  const nosePath = AVATAR_NOSES.find(n => n.id === c.nose)?.path;
   const hairPath = AVATAR_HAIR.find(h => h.id === c.hair)?.path;
-  const bodyPath = AVATAR_BODIES.find(b => b.id === c.body)?.path;
+
+  const bodyEntry = AVATAR_BODIES.find(b => b.id === c.body);
+  const bodyPath = typeof bodyEntry?.path === 'function' ? bodyEntry.path({ skinGradId }) : bodyEntry?.path;
+  
+  const shirtPath = AVATAR_SHIRTS.find(s => s.id === c.shirt)?.path;
+  const pantsPath = AVATAR_PANTS.find(p => p.id === c.pants)?.path;
+  const shoesPath = AVATAR_SHOES.find(s => s.id === c.shoes)?.path;
+
   const accessoryPath = AVATAR_ACCESSORIES.find(a => a.id === c.accessory)?.path;
   const earringPath = AVATAR_EARRINGS.find(e => e.id === c.earring)?.path;
   const clipPath = AVATAR_CLIPS.find(cl => cl.id === c.clip)?.path;
+
   
   // Dynamic gradient IDs to avoid collisions
-  const skinGradId = `skinGrad-${c.color.replace('#', '')}`;
+
+  const strokeColor = "#334155";
+  const strokeWidth = 0.6;
 
   return (
     <motion.div
@@ -300,6 +484,44 @@ const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: {
     >
       <svg viewBox="0 0 16 16" className="w-full h-full drop-shadow-2xl overflow-visible">
         <defs>
+        <radialGradient id="eyeGradBlue" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#60A5FA" />
+          <stop offset="60%" stopColor="#2563EB" />
+          <stop offset="100%" stopColor="#1E3A8A" />
+        </radialGradient>
+        <radialGradient id="eyeGradBrown" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#B45309" />
+          <stop offset="60%" stopColor="#78350F" />
+          <stop offset="100%" stopColor="#451A03" />
+        </radialGradient>
+        <radialGradient id="eyeGradGreen" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#34D399" />
+          <stop offset="60%" stopColor="#059669" />
+          <stop offset="100%" stopColor="#064E3B" />
+        </radialGradient>
+        <radialGradient id="eyeGradGray" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#94A3B8" />
+          <stop offset="60%" stopColor="#475569" />
+          <stop offset="100%" stopColor="#1E293B" />
+        </radialGradient>
+        <linearGradient id="noseShadow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(0,0,0,0.02)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.12)" />
+        </linearGradient>
+        <linearGradient id="mouthGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#334155" />
+          <stop offset="100%" stopColor="#0f172a" />
+        </linearGradient>
+        <linearGradient id="muscleShadow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(0,0,0,0.05)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.25)" />
+        </linearGradient>
+
+        <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#334155" />
+          <stop offset="100%" stopColor="#020617" />
+        </linearGradient>
+
           <radialGradient id={skinGradId} cx="40%" cy="40%" r="65%" fx="30%" fy="30%">
             <stop offset="0%" stopColor={c.color} />
             <stop offset="100%" stopColor={c.color} stopOpacity="0.85" />
@@ -311,6 +533,37 @@ const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: {
             <rect width="1.5" height="0.75" fill="#3B82F6" opacity="0.4" />
           </pattern>
 
+          <pattern id="hibiscus-blue" patternUnits="userSpaceOnUse" width="3" height="3">
+            <rect width="3" height="3" fill="#3B82F6" />
+            <g transform="translate(1.5, 1.5) scale(0.6)" fill="white" opacity="0.7">
+              <circle cx="0" cy="0" r="0.4" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(0)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(72)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(144)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(216)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(288)" />
+            </g>
+          </pattern>
+
+          <pattern id="hibiscus-dark" patternUnits="userSpaceOnUse" width="3" height="3">
+            <rect width="3" height="3" fill="#1E40AF" />
+            <g transform="translate(1.5, 1.5) scale(0.6)" fill="white" opacity="0.6">
+              <circle cx="0" cy="0" r="0.3" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(0)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(72)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(144)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(216)" />
+              <path d="M0 -1 C0.5 -1 0.8 -0.5 0.8 0 S0.5 1 0 1 S-0.8 0.5 -0.8 0 S-0.5 -1 0 -1" transform="rotate(288)" />
+            </g>
+          </pattern>
+
+          <pattern id="plaid-bw" patternUnits="userSpaceOnUse" width="2" height="2">
+            <rect width="2" height="2" fill="white" />
+            <rect width="1" height="2" fill="black" opacity="0.15" />
+            <rect width="2" height="1" fill="black" opacity="0.15" />
+            <path d="M0 0 L2 2 M2 0 L0 2" stroke="black" strokeWidth="0.1" opacity="0.1" />
+          </pattern>
+
           <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur in="SourceAlpha" stdDeviation="0.2" />
             <feOffset dx="0" dy="0.3" />
@@ -318,82 +571,49 @@ const CustomizableAvatar = ({ config, animation = 'idle', size = 80 }: {
           </filter>
         </defs>
 
-        {/* Neck Shadow */}
-        <g transform="translate(0, 0.5)" opacity="0.15">
-           <path d="M6.5 12.5h3v0.5h-3z" fill="black" filter="url(#softShadow)" />
-        </g>
-
-        {/* Body/Torso: Exact Match with Gingham Shirt */}
-        <g>
-          {bodyPath}
-        </g>
-        
-        {/* Head Layer (Back Hair) */}
-        <g transform="translate(0, -0.5)">
-          {c.hair !== 'bald' && (
-            <g fill="rgba(0,0,0,0.3)">
-              {hairPath}
-            </g>
-          )}
-
-          {/* Head Shape: Exact Picture Match (Squished Rounded Rect) */}
+        {/* Global Stroke Group */}
+        <g stroke={strokeColor} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+          
+          {/* Layer 1: Body (Torso, Arms, Neck) */}
           <g>
-            {/* Integrated Face & Ears path (Exact Match) */}
+            {bodyPath}
+          </g>
+          
+          {/* Layer 2: Wardrobe (Pants, Shirts, Shoes) */}
+          <g stroke="none">
+            {pantsPath}
+            {shirtPath}
+            {shoesPath}
+          </g>
+          
+          {/* Layer 3: Head */}
+          <g transform="translate(0, 0)">
+            {/* Unified Head Shape (REALISTIC SCALE) */}
             <path 
-              d="M3 7.5c0-4 2-5.5 5-5.5s5 1.5 5 5.5s-2 5.5-5 5.5s-5-1.5-5-5.5z M2 7.5c0-1.2 0.3-1.8 1-1.8v3.6c-0.7 0-1-0.6-1-1.8z M13 7.5c0-1.2-0.3-1.8-1-1.8v3.6c0.7 0 1-0.6 1-1.8z" 
+              d="M5.5 4.5 C5.5 2.5 6.5 1.5 8 1.5 S10.5 2.5 10.5 4.5 C10.5 6 9.5 7.5 8 7.5 S5.5 6 5.5 4.5 Z" 
               fill={`url(#${skinGradId})`}
             />
-            {/* Jawline Shadow */}
-            <path 
-              d="M3 8.5c1 1.5 2.5 2.5 5 2.5s4-1 5-2.5" 
-              fill="none" 
-              stroke="rgba(0,0,0,0.06)" 
-              strokeWidth="0.8" 
-              strokeLinecap="round" 
-            />
-            
-            {/* Soft Peach Blush (Airbrushed Radial) */}
-            <g opacity="0.15">
-              <radialGradient id="peachBlush" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#FB923C" />
-                <stop offset="100%" stopColor="#FB923C" stopOpacity="0" />
-              </radialGradient>
-              <ellipse cx="4.2" cy="8.8" rx="1.5" ry="1" fill="url(#peachBlush)" />
-              <ellipse cx="11.8" cy="8.8" rx="1.5" ry="1" fill="url(#peachBlush)" />
-            </g>
-          </g>
 
-          {/* High-Fidelity Features: Multi-layered for 3D effect */}
-          <g transform="translate(0, 0)">
-            {/* 3D Bean Nose */}
-            <radialGradient id="noseGrad" cx="40%" cy="40%" r="50%">
-              <stop offset="0%" stopColor="rgba(0,0,0,0.1)" />
-              <stop offset="100%" stopColor="rgba(0,0,0,0.25)" />
-            </radialGradient>
-            <path d="M7.4 9.5a0.6 0.4 0 101.2 0 0.6 0.4 0 10-1.2 0z" fill="url(#noseGrad)" filter="url(#softShadow)" />
-            
-            <g transform="translate(0, 0.3)">
-              {/* Feature paths (Eyes/Mouth) are now multi-colored paths */}
+            {/* Facial Features Group (SCALED FOR FULL BODY) */}
+            <g stroke="none" transform="translate(8, 4.5) scale(0.55) translate(-8, -8.5)">
               {eyePath}
               {mouthPath}
+              {nosePath}
+            </g>
+
+            {/* Hair and Accessories (Inherit no stroke or custom handle) */}
+            <g stroke="none">
+              {hairPath}
+              {clipPath && <g transform="translate(-1, 0)">{clipPath}</g>}
+              {earringPath}
+              {accessoryPath && (
+                <g transform="translate(0, -1)">
+                  {accessoryPath}
+                </g>
+              )}
             </g>
           </g>
 
-          {/* Front Hair */}
-          {c.hair !== 'bald' && (
-            <g fill="rgba(0,0,0,0.8)" opacity="0.9">
-              {hairPath}
-            </g>
-          )}
-          
-          {/* Accessories */}
-          {clipPath && <g transform="translate(-1, 0)">{clipPath}</g>}
-          {earringPath}
-          {accessoryPath && (
-            <g transform="translate(0, -1)">
-              {accessoryPath}
-            </g>
-          )}
         </g>
       </svg>
     </motion.div>
@@ -495,11 +715,7 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
   });
   const [saving, setSaving] = useState(false);
 
-  const canUse = (itemId: string) => {
-    const defaultUnlocked = ['none', 'classic', 'happy', 'smile', 'wide', 'neutral', 'ooh', 'boy_base', 'girl_base', 'short', 'bald', '#7F13EC'];
-    if (defaultUnlocked.includes(itemId)) return true;
-    return user.unlocked_avatar_items?.includes(itemId);
-  };
+  const canUse = (itemId: string) => true;
 
   const handleSave = async () => {
     setSaving(true);
@@ -507,16 +723,22 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
     setSaving(false);
   };
 
+  // Categorized sections
+
   const categories = [
-    { id: 'body', icon: <UserIcon className="size-5" />, name: 'Identity', items: AVATAR_BODIES.filter(b => b.id.includes('base')) },
-    { id: 'wardrobe', icon: <Shirt className="size-5" />, name: 'Wardrobe', items: AVATAR_BODIES.filter(b => !b.id.includes('base')) },
+    { id: 'body', icon: <UserIcon className="size-5" />, name: 'Identity', items: AVATAR_BODIES },
+    { id: 'shirts', icon: <Shirt className="size-5" />, name: 'Shirts', items: AVATAR_SHIRTS },
+    { id: 'pants', icon: <Droplets className="size-5" />, name: 'Pants', items: AVATAR_PANTS },
+    { id: 'shoes', icon: <Zap className="size-5" />, name: 'Shoes', items: AVATAR_SHOES },
     { id: 'hair', icon: <Scissors className="size-5" />, name: 'Hair', items: AVATAR_HAIR },
-    { id: 'face', icon: <Smile className="size-5" />, name: 'Face', items: [...AVATAR_EYES, ...AVATAR_MOUTHS] },
+    { id: 'face', icon: <Smile className="size-5" />, name: 'Face', items: [...AVATAR_EYES, ...AVATAR_MOUTHS, ...AVATAR_NOSES] },
     { id: 'extra', icon: <Sparkles className="size-5" />, name: 'Extras', items: AVATAR_ACCESSORIES },
     { id: 'color', icon: <Palette className="size-5" />, name: 'Skin', items: AVATAR_COLORS },
   ];
 
   const [activeTab, setActiveTab] = useState(categories[0].id);
+  const isZoomed = activeTab === 'face';
+
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
@@ -541,6 +763,8 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
               <h3 className="text-2xl font-black tracking-tight text-[#065F46]">Appearance</h3>
               <p className="text-[10px] font-bold text-[#059669]/60 uppercase tracking-widest">Personalize Your Fan Identity</p>
             </div>
+
+
           </div>
           <button onClick={onClose} className="size-10 bg-white/40 hover:bg-white/60 rounded-full flex items-center justify-center transition-colors text-[#065F46]">
             <X className="size-5" />
@@ -549,9 +773,12 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
 
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row gap-10">
           {/* Preview Panel */}
-          <div className="w-full md:w-1/3 flex flex-col items-center justify-center bg-white/5 rounded-[32px] p-10 border border-white/5 relative">
+          <div className="w-full md:w-1/3 flex flex-col items-center justify-center bg-white/5 rounded-[32px] p-10 border border-white/5 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none rounded-[32px]"></div>
-            <CustomizableAvatar config={config} animation="victory" size={200} />
+            <div className={`transition-all duration-500 flex items-center justify-center ${isZoomed ? 'scale-[2.4] translate-y-[28%]' : 'scale-100'}`}>
+              <CustomizableAvatar config={config} animation="idle" size={200} />
+            </div>
+
             <div className="mt-8 text-center">
               <p className="text-lg font-black text-white italic uppercase tracking-tight">@{user.username}</p>
               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">Level 1 Trivia Fan</p>
@@ -561,12 +788,12 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
           {/* Selection Panel: Mint Bubble List */}
           <div className="flex-1 flex flex-col overflow-hidden bg-white/40 rounded-[48px] border border-white/60 shadow-inner">
             {/* Tabs: Exact Bubble Style */}
-            <div className="flex items-center gap-2 p-3 bg-white/20 border-b border-white/40">
+            <div className="flex items-center gap-2 p-3 bg-white/20 border-b border-white/40 overflow-x-auto scrollbar-hide">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
-                  className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-[32px] transition-all ${activeTab === cat.id ? 'bg-[#10B981] text-white shadow-md' : 'text-[#065F46]/60 hover:text-[#065F46] hover:bg-white/30'}`}
+                  className={`flex-none flex flex-col items-center gap-1 py-3 px-4 rounded-[32px] transition-all ${activeTab === cat.id ? 'bg-[#10B981] text-white shadow-md' : 'text-[#065F46]/60 hover:text-[#065F46] hover:bg-white/30'}`}
                 >
                   {cat.icon}
                 </button>
@@ -574,51 +801,94 @@ const AvatarCustomizerModal = ({ user, onClose, onSave }: { user: User, onClose:
             </div>
 
             {/* Grid */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-custom">
+            <div className="flex-1 overflow-y-auto p-6 scrollbar-custom">
               {categories.filter(c => c.id === activeTab).map((cat) => (
-                <div key={cat.id} className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {activeTab === 'color' ? (
-                    (cat.items as string[]).map((clr) => (
-                      <button
-                        key={clr}
-                        onClick={() => setConfig({ ...config, color: clr })}
-                        className={`aspect-square rounded-2xl border-4 transition-all ${config.color === clr ? 'border-primary' : 'border-white/5 hover:border-white/20'}`}
-                        style={{ backgroundColor: clr }}
-                      />
-                    ))
-                  ) : (
-                    (cat.items as any[]).map((item) => {
-                      const idKey = activeTab === 'face' ? (AVATAR_EYES.some(e => e.id === item.id) ? 'eyes' : 'mouth') : activeTab === 'body' || activeTab === 'wardrobe' ? 'body' : activeTab === 'hair' ? 'hair' : activeTab === 'extra' ? 'accessory' : 'color';
-                      const isSelected = (config as any)[idKey] === item.id;
-                      const unlocked = canUse(item.id);
-                      
+                <div key={cat.id} className="space-y-8">
+                  {(() => {
+                    if (activeTab === 'color') {
                       return (
-                        <button
-                          key={item.id}
-                          disabled={!unlocked}
-                          onClick={() => setConfig({ ...config, [idKey]: item.id })}
-                          className={`group relative aspect-square p-2 rounded-3xl bg-white/60 border-4 transition-all flex flex-col items-center justify-center gap-2 ${isSelected ? 'border-[#10B981] bg-white' : 'border-transparent hover:border-white/40 hover:bg-white/80'} ${!unlocked ? 'opacity-40 grayscale cursor-not-allowed' : ''}`}
-                        >
-                          <CustomizableAvatar config={{ ...config, [idKey]: item.id }} size={50} />
-                          <span className="text-[9px] font-bold text-[#065F46]/70 uppercase tracking-tighter text-center line-clamp-1">{item.name}</span>
-                          {isSelected && <div className="absolute -top-1 -right-1 size-5 bg-[#10B981] rounded-full flex items-center justify-center shadow-sm"><Check className="size-3 text-white" /></div>}
-                          {!unlocked && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl backdrop-blur-[1px]">
-                              <div className="text-center p-1">
-                                <Lock className="size-3 text-red-100 mx-auto mb-1" />
-                                <span className="text-[6px] leading-tight text-white block opacity-80 uppercase font-black">{item.unlockReason || 'Locked'}</span>
-                              </div>
-                            </div>
-                          )}
-                        </button>
+                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+                          {(cat.items as string[]).map((clr) => (
+                            <button
+                              key={clr}
+                              onClick={() => setConfig({ ...config, color: clr })}
+                              className={`aspect-square rounded-2xl border-4 transition-all shadow-sm ${config.color === clr ? 'border-[#10B981]' : 'border-white/20 hover:border-white/40'}`}
+                              style={{ backgroundColor: clr }}
+                            />
+                          ))}
+                        </div>
                       );
-                    })
-                  )}
+                    }
+
+                    const isFaceTab = activeTab === 'face';
+                    let girls = (cat.items as any[]).filter(item => isFaceTab ? (item.gender === 'girl' || item.gender === 'both') : true);
+                    let boys = (cat.items as any[]).filter(item => isFaceTab ? (item.gender === 'boy' || item.gender === 'both') : false);
+
+                    if (isFaceTab) {
+                      girls = [{ id: 'none_girl', name: 'None', gender: 'girl' }, ...girls];
+                      boys = [{ id: 'none_boy', name: 'None', gender: 'boy' }, ...boys];
+                    }
+
+                    const renderSection = (title: string, items: any[], showTitle: boolean) => (
+                      <div className="space-y-4">
+                        {showTitle && <h4 className="text-[11px] font-black uppercase tracking-widest text-[#065F46]/40 px-2">{title}</h4>}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                          {items.map((item) => {
+                            const itemId = item.id;
+                            const isNone = itemId.startsWith('none_');
+                            const idKey = activeTab === 'face' 
+                              ? (AVATAR_EYES.some(e => e.id === itemId) || itemId === 'none_girl' || itemId === 'none_boy' ? 'eyes' : AVATAR_MOUTHS.some(m => m.id === itemId) ? 'mouth' : 'nose') 
+                              : activeTab === 'body' ? 'body' 
+                              : activeTab === 'shirts' ? 'shirt'
+                              : activeTab === 'pants' ? 'pants'
+                              : activeTab === 'shoes' ? 'shoes'
+                              : activeTab === 'hair' ? 'hair' 
+                              : activeTab === 'extra' ? 'accessory' 
+                              : 'color';
+                            
+                            const isSelected = isNone ? (config as any)[idKey] === null : (config as any)[idKey] === itemId;
+                            const unlocked = isNone || canUse(itemId);
+                            
+                            return (
+                              <button
+                                key={itemId}
+                                disabled={!unlocked}
+                                onClick={() => setConfig({ ...config, [idKey]: isNone ? null : itemId })}
+                                className={`group relative aspect-square p-2 rounded-3xl transition-all flex flex-col items-center justify-center gap-2 border-4 ${isSelected ? 'border-[#10B981] bg-white shadow-sm' : 'border-transparent hover:border-white/40 hover:bg-white/60'} ${!unlocked ? 'opacity-40 grayscale cursor-not-allowed' : ''}`}
+                              >
+                                <div className="flex-1 flex items-center justify-center scale-75">
+                                  {isNone ? (
+                                    <div className="size-8 rounded-full border-2 border-dashed border-[#065F46]/20 flex items-center justify-center text-[#065F46]/40 font-black text-[8px]">NONE</div>
+                                  ) : (
+                                    <CustomizableAvatar config={{ ...config, [idKey]: itemId }} size={50} />
+                                  )}
+                                </div>
+                                <span className="text-[9px] font-bold text-[#065F46]/70 uppercase tracking-tighter text-center line-clamp-1">{item.name}</span>
+                                {isSelected && <div className="absolute -top-1 -right-1 size-5 bg-[#10B981] rounded-full flex items-center justify-center shadow-sm z-10"><Check className="size-3 text-white" /></div>}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+
+                    return (
+                      <div className="space-y-10">
+                        {girls.length > 0 && renderSection(isFaceTab ? "Girls" : "", girls, isFaceTab)}
+                        {isFaceTab && boys.length > 0 && renderSection("Boys", boys, true)}
+                      </div>
+                    );
+
+
+
+                  })()}
                 </div>
               ))}
             </div>
+
           </div>
         </div>
+
 
         <div className="mt-8 flex justify-center">
           <button
@@ -1639,6 +1909,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [botAnswers, setBotAnswers] = useState<Record<number, string>>({});
   const [botResults, setBotResults] = useState<Record<number, 'correct' | 'incorrect'>>({});
+  const [playerAnswers, setPlayerAnswers] = useState<Record<string, Record<number, string>>>({});
   const [finished, setFinished] = useState(false);
   const [scoreSaved, setScoreSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -1828,6 +2099,16 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
             [userId]: { score, team }
           }));
         }
+      })
+      .on('broadcast', { event: 'answer_update' }, ({ payload }) => {
+        const { userId, questionIndex, answer } = payload;
+        const currentId = user?.id || sessionId;
+        if (userId === currentId) return;
+        
+        setPlayerAnswers(prev => ({
+          ...prev,
+          [userId]: { ...(prev[userId] || {}), [questionIndex]: answer }
+        }));
       })
       .subscribe();
 
@@ -2113,6 +2394,16 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
         playIncorrectSound();
       }
     }
+
+    // Broadcast answer to other players
+    if (gameState === 'playing' && matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
+      const currentId = user?.id || sessionId;
+      supabase.channel(matchRoomId).send({
+        type: 'broadcast',
+        event: 'answer_update',
+        payload: { userId: currentId, questionIndex: currentQ, answer: option }
+      });
+    }
   };
 
   const handleNext = () => {
@@ -2137,6 +2428,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     setUserAnswers({});
     setBotAnswers({});
     setBotResults({});
+    setPlayerAnswers({});
     setFinished(false);
     setScoreSaved(false);
     setStartTime(null);
@@ -2212,6 +2504,22 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
     const character = gradeEntry.character;
+
+    const currentId = user?.id || sessionId;
+    const opponents = lobbyPlayers.filter(p => {
+      if (gameMode === 'versus') return p.id !== currentId;
+      if (gameMode === 'team') {
+        const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+        const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
+        return pTeam !== myTeamId;
+      }
+      return false;
+    });
+    const teammate = gameMode === 'team' ? lobbyPlayers.find(p => {
+      const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+      const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
+      return p.id !== currentId && pTeam === myTeamId;
+    }) : null;
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
@@ -2363,15 +2671,29 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           <div className="mt-12 space-y-6 pt-12 border-t border-white/10">
             <div className="flex flex-col items-center gap-2">
               <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Match Breakdown</h3>
-              <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest">
+              <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest">
                 <div className="flex items-center gap-1.5 text-primary">
                   <span className="size-2 rounded-full bg-primary" />
                   You
                 </div>
-                <div className="flex items-center gap-1.5 text-red-500">
-                  <span className="size-2 rounded-full bg-red-500" />
-                  Bot
-                </div>
+                {gameMode === 'bot' && (
+                  <div className="flex items-center gap-1.5 text-red-500">
+                    <span className="size-2 rounded-full bg-red-500" />
+                    Bot
+                  </div>
+                )}
+                {teammate && (
+                  <div className="flex items-center gap-1.5 text-emerald-400">
+                    <span className="size-2 rounded-full bg-emerald-400" />
+                    Teammate
+                  </div>
+                )}
+                {opponents.length > 0 && (
+                  <div className="flex items-center gap-1.5 text-red-500">
+                    <span className="size-2 rounded-full bg-red-500" />
+                    {gameMode === 'team' ? 'Opponents' : 'Opponent'}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -2401,7 +2723,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                       </div>
                     </div>
 
-                    <div className={`grid ${gameMode === 'bot' ? 'grid-cols-2' : 'grid-cols-1'} gap-3 pt-2`}>
+                    <div className={`grid ${gameMode === 'bot' ? 'grid-cols-2' : (teammate || opponents.length > 0) ? `grid-cols-1 sm:grid-cols-2 ${gameMode === 'team' ? 'lg:grid-cols-4' : ''}` : 'grid-cols-1'} gap-3 pt-2`}>
                       {/* Player Result */}
                       <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
                         <div className="flex items-center justify-between">
@@ -2424,6 +2746,38 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
                             {botChoice || (botRes === 'incorrect' ? 'Wrong' : 'Thinking...')}
                           </p>
                         </div>
+                      )}
+
+                      {/* Other Real Players' Results */}
+                      {(gameMode === 'versus' || gameMode === 'team') && (
+                        <>
+                          {teammate && (
+                            <div className={`flex flex-col gap-1 p-3 rounded-xl border ${playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Teammate ({teammate.name})</span>
+                                {playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />}
+                              </div>
+                              <p className={`text-xs font-bold leading-tight ${playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? 'text-green-400' : 'text-red-400'}`}>
+                                {playerAnswers[teammate.id]?.[idx] || 'Skipped'}
+                              </p>
+                            </div>
+                          )}
+                          {opponents.map(op => {
+                            const opChoice = playerAnswers[op.id]?.[idx];
+                            const isOpCorrect = opChoice?.toLowerCase() === question.answer.toLowerCase();
+                            return (
+                              <div key={op.id} className={`flex flex-col gap-1 p-3 rounded-xl border ${isOpCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Opponent ({op.name})</span>
+                                  {isOpCorrect ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />}
+                                </div>
+                                <p className={`text-xs font-bold leading-tight ${isOpCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                                  {opChoice || 'Skipped'}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </>
                       )}
                     </div>
 
