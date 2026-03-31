@@ -1647,6 +1647,15 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [shuffleKey, setShuffleKey] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [sessionId] = useState(() => {
+    const key = `fandom_trivia_session_${scoreLabel}`;
+    let id = sessionStorage.getItem(key);
+    if (!id) {
+      id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      sessionStorage.setItem(key, id);
+    }
+    return id;
+  });
 
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
@@ -1754,7 +1763,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     if (gameState !== 'lobby' || !roomCode) return;
 
     const channel = supabase.channel(`room:${roomCode}`, {
-      config: { presence: { key: user?.id || 'anon' } }
+      config: { presence: { key: user?.id || sessionId } }
     });
 
     channel
@@ -1770,7 +1779,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
         setLobbyPlayers(active);
         
         if (gameMode === 'team' && !myTeamId) {
-           const myIndex = active.findIndex(p => p.id === (user?.id || 'anon'));
+           const myIndex = active.findIndex(p => p.id === (user?.id || sessionId));
            if (myIndex !== -1) setMyTeamId(myIndex % 2 === 0 ? 'A' : 'B');
         }
       })
@@ -1804,7 +1813,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     gameChannel
       .on('broadcast', { event: 'score_update' }, ({ payload }) => {
         const { userId, score, team } = payload;
-        const currentId = user?.id || 'anon';
+        const currentId = user?.id || sessionId;
         if (userId === currentId) return;
 
         if (gameMode === 'versus') {
@@ -1826,7 +1835,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   // Broadcast our own score whenever it changes
   useEffect(() => {
     if (gameState === 'playing' && matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
-      const currentId = user?.id || 'anon';
+      const currentId = user?.id || sessionId;
       supabase.channel(matchRoomId).send({
         type: 'broadcast',
         event: 'score_update',
@@ -1964,7 +1973,24 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full p-10 bg-card-dark border border-primary/30 rounded-3xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.2)]">
           <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Room Code</h2>
-          <p className="text-5xl font-black text-primary tracking-[0.2em] mb-8">{roomCode}</p>
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <p className="text-5xl font-black text-primary tracking-[0.2em]">{roomCode}</p>
+            <button 
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                const btn = document.getElementById('copy-link-btn');
+                if (btn) {
+                  const originalText = btn.innerHTML;
+                  btn.innerHTML = 'COPIED!';
+                  setTimeout(() => btn.innerHTML = originalText, 2000);
+                }
+              }}
+              id="copy-link-btn"
+              className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white"
+            >
+              Copy Link
+            </button>
+          </div>
           
           <div className="space-y-4 mb-8 text-left">
             <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
@@ -1973,7 +1999,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
             </div>
             {lobbyPlayers.map(p => (
               <div key={p.id} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl">
-                <span className="font-bold text-white text-lg">{p.name} {p.id === (user?.id || 'anon') && <span className="text-primary text-sm">(You)</span>}</span>
+                <span className="font-bold text-white text-lg">{p.name} {p.id === (user?.id || sessionId) && <span className="text-primary text-sm">(You)</span>}</span>
                 {p.isHost && <span className="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full font-black uppercase tracking-widest">Host</span>}
               </div>
             ))}
@@ -2435,8 +2461,8 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     );
   }
 
-  const derivedTeamScore = correctCount + Object.values(playerScores).reduce((sum: number, p: any) => p.team === myTeamId ? sum + p.score : sum, 0);
-  const derivedOpponentTeamScore = Object.values(playerScores).reduce((sum: number, p: any) => p.team !== myTeamId ? sum + p.score : sum, 0);
+  const derivedTeamScore = correctCount + (Object.values(playerScores).reduce((sum: number, p: any) => p.team === myTeamId ? sum + p.score : sum, 0) as number);
+  const derivedOpponentTeamScore = Object.values(playerScores).reduce((sum: number, p: any) => p.team !== myTeamId ? sum + p.score : sum, 0) as number;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
