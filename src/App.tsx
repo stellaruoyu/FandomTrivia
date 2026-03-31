@@ -1719,7 +1719,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const createRoom = async () => {
     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
     const { error } = await supabase.from('rooms').insert({
-      code, host_id: user?.id || `anon-${code}`, status: 'waiting', quiz_id: scoreLabel
+      code, host_id: user?.id || null, status: 'waiting', quiz_id: scoreLabel
     });
     if (error) { setLobbyError('Failed to create room.'); return; }
     setIsHost(true);
@@ -1731,7 +1731,11 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     e.preventDefault();
     const code = joinCodeInput.toUpperCase();
     const { data, error } = await supabase.from('rooms').select('*').eq('code', code).single();
-    if (error || !data) { setLobbyError('Room not found.'); return; }
+    if (error || !data) { 
+      console.error('Room lookup failed:', error);
+      setLobbyError('Room not found.'); 
+      return; 
+    }
     if (data.status !== 'waiting') { setLobbyError('Game has already started!'); return; }
     if (data.quiz_id !== scoreLabel) { setLobbyError('This room is for a different quiz!'); return; }
     setIsHost(false);
@@ -1973,24 +1977,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
       <div className="pt-32 pb-20 px-6 min-h-[80vh] flex flex-col items-center justify-center text-center">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full p-10 bg-card-dark border border-primary/30 rounded-3xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.2)]">
           <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Room Code</h2>
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <p className="text-5xl font-black text-primary tracking-[0.2em]">{roomCode}</p>
-            <button 
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                const btn = document.getElementById('copy-link-btn');
-                if (btn) {
-                  const originalText = btn.innerHTML;
-                  btn.innerHTML = 'COPIED!';
-                  setTimeout(() => btn.innerHTML = originalText, 2000);
-                }
-              }}
-              id="copy-link-btn"
-              className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white"
-            >
-              Copy Link
-            </button>
-          </div>
+          <p className="text-5xl font-black text-primary tracking-[0.2em] mb-8">{roomCode}</p>
           
           <div className="space-y-4 mb-8 text-left">
             <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
