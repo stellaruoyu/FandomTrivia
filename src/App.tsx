@@ -30,12 +30,18 @@ import {
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 
-// --- Helpers ---
+const normalizeSlug = (id: string): string => {
+  return id.toLowerCase()
+    .replace('trivia-', '')
+    .replace(/:/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/[()]/g, '')
+    .replace(/-+/g, '-')
+    .trim();
+};
 
 const getQuizTitle = (quizId: string): string => {
-  const qId = quizId.toLowerCase();
-  const isTwilight1 = qId.includes('twilight') && (qId.includes('book 1') || qId.includes('book-1') || qId === 'twilight');
-  const normalizedId = isTwilight1 ? 'twilight-book-1' : qId;
+  const normalizedId = normalizeSlug(quizId);
   const daily = DAILY_QUIZZES.find(q => q.id === normalizedId);
   if (daily) return daily.title;
 
@@ -94,13 +100,7 @@ const useQuizStats = () => {
         const counts: Record<string, number> = {};
         data?.forEach(row => {
           const rawId = row.quiz_id || '';
-          // Normalize DB titles/IDs to a consistent slug format
-          let normalized = rawId.toLowerCase()
-            .replace(/:/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/[()]/g, '')
-            .replace(/-+/g, '-')
-            .trim();
+          let normalized = normalizeSlug(rawId);
           
           // Manual overrides for common mismatches
           if (normalized.includes('twilight') && (normalized.includes('book-1') || normalized === 'twilight')) normalized = 'twilight-book-1';
@@ -120,7 +120,7 @@ const useQuizStats = () => {
   }, []);
 
   const getQuizCount = (quizId: string) => {
-    const normalized = quizId.toLowerCase().replace('trivia-', '');
+    const normalized = normalizeSlug(quizId);
     return stats[normalized] || 0;
   };
   

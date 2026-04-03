@@ -5215,7 +5215,7 @@ export const DAILY_QUIZZES = [
     color: "from-red-600/20 to-rose-600/20"
   },
   {
-    id: "hp-sorcerers-stone",
+    id: "harry-potter-sorcerers-stone",
     title: "HP: Sorcerer's Stone",
     description: "Enter the Wizarding World. Test your memory of Harry's first year at Hogwarts.",
     path: "/trivia-harry-potter",
@@ -5223,7 +5223,7 @@ export const DAILY_QUIZZES = [
     color: "from-amber-600/20 to-red-600/20"
   },
   {
-    id: "kpop-demon-hunters",
+    id: "k-pop-demon-hunters",
     title: "K-Pop: Demon Hunters",
     description: "High-energy beats & supernatural hunts. Can you keep up with the Saja Boys?",
     path: "/trivia-kpop",
@@ -5231,7 +5231,7 @@ export const DAILY_QUIZZES = [
     color: "from-purple-600/20 to-pink-600/20"
   },
   {
-    id: "three-body-problem",
+    id: "the-three-body-problem",
     title: "The Three-Body Problem",
     description: "Navigate the Trisolaran crisis. Prove you're a true Wallfacer in this cosmic challenge.",
     path: "/trivia-three-body-problem",
@@ -5239,7 +5239,7 @@ export const DAILY_QUIZZES = [
     color: "from-indigo-600/20 to-purple-600/20"
   },
   {
-    id: "zootopia-1",
+    id: "zootopia",
     title: "Zootopia (Case 1)",
     description: "Anyone can be anything. Crack the case of the missing mammals with Judy and Nick.",
     path: "/trivia-zootopia",
@@ -5247,7 +5247,7 @@ export const DAILY_QUIZZES = [
     color: "from-blue-600/20 to-sky-600/20"
   },
   {
-    id: "despicable-me-1",
+    id: "despicable-me",
     title: "Despicable Me",
     description: "Bello! Join Gru and the Minions in their hilariously despicable heist.",
     path: "/trivia-despicableme-1",
@@ -5255,7 +5255,7 @@ export const DAILY_QUIZZES = [
     color: "from-yellow-600/20 to-amber-600/20"
   },
   {
-    id: "frozen-1",
+    id: "frozen",
     title: "Frozen (Chapter 1)",
     description: "Journey to Arendelle. Test your knowledge of Elsa, Anna, and the power of sisterhood.",
     path: "/trivia-frozen-1",
