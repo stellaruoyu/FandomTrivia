@@ -13,7 +13,7 @@ import {
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
-  Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette
+  Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette, Trash2
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, DAILY_QUIZZES,
@@ -220,6 +220,17 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
     fetchHistory();
   }, [user.id]);
 
+  const handleDeleteHistory = async (scoreId: string) => {
+    if (!window.confirm('Are you sure you want to remove this quiz from your history? It will also be removed from the leaderboard.')) return;
+    
+    const { error } = await supabase.from('scores').delete().eq('id', scoreId);
+    if (error) {
+      alert('Error deleting score: ' + error.message);
+    } else {
+      setHistory(prev => prev.filter(item => item.id !== scoreId));
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
       <motion.div
@@ -266,6 +277,13 @@ const HistoryModal = ({ user, onClose }: { user: User, onClose: () => void }) =>
                     {Math.round((item.score / item.total) * 100)}%
                   </p>
                 </div>
+                <button
+                  onClick={() => handleDeleteHistory(item.id)}
+                  className="size-8 ml-4 flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors border border-red-500/20"
+                  title="Remove from History"
+                >
+                  <Trash2 className="size-4" />
+                </button>
               </div>
             ))
           )}
@@ -3138,7 +3156,7 @@ const formatTime = (seconds: number | null) => {
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
-const DashboardView = () => {
+const DashboardView = ({ user }: { user: User | null, key?: string }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
@@ -3170,13 +3188,26 @@ const DashboardView = () => {
               'from-blue-400 to-blue-600',
             ][i % 6],
             score: row.score,
-            completion_time: row.completion_time
+            completion_time: row.completion_time,
+            userId: row.user_id,
+            realId: row.id
           };
         }));
       }
     };
     fetchTopScores();
   }, []);
+
+  const handleDeleteRanking = async (scoreId: string) => {
+    if (!window.confirm('Are you sure you want to remove this score from the leaderboard?')) return;
+    
+    const { error } = await supabase.from('scores').delete().eq('id', scoreId);
+    if (error) {
+      alert('Error deleting score: ' + error.message);
+    } else {
+      setLeaderboard(prev => prev.filter(item => item.realId !== scoreId));
+    }
+  };
 
   const scrollTournaments = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -3313,25 +3344,37 @@ const DashboardView = () => {
                     <p className="text-slate-500 text-xs font-bold">No scores yet</p>
                     <p className="text-slate-600 text-[10px]">Complete a quiz to appear here!</p>
                   </div>
-                ) : leaderboard.map((user, idx) => (
+                ) : leaderboard.map((item, idx) => (
                   <div key={idx} className={`flex items-center gap-4 p-4 rounded-xl hover:bg-white/[0.05] transition-all group border border-transparent hover:border-white/10`}>
                     <div className={`size-8 flex items-center justify-center font-black italic ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-slate-400' : idx === 2 ? 'text-orange-400' : 'text-slate-600 text-xs'}`}>
                       #{idx + 1}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">{user.name}</p>
-                      <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tighter truncate">{getQuizTitle(user.fandom)}</p>
+                      <p className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">{item.name}</p>
+                      <p className="text-[9px] font-bold text-slate-500 uppercase tracking-tighter truncate">{getQuizTitle(item.fandom)}</p>
                     </div>
                     <div className="text-right flex flex-col items-end">
                       <div className="flex items-center gap-2">
                         <p className={`text-xs font-black ${idx === 0 ? 'text-amber-400' : 'text-white'}`}>
-                          {user.points}
+                          {item.points}
                         </p>
                         <div className="size-1 rounded-full bg-slate-700"></div>
-                        <p className="text-[10px] font-bold text-slate-500">{formatTime(user.completion_time)}</p>
+                        <p className="text-[10px] font-bold text-slate-500">{formatTime(item.completion_time)}</p>
                       </div>
                       <p className="text-[8px] font-black text-slate-600 uppercase tracking-widest leading-none">Score & Time</p>
                     </div>
+                    {user && item.userId === user.id && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteRanking(item.realId);
+                        }}
+                        className="ml-2 p-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors"
+                        title="Remove from Leaderboard"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -3396,7 +3439,7 @@ const DashboardView = () => {
 };
 
 // --- Rankings View ---
-const RankingsView = () => {
+const RankingsView = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
   const [scores, setScores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -3511,6 +3554,17 @@ const RankingsView = () => {
     fetchRankings();
   }, [rankingType]);
 
+  const handleDeleteRanking = async (scoreId: string) => {
+    if (!window.confirm('Are you sure you want to remove this score?')) return;
+    const { error } = await supabase.from('scores').delete().eq('id', scoreId);
+    if (error) {
+      alert('Error deleting score: ' + error.message);
+    } else {
+      // Re-fetch to update the grouped structure
+      window.location.reload(); 
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
       <Helmet>
@@ -3621,7 +3675,7 @@ const RankingsView = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="text-right flex-shrink-0">
+                              <div className="text-right flex-shrink-0 flex items-center">
                                 <div className="flex flex-col items-end gap-1">
                                   <p className={`text-2xl font-black italic tracking-tighter leading-none ${rankingType === 'accuracy' ? 'text-primary' : 'text-blue-400'}`}>
                                     {rankingType === 'accuracy' ? `${Math.round((scoreRow.score / scoreRow.total) * 100)}%` : formatTime(scoreRow.completion_time)}
@@ -3640,6 +3694,18 @@ const RankingsView = () => {
                                     )}
                                   </div>
                                 </div>
+                                {user && scoreRow.user_id === user.id && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteRanking(scoreRow.id);
+                                    }}
+                                    className="ml-4 p-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl transition-all border border-red-500/20 group-hover:scale-110 shadow-lg shadow-red-500/10"
+                                    title="Remove from Leaderboard"
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </button>
+                                )}
                               </div>
                             </div>
                           ))}
@@ -4096,7 +4162,7 @@ export default function App() {
       <main>
         <AnimatePresence mode="wait">
           <Routes location={location}>
-            <Route path="/rankings" element={<RankingsView />} />
+            <Route path="/rankings" element={<RankingsView user={user} />} />
             <Route path="/" element={<LandingView setUser={setUser} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
               { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
@@ -4222,8 +4288,7 @@ export default function App() {
             <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
-            {/* Account */}
-            <Route path="/dashboard" element={user ? <DashboardView key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} />} />
+            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} />} />
             
             {/* Legal */}
             <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
