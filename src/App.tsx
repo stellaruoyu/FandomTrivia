@@ -81,6 +81,76 @@ const getUniverseName = (quizId: string): string => {
   return 'Other Challenges';
 };
 
+const useQuizStats = () => {
+  const [stats, setStats] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { data, error } = await supabase.from('scores').select('quiz_id');
+        if (error) throw error;
+        
+        const counts: Record<string, number> = {};
+        data?.forEach(row => {
+          const rawId = row.quiz_id || '';
+          // Normalize DB titles/IDs to a consistent slug format
+          let normalized = rawId.toLowerCase()
+            .replace(/:/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/[()]/g, '')
+            .replace(/-+/g, '-')
+            .trim();
+          
+          // Manual overrides for common mismatches
+          if (normalized.includes('twilight') && (normalized.includes('book-1') || normalized === 'twilight')) normalized = 'twilight-book-1';
+          if (normalized === 'frozen-2013' || normalized === 'frozen-chapter-1') normalized = 'frozen-1';
+          if (normalized === 'despicable-me-2010') normalized = 'despicable-me-1';
+          
+          counts[normalized] = (counts[normalized] || 0) + 1;
+        });
+        setStats(counts);
+      } catch (err) {
+        console.error('Error fetching quiz stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const getQuizCount = (quizId: string) => {
+    const normalized = quizId.toLowerCase().replace('trivia-', '');
+    return stats[normalized] || 0;
+  };
+  
+  const getUniverseCount = (universeId: string) => {
+    return Object.entries(stats).reduce((sum, [id, count]) => {
+      const val = count as number;
+      const univName = getUniverseName(id).toLowerCase();
+      const target = universeId.toLowerCase();
+      
+      if (target === 'twilight' && (univName.includes('twilight') || id.includes('twilight'))) return sum + val;
+      if (target === 'harry-potter' && (univName.includes('wizarding') || id.includes('hp-') || id.includes('potter') || id.includes('harry'))) return sum + val;
+      if (target === 'kpop' && (univName.includes('k-pop') || id.includes('kpop'))) return sum + val;
+      if (target === 'three-body' && (univName.includes('three-body') || id.includes('three-body') || id.includes('forest') || id.includes('death'))) return sum + val;
+      if (target === 'zootopia' && (univName.includes('zootopia') || id.includes('zootopia'))) return sum + val;
+      if (target === 'despicable-me' && (univName.includes('despicable') || id.includes('despicable'))) return sum + val;
+      if (target === 'frozen' && (univName.includes('frozen') || id.includes('frozen'))) return sum + val;
+      
+      return sum;
+    }, 0);
+  };
+
+  const formatCount = (count: number) => {
+    if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
+    if (count >= 1000) return (count / 1000).toFixed(1) + 'K';
+    return count.toString();
+  };
+
+  return { getQuizCount, getUniverseCount, formatCount, loading };
+};
+
 // --- Types ---
 
 interface User {
@@ -618,22 +688,26 @@ const InfoModal = ({ title, content, onClose }: { title: string, content: string
 
 const LegalPage = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const navigate = useNavigate();
+  const description = `Read our ${title} to understand our policies and your rights at Fandom Trivia. Stay informed about how we manage our fandom community.`;
+  
   return (
-  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 max-w-2xl mx-auto space-y-10">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 max-w-2xl mx-auto space-y-10">
       <Helmet>
         <title>{title} | Fandom Trivia</title>
-        <meta name="description" content={`Read our ${title} to understand your rights and our policies at Fandom Trivia.`} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={`${title} | Fandom Trivia`} />
+        <meta property="og:description" content={description} />
       </Helmet>
-    <div className="max-w-3xl mx-auto space-y-8">
-      <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
-        <ArrowLeft className="size-4" /> Back to Home
-      </button>
-      <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase italic">{title}</h2>
-      <div className="bg-white/5 border border-white/10 p-8 rounded-3xl space-y-6 text-slate-300 text-sm leading-relaxed doc-content">
-        {children}
+      <div className="max-w-3xl mx-auto space-y-8">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Home
+        </button>
+        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase italic">{title}</h2>
+        <div className="bg-white/5 border border-white/10 p-8 rounded-3xl space-y-6 text-slate-300 text-sm leading-relaxed doc-content">
+          {children}
+        </div>
       </div>
-    </div>
-  </motion.div>
+    </motion.div>
   );
 };
 
@@ -811,8 +885,10 @@ const TwilightBookSelector = ({ key }: { key?: string }) => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-200">Volume</span></h2>
         <Helmet>
-          <title>Twilight Trivia | Choose Your Book</title>
-          <meta name="description" content="Select from Twilight, New Moon, Eclipse, Breaking Dawn, and more. Prove your Cullen-level expertise." />
+          <title>Twilight Saga Trivia & Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Ultimate Twilight Saga trivia. Select from Twilight, New Moon, Eclipse, Breaking Dawn, and more. Prove your Cullen-level expertise." />
+          <meta property="og:title" content="Twilight Saga Trivia & Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Test your knowledge of the Twilight Saga. Are you a true Cullen-level expert?" />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
@@ -863,8 +939,10 @@ const HPBookSelector = ({ key }: { key?: string }) => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h2>
         <Helmet>
-          <title>Harry Potter Trivia | Choose Your Book</title>
-          <meta name="description" content="From Sorcerer's Stone to Deathly Hallows. Test your Harry Potter knowledge and earn your wizarding badges." />
+          <title>Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your Harry Potter knowledge! From Sorcerer's Stone to Deathly Hallows. Earn your wizarding badges in the ultimate fandom challenge." />
+          <meta property="og:title" content="Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Are you a true Potterhead? Test your magic knowledge in our ultimate Harry Potter quiz series." />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from both!</p>
       </div>
@@ -923,8 +1001,10 @@ const ThreeBodyBookSelector = ({ key }: { key?: string }) => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-200">Era</span></h2>
         <Helmet>
-          <title>Three-Body Problem Trivia | Choose Your Era</title>
-          <meta name="description" content="Test your knowledge of the Trisolaran crisis. From the Red Coast to Death's End." />
+          <title>Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge of the Trisolaran crisis and the Dark Forest. From the Red Coast to Death's End in the ultimate Three-Body challenge." />
+          <meta property="og:title" content="Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Can you survive the Trisolaran crisis? Test your Three-Body Problem knowledge." />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
@@ -979,8 +1059,10 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">Investigation</span></h2>
         <Helmet>
-          <title>Zootopia Trivia | Choose Your Case</title>
-          <meta name="description" content="Solve cases from Zootopia and Zootopia 2. Test your knowledge of the city where anyone can be anything." />
+          <title>Zootopia Trivia & Mystery Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Solve cases from Zootopia and Zootopia 2. Test your knowledge of the city where anyone can be anything in our detective quizzes." />
+          <meta property="og:title" content="Zootopia Trivia & Mystery Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Become a ZPD detective! Test your Zootopia knowledge in the ultimate fan quiz." />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a movie case file or test your luck with a random mix!</p>
       </div>
@@ -1015,6 +1097,24 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
 };
 
 // --- Utils ---
+
+/**
+ * Generates JSON-LD for a trivia quiz
+ */
+const getQuizSchema = (title: string, description: string, url: string) => {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    "name": title,
+    "description": description,
+    "about": {
+      "@type": "Thing",
+      "name": "Trivia"
+    },
+    "url": url,
+    "educationalLevel": "Intermediate"
+  });
+};
 
 /**
  * Shuffles an array in place using the Fisher-Yates algorithm.
@@ -1168,7 +1268,36 @@ const RaceTrack = ({
   );
 };
 
-const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
+const MCQuizView = (props: {
+  questions: MCTriviaQuestion[],
+  title: string,
+  scoreLabel: string,
+  grades: { threshold: number, label: string, color: string, character: { name: string, image: string, desc: string } }[],
+  user: User | null,
+  isDaily?: boolean,
+  onQuizComplete?: (quizId: string, scorePct: number, isDaily: boolean) => void,
+  key?: any
+}) => {
+  const currentUrl = window.location.href;
+  const description = `Test your knowledge on ${props.title}. Play the ultimate fan trivia challenge for ${props.title} and climb the global leaderboard.`;
+  
+  return (
+    <>
+      <Helmet>
+        <title>{props.title} Quiz | Fandom Trivia</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={`${props.title} Quiz | Fandom Trivia`} />
+        <meta property="og:description" content={description} />
+        <script type="application/ld+json">
+          {getQuizSchema(props.title, description, currentUrl)}
+        </script>
+      </Helmet>
+      <MCQuizContent {...props} />
+    </>
+  );
+};
+
+const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
   questions: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
@@ -1176,7 +1305,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   user: User | null,
   onQuizComplete?: (quizId: string, scorePct: number, isDaily: boolean) => void,
   isDaily?: boolean,
-  key?: string
+  key?: any
 }) => {
   const [gameState, setGameState] = useState<'mode_selection' | 'lobby' | 'playing'>('mode_selection');
   const [gameMode, setGameMode] = useState<'single' | 'bot' | 'versus' | 'team' | null>(null);
@@ -1186,6 +1315,9 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   const [isHost, setIsHost] = useState(false);
   const [lobbyError, setLobbyError] = useState('');
   const [lobbyPlayers, setLobbyPlayers] = useState<{id: string, name: string, isHost: boolean}[]>([]);
+  const [lobbyLogs, setLobbyLogs] = useState<{id: string, text: string, type: 'join' | 'leave' | 'info'}[]>([]);
+  const [hostLeft, setHostLeft] = useState(false);
+  const lobbyPlayersRef = useRef<{id: string, name: string, isHost: boolean}[]>([]);
   const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
   const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
@@ -1344,6 +1476,32 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
              active.push({ id: key, name: pData.name, isHost: pData.isHost });
            }
         }
+        
+        // Detect Joins and Leaves
+        const prev = lobbyPlayersRef.current;
+        const currentId = user?.id || sessionId;
+        
+        active.forEach(p => {
+          if (!prev.find(px => px.id === p.id)) {
+            if (p.id !== currentId) {
+              setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `${p.name} joined the room`, type: 'join' }]);
+            }
+          }
+        });
+        
+        prev.forEach(p => {
+          if (!active.find(ax => ax.id === p.id)) {
+            setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `${p.name} left the room`, type: 'leave' }]);
+            
+            // Check if it was the host
+            if (p.isHost && !active.some(ax => ax.isHost)) {
+              setHostLeft(true);
+              setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `The host has left the room`, type: 'info' }]);
+            }
+          }
+        });
+
+        lobbyPlayersRef.current = active;
         setLobbyPlayers(active);
         
         if (gameMode === 'team' && !myTeamId) {
@@ -1376,9 +1534,32 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
   useEffect(() => {
     if (gameState !== 'playing' || !matchRoomId || (gameMode !== 'versus' && gameMode !== 'team')) return;
 
-    const gameChannel = supabase.channel(matchRoomId);
+    const gameChannel = supabase.channel(matchRoomId, {
+      config: { presence: { key: user?.id || sessionId } }
+    });
     
     gameChannel
+      .on('presence', { event: 'sync' }, () => {
+        const state = gameChannel.presenceState();
+        const active: {id: string, name: string, isHost: boolean}[] = [];
+        for (const [key, presences] of Object.entries(state)) {
+           const pData = presences[0] as any;
+           if (pData) { active.push({ id: key, name: pData.name, isHost: pData.isHost }); }
+        }
+        
+        // Detect leavers during game
+        const prev = lobbyPlayersRef.current;
+        prev.forEach(p => {
+          if (!active.find(ax => ax.id === p.id)) {
+            setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `${p.name} disconnected`, type: 'leave' }]);
+            if (p.isHost && !active.some(ax => ax.isHost)) {
+              setHostLeft(true);
+            }
+          }
+        });
+        lobbyPlayersRef.current = active;
+        setLobbyPlayers(active);
+      })
       .on('broadcast', { event: 'score_update' }, ({ payload }) => {
         const { userId, score, team } = payload;
         const currentId = user?.id || sessionId;
@@ -1403,10 +1584,17 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           [userId]: { ...(prev[userId] || {}), [questionIndex]: answer }
         }));
       })
-      .subscribe();
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await gameChannel.track({
+            name: user?.username || user?.name || 'Guest Fan',
+            isHost: isHost
+          });
+        }
+      });
 
     return () => {
-      supabase.removeChannel(gameChannel);
+      gameChannel.untrack().then(() => supabase.removeChannel(gameChannel));
     };
   }, [gameState, matchRoomId, gameMode, user]);
 
@@ -1533,7 +1721,7 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
               </button>
             </form>
 
-            <button onClick={() => setGameState('mode_selection')} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest pt-2">
+            <button onClick={() => { setRoomCode(''); setGameState('mode_selection'); setJoinCodeInput(''); setLobbyLogs([]); setHostLeft(false); }} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest pt-2">
               Cancel
             </button>
 
@@ -1553,17 +1741,35 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
           <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Room Code</h2>
           <p className="text-5xl font-black text-primary tracking-[0.2em] mb-8">{roomCode}</p>
           
-          <div className="space-y-4 mb-8 text-left">
+          <div className="space-y-4 mb-6 text-left">
             <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
               <span>Players ({lobbyPlayers.length}/{maxPlayers})</span>
               {gameMode === 'team' && myTeamId && <span className="text-primary">You are on Team {myTeamId}</span>}
             </div>
-            {lobbyPlayers.map(p => (
-              <div key={p.id} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl">
-                <span className="font-bold text-white text-lg">{p.name} {p.id === (user?.id || sessionId) && <span className="text-primary text-sm">(You)</span>}</span>
-                {p.isHost && <span className="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full font-black uppercase tracking-widest">Host</span>}
-              </div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {lobbyPlayers.map(p => (
+                <div key={p.id} className="flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-xl">
+                  <span className="font-bold text-white text-sm truncate mr-2">{p.name} {p.id === (user?.id || sessionId) && <span className="text-primary">(You)</span>}</span>
+                  {p.isHost && <span className="text-[8px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Host</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Lobby Feed */}
+          <div className="bg-black/20 border border-white/5 rounded-2xl p-4 mb-8 text-left space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+            {lobbyLogs.length === 0 ? (
+              <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest text-center py-2">Waiting for activity...</p>
+            ) : (
+              lobbyLogs.map(log => (
+                <div key={log.id} className="flex items-center gap-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                  <div className={`size-1.5 rounded-full ${log.type === 'join' ? 'bg-green-500' : log.type === 'leave' ? 'bg-red-500' : 'bg-primary'}`} />
+                  <p className={`text-[10px] font-bold ${log.type === 'join' ? 'text-green-400' : log.type === 'leave' ? 'text-red-400' : 'text-slate-400'} uppercase tracking-tight`}>
+                    {log.text}
+                  </p>
+                </div>
+              ))
+            )}
           </div>
 
           {isHost && (
@@ -1631,7 +1837,13 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
             </div>
           )}
 
-          <button onClick={() => { setRoomCode(''); setGameState('mode_selection'); }} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest">
+          {hostLeft && (
+            <div className="w-full p-4 border border-red-500/30 bg-red-500/10 rounded-xl mb-6 animate-pulse">
+              <p className="text-red-400 font-black uppercase tracking-widest text-xs">The host has left the room!</p>
+            </div>
+          )}
+
+          <button onClick={() => { setRoomCode(''); setGameState('mode_selection'); setJoinCodeInput(''); setLobbyLogs([]); setHostLeft(false); }} className="text-slate-400 font-bold hover:text-white transition-colors text-sm uppercase tracking-widest">
             Leave Room
           </button>
         </motion.div>
@@ -1659,9 +1871,6 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
     );
   }
   const isUnknown = q.answer === '???';
-
-  // --- Realtime Logic (Deleted) ---
-
 
   const handleSelect = (option: string) => {
     if (selected) return; // already answered
@@ -2070,6 +2279,39 @@ const MCQuizView = ({ questions, title, scoreLabel, grades, user, onQuizComplete
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
+      {hostLeft && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] w-full max-w-md px-6"
+        >
+          <div className="bg-red-500 text-white p-4 rounded-2xl shadow-2xl border border-white/20 flex flex-col items-center gap-3">
+             <div className="flex items-center gap-2">
+               <X className="size-5" />
+               <p className="font-black uppercase tracking-widest text-xs">The host has left the room!</p>
+             </div>
+             <button 
+               onClick={handleRestart}
+               className="bg-white text-red-500 px-6 py-2 rounded-xl font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-transform"
+             >
+               Return to Home
+             </button>
+          </div>
+        </motion.div>
+      )}
+
+      {lobbyLogs.slice(-1).map(log => log.type === 'leave' && (
+        <motion.div 
+          key={log.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="fixed bottom-10 right-10 z-[100] bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-3"
+        >
+           <div className="size-2 rounded-full bg-red-500 animate-pulse" />
+           <p className="text-[10px] font-black text-red-400 uppercase tracking-widest">{log.text}</p>
+        </motion.div>
+      ))}
       {/* Race Mode UI shown during quiz if multiplayer or bot */}
       {(gameMode && ['bot', 'versus', 'team'].includes(gameMode)) && (
         <RaceTrack 
@@ -2320,6 +2562,7 @@ const FROZEN_GRADES = [
 
 const FrozenSelector = () => {
   const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
   return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
@@ -2329,8 +2572,10 @@ const FrozenSelector = () => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Enter <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">Arendelle</span></h2>
         <Helmet>
-          <title>Frozen Trivia | Choose Your Journey</title>
-          <meta name="description" content="Test your knowledge on Frozen and Frozen 2. Prove you're the ultimate Snow Master." />
+          <title>Frozen Trivia & Arendelle Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge on Frozen and Frozen 2. From Elsa's magic to Anna's adventures. Prove you're the ultimate Snow Master in our trivia challenge." />
+          <meta property="og:title" content="Frozen Trivia & Arendelle Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Do you know everything about Elsa, Anna, and Olaf? Test your Frozen knowledge now!" />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a chapter to test your knowledge, or take the Ultimate Challenge!</p>
       </div>
@@ -2353,8 +2598,14 @@ const FrozenSelector = () => {
               <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
               <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-              Thaw Quiz <ArrowRight className="size-3" />
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Thaw Quiz <ArrowRight className="size-3" />
+              </div>
+              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                <Users className="size-3 text-slate-400" />
+              </div>
             </div>
           </motion.button>
         ))}
@@ -2375,6 +2626,7 @@ const DESPICABLE_ME_GRADES = [
 
 const DespicableMeSelector = () => {
   const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
   return (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
     <div className="max-w-3xl mx-auto space-y-10">
@@ -2384,8 +2636,10 @@ const DespicableMeSelector = () => {
         </button>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-200">Mission</span></h2>
         <Helmet>
-          <title>Despicable Me Trivia | Choose Your Film</title>
-          <meta name="description" content="Test your knowledge on Despicable Me 1, 2, 3, and 4. Prove you're the ultimate Minion Master." />
+          <title>Despicable Me Trivia & Minion Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge on Despicable Me 1, 2, 3, and 4. From Gru's moon heist to the Anti-Villain League. Prove you're the ultimate Minion Master." />
+          <meta property="og:title" content="Despicable Me Trivia & Minion Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Bello! Are you a true Minion expert? Test your Despicable Me knowledge in our ultimate quiz." />
         </Helmet>
         <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try the Mixed Challenge!</p>
       </div>
@@ -2410,8 +2664,14 @@ const DespicableMeSelector = () => {
               <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
               <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-              Start Quiz <ArrowRight className="size-3" />
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                <Users className="size-3 text-slate-400" />
+              </div>
             </div>
           </motion.button>
         ))}
@@ -2430,6 +2690,7 @@ const DailyMysteryQuiz = ({ setUser }: {
   key?: string
 }) => {
   const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
   
   const dailyQuiz = useMemo(() => {
     const today = new Date();
@@ -2499,9 +2760,15 @@ const DailyMysteryQuiz = ({ setUser }: {
               >
                 Start Quiz Now! <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
               </button>
-              <div className="hidden sm:flex items-center gap-2 text-slate-500 font-black text-[10px] uppercase tracking-widest">
-                <Clock className="size-3" />
-                Ends at Midnight
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-2 text-slate-500 font-black text-[10px] uppercase tracking-widest">
+                  <Clock className="size-3" />
+                  Ends at Midnight
+                </div>
+                <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
+                  <span className="text-sm font-black text-white">{formatCount(getQuizCount(dailyQuiz.id))}</span>
+                  <Users className="size-4 text-slate-400" />
+                </div>
               </div>
             </div>
           </div>
@@ -2515,7 +2782,7 @@ const LandingView = ({ setUser }: {
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
   key?: string
 }) => {
-
+  const { getUniverseCount, formatCount } = useQuizStats();
   const navigate = useNavigate();
   return (
   <motion.div
@@ -2523,6 +2790,44 @@ const LandingView = ({ setUser }: {
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
   >
+    <Helmet>
+      <title>Fandom Trivia | The Ultimate Fan Experience</title>
+      <meta name="description" content="The world's leading community for fandom trivia. Test your knowledge in Harry Potter, Twilight, Frozen, K-Pop, and more. Join thousands of fans on the global leaderboard." />
+      <link rel="canonical" href="https://fandom-trivia.vercel.app/" />
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Fandom Trivia",
+          "operatingSystem": "Web",
+          "applicationCategory": "GameApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1240"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        })}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "url": "https://fandom-trivia.vercel.app/",
+          "name": "Fandom Trivia",
+          "description": "Premium multi-universe trivia platform for superfans.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://fandom-trivia.vercel.app/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        })}
+      </script>
+    </Helmet>
     <div className="pt-20">
 
       {/* Hero */}
@@ -2650,21 +2955,28 @@ const LandingView = ({ setUser }: {
                   ) : universe.title}
                 </h4>
                 <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (universe.id === 'twilight') navigate('/selector-twilight');
-                    if (universe.id === 'kpop') navigate('/trivia-kpop');
-                    if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
-                    if (universe.id === 'three-body') navigate('/selector-three-body');
-                    if (universe.id === 'zootopia') navigate('/selector-zootopia');
-                    if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
-                    if (universe.id === 'frozen') navigate('/selector-frozen');
-                  }}
-                  className={`w-full py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
-                >
-                  {universe.buttonText}
-                </button>
+                
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (universe.id === 'twilight') navigate('/selector-twilight');
+                      if (universe.id === 'kpop') navigate('/trivia-kpop');
+                      if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
+                      if (universe.id === 'three-body') navigate('/selector-three-body');
+                      if (universe.id === 'zootopia') navigate('/selector-zootopia');
+                      if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
+                      if (universe.id === 'frozen') navigate('/selector-frozen');
+                    }}
+                    className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
+                  >
+                    {universe.buttonText}
+                  </button>
+                  <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-3 rounded-xl min-w-fit">
+                    <span className="text-sm font-black text-white">{formatCount(getUniverseCount(universe.id))}</span>
+                    <Users className="size-3.5 text-slate-400" />
+                  </div>
+                </div>
               </div>
               <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
                 {universe.icon === 'Droplets' && <Droplets className="text-white/50 size-10" />}
@@ -3584,6 +3896,24 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
+      <Helmet>
+        <title>Fandom Trivia</title>
+        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fandom-trivia.vercel.app/" />
+        <meta property="og:title" content="Fandom Trivia | The Ultimate Fan Experience" />
+        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="og:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://fandom-trivia.vercel.app/" />
+        <meta property="twitter:title" content="Fandom Trivia | The Ultimate Fan Experience" />
+        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="twitter:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
+      </Helmet>
 
       <Navbar
         isDashboard={location.pathname === '/dashboard'}

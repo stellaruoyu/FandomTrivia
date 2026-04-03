@@ -1,63 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Pages -->
   <url>
     <loc>https://fandom-trivia.vercel.app/</loc>
-    <lastmod>2026-03-16</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://fandom-trivia.vercel.app/rankings</loc>
-    <lastmod>2026-03-16</lastmod>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  
+  <!-- Universe Selectors -->
   <url>
-    <loc>https://fandom-trivia.vercel.app/dashboard</loc>
-    <lastmod>2026-03-16</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://fandom-trivia.vercel.app/selector-twilight</loc>
+    <lastmod>2026-04-03</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fandom-trivia.vercel.app/selector-hp</loc>
+    <lastmod>2026-04-03</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fandom-trivia.vercel.app/selector-threebody</loc>
+    <lastmod>2026-04-03</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fandom-trivia.vercel.app/selector-zootopia</loc>
+    <lastmod>2026-04-03</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fandom-trivia.vercel.app/selector-despicable-me</loc>
+    <lastmod>2026-04-03</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fandom-trivia.vercel.app/selector-frozen</loc>
+    <lastmod>2026-04-03</lastmod>
     <priority>0.7</priority>
   </url>
 
-  <!-- Twilight Quiz Pages -->
-  <url><loc>https://fandom-trivia.vercel.app/selector-twilight</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-twilight-mc</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-twilight-book</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-newmoon</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-eclipse</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-breakingdawn</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-midnightsun</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-lifeanddeath</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-twilight-random</loc></url>
+  <!-- Twilight Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-twilight-book</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-newmoon</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-eclipse</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-breakingdawn</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-midnightsun</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-lifeanddeath</loc><priority>0.6</priority></url>
 
-  <!-- Harry Potter Quiz Pages -->
-  <url><loc>https://fandom-trivia.vercel.app/selector-harry-potter</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-cos</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-poa</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-gof</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-ootp</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-hbp</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-dh</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-random</loc></url>
+  <!-- Harry Potter Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-cos</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-poa</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-gof</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-ootp</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-hbp</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-harry-potter-dh</loc><priority>0.6</priority></url>
 
-  <!-- Three-Body Quiz Pages -->
-  <url><loc>https://fandom-trivia.vercel.app/selector-three-body</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-three-body-problem</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-the-dark-forest</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-deaths-end</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-three-body-random</loc></url>
+  <!-- Three-Body Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-three-body-problem</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-the-dark-forest</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-deaths-end</loc><priority>0.6</priority></url>
 
-  <!-- Zootopia Quiz Pages -->
-  <url><loc>https://fandom-trivia.vercel.app/selector-zootopia</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-zootopia</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-zootopia-2</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/trivia-zootopia-random</loc></url>
+  <!-- Zootopia Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-zootopia</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-zootopia-2</loc><priority>0.6</priority></url>
 
-  <!-- Legal & K-Pop -->
-  <url><loc>https://fandom-trivia.vercel.app/trivia-kpop</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/privacy-policy</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/terms-of-service</loc></url>
-  <url><loc>https://fandom-trivia.vercel.app/cookie-policy</loc></url>
+  <!-- Despicable Me Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-despicable-me-1</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-despicable-me-2</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-despicable-me-3</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-despicable-me-4</loc><priority>0.6</priority></url>
+
+  <!-- Frozen Quizzes -->
+  <url><loc>https://fandom-trivia.vercel.app/trivia-frozen-1</loc><priority>0.6</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/trivia-frozen-2</loc><priority>0.6</priority></url>
+
+  <!-- Legal -->
+  <url><loc>https://fandom-trivia.vercel.app/privacy-policy</loc><priority>0.3</priority></url>
+  <url><loc>https://fandom-trivia.vercel.app/terms-of-service</loc><priority>0.3</priority></url>
 </urlset>
