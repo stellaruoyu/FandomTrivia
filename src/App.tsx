@@ -171,6 +171,7 @@ const SimpleAvatar = ({ name, picture, size = 40, className = "" }: { name?: str
         alt={name || 'User'} 
         style={{ width: size, height: size }}
         className={`rounded-full border border-white/10 shrink-0 object-cover ${className}`}
+        loading="lazy"
       />
     );
   }
@@ -811,6 +812,20 @@ const Footer = ({ isDashboard, onShowInfo }: {
 
       <div className="space-y-6">
         <h5 className="text-sm font-black uppercase tracking-widest text-white">
+          Trending Quizzes
+        </h5>
+        <ul className="space-y-4 text-slate-400 font-semibold text-sm">
+          <li><Link to="/selector-harry-potter" className="hover:text-amber-400 transition-colors">Harry Potter World</Link></li>
+          <li><Link to="/selector-twilight" className="hover:text-red-400 transition-colors">Twilight Saga</Link></li>
+          <li><Link to="/selector-three-body" className="hover:text-indigo-400 transition-colors">Three-Body Problem</Link></li>
+          <li><Link to="/trivia-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
+          <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
+          <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
+        </ul>
+      </div>
+
+      <div className="space-y-6">
+        <h5 className="text-sm font-black uppercase tracking-widest text-white">
           {isDashboard ? 'Circuit' : 'Platform'}
         </h5>
         <ul className="space-y-4 text-slate-400 font-semibold text-sm">
@@ -883,12 +898,19 @@ const TwilightBookSelector = ({ key }: { key?: string }) => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-200">Volume</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-200">Volume</span></h1>
         <Helmet>
           <title>Twilight Saga Trivia & Quizzes | Fandom Trivia</title>
           <meta name="description" content="Ultimate Twilight Saga trivia. Select from Twilight, New Moon, Eclipse, Breaking Dawn, and more. Prove your Cullen-level expertise." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-twilight" />
           <meta property="og:title" content="Twilight Saga Trivia & Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Test your knowledge of the Twilight Saga. Are you a true Cullen-level expert?" />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Twilight Saga", item: "https://fandom-trivia.vercel.app/selector-twilight" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
@@ -937,12 +959,19 @@ const HPBookSelector = ({ key }: { key?: string }) => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Volume</span></h1>
         <Helmet>
           <title>Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your Harry Potter knowledge! From Sorcerer's Stone to Deathly Hallows. Earn your wizarding badges in the ultimate fandom challenge." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-harry-potter" />
           <meta property="og:title" content="Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Are you a true Potterhead? Test your magic knowledge in our ultimate Harry Potter quiz series." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Wizarding World", item: "https://fandom-trivia.vercel.app/selector-harry-potter" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from both!</p>
       </div>
@@ -999,12 +1028,19 @@ const ThreeBodyBookSelector = ({ key }: { key?: string }) => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-200">Era</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-200">Era</span></h1>
         <Helmet>
           <title>Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge of the Trisolaran crisis and the Dark Forest. From the Red Coast to Death's End in the ultimate Three-Body challenge." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-three-body" />
           <meta property="og:title" content="Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Can you survive the Trisolaran crisis? Test your Three-Body Problem knowledge." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Three-Body Universe", item: "https://fandom-trivia.vercel.app/selector-three-body" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from all!</p>
       </div>
@@ -1057,12 +1093,19 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">Investigation</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">Investigation</span></h1>
         <Helmet>
           <title>Zootopia Trivia & Mystery Quizzes | Fandom Trivia</title>
           <meta name="description" content="Solve cases from Zootopia and Zootopia 2. Test your knowledge of the city where anyone can be anything in our detective quizzes." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-zootopia" />
           <meta property="og:title" content="Zootopia Trivia & Mystery Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Become a ZPD detective! Test your Zootopia knowledge in the ultimate fan quiz." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Zootopia Universe", item: "https://fandom-trivia.vercel.app/selector-zootopia" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a movie case file or test your luck with a random mix!</p>
       </div>
@@ -1113,6 +1156,22 @@ const getQuizSchema = (title: string, description: string, url: string) => {
     },
     "url": url,
     "educationalLevel": "Intermediate"
+  });
+};
+
+/**
+ * Generates Breadcrumb Structured Data
+ */
+const getBreadcrumbSchema = (crumbs: { name: string, item: string }[]) => {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": crumbs.map((crumb, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": crumb.name,
+      "item": crumb.item
+    }))
   });
 };
 
@@ -1280,16 +1339,25 @@ const MCQuizView = (props: {
 }) => {
   const currentUrl = window.location.href;
   const description = `Test your knowledge on ${props.title}. Play the ultimate fan trivia challenge for ${props.title} and climb the global leaderboard.`;
+  const universeName = getUniverseName(props.title);
   
   return (
     <>
       <Helmet>
         <title>{props.title} Quiz | Fandom Trivia</title>
         <meta name="description" content={description} />
+        <link rel="canonical" href={currentUrl} />
         <meta property="og:title" content={`${props.title} Quiz | Fandom Trivia`} />
         <meta property="og:description" content={description} />
         <script type="application/ld+json">
           {getQuizSchema(props.title, description, currentUrl)}
+        </script>
+        <script type="application/ld+json">
+          {getBreadcrumbSchema([
+            { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+            { name: universeName, item: currentUrl.split('/').slice(0, -1).join('/') },
+            { name: props.title, item: currentUrl }
+          ])}
         </script>
       </Helmet>
       <MCQuizContent {...props} />
@@ -2570,12 +2638,19 @@ const FrozenSelector = () => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Enter <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">Arendelle</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Enter <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">Arendelle</span></h1>
         <Helmet>
           <title>Frozen Trivia & Arendelle Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on Frozen and Frozen 2. From Elsa's magic to Anna's adventures. Prove you're the ultimate Snow Master in our trivia challenge." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-frozen" />
           <meta property="og:title" content="Frozen Trivia & Arendelle Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Do you know everything about Elsa, Anna, and Olaf? Test your Frozen knowledge now!" />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Frozen Universe", item: "https://fandom-trivia.vercel.app/selector-frozen" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a chapter to test your knowledge, or take the Ultimate Challenge!</p>
       </div>
@@ -2634,12 +2709,19 @@ const DespicableMeSelector = () => {
         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
           <ArrowLeft className="size-4" /> Back to Universes
         </button>
-        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-200">Mission</span></h2>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-200">Mission</span></h1>
         <Helmet>
           <title>Despicable Me Trivia & Minion Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on Despicable Me 1, 2, 3, and 4. From Gru's moon heist to the Anti-Villain League. Prove you're the ultimate Minion Master." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-despicable-me" />
           <meta property="og:title" content="Despicable Me Trivia & Minion Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Bello! Are you a true Minion expert? Test your Despicable Me knowledge in our ultimate quiz." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Despicable Me Universe", item: "https://fandom-trivia.vercel.app/selector-despicable-me" }
+            ])}
+          </script>
         </Helmet>
         <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try the Mixed Challenge!</p>
       </div>
@@ -2849,14 +2931,14 @@ const LandingView = ({ setUser }: {
             </span>
             Build v1.1.0 • Join 12.5K Active Players
           </motion.div>
-          <motion.h2
+          <motion.h1
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white leading-[1.1]"
           >
             The Ultimate <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Fandom Trivia</span>
-          </motion.h2>
+          </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -2939,6 +3021,8 @@ const LandingView = ({ setUser }: {
               <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                 style={{ backgroundImage: `url("${universe.image}")` }}
+                role="img"
+                aria-label={universe.title + " Trivia Universe Background"}
               ></div>
               <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
               <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">

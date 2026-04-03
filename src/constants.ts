@@ -113,6 +113,7 @@ export const UNIVERSES = [
     tags: ['Fantasy', 'Mystery'],
     description: 'Misty forests & eternal secrets. Relive the saga of Forks and the Olympic Coven.',
     image: '/images/Cullen Family.jpg',
+    seoAlt: 'The Cullen family from the Twilight Saga in a misty forest',
     buttonText: 'Enter Forks',
     icon: 'Droplets'
   },
@@ -122,6 +123,7 @@ export const UNIVERSES = [
     tags: ['Magic', 'Classic'],
     description: "Magic, mystery, and the Wizarding World. Prove you're a true Gryffindor or a cunning Slytherin.",
     image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg',
+    seoAlt: 'Harry Potter, Hermione Granger and Ron Weasley at Hogwarts',
     buttonText: 'Begin Spellcasting',
     icon: 'Wand2'
   },
@@ -141,6 +143,7 @@ export const UNIVERSES = [
     tags: ['Sci-Fi', 'Cosmic'],
     description: 'Navigate the Dark Forest, survive the Trisolaran crisis, and explore higher dimensions.',
     image: '/images/threebody.jpg',
+    seoAlt: 'Trisolaran cosmic landscape from The Three-Body Problem',
     buttonText: 'Enter the Dark Forest',
     icon: 'Search'
   },
@@ -150,6 +153,7 @@ export const UNIVERSES = [
     tags: ['Animation', 'Mystery'],
     description: 'Anyone can be anything. Uncover conspiracies and explore the urban jungle.',
     image: '/images/zootopia.jpg',
+    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
     buttonText: 'Enter the Urban Jungle',
     icon: 'Search'
   },
@@ -159,6 +163,7 @@ export const UNIVERSES = [
     tags: ['Animation', 'Comedy'],
     description: 'Bello! Join Gru, the Minions, and the girls in their hilarious heist to steal the moon and save the world.',
     image: '/images/despicable-me.jpg',
+    seoAlt: 'Gru and the Minions from Despicable Me',
     buttonText: 'Join the Minions',
     icon: 'Zap'
   },
@@ -168,6 +173,7 @@ export const UNIVERSES = [
     tags: ['Animation', 'Musical', 'Disney'],
     description: 'Journey to Arendelle and the Enchanted Forest. Test your knowledge on Elsa, Anna, and the elemental spirits.',
     image: '/images/frozen.jpg',
+    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
     buttonText: 'Join the Sisters',
     icon: 'Snowflake'
   }
