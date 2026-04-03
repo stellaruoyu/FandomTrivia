@@ -1389,6 +1389,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
   const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
+  const hostLeftTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [opponentScore, setOpponentScore] = useState(0);
   const [teamScore, setTeamScore] = useState(0); // My team's overall score
@@ -1531,8 +1532,19 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     if (gameState !== 'lobby' || !roomCode) return;
 
     const channel = supabase.channel(`room:${roomCode}`, {
-      config: { presence: { key: user?.id || sessionId } }
+       config: { presence: { key: user?.id || sessionId } }
     });
+
+    const handleBeforeUnload = () => {
+      if (isHost) {
+        channel.send({
+          type: 'broadcast',
+          event: 'host_closing',
+          payload: { name: user?.username || user?.name || 'Host' }
+        });
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     channel
       .on('presence', { event: 'sync' }, () => {
@@ -1559,23 +1571,41 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         
         prev.forEach(p => {
           if (!active.find(ax => ax.id === p.id)) {
-            setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `${p.name} left the room`, type: 'leave' }]);
-            
-            // Check if it was the host
-            if (p.isHost && !active.some(ax => ax.isHost)) {
-              setHostLeft(true);
-              setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `The host has left the room`, type: 'info' }]);
+            if (p.id !== currentId) {
+              setLobbyLogs(l => [...l, { id: Math.random().toString(36), text: `${p.name} left the room`, type: 'leave' }]);
             }
           }
         });
+
+        // Host Reconnection / Leave Detection
+        const hostExists = active.some(ax => ax.isHost);
+        if (hostExists) {
+          if (hostLeftTimeoutRef.current) {
+            clearTimeout(hostLeftTimeoutRef.current);
+            hostLeftTimeoutRef.current = null;
+          }
+          setHostLeft(false);
+        } else {
+          if (!hostLeftTimeoutRef.current) {
+            hostLeftTimeoutRef.current = setTimeout(() => {
+               setHostLeft(true);
+               setLobbyLogs(l => [...l, { id: Math.random().toString(36), text: `The host has left the room`, type: 'info' }]);
+               hostLeftTimeoutRef.current = null;
+            }, 3000);
+          }
+        }
 
         lobbyPlayersRef.current = active;
         setLobbyPlayers(active);
         
         if (gameMode === 'team' && !myTeamId) {
-           const myIndex = active.findIndex(p => p.id === (user?.id || sessionId));
+           const myIndex = active.findIndex(px => px.id === currentId);
            if (myIndex !== -1) setMyTeamId(myIndex % 2 === 0 ? 'A' : 'B');
         }
+      })
+      .on('broadcast', { event: 'host_closing' }, () => {
+         setHostLeft(true);
+         setLobbyLogs(l => [...l, { id: Math.random().toString(36), text: `The host is closing the tab...`, type: 'info' }]);
       })
       .on('broadcast', { event: 'game_start' }, ({ payload }) => {
         if (!isHost && payload.questions) {
@@ -1594,11 +1624,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       });
 
     return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (hostLeftTimeoutRef.current) clearTimeout(hostLeftTimeoutRef.current);
       channel.untrack().then(() => supabase.removeChannel(channel));
     };
-  }, [gameState, roomCode, isHost, user, gameMode, myTeamId]);
+  }, [gameState, roomCode, isHost, user, gameMode]);
 
-  // Realtime Gameplay Logic (Broadcast)
   useEffect(() => {
     if (gameState !== 'playing' || !matchRoomId || (gameMode !== 'versus' && gameMode !== 'team')) return;
 
@@ -1606,6 +1637,17 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       config: { presence: { key: user?.id || sessionId } }
     });
     
+    const handleBeforeUnload = () => {
+      if (isHost) {
+        gameChannel.send({
+          type: 'broadcast',
+          event: 'host_closing',
+          payload: { name: user?.username || user?.name || 'Host' }
+        });
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
     gameChannel
       .on('presence', { event: 'sync' }, () => {
         const state = gameChannel.presenceState();
@@ -1615,18 +1657,27 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
            if (pData) { active.push({ id: key, name: pData.name, isHost: pData.isHost }); }
         }
         
-        // Detect leavers during game
-        const prev = lobbyPlayersRef.current;
-        prev.forEach(p => {
-          if (!active.find(ax => ax.id === p.id)) {
-            setLobbyLogs(logs => [...logs, { id: Math.random().toString(36), text: `${p.name} disconnected`, type: 'leave' }]);
-            if (p.isHost && !active.some(ax => ax.isHost)) {
-              setHostLeft(true);
-            }
+        const hostExists = active.some(ax => ax.isHost);
+        if (hostExists) {
+          if (hostLeftTimeoutRef.current) {
+            clearTimeout(hostLeftTimeoutRef.current);
+            hostLeftTimeoutRef.current = null;
           }
-        });
+          setHostLeft(false);
+        } else {
+          if (!hostLeftTimeoutRef.current) {
+             hostLeftTimeoutRef.current = setTimeout(() => {
+                setHostLeft(true);
+                hostLeftTimeoutRef.current = null;
+             }, 5000); // 5 second grace period during active play
+          }
+        }
+
         lobbyPlayersRef.current = active;
         setLobbyPlayers(active);
+      })
+      .on('broadcast', { event: 'host_closing' }, () => {
+         setHostLeft(true);
       })
       .on('broadcast', { event: 'score_update' }, ({ payload }) => {
         const { userId, score, team } = payload;
@@ -1662,9 +1713,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       });
 
     return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (hostLeftTimeoutRef.current) clearTimeout(hostLeftTimeoutRef.current);
       gameChannel.untrack().then(() => supabase.removeChannel(gameChannel));
     };
-  }, [gameState, matchRoomId, gameMode, user]);
+  }, [gameState, matchRoomId, gameMode, user, isHost]);
 
   // Broadcast our own score whenever it changes
   useEffect(() => {
