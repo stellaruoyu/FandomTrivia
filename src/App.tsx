@@ -2732,7 +2732,7 @@ const FrozenSelector = () => {
               </div>
               <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
                 <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
-                <Users className="size-3 text-slate-400" />
+                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
               </div>
             </div>
           </motion.button>
@@ -2805,7 +2805,7 @@ const DespicableMeSelector = () => {
               </div>
               <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
                 <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
-                <Users className="size-3 text-slate-400" />
+                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
               </div>
             </div>
           </motion.button>
@@ -2902,7 +2902,7 @@ const DailyMysteryQuiz = ({ setUser }: {
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
                   <span className="text-sm font-black text-white">{formatCount(getQuizCount(dailyQuiz.id))}</span>
-                  <Users className="size-4 text-slate-400" />
+                  <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-1">takes</span>
                 </div>
               </div>
             </div>
@@ -3111,7 +3111,7 @@ const LandingView = ({ setUser }: {
                   </button>
                   <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-3 rounded-xl min-w-fit">
                     <span className="text-sm font-black text-white">{formatCount(getUniverseCount(universe.id))}</span>
-                    <Users className="size-3.5 text-slate-400" />
+                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-0.5">takes</span>
                   </div>
                 </div>
               </div>
