@@ -180,8 +180,8 @@ interface User {
 
 // --- Components ---
 
-const SimpleAvatar = ({ name, picture, size = 40, className = "" }: { name?: string | null, picture?: string | null, size?: number, className?: string }) => {
-  if (picture && picture.startsWith('http')) {
+const SimpleAvatar = ({ name, picture, size = 40, className = "" }: { name?: string | null, picture?: string | null | any, size?: number, className?: string }) => {
+  if (picture && typeof picture === 'string' && picture.startsWith('http')) {
     return (
       <img 
         src={picture} 
@@ -1215,7 +1215,8 @@ const getBreadcrumbSchema = (crumbs: { name: string, item: string }[]) => {
  * Shuffles an array in place using the Fisher-Yates algorithm.
  * Returns a new shuffled array.
  */
-function shuffle<T>(array: T[]): T[] {
+function shuffle<T>(array: T[] | undefined): T[] {
+  if (!array || !Array.isArray(array)) return [];
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -1319,8 +1320,8 @@ const RaceTrack = ({
   scoreLabel: string,
   isVersus?: boolean
 }) => {
-  const teamAProgress = (teamAScore / total) * 100;
-  const teamBProgress = (teamBScore / total) * 100;
+  const teamAProgress = total > 0 ? (teamAScore / total) * 100 : 0;
+  const teamBProgress = total > 0 ? (teamBScore / total) * 100 : 0;
   const quizImage = getQuizImage(scoreLabel);
 
   return (
@@ -1486,8 +1487,16 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
 
+  // Sync match participants once when the quiz starts
+  useEffect(() => {
+    if (sessionQuestions.length > 0 && lobbyPlayers.length > 0 && matchParticipants.length === 0) {
+      setMatchParticipants(lobbyPlayers);
+    }
+  }, [sessionQuestions, lobbyPlayers]);
+
   // Initialize and shuffle questions for this session
   useEffect(() => {
+    if (!questions || questions.length === 0) return;
     const shuffled = shuffle(questions).map(q => ({
       ...q,
       options: shuffle(q.options)
@@ -1511,11 +1520,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         if (!question) return;
 
         const isCorrect = Math.random() > 0.3; // 70% chance to score
-        let pickedAnswer = question.answer;
+        let pickedAnswer = (question as any).answer || (question as any).correctAnswer;
 
         if (!isCorrect) {
           // Pick a random incorrect option
-          const incorrectOptions = question.options.filter(opt => opt.toLowerCase() !== question.answer.toLowerCase());
+          const incorrectOptions = question.options.filter(opt => opt.toLowerCase() !== pickedAnswer.toLowerCase());
           pickedAnswer = incorrectOptions.length > 0 
             ? incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)]
             : question.options[Math.floor(Math.random() * question.options.length)];
@@ -2086,7 +2095,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       </div>
     );
   }
-  const isUnknown = q.answer === '???';
+  const correctAnsString = ((q as any).answer || (q as any).correctAnswer || '').toString();
+  const isUnknown = correctAnsString === '???';
 
   const handleSelect = (option: string) => {
     if (selected) return; // already answered
@@ -2103,7 +2113,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       playCorrectSound();
     } else {
-      const isCorrect = option.toLowerCase() === q.answer.toLowerCase();
+      const isCorrect = option.toLowerCase() === correctAnsString.toLowerCase();
       setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       if (isCorrect) {
@@ -2217,7 +2227,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         if (p.id === currentId) {
           return scores[i] === 'correct';
         } else {
-          return (playerAnswers[p.id]?.[i] || '').toString().toLowerCase() === (sessionQuestions[i]?.correctAnswer || '').toString().toLowerCase();
+          return (playerAnswers[p.id]?.[i] || '').toString().toLowerCase() === ((sessionQuestions[i] as any)?.answer || (sessionQuestions[i] as any)?.correctAnswer || '').toString().toLowerCase();
         }
       });
       
@@ -2226,17 +2236,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return count;
   };
 
-  // Sync match participants once when the quiz starts
-  useEffect(() => {
-    if (sessionQuestions.length > 0 && lobbyPlayers.length > 0 && matchParticipants.length === 0) {
-      setMatchParticipants(lobbyPlayers);
-    }
-  }, [sessionQuestions, lobbyPlayers]);
 
   const calculateUserScore = (pId: string) => {
     let score = 0;
     sessionQuestions.forEach((q, idx) => {
-      const correctAns = (q.correctAnswer || '').toString().toLowerCase();
+      const correctAns = ((q as any).answer || (q as any).correctAnswer || '').toString().toLowerCase();
       const playerAns = (playerAnswers[pId]?.[idx] || '').toString().toLowerCase();
       if (playerAns && playerAns === correctAns) score++;
     });
@@ -2599,7 +2603,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                           {opponents.map(op => {
                             const opChoice = playerAnswers[op.id]?.[idx];
                             const isWaiting = !opChoice;
-                            const isOpCorrect = opChoice?.toLowerCase() === question.answer.toLowerCase();
+                            const qAnswer = (question as any).answer || (question as any).correctAnswer;
+                            const isOpCorrect = opChoice?.toLowerCase() === qAnswer.toLowerCase();
                             return (
                               <div key={op.id} className={`flex flex-col gap-1 p-3 rounded-xl border ${isWaiting ? 'bg-white/5 border-white/10' : isOpCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
                                 <div className="flex items-center justify-between">
@@ -2617,12 +2622,18 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                       )}
                     </div>
 
-                    {((!isCorrect && question.answer) || (gameMode === 'bot' && !isBotCorrect && botRes === 'incorrect' && question.answer)) && (
-                      <div className="px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
-                        <Check className="size-3 text-emerald-400" />
-                        <p className="text-[10px] font-bold text-emerald-400">Correct: <span className="uppercase">{question.answer}</span></p>
-                      </div>
-                    )}
+                    {(() => {
+                      const qAnswer = (question as any).answer || (question as any).correctAnswer;
+                      if (((!isCorrect && qAnswer) || (gameMode === 'bot' && !isBotCorrect && botRes === 'incorrect' && qAnswer))) {
+                        return (
+                          <div className="px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
+                            <Check className="size-3 text-emerald-400" />
+                            <p className="text-[10px] font-bold text-emerald-400">Correct: <span className="uppercase">{qAnswer}</span></p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                   </motion.div>
                 );
               })}
@@ -2733,9 +2744,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               {q.options.map((option, i) => {
                 let optionStyle = 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 text-white';
                 if (selected) {
-                  if (!isUnknown && option.toLowerCase() === q.answer.toLowerCase()) {
+                  if (!isUnknown && option.toLowerCase() === correctAnsString.toLowerCase()) {
                     optionStyle = 'bg-green-500/10 border-green-500/30 text-green-400';
-                  } else if (option === selected && !isUnknown && option.toLowerCase() !== q.answer.toLowerCase()) {
+                  } else if (option === selected && !isUnknown && option.toLowerCase() !== correctAnsString.toLowerCase()) {
                     optionStyle = 'bg-red-500/10 border-red-500/30 text-red-400';
                   } else if (option === selected && isUnknown) {
                     optionStyle = 'bg-primary/10 border-primary/30 text-primary';
@@ -2754,8 +2765,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                       {String.fromCharCode(65 + i)}
                     </span>
                     {option}
-                    {selected && !isUnknown && option.toLowerCase() === q.answer.toLowerCase() && <Check className="size-4 ml-auto text-green-400" />}
-                    {selected && option === selected && !isUnknown && option.toLowerCase() !== q.answer.toLowerCase() && <X className="size-4 ml-auto text-red-400" />}
+                    {selected && !isUnknown && option.toLowerCase() === correctAnsString.toLowerCase() && <Check className="size-4 ml-auto text-green-400" />}
+                    {selected && option === selected && !isUnknown && option.toLowerCase() !== correctAnsString.toLowerCase() && <X className="size-4 ml-auto text-red-400" />}
                   </button>
                 );
               })}
@@ -3027,7 +3038,7 @@ const MarioSelector = () => {
         {[
           { label: "Film 1", title: "The Super Mario Bros. (2023)", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "🏎️", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
           { label: "Film 2", title: "Galaxy Movie (2026)", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both films", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "15 random questions from both films", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -4115,27 +4126,31 @@ export default function App() {
   };
 
   const twilightRandomQuestions = useMemo(() => 
-    [...TWILIGHT_BOOK_TRIVIA, ...NEW_MOON_TRIVIA, ...ECLIPSE_TRIVIA, ...BREAKING_DAWN_TRIVIA, ...MIDNIGHT_SUN_TRIVIA, ...LIFE_AND_DEATH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(TWILIGHT_BOOK_TRIVIA || []), ...(NEW_MOON_TRIVIA || []), ...(ECLIPSE_TRIVIA || []), ...(BREAKING_DAWN_TRIVIA || []), ...(MIDNIGHT_SUN_TRIVIA || []), ...(LIFE_AND_DEATH_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const hpRandomQuestions = useMemo(() => 
-    [...HARRY_POTTER_TRIVIA, ...HARRY_POTTER_COS_TRIVIA, ...HARRY_POTTER_POA_TRIVIA, ...HARRY_POTTER_GOF_TRIVIA, ...HARRY_POTTER_OOTP_TRIVIA, ...HARRY_POTTER_HBP_TRIVIA, ...HARRY_POTTER_DH_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(HARRY_POTTER_TRIVIA || []), ...(HARRY_POTTER_COS_TRIVIA || []), ...(HARRY_POTTER_POA_TRIVIA || []), ...(HARRY_POTTER_GOF_TRIVIA || []), ...(HARRY_POTTER_OOTP_TRIVIA || []), ...(HARRY_POTTER_HBP_TRIVIA || []), ...(HARRY_POTTER_DH_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const threeBodyRandomQuestions = useMemo(() => 
-    [...THREE_BODY_PROBLEM_TRIVIA, ...THE_DARK_FOREST_TRIVIA, ...DEATHS_END_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(THREE_BODY_PROBLEM_TRIVIA || []), ...(THE_DARK_FOREST_TRIVIA || []), ...(DEATHS_END_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const zootopiaRandomQuestions = useMemo(() => 
-    [...ZOOTOPIA_TRIVIA, ...ZOOTOPIA_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
+    [...(ZOOTOPIA_TRIVIA || []), ...(ZOOTOPIA_2_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
 
   const despicableMeRandomQuestions = useMemo(() => 
-    [...DESPICABLE_ME_1_TRIVIA, ...DESPICABLE_ME_2_TRIVIA, ...DESPICABLE_ME_3_TRIVIA, ...DESPICABLE_ME_4_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(DESPICABLE_ME_1_TRIVIA || []), ...(DESPICABLE_ME_2_TRIVIA || []), ...(DESPICABLE_ME_3_TRIVIA || []), ...(DESPICABLE_ME_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const frozenRandomQuestions = useMemo(() => 
-    [...FROZEN_1_TRIVIA, ...FROZEN_2_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
+    [...(FROZEN_1_TRIVIA || []), ...(FROZEN_2_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
+  []);
+
+  const marioRandomQuestions = useMemo(() => 
+    [...(MARIO_2023_TRIVIA || []), ...(MARIO_2026_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
 
   useEffect(() => {
@@ -4586,7 +4601,7 @@ export default function App() {
             {/* Mario Trivia */}
             <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-mario-2026" element={<MCQuizView key="trivia-mario-2026" questions={MARIO_2026_TRIVIA} title="Galaxy Movie (2026)" scoreLabel="Galaxy Movie (2026)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-mario-random" element={<MCQuizView key="trivia-mario-random" questions={MARIO_MIXED_TRIVIA} title="Mario Mixed Challenge" scoreLabel="Mario Mixed Challenge" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mario-random" element={<MCQuizView key="trivia-mario-random" questions={marioRandomQuestions} title="Mario Mixed Challenge" scoreLabel="Mario Mixed Challenge" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             
             {/* Frozen Trivia */}
             <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
