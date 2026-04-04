@@ -1447,6 +1447,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [teamScore, setTeamScore] = useState(0); // My team's overall score
   const [opponentTeamScore, setOpponentTeamScore] = useState(0); // Enemy team's overall score
   const [myTeamId, setMyTeamId] = useState<'A'|'B'|null>(null);
+  const [matchParticipants, setMatchParticipants] = useState<any[]>([]);
   const [playerScores, setPlayerScores] = useState<Record<string, {score: number, team: 'A'|'B'|null}>>({});
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
@@ -2217,6 +2218,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return count;
   };
 
+  // Sync match participants once when the quiz starts
+  useEffect(() => {
+    if (quiz && lobbyPlayers.length > 0 && matchParticipants.length === 0) {
+      setMatchParticipants(lobbyPlayers);
+    }
+  }, [quiz, lobbyPlayers]);
+
   const calculateUserScore = (pId: string) => {
     let score = 0;
     sessionQuestions.forEach((q, idx) => {
@@ -2228,18 +2236,19 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   };
 
   const currentId = user?.id || sessionId;
-  const opponents = lobbyPlayers.filter(p => {
-    if (p.id === currentId) return false; // Never include self in opponents list
+  const activeParticipants = matchParticipants.length > 0 ? matchParticipants : lobbyPlayers;
+  const opponents = activeParticipants.filter(p => {
+    if (p.id === currentId) return false; 
     if (gameMode === 'versus') return true;
     if (gameMode === 'team') {
-      const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+      const pIndex = activeParticipants.findIndex(lp => lp.id === p.id);
       const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
       return pTeam !== myTeamId;
     }
     return false;
   });
-  const teammate = gameMode === 'team' ? lobbyPlayers.find(p => {
-    const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+  const teammate = gameMode === 'team' ? activeParticipants.find(p => {
+    const pIndex = activeParticipants.findIndex(lp => lp.id === p.id);
     const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
     return p.id !== currentId && pTeam === myTeamId;
   }) : null;
@@ -2349,7 +2358,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <div className="absolute inset-0 bg-purple-500/20 blur-2xl rounded-full"></div>
                   <div className="relative p-6 bg-white/5 rounded-full border-2 border-purple-500/30 shadow-2xl backdrop-blur-md">
                     <SimpleAvatar 
-                      name={gameMode === 'bot' ? 'Bot' : (opponents[0]?.name || title)} 
+                      name={gameMode === 'bot' ? 'Bot' : (opponents[0]?.name || 'Opponent')} 
                       picture={gameMode === 'bot' ? 'https://fandom-trivia.vercel.app/bot.png' : (opponents[0]?.picture || getQuizImage(scoreLabel))} 
                       size={120} 
                     />
