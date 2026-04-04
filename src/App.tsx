@@ -1293,6 +1293,8 @@ const RaceTrack = ({
   teamBScore,
   teamANames,
   teamBNames,
+  teamAPictures = [],
+  teamBPictures = [],
   myTeamId,
   scoreLabel,
   isVersus = false
@@ -1303,6 +1305,8 @@ const RaceTrack = ({
   teamBScore: number,
   teamANames: string[],
   teamBNames: string[],
+  teamAPictures?: (string | null | undefined)[],
+  teamBPictures?: (string | null | undefined)[],
   myTeamId?: 'A' | 'B' | null,
   scoreLabel: string,
   isVersus?: boolean
@@ -1313,7 +1317,6 @@ const RaceTrack = ({
 
   return (
     <div className="absolute top-4 right-4 z-[60] w-64 space-y-2 pointer-events-none md:w-80">
-      {/* Track Background */}
       <div className="relative h-20 bg-black/40 border border-white/20 rounded-2xl overflow-hidden backdrop-blur-xl shadow-2xl">
         <div className="absolute inset-0 flex items-center justify-around opacity-20 pointer-events-none">
           {[...Array(8)].map((_, i) => <div key={i} className="w-px h-full bg-white/50 border-r border-dotted border-white/20" />)}
@@ -1330,10 +1333,10 @@ const RaceTrack = ({
               {teamANames.length > 0 ? teamANames.join(' & ') : 'Rival'}{myTeamId === 'A' ? ' (You)' : ''}
             </p>
           </div>
-          <div className="relative p-1 bg-white/10 rounded-lg border border-red-500/50 shadow-xl backdrop-blur-sm">
+          <div className="relative p-1 bg-white/10 rounded-lg border border-red-500/50 shadow-xl backdrop-blur-sm pointer-events-auto">
             <SimpleAvatar 
-              name="Rival" 
-              picture={quizImage} 
+              name={teamANames[0] || 'Rival'} 
+              picture={teamAPictures[0] || quizImage} 
               size={28} 
             />
             <div className="absolute -right-1 -bottom-1 bg-red-500 size-2 rounded-full border border-white/20" />
@@ -1346,10 +1349,10 @@ const RaceTrack = ({
           transition={{ type: 'spring', damping: 20, stiffness: 100 }}
           className="absolute bottom-1 flex flex-col items-center gap-0.5"
         >
-          <div className="relative p-1 bg-white/10 rounded-lg border border-primary/50 shadow-xl backdrop-blur-sm">
+          <div className="relative p-1 bg-white/10 rounded-lg border border-primary/50 shadow-xl backdrop-blur-sm pointer-events-auto">
              <SimpleAvatar 
-               name="You" 
-               picture={null} // Placeholder for player avatar
+               name={teamBNames[0] || 'You'} 
+               picture={teamBPictures[0] || null} 
                size={28} 
              />
              <div className="absolute -right-1 -top-1 bg-primary size-2 rounded-full border border-white/20" />
@@ -1598,11 +1601,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     channel
       .on('presence', { event: 'sync' }, () => {
         const state = channel.presenceState();
-        const active: {id: string, name: string, isHost: boolean}[] = [];
+        const active: {id: string, name: string, isHost: boolean, picture?: string}[] = [];
         for (const [key, presences] of Object.entries(state)) {
            const pData = presences[0] as any;
            if (pData) {
-             active.push({ id: key, name: pData.name, isHost: pData.isHost });
+             active.push({ id: key, name: pData.name, isHost: pData.isHost, picture: pData.picture });
            }
         }
         
@@ -1667,7 +1670,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         if (status === 'SUBSCRIBED') {
           await channel.track({
             name: user?.username || user?.name || 'Guest Fan',
-            isHost: isHost
+            isHost: isHost,
+            picture: user?.picture
           });
         }
       });
@@ -1700,10 +1704,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     gameChannel
       .on('presence', { event: 'sync' }, () => {
         const state = gameChannel.presenceState();
-        const active: {id: string, name: string, isHost: boolean}[] = [];
+        const active: {id: string, name: string, isHost: boolean, picture?: string}[] = [];
         for (const [key, presences] of Object.entries(state)) {
            const pData = presences[0] as any;
-           if (pData) { active.push({ id: key, name: pData.name, isHost: pData.isHost }); }
+           if (pData) { active.push({ id: key, name: pData.name, isHost: pData.isHost, picture: pData.picture }); }
         }
         
         const hostExists = active.some(ax => ax.isHost);
@@ -1752,11 +1756,22 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           [userId]: { ...(prev[userId] || {}), [questionIndex]: answer }
         }));
       })
+      .on('broadcast', { event: 'final_results' }, ({ payload }) => {
+        const { userId, allAnswers } = payload;
+        const currentId = user?.id || sessionId;
+        if (userId === currentId) return;
+        
+        setPlayerAnswers(prev => ({
+          ...prev,
+          [userId]: { ...(prev[userId] || {}), ...allAnswers }
+        }));
+      })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           await gameChannel.track({
             name: user?.username || user?.name || 'Guest Fan',
-            isHost: isHost
+            isHost: isHost,
+            picture: user?.picture
           });
         }
       });
@@ -2105,6 +2120,21 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       const endTime = Date.now();
       const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
       setCompletionTime(durationSeconds);
+
+      // Final synchronization for multiplayer results
+      if (matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
+        const currentId = user?.id || sessionId;
+        supabase.channel(matchRoomId).send({
+          type: 'broadcast',
+          event: 'final_results',
+          payload: { 
+            userId: currentId, 
+            allAnswers: userAnswers,
+            isFinished: true 
+          }
+        });
+      }
+
       if (onQuizComplete) {
         onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
       }
@@ -2183,8 +2213,53 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return count;
   };
 
+  const calculateUserScore = (pId: string) => {
+    let score = 0;
+    sessionQuestions.forEach((q, idx) => {
+      if (playerAnswers[pId]?.[idx]?.toLowerCase() === q.answer.toLowerCase()) score++;
+    });
+    return score;
+  };
+
+  const currentId = user?.id || sessionId;
+  const opponents = lobbyPlayers.filter(p => {
+    if (p.id === currentId) return false; // Never include self in opponents list
+    if (gameMode === 'versus') return true;
+    if (gameMode === 'team') {
+      const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+      const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
+      return pTeam !== myTeamId;
+    }
+    return false;
+  });
+  const teammate = gameMode === 'team' ? lobbyPlayers.find(p => {
+    const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
+    const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
+    return p.id !== currentId && pTeam === myTeamId;
+  }) : null;
+
   const derivedTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId) : correctCount;
-  const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : opponentScore;
+  const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+
+  // Determine who goes to which track line
+  const teamAScore = myTeamId === 'A' ? derivedTeamScore : derivedOpponentTeamScore;
+  const teamBScore = myTeamId === 'B' ? derivedTeamScore : derivedOpponentTeamScore;
+  
+  const teamANames = myTeamId === 'A' 
+    ? [user?.username || user?.name || 'You', teammate?.name].filter(Boolean) as string[]
+    : (gameMode === 'bot' ? ['Trivia Bot'] : opponents.map(o => o.name));
+    
+  const teamBNames = myTeamId === 'B' 
+    ? [user?.username || user?.name || 'You', teammate?.name].filter(Boolean) as string[]
+    : (myTeamId === 'A' ? (gameMode === 'bot' ? ['Trivia Bot'] : opponents.map(o => o.name)) : [user?.username || user?.name || 'You']);
+
+  const teamAPictures = myTeamId === 'A'
+    ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
+    : (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
+
+  const teamBPictures = myTeamId === 'B'
+    ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
+    : (myTeamId === 'A' ? (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]) : [user?.picture].filter(Boolean) as string[]);
 
   if (finished) {
     const pct = Math.round((correctCount / total) * 100);
@@ -2192,23 +2267,6 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
     const character = gradeEntry.character;
-
-    const currentId = user?.id || sessionId;
-    const opponents = lobbyPlayers.filter(p => {
-      if (p.id === currentId) return false; // Never include self in opponents list
-      if (gameMode === 'versus') return true;
-      if (gameMode === 'team') {
-        const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
-        const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
-        return pTeam !== myTeamId;
-      }
-      return false;
-    });
-    const teammate = gameMode === 'team' ? lobbyPlayers.find(p => {
-      const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
-      const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
-      return p.id !== currentId && pTeam === myTeamId;
-    }) : null;
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
@@ -2320,15 +2378,15 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                 <>
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
-                      {(gameMode !== 'bot' && (gameMode === 'team' ? derivedOpponentTeamScore : (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0 ? null : derivedOpponentTeamScore) : null)) === null) 
+                      { (gameMode !== 'bot' && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true)) 
                         ? '...' 
-                        : `${gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore}/${total}`}
+                        : `${gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0)}/${total}`}
                     </p>
                     <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
                       {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} 
-                      { (gameMode !== 'bot' && (gameMode === 'team' ? derivedOpponentTeamScore : (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0 ? null : derivedOpponentTeamScore) : null)) === null)
+                      { (gameMode !== 'bot' && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
                         ? ' (Waiting...)'
-                        : ` (${Math.round(((gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore) / total) * 100)}%)`}
+                        : ` (${Math.round(((gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0)) / total) * 100)}%)`}
                     </p>
                   </div>
                   <div className="hidden md:block w-px h-16 bg-white/10"></div>
@@ -2412,9 +2470,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             </p>
           )}
 
-          {/* Match Breakdown Section */}
           <div className="mt-12 space-y-6 pt-12 border-t border-white/10">
-            <div className="flex flex-col items-center gap-2">
+            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-4">Final Race Results</h3>
+            
+            <RaceTrack 
+              mode={gameMode as 'bot' | 'versus' | 'team'}
+              total={total}
+              teamAScore={teamAScore}
+              teamBScore={teamBScore}
+              teamANames={teamANames}
+              teamBNames={teamBNames}
+              teamAPictures={teamAPictures}
+              teamBPictures={teamBPictures}
+              myTeamId={myTeamId}
+              scoreLabel={scoreLabel}
+              isVersus={gameMode === 'versus' || gameMode === 'bot'}
+            />
+
+            <div className="flex flex-col items-center gap-2 mt-8">
               <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Match Breakdown</h3>
               <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest">
                 <div className="flex items-center gap-1.5 text-primary">
@@ -2596,10 +2669,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         <RaceTrack 
           mode={gameMode as 'bot' | 'versus' | 'team'}
           total={total}
-          teamAScore={gameMode === 'bot' ? opponentScore : getTeamProgress('A')}
-          teamBScore={gameMode === 'bot' ? correctCount : getTeamProgress('B')}
-          teamANames={gameMode === 'bot' ? ['Bot'] : lobbyPlayers.filter((_, i) => i % 2 === 0).map(p => p.name)}
-          teamBNames={gameMode === 'bot' ? [(user?.username || user?.name || 'You')] : lobbyPlayers.filter((_, i) => i % 2 !== 0).map(p => p.name)}
+          teamAScore={teamAScore}
+          teamBScore={teamBScore}
+          teamANames={teamANames}
+          teamBNames={teamBNames}
+          teamAPictures={teamAPictures}
+          teamBPictures={teamBPictures}
           myTeamId={myTeamId}
           scoreLabel={scoreLabel}
           isVersus={gameMode === 'versus' || gameMode === 'bot'}
