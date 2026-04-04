@@ -2242,24 +2242,26 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
 
   // Determine who goes to which track line
-  const teamAScore = myTeamId === 'A' ? derivedTeamScore : derivedOpponentTeamScore;
-  const teamBScore = myTeamId === 'B' ? derivedTeamScore : derivedOpponentTeamScore;
+  // If myTeamId is 'A', then I am Team A. Otherwise (null, 'B', etc.), I am Team B.
+  const isTeamA = myTeamId === 'A';
+  const teamAScore = isTeamA ? derivedTeamScore : derivedOpponentTeamScore;
+  const teamBScore = isTeamA ? derivedOpponentTeamScore : derivedTeamScore;
   
-  const teamANames = myTeamId === 'A' 
+  const teamANames = isTeamA 
     ? [user?.username || user?.name || 'You', teammate?.name].filter(Boolean) as string[]
     : (gameMode === 'bot' ? ['Trivia Bot'] : opponents.map(o => o.name));
     
-  const teamBNames = myTeamId === 'B' 
+  const teamBNames = !isTeamA 
     ? [user?.username || user?.name || 'You', teammate?.name].filter(Boolean) as string[]
-    : (myTeamId === 'A' ? (gameMode === 'bot' ? ['Trivia Bot'] : opponents.map(o => o.name)) : [user?.username || user?.name || 'You']);
+    : (gameMode === 'bot' ? ['Trivia Bot'] : opponents.map(o => o.name));
 
-  const teamAPictures = myTeamId === 'A'
+  const teamAPictures = isTeamA
     ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
     : (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
 
-  const teamBPictures = myTeamId === 'B'
+  const teamBPictures = !isTeamA
     ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
-    : (myTeamId === 'A' ? (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]) : [user?.picture].filter(Boolean) as string[]);
+    : (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
 
   if (finished) {
     const pct = Math.round((correctCount / total) * 100);
@@ -2471,23 +2473,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           )}
 
           <div className="mt-12 space-y-6 pt-12 border-t border-white/10">
-            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-4">Final Race Results</h3>
-            
-            <RaceTrack 
-              mode={gameMode as 'bot' | 'versus' | 'team'}
-              total={total}
-              teamAScore={teamAScore}
-              teamBScore={teamBScore}
-              teamANames={teamANames}
-              teamBNames={teamBNames}
-              teamAPictures={teamAPictures}
-              teamBPictures={teamBPictures}
-              myTeamId={myTeamId}
-              scoreLabel={scoreLabel}
-              isVersus={gameMode === 'versus' || gameMode === 'bot'}
-            />
-
-            <div className="flex flex-col items-center gap-2 mt-8">
+            <div className="flex flex-col items-center gap-2">
               <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Match Breakdown</h3>
               <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest">
                 <div className="flex items-center gap-1.5 text-primary">
