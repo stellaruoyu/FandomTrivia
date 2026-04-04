@@ -2270,10 +2270,15 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                 <>
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
-                      {gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore}/{total}
+                      {(gameMode !== 'bot' && (gameMode === 'team' ? derivedOpponentTeamScore : (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0 ? null : derivedOpponentTeamScore) : null)) === null) 
+                        ? '...' 
+                        : `${gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore}/${total}`}
                     </p>
                     <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
-                      {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} ({Math.round(((gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore) / total) * 100)}%)
+                      {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} 
+                      { (gameMode !== 'bot' && (gameMode === 'team' ? derivedOpponentTeamScore : (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0 ? null : derivedOpponentTeamScore) : null)) === null)
+                        ? ' (Waiting...)'
+                        : ` (${Math.round(((gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore) / total) * 100)}%)`}
                     </p>
                   </div>
                   <div className="hidden md:block w-px h-16 bg-white/10"></div>
@@ -2441,28 +2446,37 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                       {/* Other Real Players' Results */}
                       {(gameMode === 'versus' || gameMode === 'team') && (
                         <>
-                          {teammate && (
-                            <div className={`flex flex-col gap-1 p-3 rounded-xl border ${playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
-                              <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Teammate ({teammate.name})</span>
-                                {playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />}
+                          {teammate && (() => {
+                            const ans = playerAnswers[teammate.id]?.[idx];
+                            const isWaiting = !ans;
+                            const isCorrectAns = ans?.toLowerCase() === question.answer.toLowerCase();
+                            return (
+                              <div className={`flex flex-col gap-1 p-3 rounded-xl border ${isWaiting ? 'bg-white/5 border-white/10' : isCorrectAns ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Teammate ({teammate.name})</span>
+                                  {!isWaiting && (isCorrectAns ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />)}
+                                  {isWaiting && <Clock className="size-3 text-slate-500" />}
+                                </div>
+                                <p className={`text-xs font-bold leading-tight ${isWaiting ? 'text-slate-500' : isCorrectAns ? 'text-green-400' : 'text-red-400'}`}>
+                                  {ans || 'Waiting...'}
+                                </p>
                               </div>
-                              <p className={`text-xs font-bold leading-tight ${playerAnswers[teammate.id]?.[idx]?.toLowerCase() === question.answer.toLowerCase() ? 'text-green-400' : 'text-red-400'}`}>
-                                {playerAnswers[teammate.id]?.[idx] || 'Skipped'}
-                              </p>
-                            </div>
-                          )}
+                            );
+                          })()}
+
                           {opponents.map(op => {
                             const opChoice = playerAnswers[op.id]?.[idx];
+                            const isWaiting = !opChoice;
                             const isOpCorrect = opChoice?.toLowerCase() === question.answer.toLowerCase();
                             return (
-                              <div key={op.id} className={`flex flex-col gap-1 p-3 rounded-xl border ${isOpCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                              <div key={op.id} className={`flex flex-col gap-1 p-3 rounded-xl border ${isWaiting ? 'bg-white/5 border-white/10' : isOpCorrect ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
                                 <div className="flex items-center justify-between">
                                   <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Opponent ({op.name})</span>
-                                  {isOpCorrect ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />}
+                                  {!isWaiting && (isOpCorrect ? <Check className="size-3 text-green-400" /> : <X className="size-3 text-red-400" />)}
+                                  {isWaiting && <Clock className="size-3 text-slate-500" />}
                                 </div>
-                                <p className={`text-xs font-bold leading-tight ${isOpCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                                  {opChoice || 'Skipped'}
+                                <p className={`text-xs font-bold leading-tight ${isWaiting ? 'text-slate-500' : isOpCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                                  {opChoice || 'Waiting...'}
                                 </p>
                               </div>
                             );
