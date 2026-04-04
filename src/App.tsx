@@ -1650,9 +1650,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         lobbyPlayersRef.current = active;
         setLobbyPlayers(active);
         
-        if (gameMode === 'team' && !myTeamId) {
+        // Auto-assign teams for all multiplayer modes (Versus/Team)
+        if (['versus', 'team'].includes(gameMode)) {
            const myIndex = active.findIndex(px => px.id === currentId);
-           if (myIndex !== -1) setMyTeamId(myIndex % 2 === 0 ? 'A' : 'B');
+           if (myIndex !== -1) {
+             const autoTeam = myIndex % 2 === 0 ? 'A' : 'B';
+             if (myTeamId !== autoTeam) setMyTeamId(autoTeam);
+           }
         }
       })
       .on('broadcast', { event: 'host_closing' }, () => {
@@ -2204,7 +2208,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         if (p.id === currentId) {
           return scores[i] === 'correct';
         } else {
-          return playerAnswers[p.id]?.[i]?.toLowerCase() === sessionQuestions[i]?.answer?.toLowerCase();
+          return (playerAnswers[p.id]?.[i] || '').toString().toLowerCase() === (sessionQuestions[i]?.correctAnswer || '').toString().toLowerCase();
         }
       });
       
@@ -2216,7 +2220,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const calculateUserScore = (pId: string) => {
     let score = 0;
     sessionQuestions.forEach((q, idx) => {
-      if (playerAnswers[pId]?.[idx]?.toLowerCase() === q.answer.toLowerCase()) score++;
+      const correctAns = (q.correctAnswer || '').toString().toLowerCase();
+      const playerAns = (playerAnswers[pId]?.[idx] || '').toString().toLowerCase();
+      if (playerAns && playerAns === correctAns) score++;
     });
     return score;
   };
@@ -2338,17 +2344,17 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <span className="text-white font-black text-xs uppercase italic drop-shadow-lg">VS</span>
                 </div>
 
-                {/* Quiz Picture */}
+                {/* Second Participant Avatar (Opponent or Quiz Picture) */}
                 <div className="relative group hover:scale-105 transition-transform">
                   <div className="absolute inset-0 bg-purple-500/20 blur-2xl rounded-full"></div>
                   <div className="relative p-6 bg-white/5 rounded-full border-2 border-purple-500/30 shadow-2xl backdrop-blur-md">
                     <SimpleAvatar 
-                      name={title} 
-                      picture={getQuizImage(scoreLabel)} 
+                      name={gameMode === 'bot' ? 'Bot' : (opponents[0]?.name || title)} 
+                      picture={gameMode === 'bot' ? 'https://fandom-trivia.vercel.app/bot.png' : (opponents[0]?.picture || getQuizImage(scoreLabel))} 
                       size={120} 
                     />
-                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl">
-                      {title}
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl whitespace-nowrap">
+                      {gameMode === 'bot' ? 'Bot' : (opponents[0]?.name || 'Opponent')}
                     </div>
                   </div>
                 </div>
@@ -2381,13 +2387,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
                       { (gameMode !== 'bot' && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true)) 
-                        ? '...' 
+                        ? (opponents.length > 0 ? '0' : '...') 
                         : `${gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0)}/${total}`}
                     </p>
                     <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
                       {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} 
                       { (gameMode !== 'bot' && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
-                        ? ' (Waiting...)'
+                        ? (opponents.length > 0 ? '' : ' (Waiting...)')
                         : ` (${Math.round(((gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0)) / total) * 100)}%)`}
                     </p>
                   </div>
