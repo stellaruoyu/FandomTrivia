@@ -1288,21 +1288,25 @@ const playIncorrectSound = () => {
 
 const RaceTrack = ({ 
   mode, 
-  userScore, 
   total, 
-  userName, 
-  opponentNames,
-  opponentScore 
+  teamAScore,
+  teamBScore,
+  teamANames,
+  teamBNames,
+  myTeamId,
+  isVersus = false
 }: { 
   mode: 'bot' | 'versus' | 'team', 
-  userScore: number, 
   total: number, 
-  userName: string,
-  opponentNames: string[],
-  opponentScore: number
+  teamAScore: number,
+  teamBScore: number,
+  teamANames: string[],
+  teamBNames: string[],
+  myTeamId?: 'A' | 'B' | null,
+  isVersus?: boolean
 }) => {
-  const userProgress = (userScore / total) * 100;
-  const opponentProgress = (opponentScore / total) * 100;
+  const teamAProgress = (teamAScore / total) * 100;
+  const teamBProgress = (teamBScore / total) * 100;
 
   return (
     <div className="absolute top-4 right-4 z-[60] w-64 space-y-2 pointer-events-none md:w-80">
@@ -1312,43 +1316,43 @@ const RaceTrack = ({
           {[...Array(8)].map((_, i) => <div key={i} className="w-px h-full bg-white/50 border-r border-dotted border-white/20" />)}
         </div>
         
-        {/* Opponent Car */}
+        {/* Team A Car - RED (Top) */}
         <motion.div 
-          animate={{ left: `${Math.min(opponentProgress, 85)}%` }}
+          animate={{ left: `${Math.min(teamAProgress, 85)}%` }}
           transition={{ type: 'spring', damping: 20, stiffness: 100 }}
           className="absolute top-1 flex flex-col items-center gap-0.5"
         >
           <div className="bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)] px-2 py-0.5 rounded-full mb-0.5">
             <p className="text-[9px] font-black text-white whitespace-nowrap uppercase tracking-tighter shadow-sm">
-              {opponentNames.join(' & ')}
+              {teamANames.length > 0 ? teamANames.join(' & ') : 'Rival'}{myTeamId === 'A' ? ' (You)' : ''}
             </p>
           </div>
           <Car className="size-6 text-red-500 fill-red-500 shadow-xl" />
         </motion.div>
 
-        {/* Player Car */}
+        {/* Team B Car - BLUE (Bottom) */}
         <motion.div 
-          animate={{ left: `${Math.min(userProgress, 85)}%` }}
+          animate={{ left: `${Math.min(teamBProgress, 85)}%` }}
           transition={{ type: 'spring', damping: 20, stiffness: 100 }}
           className="absolute bottom-1 flex flex-col items-center gap-0.5"
         >
           <Car className="size-6 text-primary fill-primary shadow-xl" />
           <div className="bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)] px-2 py-0.5 rounded-full mt-0.5">
             <p className="text-[9px] font-black text-white whitespace-nowrap uppercase tracking-tighter shadow-sm">
-              {userName}
+              {teamBNames.length > 0 ? teamBNames.join(' & ') : (mode === 'bot' ? 'Bot' : 'You')}{myTeamId === 'B' || (mode === 'bot' && !myTeamId) ? ' (You)' : ''}
             </p>
           </div>
         </motion.div>
       </div>
       
       <div className="flex justify-between items-center px-2">
-        <div className="flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
-          <div className="size-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[9px] font-black text-white uppercase tracking-widest opacity-80">You</span>
-        </div>
         <div className="flex items-center gap-1.5 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/20">
-          <span className="text-[9px] font-black text-red-500 uppercase tracking-widest opacity-80">Rival</span>
-          <div className="size-1.5 rounded-full bg-red-500 animate-pulse" />
+          <div className={`size-1.5 rounded-full bg-red-500 ${myTeamId === 'A' ? 'animate-pulse' : ''}`} />
+          <span className="text-[9px] font-black text-red-400 uppercase tracking-widest opacity-80">{isVersus ? 'Opponent' : 'Team A'}{myTeamId === 'A' ? ' (You)' : ''}</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
+          <div className={`size-1.5 rounded-full bg-primary ${myTeamId === 'B' || mode === 'bot' ? 'animate-pulse' : ''}`} />
+          <span className="text-[9px] font-black text-white uppercase tracking-widest opacity-80">{isVersus ? 'You' : 'Team B'}{myTeamId === 'B' || mode === 'bot' ? ' (You)' : ''}</span>
         </div>
       </div>
     </div>
@@ -2174,7 +2178,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
     const currentId = user?.id || sessionId;
     const opponents = lobbyPlayers.filter(p => {
-      if (gameMode === 'versus') return p.id !== currentId;
+      if (p.id === currentId) return false; // Never include self in opponents list
+      if (gameMode === 'versus') return true;
       if (gameMode === 'team') {
         const pIndex = lobbyPlayers.findIndex(lp => lp.id === p.id);
         const pTeam = pIndex % 2 === 0 ? 'A' : 'B';
@@ -2235,13 +2240,41 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               </motion.div>
             )}
             <div className="flex justify-center mb-6">
-              <div className="relative p-8 bg-white/5 rounded-full border border-white/10 shadow-2xl">
-                <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full"></div>
-                <SimpleAvatar 
-                  name={title} 
-                  picture={getQuizImage(scoreLabel)} 
-                  size={140} 
-                />
+              <div className="flex items-center -space-x-8 md:-space-x-12">
+                {/* User Avatar */}
+                <div className="relative group hover:scale-105 transition-transform">
+                  <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+                  <div className="relative p-6 bg-white/5 rounded-full border-2 border-primary/30 shadow-2xl backdrop-blur-md">
+                    <SimpleAvatar 
+                      name={user?.name || user?.username || 'Guest'} 
+                      picture={user?.picture} 
+                      size={120} 
+                    />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl">
+                      You
+                    </div>
+                  </div>
+                </div>
+
+                {/* Connection Line/Decorator */}
+                <div className="relative z-10 size-12 rounded-full bg-slate-900 border-2 border-white/20 flex items-center justify-center shadow-2xl">
+                  <span className="text-white font-black text-xs uppercase italic drop-shadow-lg">VS</span>
+                </div>
+
+                {/* Quiz Picture */}
+                <div className="relative group hover:scale-105 transition-transform">
+                  <div className="absolute inset-0 bg-purple-500/20 blur-2xl rounded-full"></div>
+                  <div className="relative p-6 bg-white/5 rounded-full border-2 border-purple-500/30 shadow-2xl backdrop-blur-md">
+                    <SimpleAvatar 
+                      name={title} 
+                      picture={getQuizImage(scoreLabel)} 
+                      size={120} 
+                    />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl">
+                      {title}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
@@ -2545,11 +2578,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       {(gameMode && ['bot', 'versus', 'team'].includes(gameMode)) && (
         <RaceTrack 
           mode={gameMode as 'bot' | 'versus' | 'team'}
-          userScore={derivedTeamScore}
-          total={total} // team max is now just 'total' because we're counting coordinated rounds
-          userName={gameMode === 'team' ? 'Your Team' : (user?.username || user?.name || 'You')}
-          opponentNames={gameMode === 'team' ? ['Rival Team'] : opponentNames}
-          opponentScore={derivedOpponentTeamScore}
+          total={total}
+          teamAScore={gameMode === 'bot' ? opponentScore : getTeamProgress('A')}
+          teamBScore={gameMode === 'bot' ? correctCount : getTeamProgress('B')}
+          teamANames={gameMode === 'bot' ? ['Bot'] : lobbyPlayers.filter((_, i) => i % 2 === 0).map(p => p.name)}
+          teamBNames={gameMode === 'bot' ? [(user?.username || user?.name || 'You')] : lobbyPlayers.filter((_, i) => i % 2 !== 0).map(p => p.name)}
+          myTeamId={myTeamId}
+          isVersus={gameMode === 'versus' || gameMode === 'bot'}
         />
       )}
       <div className="max-w-3xl mx-auto space-y-8 relative z-10">
