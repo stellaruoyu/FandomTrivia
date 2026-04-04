@@ -25,6 +25,7 @@ import {
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
   FROZEN_1_TRIVIA, FROZEN_2_TRIVIA, FROZEN_MIXED_TRIVIA,
+  MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
   MCTriviaQuestion, BADGES, Badge
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -69,7 +70,9 @@ const getQuizTitle = (quizId: string): string => {
     'despicable-me-3': 'Despicable Me 3',
     'despicable-me-4': 'Despicable Me 2', // User might want this or 4
     'frozen': 'Frozen (2013)',
-    'frozen-2': 'Frozen 2'
+    'frozen-2': 'Frozen 2',
+    'mario-2023': 'The Super Mario Bros. Movie (2023)',
+    'mario-2026': 'The Super Mario Galaxy Movie (2026)'
   };
 
   return map[normalizedId] || normalizedId;
@@ -84,6 +87,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('zootopia')) return 'Zootopia Universe';
   if (q.includes('despicable')) return 'Despicable Me Universe';
   if (q.includes('frozen')) return 'Frozen Universe';
+  if (q.includes('mario')) return 'Super Mario';
   return 'Other Challenges';
 };
 
@@ -94,6 +98,9 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
+  if (q.includes('despicable')) return '/images/despicable-me.jpg';
+  if (q.includes('frozen')) return '/images/frozen.jpg';
+  if (q.includes('mario')) return '/images/supermario.jpg';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -849,6 +856,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/trivia-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
+          <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
         </ul>
       </div>
 
@@ -2220,10 +2228,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
   // Sync match participants once when the quiz starts
   useEffect(() => {
-    if (quiz && lobbyPlayers.length > 0 && matchParticipants.length === 0) {
+    if (sessionQuestions.length > 0 && lobbyPlayers.length > 0 && matchParticipants.length === 0) {
       setMatchParticipants(lobbyPlayers);
     }
-  }, [quiz, lobbyPlayers]);
+  }, [sessionQuestions, lobbyPlayers]);
 
   const calculateUserScore = (pId: string) => {
     let score = 0;
@@ -2980,6 +2988,77 @@ const FrozenSelector = () => {
   );
 };
 
+// --- Mario Movie Selector ---
+
+const MARIO_GRADES = [
+  { threshold: 90, label: 'Star Child', color: 'text-yellow-400', character: { name: 'Rosalina', image: '/images/supermario.jpg', desc: 'Your knowledge is cosmic! You have unlocked the secrets of the star dust.' } },
+  { threshold: 75, label: 'Super Brother', color: 'text-red-500', character: { name: 'Mario', image: '/images/supermario.jpg', desc: 'Let\'s-a go! You are a true hero of the Mushroom Kingdom.' } },
+  { threshold: 50, label: 'King of Koopas', color: 'text-orange-500', character: { name: 'Bowser', image: '/images/supermario.jpg', desc: 'Ga-ha-ha! You have some power, but you need more practice to rule the galaxies.' } },
+  { threshold: 0, label: 'Goomba Bait', color: 'text-slate-400', character: { name: 'Goomba', image: '/images/supermario.jpg', desc: 'Watch out for jumping plumbers! You have a lot more to learn about the movies.' } },
+];
+
+const MarioSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-400">Mission</span></h1>
+        <Helmet>
+          <title>Super Mario Trivia & Movie Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge on The Super Mario Bros. Movie (2023) and The Super Mario Galaxy Movie (2026). Prove you're the ultimate Nintendo fan." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-super-mario" />
+          <meta property="og:title" content="Super Mario Trivia & Movie Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Enter the Mushroom Kingdom. Are you a true Mario expert? Test your movie knowledge now!" />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Super Mario Universe", item: "https://fandom-trivia.vercel.app/selector-super-mario" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a film to test your knowledge, or take the Mixed Galaxy Challenge!</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Film 1", title: "The Super Mario Bros. (2023)", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "🏎️", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Film 2", title: "Galaxy Movie (2026)", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both films", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+        ].map(film => (
+          <motion.button
+            key={film.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${film.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{film.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+            </div>
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Mission <ArrowRight className="size-3" />
+              </div>
+              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+              </div>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 // --- Despicable Me Movie Selector ---
 
 const DESPICABLE_ME_GRADES = [
@@ -3235,7 +3314,7 @@ const LandingView = ({ setUser }: {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
           >
-            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, and Zootopia.
+            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -3341,6 +3420,7 @@ const LandingView = ({ setUser }: {
                       if (universe.id === 'zootopia') navigate('/selector-zootopia');
                       if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
                       if (universe.id === 'frozen') navigate('/selector-frozen');
+                      if (universe.id === 'super-mario') navigate('/selector-super-mario');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
@@ -4501,6 +4581,12 @@ export default function App() {
             <Route path="/selector-zootopia" element={<ZootopiaSelector />} />
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
             <Route path="/selector-frozen" element={<FrozenSelector />} />
+            <Route path="/selector-super-mario" element={<MarioSelector />} />
+            
+            {/* Mario Trivia */}
+            <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mario-2026" element={<MCQuizView key="trivia-mario-2026" questions={MARIO_2026_TRIVIA} title="Galaxy Movie (2026)" scoreLabel="Galaxy Movie (2026)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mario-random" element={<MCQuizView key="trivia-mario-random" questions={MARIO_MIXED_TRIVIA} title="Mario Mixed Challenge" scoreLabel="Mario Mixed Challenge" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             
             {/* Frozen Trivia */}
             <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

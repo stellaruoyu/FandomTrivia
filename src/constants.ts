@@ -176,6 +176,15 @@ export const UNIVERSES = [
     seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
     buttonText: 'Join the Sisters',
     icon: 'Snowflake'
+  },
+  {
+    id: 'super-mario',
+    title: 'Super Mario',
+    tags: ['Animation', 'Adventure', 'Nintendo'],
+    description: 'Enter the Mushroom Kingdom and the Cosmos. Explore the cinematic journey of Mario, Peach, and Rosalina.',
+    image: '/images/supermario.jpg', // Placeholder for now, I'll update it in the next step
+    buttonText: 'Jump into Action',
+    icon: 'Star'
   }
 ];
 
@@ -5203,6 +5212,157 @@ export const FROZEN_2_TRIVIA: MCTriviaQuestion[] = [
 export const FROZEN_MIXED_TRIVIA: MCTriviaQuestion[] = [
   ...FROZEN_1_TRIVIA,
   ...FROZEN_2_TRIVIA
+];
+
+export const MARIO_2023_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "At the 81st Golden Globe Awards, 'The Super Mario Bros. Movie' was nominated in which newly introduced category?",
+    options: ["Best Video Game Adaptation", "Cinematic Box Office Achievement", "Innovation in Animated Storytelling", "Global Animation Excellence"],
+    answer: "Cinematic Box Office Achievement",
+    evidence: "At the 81st Golden Globe Awards, the movie received a nomination for Cinematic Box Office Achievement, a category introduced at that ceremony."
+  },
+  {
+    id: 2,
+    question: "What was the reported production budget for the 2023 film 'The Super Mario Bros. Movie'?",
+    options: ["$75 million", "$100 million", "$125 million", "$150 million"],
+    answer: "$100 million",
+    evidence: "The film had a reported production budget of $100 million."
+  },
+  {
+    id: 3,
+    question: "True or False: Shigeru Miyamoto's interest in a new film was partly driven by the time required to bring older games to the Virtual Console.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Miyamoto stated that bringing older games to the Virtual Console took a lot of time, which sparked the idea for a new movie."
+  },
+  {
+    id: 4,
+    question: "Regarding its commercial legacy, which record did 'The Super Mario Bros. Movie' set for the video game adaptation genre?",
+    options: ["First to gross $1 billion", "Highest-grossing film based on a video game", "Longest theatrical run for an animation", "Most translated video game film"],
+    answer: "Highest-grossing film based on a video game",
+    evidence: "It grossed $1.36 billion worldwide, becoming the highest-grossing film based on a video game."
+  },
+  {
+    id: 5,
+    question: "True or False: During the climax in Brooklyn, both Mario and Luigi grab the Super Star to achieve invincibility.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "In the film's climax, both brothers grab the Super Star together to defeat Bowser's army."
+  },
+  {
+    id: 6,
+    question: "Which power-up does Mario utilize to defeat Donkey Kong in the Jungle Kingdom?",
+    options: ["Fire Flower", "Tanooki Suit", "Cat Suit", "Mini Mushroom"],
+    answer: "Cat Suit",
+    evidence: "Mario uses the Cat Suit to overcome Donkey Kong's strength during their duel."
+  },
+  {
+    id: 7,
+    question: "Where does Luigi arrive after being separated from Mario in the Warp Pipe?",
+    options: ["The Dark Lands", "The Jungle Kingdom", "Brooklyn", "The Mushroom Kingdom"],
+    answer: "The Dark Lands",
+    evidence: "Luigi is separated and lands in the Dark Lands, which are ruled by Bowser."
+  },
+  {
+    id: 8,
+    question: "In the 2023 film, actress Jessica DiCicco is credited with voicing which character?",
+    options: ["Princess Peach", "Mayor Pauline", "Toadette", "Lumalee"],
+    answer: "Mayor Pauline",
+    evidence: "Jessica DiCicco voices multiple roles including the brothers' mother and Mayor Pauline."
+  },
+  {
+    id: 9,
+    question: "Legacy actor Charles Martinet makes a cameo in the first film as which character?",
+    options: ["Foreman Spike", "Giuseppe", "Mario's Father", "Both Giuseppe and the Father"],
+    answer: "Both Giuseppe and the Father",
+    evidence: "Charles Martinet voices both the Mario brothers' father and the citizen Giuseppe."
+  },
+  {
+    id: 10,
+    question: "Who is the primary composer for 'The Super Mario Bros. Movie' (2023)?",
+    options: ["Koji Kondo", "Brian Tyler", "Grant Kirkhope", "John Spiker"],
+    answer: "Brian Tyler",
+    evidence: "Brian Tyler composed the score, working closely with industry legend Koji Kondo."
+  }
+];
+
+export const MARIO_2026_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "How did Shigeru Miyamoto categorize the 2026 sequel within the context of the franchise's history?",
+    options: ["The 'Main Event' of the 40th Anniversary", "A cinematic expansion of the SNES era", "The first entry in a 'Universe' trilogy", "A experimental spin-off"],
+    answer: "The 'Main Event' of the 40th Anniversary",
+    evidence: "Miyamoto described the sequel as the 'main event' of the Super Mario Bros. 40th Anniversary celebration."
+  },
+  {
+    id: 2,
+    question: "In the 2026 sequel, what is the canonical relationship between Princess Peach and Rosalina?",
+    options: ["Mother and Daughter", "Sisters", "Cousins", "Guardian and Protégé"],
+    answer: "Sisters",
+    evidence: "The film reveals that Rosalina and Princess Peach are sisters born from star dust."
+  },
+  {
+    id: 3,
+    question: "While shrunken and living in a miniature castle, what activities does Bowser engage in?",
+    options: ["Singing ballads and playing piano", "Painting and dealing with anger issues", "Training Mini Goombas", "Reading nihilistic poetry"],
+    answer: "Painting and dealing with anger issues",
+    evidence: "A shrunken Bowser is seen painting and working on his anger issues in a miniature castle."
+  },
+  {
+    id: 4,
+    question: "Where is Yoshi first discovered by Mario and Luigi in 'The Super Mario Galaxy Movie'?",
+    options: ["Inside an Inverted Pyramid", "In the sewers of Brooklyn", "On Yoshi’s Island", "In the Jungle Kingdom"],
+    answer: "Inside an Inverted Pyramid",
+    evidence: "The brothers find Yoshi inside an Inverted Pyramid in Tostarena Town."
+  },
+  {
+    id: 5,
+    question: "What is the primary motivation for Bowser Jr. in 'The Super Mario Galaxy Movie'?",
+    options: ["To find the Boomsday Weapon", "To restore honor to the Bowser name", "To capture Lumas", "To build a space casino"],
+    answer: "To restore honor to the Bowser name",
+    evidence: "Bowser Jr.'s primary goal is to restore honor to his family name and free his father."
+  },
+  {
+    id: 6,
+    question: "Which actor provides the voice for Bowser Jr. in the 2026 sequel?",
+    options: ["Benny Safdie", "Donald Glover", "Luis Guzmán", "Glen Powell"],
+    answer: "Benny Safdie",
+    evidence: "Benny Safdie was cast as the voice of the film's primary antagonist, Bowser Jr."
+  },
+  {
+    id: 7,
+    question: "What power-up does Mario utilize to burrow underground while fighting Dry Bowser?",
+    options: ["Cloud Flower", "Red Star", "Drill Mushroom", "Cape Feather"],
+    answer: "Drill Mushroom",
+    evidence: "Mario uses a Drill Mushroom to tunnel through the ground during the fight with Dry Bowser."
+  },
+  {
+    id: 8,
+    question: "Peach and Toad must defeat Birdo and Wart at which specific location?",
+    options: ["The Comet Observatory", "Planet Bowser", "Wart's Casino", "The Space Junk Galaxy"],
+    answer: "Wart's Casino",
+    evidence: "The duo confronts Wart at his casino in the Gateway Underground."
+  },
+  {
+    id: 9,
+    question: "What object does Bowser Jr. use to turn Mario and Luigi into babies?",
+    options: ["Magic Brush", "Super Scope", "Mini Mushroom", "Super Star"],
+    answer: "Super Scope",
+    evidence: "A blue Super Scope is revealed to have the power to de-age targets into babies."
+  },
+  {
+    id: 10,
+    question: "True or False: A post-credits scene features Princess Daisy rescuing a Whittle from a Ukiki.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The post-credits scene depicts Princess Daisy intervening to save a Whittle."
+  }
+];
+
+export const MARIO_MIXED_TRIVIA: MCTriviaQuestion[] = [
+  ...MARIO_2023_TRIVIA,
+  ...MARIO_2026_TRIVIA
 ];
 
 export const DAILY_QUIZZES = [
