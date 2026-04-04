@@ -87,6 +87,16 @@ const getUniverseName = (quizId: string): string => {
   return 'Other Challenges';
 };
 
+const getQuizImage = (quizId: string): string => {
+  const q = quizId.toLowerCase();
+  if (q.includes('twilight')) return '/images/Cullen Family.jpg';
+  if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg';
+  if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
+  if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
+  if (q.includes('zootopia')) return '/images/zootopia.jpg';
+  return ''; // Default to no image (SimpleAvatar will show initials)
+};
+
 const useQuizStats = () => {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
@@ -2228,8 +2238,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               <div className="relative p-8 bg-white/5 rounded-full border border-white/10 shadow-2xl">
                 <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full"></div>
                 <SimpleAvatar 
-                  name={user?.name || user?.username || 'Guest'} 
-                  picture={user?.picture} 
+                  name={title} 
+                  picture={getQuizImage(scoreLabel)} 
                   size={140} 
                 />
               </div>
