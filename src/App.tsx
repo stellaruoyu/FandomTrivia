@@ -1963,13 +1963,31 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           )}
 
           {isHost ? (
-            <button 
-              onClick={startRoomGame} 
-              disabled={lobbyPlayers.length < 2 || lobbyPlayers.length > maxPlayers}
-              className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg border border-primary/50 text-lg mb-4"
-            >
-              Start Game
-            </button>
+            <div className="space-y-4">
+              <button 
+                onClick={startRoomGame} 
+                disabled={
+                  gameMode === 'versus' 
+                    ? lobbyPlayers.length < 2 
+                    : (lobbyPlayers.length < 4 || lobbyPlayers.length % 2 !== 0)
+                }
+                className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg border border-primary/50 text-lg mb-2"
+              >
+                Start Game
+              </button>
+              {gameMode === 'team' && (lobbyPlayers.length < 4 || lobbyPlayers.length % 2 !== 0) && (
+                <p className="text-red-400 font-bold text-xs uppercase tracking-tight animate-pulse">
+                  {lobbyPlayers.length < 4 
+                    ? `Waiting for more players (need at least 4 for ${gameMode} mode)` 
+                    : `Need an even number of players for ${gameMode} mode`}
+                </p>
+              )}
+              {gameMode === 'versus' && lobbyPlayers.length < 2 && (
+                <p className="text-blue-400 font-bold text-xs uppercase tracking-tight animate-pulse">
+                  Waiting for an opponent (need 2 players for 1v1)
+                </p>
+              )}
+            </div>
           ) : (
             <div className="w-full p-4 border border-blue-500/30 bg-blue-500/10 rounded-xl mb-4">
               <p className="text-blue-400 font-bold animate-pulse">Waiting for host to start...</p>
@@ -2109,6 +2127,34 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }
   };
 
+  // Calculate coordinated team scores (car only moves if BOTH teammates are correct)
+  const getTeamProgress = (teamId: 'A' | 'B' | null) => {
+    if (!teamId) return 0;
+    let count = 0;
+    for (let i = 0; i < total; i++) {
+      const playersOnTeam = lobbyPlayers.filter((p, idx) => {
+        const pTeam = idx % 2 === 0 ? 'A' : 'B';
+        return pTeam === teamId;
+      });
+      
+      // Check if all players on this team have answered this question correctly
+      const everyoneCorrect = playersOnTeam.length > 0 && playersOnTeam.every(p => {
+        const currentId = user?.id || sessionId;
+        if (p.id === currentId) {
+          return scores[i] === 'correct';
+        } else {
+          return playerAnswers[p.id]?.[i]?.toLowerCase() === sessionQuestions[i]?.answer?.toLowerCase();
+        }
+      });
+      
+      if (everyoneCorrect) count++;
+    }
+    return count;
+  };
+
+  const derivedTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId) : correctCount;
+  const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : opponentScore;
+
   if (finished) {
     const pct = Math.round((correctCount / total) * 100);
     const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
@@ -2159,6 +2205,25 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                 {correctCount > opponentScore ? '🏆 You Won!' : correctCount < opponentScore ? '💀 Bot Won!' : '🤝 It\'s a Tie!'}
               </motion.div>
             )}
+
+            {(gameMode === 'versus' || gameMode === 'team') && (
+              <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className={`inline-block px-6 py-2 rounded-full border-2 font-black text-xs uppercase tracking-[0.2em] mb-4 shadow-xl backdrop-blur-md
+                  ${derivedTeamScore > derivedOpponentTeamScore 
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-emerald-500/10' 
+                    : derivedTeamScore < derivedOpponentTeamScore 
+                      ? 'bg-red-500/20 border-red-500/50 text-red-400 shadow-red-500/10' 
+                      : 'bg-amber-500/20 border-amber-500/50 text-amber-400 shadow-amber-500/10'}`}
+              >
+                {derivedTeamScore > derivedOpponentTeamScore 
+                  ? (gameMode === 'team' ? '🏆 Your Team Won!' : '🏆 You Won!') 
+                  : derivedTeamScore < derivedOpponentTeamScore 
+                    ? (gameMode === 'team' ? '💀 Rival Team Won!' : '💀 Rival Won!') 
+                    : '🤝 It\'s a Tie!'}
+              </motion.div>
+            )}
             <div className="flex justify-center mb-6">
               <div className="relative p-8 bg-white/5 rounded-full border border-white/10 shadow-2xl">
                 <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full"></div>
@@ -2182,20 +2247,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-2">
               <div className="space-y-1">
                 <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                  {correctCount}/{total}
+                  {gameMode === 'team' ? derivedTeamScore : correctCount}/{total}
                 </p>
-                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Your Score ({pct}%)</p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
+                  {gameMode === 'team' ? 'Team Coordinated Score' : 'Your Score'} ({gameMode === 'team' ? Math.round((derivedTeamScore / total) * 100) : pct}%)
+                </p>
               </div>
               
               <div className="hidden md:block w-px h-16 bg-white/10"></div>
               
-              {gameMode === 'bot' && (
+              {(gameMode === 'bot' || gameMode === 'versus' || gameMode === 'team') && (
                 <>
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
-                      {opponentScore}/{total}
+                      {gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore}/{total}
                     </p>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Bot Score ({Math.round((opponentScore / total) * 100)}%)</p>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
+                      {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} ({Math.round(((gameMode === 'bot' ? opponentScore : derivedOpponentTeamScore) / total) * 100)}%)
+                    </p>
                   </div>
                   <div className="hidden md:block w-px h-16 bg-white/10"></div>
                 </>
@@ -2253,12 +2322,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
             <div className="w-full max-w-md mx-auto space-y-2">
               <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${pct}%` }} />
-                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${100 - pct}%` }} />
+                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${gameMode === 'team' ? (derivedTeamScore/total)*100 : pct}%` }} />
+                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${100 - (gameMode === 'team' ? (derivedTeamScore/total)*100 : pct)}%` }} />
               </div>
               <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                <span className="text-green-400">{correctCount} Correct</span>
-                <span className="text-red-400">{total - correctCount} Incorrect</span>
+                <span className="text-green-400">{gameMode === 'team' ? derivedTeamScore : correctCount} Correct</span>
+                <span className="text-red-400">{total - (gameMode === 'team' ? derivedTeamScore : correctCount)} Incorrect</span>
               </div>
             </div>
           </motion.div>
@@ -2413,9 +2482,6 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     );
   }
 
-  const derivedTeamScore = correctCount + (Object.values(playerScores).reduce((sum: number, p: any) => p.team === myTeamId ? sum + p.score : sum, 0) as number);
-  const derivedOpponentTeamScore = Object.values(playerScores).reduce((sum: number, p: any) => p.team !== myTeamId ? sum + p.score : sum, 0) as number;
-
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6 relative">
       {hostLeft && (
@@ -2455,11 +2521,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       {(gameMode && ['bot', 'versus', 'team'].includes(gameMode)) && (
         <RaceTrack 
           mode={gameMode as 'bot' | 'versus' | 'team'}
-          userScore={gameMode === 'team' ? derivedTeamScore : correctCount}
-          total={gameMode === 'team' ? total * 2 : total} // team max is double
+          userScore={derivedTeamScore}
+          total={total} // team max is now just 'total' because we're counting coordinated rounds
           userName={gameMode === 'team' ? 'Your Team' : (user?.username || user?.name || 'You')}
           opponentNames={gameMode === 'team' ? ['Rival Team'] : opponentNames}
-          opponentScore={gameMode === 'team' ? derivedOpponentTeamScore : opponentScore}
+          opponentScore={derivedOpponentTeamScore}
         />
       )}
       <div className="max-w-3xl mx-auto space-y-8 relative z-10">
