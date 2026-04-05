@@ -573,8 +573,8 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
             navigate('/');
           }}
         >
-          <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(127,19,236,0.5)]">
-            <Zap className="size-6 fill-current" />
+          <div className="size-10 rounded-lg overflow-hidden flex items-center justify-center shadow-[0_0_15px_rgba(127,19,236,0.3)] group-hover:scale-105 transition-transform duration-300">
+            <img src="/logo.png" alt="Fandom Trivia Logo" className="size-full object-cover" />
           </div>
           <h1 className={`text-xl font-bold tracking-tight text-white ${isDashboard ? 'uppercase italic font-black' : ''}`}>
             Fandom<span className="text-primary">Trivia</span>
