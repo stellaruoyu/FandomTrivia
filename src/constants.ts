@@ -4,6 +4,7 @@ export const NAV_LINKS = [
   { name: 'Home', href: '#' },
   { name: 'Leaderboards', href: '#' },
   { name: 'Categories', href: '#' },
+  { name: 'News & Blog', href: '/blog/super-mario-quiz' },
 ];
 
 export const DASHBOARD_NAV_LINKS = [
@@ -5274,17 +5275,17 @@ export const MARIO_2023_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: "In the 2023 film, actress Jessica DiCicco is credited with voicing which character?",
-    options: ["Princess Peach", "Mayor Pauline", "Toadette", "Lumalee"],
+    question: "Who appears on the Brooklyn news broadcast discussing the sudden plumbing emergency?",
+    options: ["Mayor Pauline", "Foreman Spike", "Mayor Toad", "Cranky Kong"],
     answer: "Mayor Pauline",
-    evidence: "Jessica DiCicco voices multiple roles including the brothers' mother and Mayor Pauline."
+    evidence: "Mayor Pauline is seen on the news addressing the massive plumbing crisis happening in Brooklyn."
   },
   {
     id: 9,
-    question: "Legacy actor Charles Martinet makes a cameo in the first film as which character?",
-    options: ["Foreman Spike", "Giuseppe", "Mario's Father", "Both Giuseppe and the Father"],
-    answer: "Both Giuseppe and the Father",
-    evidence: "Charles Martinet voices both the Mario brothers' father and the citizen Giuseppe."
+    question: "Inside the Punch-Out Pizzeria, which character is seen playing the 'Jump Man' arcade game?",
+    options: ["Foreman Spike", "Giuseppe", "Mario's Father", "Uncle Arthur"],
+    answer: "Giuseppe",
+    evidence: "The character Giuseppe is seen playing the arcade game that resembles the original Donkey Kong."
   },
   {
     id: 10,
@@ -5333,10 +5334,10 @@ export const MARIO_2026_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 6,
-    question: "Which actor provides the voice for Bowser Jr. in the 2026 sequel?",
-    options: ["Benny Safdie", "Donald Glover", "Luis Guzmán", "Glen Powell"],
-    answer: "Benny Safdie",
-    evidence: "Benny Safdie was cast as the voice of the film's primary antagonist, Bowser Jr."
+    question: "What signature accessory does Bowser Jr. wear that helps conceal his identity?",
+    options: ["A red spiked collar", "A white bandana with a drawn mouth", "A pair of flying goggles", "A golden crown"],
+    answer: "A white bandana with a drawn mouth",
+    evidence: "Like in the games, Bowser Jr. wears a white bandana adorned with a sinister drawn-on mouth."
   },
   {
     id: 7,

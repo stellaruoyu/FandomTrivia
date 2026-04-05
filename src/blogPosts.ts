@@ -25,7 +25,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>It’s time to put your skills to the test. Our <strong>Super Mario movie quiz</strong> isn't just a walk in the park; it’s a high-speed dash through Rainbow Road. Do you have what it takes to save the Mushroom Kingdom?</p>
       
       <div class="my-8">
-        <a href="/trivia-mario-2023" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+        <a href="/selector-super-mario" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
           Take the Ultimate Super Mario Quiz Now
         </a>
       </div>
@@ -62,7 +62,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <div class="mt-12 p-8 rounded-3xl bg-primary/10 border border-primary/30 text-center">
         <h4 class="text-2xl font-black italic uppercase italic mb-4">Ready to Prove Your Passion?</h4>
         <p class="text-sm text-slate-300 mb-8 max-w-md mx-auto">Bowser is waiting, the Princess needs saving, and your Starman status is on the line. Don't let the Goombas win.</p>
-        <a href="/trivia-mario-2023" class="inline-block bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/40 scale-105">
+        <a href="/selector-super-mario" class="inline-block bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/40 scale-105">
           Take the Ultimate Super Mario Quiz Now
         </a>
       </div>

@@ -607,6 +607,7 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
                   navigate('/');
                   setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100);
                 }
+                else if (link.href && link.href !== '#') navigate(link.href);
               }}
               className={`text-sm font-semibold hover:text-primary transition-colors ${isDashboard ? 'uppercase tracking-widest text-xs' : ''} ${(link as any).active ? 'text-primary border-b-2 border-primary pb-1' : ''}`}
             >
