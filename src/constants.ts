@@ -23,6 +23,7 @@ export interface Badge {
   targetQuiz?: string;
   targetScore?: number;
   isUniverseCompletion?: boolean; 
+  imageUrl?: string;
 }
 
 export const BADGES: Badge[] = [
@@ -103,6 +104,13 @@ export const BADGES: Badge[] = [
     icon: 'Star',
     color: 'text-sky-300',
     targetQuiz: 'frozen'
+  },
+  {
+    id: 'riddle_solver',
+    name: 'Mystery Solver',
+    description: 'Solved the "Who am I?" Daily Riddle.',
+    icon: 'Lightbulb',
+    color: 'text-indigo-400'
   }
 ];
 
@@ -5421,6 +5429,51 @@ export const DAILY_QUIZZES = [
     path: "/trivia-frozen-1",
     image: "/images/frozen.jpg",
     color: "from-sky-600/20 to-blue-600/20"
+  }
+];
+
+export const DAILY_RIDDLES = [
+  {
+    id: "riddle-1",
+    clue: "I live in a dark forest, my skin sparkles in the sun, and I play baseball during thunderstorms.",
+    answer: "Edward Cullen",
+    image: "/images/riddles/edward.png"
+  },
+  {
+    id: "riddle-2",
+    clue: "I survived a curse that left a scar, I speak to snakes, and I once lived in a cupboard under the stairs.",
+    answer: "Harry Potter",
+    image: "/images/riddles/harry.png"
+  },
+  {
+    id: "riddle-3",
+    clue: "I am small, yellow, and love bananas. I served the most \"despicable\" masters throughout history.",
+    answer: "Minion",
+    image: "/images/riddles/minion.png"
+  },
+  {
+    id: "riddle-4",
+    clue: "I am a fast-talking fox from Zootopia. I once tried to sell a \"Pawpsicle\" made from wood-chip-flavored juice.",
+    answer: "Nick Wilde",
+    image: "/images/riddles/nick.png"
+  },
+  {
+    id: "riddle-5",
+    clue: "I build castles out of ice, my sister is my best friend, and I finally learned to let it go.",
+    answer: "Elsa",
+    image: "/images/riddles/elsa.png"
+  },
+  {
+    id: "riddle-6",
+    clue: "I am a space traveler who is actually a futuristic cat. I have a 4D pocket with infinite gadgets.",
+    answer: "Doraemon",
+    image: "/images/riddles/doraemon.png"
+  },
+  {
+    id: "riddle-7",
+    clue: "I am the \"Chosen One\" who brought balance to the Force, but first I had to fall to the Dark Side.",
+    answer: "Anakin Skywalker",
+    image: "/images/riddles/anakin.png"
   }
 ];
 

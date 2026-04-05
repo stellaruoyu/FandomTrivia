@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -26,10 +26,11 @@ import {
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
   FROZEN_1_TRIVIA, FROZEN_2_TRIVIA, FROZEN_MIXED_TRIVIA,
   MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
-  MCTriviaQuestion, BADGES, Badge
+  MCTriviaQuestion, BADGES, Badge, DAILY_RIDDLES
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
+import { BLOG_POSTS } from './blogPosts';
 
 const normalizeSlug = (id: string): string => {
   return id.toLowerCase()
@@ -366,17 +367,22 @@ const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[]
                       : 'bg-black/40 border-white/5 opacity-60 grayscale hover:grayscale-0'
                     }`}
                 >
-                  <div className={`size-16 rounded-full flex items-center justify-center shadow-inner
+                  <div className={`size-16 rounded-full flex items-center justify-center shadow-inner overflow-hidden
                     ${isUnlocked ? 'bg-gradient-to-br from-white/10 to-white/5' : 'bg-white/5'}
                   `}>
-                    {/* Render matching lucide icon dynamically based on string if possible, or fallback manually. 
-                        For simplicity in this app, we hardcode the mapping. */}
-                    {badge.icon === 'Droplets' && <Droplets className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
-                    {badge.icon === 'Star' && <Star className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
-                    {badge.icon === 'Wand2' && <Wand2 className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
-                    {badge.icon === 'Zap' && <Zap className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
-                    {badge.icon === 'Globe' && <Globe className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
-                    {badge.icon === 'Search' && <Search className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                    {isUnlocked && badge.imageUrl ? (
+                      <img src={badge.imageUrl} alt={badge.name} className="size-full object-cover" />
+                    ) : (
+                      <>
+                        {badge.icon === 'Droplets' && <Droplets className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                        {badge.icon === 'Star' && <Star className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
+                        {badge.icon === 'Wand2' && <Wand2 className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                        {badge.icon === 'Zap' && <Zap className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
+                        {badge.icon === 'Globe' && <Globe className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                        {badge.icon === 'Search' && <Search className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                        {badge.icon === 'Lightbulb' && <Lightbulb className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                      </>
+                    )}
                   </div>
                   
                   <div>
@@ -420,13 +426,20 @@ const BadgeNotification = ({ badge, onClose }: { badge: Badge, onClose: () => vo
       className="fixed top-0 left-0 right-0 z-[110] flex justify-center pointer-events-none px-4"
     >
       <div className="bg-card-dark border border-amber-500/30 p-4 rounded-2xl shadow-2xl flex items-center gap-4 max-w-sm w-full pointer-events-auto backdrop-blur-md">
-        <div className={`size-12 rounded-full flex items-center justify-center shrink-0 bg-gradient-to-br from-white/10 to-white/5 shadow-inner`}>
-          {badge.icon === 'Droplets' && <Droplets className={`size-6 ${badge.color}`} />}
-          {badge.icon === 'Star' && <Star className={`size-6 ${badge.color} fill-current`} />}
-          {badge.icon === 'Wand2' && <Wand2 className={`size-6 ${badge.color}`} />}
-          {badge.icon === 'Zap' && <Zap className={`size-6 ${badge.color} fill-current`} />}
-          {badge.icon === 'Globe' && <Globe className={`size-6 ${badge.color}`} />}
-          {badge.icon === 'Search' && <Search className={`size-6 ${badge.color}`} />}
+        <div className={`size-12 rounded-full flex items-center justify-center shrink-0 bg-gradient-to-br from-white/10 to-white/5 shadow-inner overflow-hidden border border-white/10`}>
+          {badge.imageUrl ? (
+            <img src={badge.imageUrl} alt={badge.name} className="size-full object-cover" />
+          ) : (
+            <>
+              {badge.icon === 'Droplets' && <Droplets className={`size-6 ${badge.color}`} />}
+              {badge.icon === 'Star' && <Star className={`size-6 ${badge.color} fill-current`} />}
+              {badge.icon === 'Wand2' && <Wand2 className={`size-6 ${badge.color}`} />}
+              {badge.icon === 'Zap' && <Zap className={`size-6 ${badge.color} fill-current`} />}
+              {badge.icon === 'Globe' && <Globe className={`size-6 ${badge.color}`} />}
+              {badge.icon === 'Search' && <Search className={`size-6 ${badge.color}`} />}
+              {badge.icon === 'Lightbulb' && <Lightbulb className={`size-6 ${badge.color}`} />}
+            </>
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-0.5">Badge Unlocked!</p>
@@ -878,6 +891,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
+              <li><Link to="/blog/super-mario-quiz" className="hover:text-primary transition-colors">News & Blog</Link></li>
             </>
           )}
         </ul>
@@ -3144,8 +3158,132 @@ const DespicableMeSelector = () => {
 };
 
 
-// --- Daily Mystery Quiz Component ---
+const DailyRiddle = ({ onUnlockBadge }: { onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void }) => {
+  const [answer, setAnswer] = useState('');
+  const [status, setStatus] = useState<'idle' | 'correct' | 'error'>('idle');
+  const [isSolved, setIsSolved] = useState(false);
 
+  const todayRiddle = useMemo(() => {
+    const day = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    return DAILY_RIDDLES[day % DAILY_RIDDLES.length];
+  }, []);
+
+  useEffect(() => {
+    const solved = localStorage.getItem(`riddle_solved_${todayRiddle.id}`);
+    if (solved) setIsSolved(true);
+  }, [todayRiddle.id]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSolved || status === 'correct') return;
+
+    if (answer.trim().toLowerCase() === todayRiddle.answer.toLowerCase()) {
+      setStatus('correct');
+      setIsSolved(true);
+      localStorage.setItem(`riddle_solved_${todayRiddle.id}`, 'true');
+      onUnlockBadge('riddle_solver', 100, false, todayRiddle.image);
+      
+      // Success Haptic/Sound simulation or actual call if available
+      try {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3');
+        audio.volume = 0.3;
+        audio.play().catch(() => {});
+      } catch (err) {}
+    } else {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 2000);
+    }
+  };
+
+  return (
+    <motion.section 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="max-w-7xl mx-auto px-6 mb-20"
+    >
+      <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/10 shadow-2xl p-8 md:p-12">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indigo-500/10 to-transparent"></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest">
+              <Sparkles className="size-3" />
+              Daily "Who am I?" Riddle
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-white italic uppercase tracking-tight leading-tight">
+              I have a tricky <span className="text-indigo-400">Secret Clue...</span>
+            </h2>
+            <p className="text-lg text-slate-300 font-medium leading-relaxed italic">
+              "{todayRiddle.clue}"
+            </p>
+            
+            {isSolved ? (
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="flex items-center gap-5 p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400"
+              >
+                <div className="size-20 rounded-2xl overflow-hidden border border-indigo-500/30 flex-shrink-0">
+                  <img src={todayRiddle.image} alt={todayRiddle.answer} className="size-full object-cover" />
+                </div>
+                <div>
+                  <p className="font-black uppercase tracking-widest text-xs mb-1">Mystery Solved!</p>
+                  <p className="text-sm font-bold text-slate-200">You've unlocked the <span className="text-indigo-400">{todayRiddle.answer}</span> badge.</p>
+                </div>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1 relative">
+                  <input 
+                    type="text" 
+                    value={answer}
+                    onChange={(e) => setAnswer(e.target.value)}
+                    disabled={status === 'correct'}
+                    placeholder="Type your answer here..."
+                    className={`w-full bg-white/5 border ${status === 'error' ? 'border-red-500/50' : 'border-white/10'} rounded-2xl px-6 py-4 text-white font-bold focus:outline-none focus:border-indigo-500/50 transition-all`}
+                  />
+                  {status === 'error' && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute -bottom-6 left-2 text-[10px] font-black text-red-500 uppercase tracking-widest"
+                    >
+                      Not quite right... Try again!
+                    </motion.p>
+                  )}
+                </div>
+                <button 
+                  type="submit"
+                  disabled={!answer.trim() || status === 'correct'}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2"
+                >
+                  <Search className="size-4" />
+                  Unlock
+                </button>
+              </form>
+            )}
+          </div>
+          <div className="hidden lg:block w-1/3">
+            <div className="relative aspect-square">
+              <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="relative z-10 w-full h-full border border-white/5 bg-white/5 backdrop-blur-xl rounded-[2rem] flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform duration-700">
+                <div className="flex flex-col items-center gap-4 p-8 text-center">
+                  <div className="size-20 rounded-3xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                    <Lightbulb className="size-10 text-indigo-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xl font-black text-white italic uppercase tracking-tight">Secret Badge</p>
+                    <p className="text-xs text-slate-400 font-bold leading-tight">Can you solve the mystery of the day?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
 
 const DailyMysteryQuiz = ({ setUser }: { 
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
@@ -3240,8 +3378,92 @@ const DailyMysteryQuiz = ({ setUser }: {
   );
 };
 
-const LandingView = ({ setUser }: { 
+const BlogView = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const post = BLOG_POSTS.find(p => p.slug === slug);
+
+  if (!post) {
+    return (
+      <div className="pt-32 pb-20 px-6 text-center">
+        <h2 className="text-3xl font-black text-white mb-6">Blog Post Not Found</h2>
+        <button onClick={() => navigate('/')} className="bg-primary px-8 py-3 rounded-xl font-bold">Back to Home</button>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      className="pt-28 pb-20 px-6 max-w-4xl mx-auto space-y-12"
+    >
+      <Helmet>
+        <title>{post.title} | Fandom Trivia</title>
+        <meta name="description" content={post.metaDescription} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.metaDescription} />
+        <meta property="og:image" content={post.image} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "image": post.image,
+            "author": { "@type": "Organization", "name": "Fandom Trivia" },
+            "datePublished": post.date,
+            "description": post.metaDescription
+          })}
+        </script>
+      </Helmet>
+
+      <div className="space-y-6">
+        <button 
+          onClick={() => navigate('/')} 
+          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold"
+        >
+          <ArrowLeft className="size-4" /> Back to Home
+        </button>
+        
+        <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+          <img src={post.image} alt={post.title} className="size-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+          <div className="absolute bottom-8 left-8 right-8">
+            <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase italic leading-tight">{post.title}</h1>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 border-y border-white/5 py-6">
+        <SimpleAvatar name="FT" size={40} className="border-primary/50" />
+        <div>
+          <p className="text-xs font-black uppercase tracking-widest text-primary">Published by {post.author}</p>
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+      </div>
+
+      <div 
+        className="prose prose-invert max-w-none prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tight prose-p:text-slate-300 prose-p:leading-relaxed blog-content"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+
+      <div className="pt-10 border-t border-white/10">
+        <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-4">Tags</h4>
+        <div className="flex flex-wrap gap-2">
+          {post.keywords.map(kw => (
+            <span key={kw} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              #{kw.replace(/\s+/g, '')}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const LandingView = ({ setUser, onUnlockBadge }: { 
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
+  onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void,
   key?: string
 }) => {
   const { getUniverseCount, formatCount } = useQuizStats();
@@ -3377,6 +3599,8 @@ const LandingView = ({ setUser }: {
 
 
       <DailyMysteryQuiz setUser={setUser} />
+      
+      <DailyRiddle onUnlockBadge={onUnlockBadge} />
 
       {/* Universe Grid */}
 
@@ -4312,7 +4536,7 @@ export default function App() {
     navigate('/');
   };
 
-  const evaluateBadges = async (quizId: string, scorePct: number, isDaily: boolean = false) => {
+  const evaluateBadges = async (quizId: string, scorePct: number, isDaily: boolean = false, imageUrl?: string) => {
     const newlyUnlocked: Badge[] = [];
     
     // Check if user is logged in for streak calculation
@@ -4379,6 +4603,11 @@ export default function App() {
       if (badge.id === 'perfect_score' && scorePct === 100) {
         unlocked = true;
       }
+      
+      // Daily Riddle Solver
+      if (badge.id === 'riddle_solver' && quizId === 'riddle_solver') {
+        unlocked = true;
+      }
 
       // Universe completion badges
       if (badge.targetQuiz) {
@@ -4399,7 +4628,11 @@ export default function App() {
       }
 
       if (unlocked) {
-        newlyUnlocked.push(badge);
+        if (badge.id === 'riddle_solver' && imageUrl) {
+          newlyUnlocked.push({ ...badge, imageUrl });
+        } else {
+          newlyUnlocked.push(badge);
+        }
       }
     });
 
@@ -4477,7 +4710,8 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView user={user} />} />
-            <Route path="/" element={<LandingView setUser={setUser} />} />
+            <Route path="/blog/:slug" element={<BlogView />} />
+            <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
               { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
               { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
@@ -4608,7 +4842,7 @@ export default function App() {
             <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
-            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} />} />
+            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             
             {/* Legal */}
             <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
