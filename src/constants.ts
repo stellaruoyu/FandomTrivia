@@ -191,7 +191,7 @@ export const UNIVERSES = [
     title: 'Super Mario',
     tags: ['Video Game', 'Cosmic', 'Nintendo'],
     description: 'Master gravity and explore the cosmos. Join Mario, Rosalina, and the Lumas in an epic platforming odyssey through the stars.',
-    image: '/images/mario-galaxy-hero.jpg',
+    image: '/images/supermario.jpg',
     buttonText: 'Jump into Action',
     icon: 'Star'
   }
