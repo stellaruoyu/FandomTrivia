@@ -4,7 +4,7 @@ export const NAV_LINKS = [
   { name: 'Home', href: '#' },
   { name: 'Leaderboards', href: '#' },
   { name: 'Categories', href: '#' },
-  { name: 'News & Blog', href: '/blog/super-mario-quiz' },
+  { name: 'News & Blog', href: '/blog/super-mario-galaxy-quiz' },
 ];
 
 export const DASHBOARD_NAV_LINKS = [
@@ -189,9 +189,9 @@ export const UNIVERSES = [
   {
     id: 'super-mario',
     title: 'Super Mario',
-    tags: ['Animation', 'Adventure', 'Nintendo'],
-    description: 'Enter the Mushroom Kingdom and the Cosmos. Explore the cinematic journey of Mario, Peach, and Rosalina.',
-    image: '/images/supermario.jpg', // Placeholder for now, I'll update it in the next step
+    tags: ['Video Game', 'Cosmic', 'Nintendo'],
+    description: 'Master gravity and explore the cosmos. Join Mario, Rosalina, and the Lumas in an epic platforming odyssey through the stars.',
+    image: '/images/supermario.jpg',
     buttonText: 'Jump into Action',
     icon: 'Star'
   }
@@ -5296,78 +5296,80 @@ export const MARIO_2023_TRIVIA: MCTriviaQuestion[] = [
   }
 ];
 
-export const MARIO_2026_TRIVIA: MCTriviaQuestion[] = [
+export const MARIO_GALAXY_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: "How did Shigeru Miyamoto categorize the 2026 sequel within the context of the franchise's history?",
-    options: ["The 'Main Event' of the 40th Anniversary", "A cinematic expansion of the SNES era", "The first entry in a 'Universe' trilogy", "A experimental spin-off"],
-    answer: "The 'Main Event' of the 40th Anniversary",
-    evidence: "Miyamoto described the sequel as the 'main event' of the Super Mario Bros. 40th Anniversary celebration."
+    question: "What is the name of the central hub world in Super Mario Galaxy that Mario uses to travel between galaxies?",
+    options: ["The Mushroom Kingdom", "The Comet Observatory", "Delfino Plaza", "Starship Mario"],
+    answer: "The Comet Observatory",
+    evidence: "The Comet Observatory is the hub world of Super Mario Galaxy, where Mario returns after collecting Grand Stars. — Super Mario Wiki"
   },
   {
     id: 2,
-    question: "In the 2026 sequel, what is the canonical relationship between Princess Peach and Rosalina?",
-    options: ["Mother and Daughter", "Sisters", "Cousins", "Guardian and Protégé"],
-    answer: "Sisters",
-    evidence: "The film reveals that Rosalina and Princess Peach are sisters born from star dust."
+    question: "Who is revealed to be the 'mother' and adoptive caretaker of the Lumas?",
+    options: ["Princess Peach", "Princess Daisy", "Rosalina", "Pauline"],
+    answer: "Rosalina",
+    evidence: "Rosalina is the protector of the cosmos and the adoptive mother of the Lumas, residing in the Comet Observatory. — Super Mario Wiki"
   },
   {
     id: 3,
-    question: "While shrunken and living in a miniature castle, what activities does Bowser engage in?",
-    options: ["Singing ballads and playing piano", "Painting and dealing with anger issues", "Training Mini Goombas", "Reading nihilistic poetry"],
-    answer: "Painting and dealing with anger issues",
-    evidence: "A shrunken Bowser is seen painting and working on his anger issues in a miniature castle."
+    question: "What do Hungry Lumas transform into after being fed a specific amount of Star Bits?",
+    options: ["Power Stars", "New Galaxies or Planets", "1-Up Mushrooms", "Super Stars"],
+    answer: "New Galaxies or Planets",
+    evidence: "Hungry Lumas will transform into a new planet or galaxy if the player feeds them the requested number of Star Bits. — Super Mario Wiki"
   },
   {
     id: 4,
-    question: "Where is Yoshi first discovered by Mario and Luigi in 'The Super Mario Galaxy Movie'?",
-    options: ["Inside an Inverted Pyramid", "In the sewers of Brooklyn", "On Yoshi’s Island", "In the Jungle Kingdom"],
-    answer: "Inside an Inverted Pyramid",
-    evidence: "The brothers find Yoshi inside an Inverted Pyramid in Tostarena Town."
+    question: "How many Grand Stars must Mario collect in total to fully power the Comet Observatory and reach Bowser?",
+    options: ["5", "6", "7", "8"],
+    answer: "6",
+    evidence: "There are six Grand Stars in Super Mario Galaxy. Once all are collected, the Comet Observatory can fly to the Center of the Universe. — Super Mario Wiki"
   },
   {
     id: 5,
-    question: "What is the primary motivation for Bowser Jr. in 'The Super Mario Galaxy Movie'?",
-    options: ["To find the Boomsday Weapon", "To restore honor to the Bowser name", "To capture Lumas", "To build a space casino"],
-    answer: "To restore honor to the Bowser name",
-    evidence: "Bowser Jr.'s primary goal is to restore honor to his family name and free his father."
+    question: "Which specific galaxy serves as the first location Mario visits after being separated from Luigi and Peach?",
+    options: ["Good Egg Galaxy", "Honeyhop Galaxy", "Gateway Galaxy", "Space Junk Galaxy"],
+    answer: "Gateway Galaxy",
+    evidence: "The Gateway Galaxy is the first galaxy visited in Super Mario Galaxy, where Mario meets his first Luma. — Super Mario Wiki"
   },
   {
     id: 6,
-    question: "What signature accessory does Bowser Jr. wear that helps conceal his identity?",
-    options: ["A red spiked collar", "A white bandana with a drawn mouth", "A pair of flying goggles", "A golden crown"],
-    answer: "A white bandana with a drawn mouth",
-    evidence: "Like in the games, Bowser Jr. wears a white bandana adorned with a sinister drawn-on mouth."
+    question: "Which boss, found in the Ghostly Galaxy, is known for throwing rocks and being vulnerable only to Boo Mushrooms or Bomb Boos?",
+    options: ["Dino Piranha", "Bouldergeist", "Kamarado", "Major Burrows"],
+    answer: "Bouldergeist",
+    evidence: "Bouldergeist is the boss of the Ghostly Galaxy and can only be damaged by using Bomb Boos. — Super Mario Wiki"
   },
   {
     id: 7,
-    question: "What power-up does Mario utilize to burrow underground while fighting Dry Bowser?",
-    options: ["Cloud Flower", "Red Star", "Drill Mushroom", "Cape Feather"],
-    answer: "Drill Mushroom",
-    evidence: "Mario uses a Drill Mushroom to tunnel through the ground during the fight with Dry Bowser."
+    question: "True or False: Rosalina's Storybook reveals that she originally left her home planet in a rusty spaceship to help a lonely Luma find its mother.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The storybook tells of a young girl (Rosalina) who met a Luma in a rusted spaceship and traveled the heavens to find its mother. — Super Mario Wiki"
   },
   {
     id: 8,
-    question: "Peach and Toad must defeat Birdo and Wart at which specific location?",
-    options: ["The Comet Observatory", "Planet Bowser", "Wart's Casino", "The Space Junk Galaxy"],
-    answer: "Wart's Casino",
-    evidence: "The duo confronts Wart at his casino in the Gateway Underground."
+    question: "True or False: Mario can transform into 'Bee Mario' in the Honeyhop Galaxy to fly for a limited time and stick to honey walls.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Bee Mario is a power-up introduced in Super Mario Galaxy that grant flight and the ability to climb honey-coated surfaces. — Super Mario Wiki"
   },
   {
     id: 9,
-    question: "What object does Bowser Jr. use to turn Mario and Luigi into babies?",
-    options: ["Magic Brush", "Super Scope", "Mini Mushroom", "Super Star"],
-    answer: "Super Scope",
-    evidence: "A blue Super Scope is revealed to have the power to de-age targets into babies."
+    question: "True or False: The final battle with Bowser takes place at the 'Center of the Universe' within a location called Bowser's Galaxy Reactor.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Bowser's Galaxy Reactor is the final galaxy where Mario confronts Bowser to save the universe. — Super Mario Wiki"
   },
   {
     id: 10,
-    question: "True or False: A post-credits scene features Princess Daisy rescuing a Whittle from a Ukiki.",
-    options: ["True", "False"],
-    answer: "True",
-    evidence: "The post-credits scene depicts Princess Daisy intervening to save a Whittle."
+    question: "What happens to the universe at the end of Super Mario Galaxy after the sun collapses into a black hole?",
+    options: ["It is destroyed forever", "It is reborn in a new cycle", "Mario wakes up from a dream", "Peach becomes the new ruler of the stars"],
+    answer: "It is reborn in a new cycle",
+    evidence: "The Lumas sacrifice themselves to neutralize the black hole, which causes the universe to be reborn in a cosmic cycle. — Super Mario Wiki"
   }
 ];
+
+export const MARIO_2026_TRIVIA = MARIO_GALAXY_TRIVIA; // Legacy reference to avoid breaking imports immediately
 
 export const MARIO_MIXED_TRIVIA: MCTriviaQuestion[] = [
   ...MARIO_2023_TRIVIA,

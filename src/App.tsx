@@ -892,7 +892,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
-              <li><Link to="/blog/super-mario-quiz" className="hover:text-primary transition-colors">News & Blog</Link></li>
+              <li><Link to="/blog/super-mario-galaxy-quiz" className="hover:text-primary transition-colors">News & Blog</Link></li>
             </>
           )}
         </ul>
@@ -3035,25 +3035,25 @@ const MarioSelector = () => {
         </button>
         <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-400">Mission</span></h1>
         <Helmet>
-          <title>Super Mario Trivia & Movie Quizzes | Fandom Trivia</title>
-          <meta name="description" content="Test your knowledge on The Super Mario Bros. Movie (2023) and The Super Mario Galaxy Movie (2026). Prove you're the ultimate Nintendo fan." />
+          <title>Super Mario Galaxy Lore & Trivia | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge on the Super Mario Bros. Movie (2023) and the 2007 masterpiece Super Mario Galaxy. Explore Rosalina's story and the Luma lore." />
           <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-super-mario" />
-          <meta property="og:title" content="Super Mario Trivia & Movie Quizzes | Fandom Trivia" />
-          <meta property="og:description" content="Enter the Mushroom Kingdom. Are you a true Mario expert? Test your movie knowledge now!" />
+          <meta property="og:title" content="Super Mario Galaxy Lore & Trivia | Fandom Trivia" />
+          <meta property="og:description" content="Enter the Mushroom Kingdom and the Cosmos. Are you a true Mario expert? Test your game and movie knowledge now!" />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
               { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Super Mario Universe", item: "https://fandom-trivia.vercel.app/selector-super-mario" }
+              { name: "Super Mario Galaxy Universe", item: "https://fandom-trivia.vercel.app/selector-super-mario" }
             ])}
           </script>
         </Helmet>
-        <p className="text-slate-400 font-medium">Select a film to test your knowledge, or take the Mixed Galaxy Challenge!</p>
+        <p className="text-slate-400 font-medium">Select a mission to test your knowledge of the films and the cosmic game lore!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Film 1", title: "The Super Mario Bros. (2023)", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "🏎️", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Film 2", title: "Galaxy Movie (2026)", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "15 random questions from both films", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          { label: "Movie (2023)", title: "The Super Mario Bros.", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "🏎️", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Game (2007)", title: "Super Mario Galaxy", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Mixed", title: "Star Child Challenge", desc: "15 random questions from movies & games", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -4835,8 +4835,8 @@ export default function App() {
             
             {/* Mario Trivia */}
             <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-mario-2026" element={<MCQuizView key="trivia-mario-2026" questions={MARIO_2026_TRIVIA} title="Galaxy Movie (2026)" scoreLabel="Galaxy Movie (2026)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-mario-random" element={<MCQuizView key="trivia-mario-random" questions={marioRandomQuestions} title="Mario Mixed Challenge" scoreLabel="Mario Mixed Challenge" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mario-2026" element={<MCQuizView key="trivia-mario-2026" questions={MARIO_2026_TRIVIA} title="Super Mario Galaxy Lore" scoreLabel="Super Mario Galaxy Game Lore" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mario-random" element={<MCQuizView key="trivia-mario-random" questions={marioRandomQuestions} title="Star Child Challenge" scoreLabel="Mario Mixed Challenge" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             
             {/* Frozen Trivia */}
             <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

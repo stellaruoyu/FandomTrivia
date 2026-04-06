@@ -11,61 +11,54 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    slug: 'super-mario-quiz',
-    title: 'The Ultimate Super Mario Movie Quiz: Is Your Fan Knowledge 1-Up Material?',
-    metaDescription: 'Think you\'re a Super Mario expert? From the 2023 hit to 2026 movie rumors, test your knowledge with the ultimate Super Mario movie quiz. Prove you\'re a Starman!',
+    slug: 'super-mario-galaxy-quiz',
+    title: 'Super Mario Galaxy Trivia/Quiz',
+    metaDescription: 'Are you a true Star Child? Test your knowledge with the ultimate Super Mario Galaxy quiz! From Rosalina to the Lumas, prove you\'re the master of the cosmos now.',
     date: '2026-04-05',
     author: 'Fandom Trivia Team',
     image: '/images/supermario.jpg',
-    keywords: ['Super Mario quiz', 'Nintendo trivia', 'Mushroom Kingdom lore', 'Super Mario Bros. Movie 2026'],
+    keywords: ['Super Mario Galaxy quiz', 'Nintendo Wii trivia', 'Rosalina back story', 'Luma evolution', 'Comet Observatory lore'],
     content: `
-      <h2>The Hook</h2>
-      <p>Whether you’ve been jumping on Goombas since 1985 or you just fell in love with the plumber’s cinematic debut in 2023, there is no denying it: Mario is the undisputed king of pop culture. But after the multi-billion dollar success of <em>The Super Mario Bros. Movie</em>, the stakes have never been higher. With rumors of a 2026 sequel already swirling, the real question is—how well do you <em>actually</em> know the lore? Are you a Starman-level expert, or are you doomed to fall into the first pit?</p>
+      <h2>The Hook: A Cosmic Call to Adventure</h2>
+      <p>Remember the first time you stepped onto the Comet Observatory? That swelling orchestral score, the shimmering stardust underfoot, and the dizzying sensation of gravity shifting? <em>Super Mario Galaxy</em> didn't just change the platforming game; it rewrote the rules of the universe. For millions of us, it was the moment Mario truly went where no plumber had gone before. But as the years pass and the lore deepens, a new question arises: How much do you <em>really</em> remember about the Star Festivals, the Grand Stars, and the mysterious caretaker of the stars, Rosalina?</p>
       
-      <p>It’s time to put your skills to the test. Our <strong>Super Mario movie quiz</strong> isn't just a walk in the park; it’s a high-speed dash through Rainbow Road. Do you have what it takes to save the Mushroom Kingdom?</p>
-      
-      <div class="my-8">
-        <a href="/selector-super-mario" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
-          Take the Ultimate Super Mario Quiz Now
+      <p>It's time to find out. Our <strong>Super Mario Galaxy quiz</strong> is designed to challenge even the most seasoned Wii veterans. Do you have what it takes to earn the 121st Star, or will you be lost in the void?</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-mario-2026" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Super Mario Galaxy Quiz Now
         </a>
       </div>
 
-      <h2>More Than Just a Plumber: How Deep Does Your Nintendo Trivia Go?</h2>
-      <p>When Illumination and Nintendo teamed up, they didn't just make a movie; they packed every frame with decades of history. From the hidden GameCube startup sound to the deep-cut references to <em>Punch-Out!!</em>, a true fan needs more than just a passing interest to score a 100%.</p>
+      <h2>Which Super Mario Galaxy Character Are You Most Like?</h2>
+      <p>Before you dive into the deep-cut trivia, let's talk about the soul of the game. <em>Super Mario Galaxy</em> introduced us to an unforgettable cast that added a layer of emotional depth rarely seen in the Mushroom Kingdom. In this cosmic odyssey, every character serves a purpose in the grand cycle of the universe.</p>
       
-      <p>Our <strong>Super Mario quiz</strong> challenges you to recall the smallest details. Do you remember the specific name of the antique shop in the Mushroom Kingdom? Can you name the musical instrument Bowser plays during his "Peaches" ballad? If these questions are already making you sweat, you might need a Power-Up!</p>
-
-      <h3>Which Super Mario Movie Character Represents Your Personality?</h3>
-      <p>Trivia isn't just about facts; it's about the soul of the characters. Our interactive platform doesn't just score your brain—it assesses your fan personality. Are you the brave, slightly impulsive Mario? The resilient and athletic Princess Peach? Or perhaps the lovable, anxious Luigi who always finds his courage when it counts?</p>
+      <p>Are you a <strong>Luma</strong>, full of boundless potential and ready to transform into something greater for the sake of the galaxy? These "Star Children" are more than just power-up providers; they are the literal building blocks of existence. Or are you more like <strong>Rosalina</strong>, the stoic, maternal watcher of the cosmos who keeps a lonely vigil over the Star Bits from her Comet Observatory? Her back story—revealed slowly through her hidden storybook—paints a picture of a wanderer who found her family among the stars.</p>
       
-      <p>Taking a <strong>Super Mario personality test</strong> is the perfect way to see where you fit in the grand hierarchy of the Mushroom Kingdom. Fans who score in the elite brackets don't just get bragging rights—they earn exclusive badges that prove they are "Mystery Solvers" in our global community.</p>
+      <p>Maybe you're the classic hero <strong>Mario</strong>, always ready to defy gravity for those you love, or even the ambitious <strong>Bowser</strong>. Let's be honest, Bowser’s plan in <em>Galaxy</em> was his most ambitious yet. He wasn't just kidnapping a princess; he was building a galaxy-sized empire powered by a stolen reactor at the center of the universe. Our <strong>Super Mario Galaxy personality test</strong> segments within the quiz help you identify your cosmic counterpart. It's not just about winning; it's about finding your place in the multiverse.</p>
 
-      <div class="my-8">
-        <a href="/rankings" class="inline-block border border-white/20 hover:border-white/40 bg-white/5 text-white px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition-all">
-          Challenge Your Friends on the Leaderboard
-        </a>
-      </div>
-
-      <h2>Fan Theories and the 2026 Super Mario Galaxy Rumors</h2>
-      <p>The hype doesn't stop with the first film. Dedicated superfans are already dissecting the post-credits scenes and speculating on the 2026 sequel. Will we see Rosalina? Is the Luma’s dark humor a hint toward a more cosmic adventure?</p>
+      <h2>How Well Do You Actually Know the Luma Lore?</h2>
+      <p>Think you're an expert? Let's test those gears. Every fan knows about the yellow Lumas that grant the Spin move, but do you know the dietary requirements of a Hungry Luma? Can you name the specific galaxy where the first Grand Star was recovered? Or better yet, do you know the role of Polari, the oldest and wisest of the Lumas who stays by Rosalina's side?</p>
       
-      <p>If you’ve been following the fan theories, you’re in the perfect position to ace our advanced <strong>Nintendo movie trivia</strong>. We stay updated with the latest lore, ensuring that every time you revisit Fandom Trivia, there’s a new challenge waiting to push your fandom to the limit.</p>
+      <p>The lore of <em>Super Mario Galaxy</em> is deceptively deep. Beyond the gorgeous visuals of the Gusty Garden Galaxy and the haunting melodies of the Space Junk Galaxy, there are hidden stories. For instance, the <strong>Rosalina back story</strong> sequences revealed a level of emotional complexity that brought many players to tears. Understanding the cycle of the Lumas—how they live, eat Star Bits, and eventually transition into planets or galaxies—is essential for any true fan.</p>
 
-      <h2>Why Fandom Trivia is the Ultimate Destination for Superfans</h2>
-      <p>We don't do generic multiple-choice. Fandom Trivia is built by fans, for fans. Our platform features:</p>
+      <h2>Can You Beat Our Hardest Super Mario Galaxy Quiz?</h2>
+      <p>We’ve designed the ultimate challenge for the dedicated Nintendo historians and speedrunners alike. This isn't your average "Which power-up is this?" test. We’re going into the deep-space details that separate the casual players from the Grand Star masters:</p>
       <ul class="list-disc list-inside space-y-2 text-slate-300">
-        <li><strong>Interactive Matchmaking:</strong> Compete against other Nintendo buffs in real-time.</li>
-        <li><strong>Dynamic Leaderboards:</strong> Climb the ranks and become the #1 Mario expert in the world.</li>
-        <li><strong>Daily Riddles:</strong> Solve our "Who Am I?" text challenges to unlock limited-edition character badges.</li>
+        <li><strong>Luma Evolution:</strong> What specific object must a Hungry Luma eat to create a new galaxy?</li>
+        <li><strong>Boss Mastery:</strong> Which galaxy features the dreaded Bouldergeist, and what is the only way to damage it?</li>
+        <li><strong>Cosmic Secrets:</strong> How many Power Stars are required to unlock the final encounter at Bowser's Galaxy Reactor?</li>
+        <li><strong>The 121st Star:</strong> What happens when you collect every single star with both Mario and Luigi?</li>
       </ul>
 
       <div class="mt-12 p-8 rounded-3xl bg-primary/10 border border-primary/30 text-center">
         <h4 class="text-2xl font-black italic uppercase italic mb-4">Ready to Prove Your Passion?</h4>
-        <p class="text-sm text-slate-300 mb-8 max-w-md mx-auto">Bowser is waiting, the Princess needs saving, and your Starman status is on the line. Don't let the Goombas win.</p>
-        <a href="/selector-super-mario" class="inline-block bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/40 scale-105">
-          Take the Ultimate Super Mario Quiz Now
+        <p class="text-sm text-slate-300 mb-8 max-w-md mx-auto">The galaxy is vast, but your knowledge shouldn't have any limits. Don't let the black holes win—jump into the action and claim your crown as the master of the cosmos.</p>
+        <a href="/trivia-mario-2026" class="inline-block bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/40 scale-105">
+          Take the Ultimate Super Mario Galaxy Quiz Now
         </a>
       </div>
     `
   }
+
 ];
