@@ -26,6 +26,8 @@ import {
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
   FROZEN_1_TRIVIA, FROZEN_2_TRIVIA, FROZEN_MIXED_TRIVIA,
   MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
+  PAW_PATROL_TRIVIA,
+  KUNG_FU_PANDA_1_TRIVIA, KUNG_FU_PANDA_2_TRIVIA, KUNG_FU_PANDA_3_TRIVIA, KUNG_FU_PANDA_4_TRIVIA, KUNG_FU_PANDA_RANDOM_TRIVIA,
   MCTriviaQuestion, BADGES, Badge, DAILY_RIDDLES
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
@@ -73,7 +75,13 @@ const getQuizTitle = (quizId: string): string => {
     'frozen': 'Frozen (2013)',
     'frozen-2': 'Frozen 2',
     'mario-2023': 'The Super Mario Bros. Movie (2023)',
-    'mario-2026': 'The Super Mario Galaxy Movie (2026)'
+    'mario-2026': 'The Super Mario Galaxy Movie (2026)',
+    'pawpatrol': 'PAW Patrol: Mission Ready',
+    'kfp-1': 'Kung Fu Panda',
+    'kfp-2': 'Kung Fu Panda 2',
+    'kfp-3': 'Kung Fu Panda 3',
+    'kfp-4': 'Kung Fu Panda 4',
+    'kfp-random': 'Dragon Warrior Challenge'
   };
 
   return map[normalizedId] || normalizedId;
@@ -89,12 +97,15 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('despicable')) return 'Despicable Me Universe';
   if (q.includes('frozen')) return 'Frozen Universe';
   if (q.includes('mario')) return 'Super Mario';
+  if (q.includes('pawpatrol') || q.includes('paw patrol')) return 'Rescue Universe';
+  if (q.includes('kung fu panda') || q.includes('kfp')) return 'Kung Fu Panda Universe';
   return 'Other Challenges';
 };
 
 const getQuizImage = (quizId: string): string => {
   const q = quizId.toLowerCase();
   if (q.includes('twilight')) return '/images/Cullen Family.jpg';
+  if (q.includes('kung-fu-panda') || q.includes('kfp')) return '/images/kungfupanda.jpg';
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
@@ -102,6 +113,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('despicable')) return '/images/despicable-me.jpg';
   if (q.includes('frozen')) return '/images/frozen.jpg';
   if (q.includes('mario')) return '/images/supermario.jpg';
+  if (q.includes('pawpatrol') || q.includes('paw patrol')) return '/images/pawpatrol.jpg';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -155,6 +167,8 @@ const useQuizStats = () => {
       if (target === 'zootopia' && (univName.includes('zootopia') || id.includes('zootopia'))) return sum + val;
       if (target === 'despicable-me' && (univName.includes('despicable') || id.includes('despicable'))) return sum + val;
       if (target === 'frozen' && (univName.includes('frozen') || id.includes('frozen'))) return sum + val;
+      if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
+      if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
       
       return sum;
     }, 0);
@@ -871,6 +885,8 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
           <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
+          <li><Link to="/trivia-pawpatrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
+          <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
         </ul>
       </div>
 
@@ -892,7 +908,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
-              <li><Link to="/blog/super-mario-galaxy-quiz" className="hover:text-primary transition-colors">News & Blog</Link></li>
+              <li><Link to="/blog" className="hover:text-primary transition-colors">News & Blog</Link></li>
             </>
           )}
         </ul>
@@ -3023,6 +3039,14 @@ const MARIO_GRADES = [
   { threshold: 0, label: 'Goomba Bait', color: 'text-slate-400', character: { name: 'Goomba', image: '/images/supermario.jpg', desc: 'Watch out for jumping plumbers! You have a lot more to learn about the movies.' } },
 ];
 
+const KUNG_FU_PANDA_GRADES = [
+  { threshold: 95, label: 'Dragon Warrior', color: 'text-amber-400', character: { name: 'Po', image: '/images/kungfupanda.jpg', desc: 'Inner peace reached! You are the legendary Dragon Warrior, master of Chi and dumplings.' } },
+  { threshold: 80, label: 'Spirit Warrior', color: 'text-emerald-400', character: { name: 'Kai', image: '/images/kungfupanda.jpg', desc: 'Your power is immense! You have mastered the techniques of the Spirit Realm.' } },
+  { threshold: 60, label: 'Kung Fu Master', color: 'text-primary', character: { name: 'Shifu', image: '/images/kungfupanda.jpg', desc: 'Solid discipline. You have potential, but your training is far from over.' } },
+  { threshold: 40, label: 'Noodle Apprentice', color: 'text-orange-400', character: { name: 'Mr. Ping', image: '/images/kungfupanda.jpg', desc: 'There is no secret ingredient! Just you... needing a bit more study.' } },
+  { threshold: 0, label: 'Dumpling Thief', color: 'text-slate-400', character: { name: 'Early Po', image: '/images/kungfupanda.jpg', desc: 'Skadoosh! You spent more time in the kitchen than the training hall.' } },
+];
+
 const MarioSelector = () => {
   const navigate = useNavigate();
   const { getQuizCount, formatCount } = useQuizStats();
@@ -3092,6 +3116,13 @@ const DESPICABLE_ME_GRADES = [
   { threshold: 70, label: 'Super Agent', color: 'text-blue-400', character: { name: 'Lucy Wilde', image: '/images/despicable-me.jpg', desc: 'Lipstick taser! Your instincts are sharp and your knowledge is vast.' } },
   { threshold: 50, label: 'Minion in Training', color: 'text-yellow-300', character: { name: 'Stuart', image: '/images/despicable-me.jpg', desc: 'Banana! You are getting there, but you might need more jelly.' } },
   { threshold: 0, label: 'Fresh Recruit', color: 'text-slate-400', character: { name: 'Jerry', image: '/images/despicable-me.jpg', desc: 'Whaaat? You are still figuring out which end is up. Keep practicing!' } },
+];
+
+const PAW_PATROL_GRADES = [
+  { threshold: 90, label: 'Top Pup', color: 'text-blue-400', character: { name: 'Chase', image: '/images/pawpatrol.jpg', desc: 'Sargent Chase is on the case! You are a true leader and know Adventure Bay like the back of your paw.' } },
+  { threshold: 70, label: 'Rescue Hero', color: 'text-red-500', character: { name: 'Marshall', image: '/images/pawpatrol.jpg', desc: 'I\'m fired up! Your rescue skills are impressive. Adventure Bay is safe in your hands.' } },
+  { threshold: 50, label: 'Pup in Training', color: 'text-green-500', character: { name: 'Rocky', image: '/images/pawpatrol.jpg', desc: 'Don\'t lose it, reuse it! You have some good ideas, but you need more practice at the Lookout.' } },
+  { threshold: 0, label: 'New Recruit', color: 'text-slate-400', character: { name: 'Ryder', image: '/images/pawpatrol.jpg', desc: 'No job is too big, no pup is too small! Keep learning and you\'ll be a Top Pup in no time.' } },
 ];
 
 const DespicableMeSelector = () => {
@@ -3379,6 +3410,88 @@ const DailyMysteryQuiz = ({ setUser }: {
   );
 };
 
+const BlogListView = () => {
+  const navigate = useNavigate();
+  
+  // Ensure Super Mario is first
+  const sortedPosts = [...BLOG_POSTS].sort((a, b) => {
+    if (a.slug.includes('mario')) return -1;
+    if (b.slug.includes('mario')) return 1;
+    return 0;
+  });
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      className="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-12"
+    >
+      <Helmet>
+        <title>Fandom News & Blog | The Ultimate Fan Experience</title>
+        <meta name="description" content="Stay updated with the latest fandom news, trivia guides, and expert theories." />
+      </Helmet>
+
+      <div className="text-center space-y-4 mb-16">
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic leading-none">
+          News & <span className="text-primary text-outline-sm">Blog</span>
+        </h1>
+        <p className="text-slate-400 font-medium max-w-2xl mx-auto">
+          Deep dives, trivia guides, and the latest from your favorite universes. 
+          Expertly crafted for the ultimate superfan.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedPosts.map((post, i) => (
+          <motion.div
+            key={post.slug}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="group relative bg-card-dark rounded-3xl overflow-hidden border border-white/10 flex flex-col h-full shadow-2xl hover:border-primary/30 transition-all duration-500"
+          >
+            <div className="relative aspect-video overflow-hidden">
+               <img 
+                 src={post.image} 
+                 alt={post.title} 
+                 className="size-full object-cover transition-transform duration-700 group-hover:scale-110" 
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+            </div>
+            
+            <div className="p-8 flex flex-col flex-1 justify-between gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black text-primary uppercase tracking-widest">
+                    {post.keywords[0]}
+                  </span>
+                  <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest">
+                    {new Date(post.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-black text-white leading-tight tracking-tight group-hover:text-primary transition-colors">
+                  {post.title}
+                </h2>
+                <p className="text-slate-400 text-sm font-medium line-clamp-3 leading-relaxed">
+                  {post.metaDescription}
+                </p>
+              </div>
+
+              <button
+                onClick={() => navigate(`/blog/${post.slug}`)}
+                className="w-full bg-white/5 hover:bg-primary text-white py-4 rounded-xl font-black text-sm uppercase tracking-[0.2em] transition-all border border-white/10 hover:border-primary shadow-xl hover:shadow-primary/20 flex items-center justify-center gap-2"
+              >
+                Read Article
+                <ArrowRight className="size-4" />
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 const BlogView = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -3420,10 +3533,10 @@ const BlogView = () => {
 
       <div className="space-y-6">
         <button 
-          onClick={() => navigate('/')} 
+          onClick={() => navigate('/blog')} 
           className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold"
         >
-          <ArrowLeft className="size-4" /> Back to Home
+          <ArrowLeft className="size-4" /> Back to Blog
         </button>
         
         <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
@@ -3446,6 +3559,14 @@ const BlogView = () => {
       <div 
         className="prose prose-invert max-w-none prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tight prose-p:text-slate-300 prose-p:leading-relaxed blog-content"
         dangerouslySetInnerHTML={{ __html: post.content }}
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          const anchor = target.closest('a');
+          if (anchor && anchor.getAttribute('href')?.startsWith('/')) {
+            e.preventDefault();
+            navigate(anchor.getAttribute('href')!);
+          }
+        }}
       />
 
       <div className="pt-10 border-t border-white/10">
@@ -3657,6 +3778,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
                       if (universe.id === 'frozen') navigate('/selector-frozen');
                       if (universe.id === 'super-mario') navigate('/selector-super-mario');
+                      if (universe.id === 'pawpatrol') navigate('/trivia-pawpatrol');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
@@ -4325,6 +4447,70 @@ const EmojiRain = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const KungFuPandaSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen pt-24 pb-12 px-6 relative"
+    >
+      <div className="max-w-6xl mx-auto space-y-12">
+        <div className="flex flex-col md:flex-row items-center gap-8 bg-card-dark/50 backdrop-blur-xl p-8 rounded-3xl border border-white/10 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: 'url(\"/images/kungfupanda.jpg\")' }}></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-card-dark via-card-dark/80 to-transparent"></div>
+          
+          <div className="relative z-10 size-48 rounded-2xl overflow-hidden shadow-2xl border-2 border-primary/50 group-hover:border-primary transition-colors">
+            <img src="/images/kungfupanda.jpg" alt="Kung Fu Panda" className="w-full h-full object-cover" />
+          </div>
+          
+          <div className="relative z-10 flex-1 space-y-4">
+            <div className="flex items-center gap-3">
+              <Trophy className="size-6 text-primary" />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Universe Hub</span>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">Kung Fu Panda</h1>
+            <p className="text-lg text-slate-400 max-w-xl font-medium leading-relaxed italic">
+              "There is no secret ingredient. It's just you." Master the four volumes of the Dragon Warrior's journey.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { id: '1', title: 'Volume I: The Beginning', color: 'primary', route: '/trivia-kfp-1', desc: 'Po\'s journey from noodle shop to Jade Palace.' },
+            { id: '2', title: 'Volume II: Inner Peace', color: 'accent', route: '/trivia-kfp-2', desc: 'Stop Lord Shen and uncover Po\'s mysterious past.' },
+            { id: '3', title: 'Volume III: Mastery', color: 'purple-500', route: '/trivia-kfp-3', desc: 'Defeat Kai and master the power of Chi.' },
+            { id: '4', title: 'Volume IV: Evolution', color: 'green-500', route: '/trivia-kfp-4', desc: 'The Chameleon arises. Train the next Dragon Warrior.' },
+            { id: 'random', title: 'The Dragon Challenge', color: 'amber-500', route: '/trivia-kfp-random', desc: 'A mixed trial across all four films. High difficulty.' }
+          ].map((vol) => (
+            <button
+              key={vol.id}
+              onClick={() => navigate(vol.route)}
+              className="group relative bg-card-dark rounded-2xl p-6 border border-white/5 hover:border-white/20 transition-all text-left overflow-hidden"
+            >
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-${vol.color}/10 blur-3xl -mr-16 -mt-16 group-hover:bg-${vol.color}/20 transition-colors`}></div>
+              <div className="relative z-10 space-y-4">
+                <div className={`size-10 rounded-xl bg-${vol.color}/20 border border-${vol.color}/30 flex items-center justify-center`}>
+                  {vol.id === 'random' ? <Zap className={`size-5 text-${vol.color}`} /> : <Star className={`size-5 text-${vol.color}`} />}
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white uppercase italic tracking-tight">{vol.title}</h3>
+                  <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-widest">{vol.desc}</p>
+                </div>
+                <div className="pt-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
+                  Begin Training <ArrowRight className="size-3" />
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -4376,6 +4562,10 @@ export default function App() {
 
   const marioRandomQuestions = useMemo(() => 
     [...(MARIO_2023_TRIVIA || []), ...(MARIO_2026_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
+  []);
+
+  const kfpRandomQuestions = useMemo(() => 
+    [...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_3_TRIVIA || []), ...(KUNG_FU_PANDA_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   useEffect(() => {
@@ -4625,6 +4815,8 @@ export default function App() {
           unlocked = true;
         } else if (badge.targetQuiz === 'kpop' && titleLower.includes('k-pop')) {
           unlocked = true;
+        } else if (badge.targetQuiz === 'kung-fu-panda' && (titleLower.includes('kung fu panda') || titleLower.includes('kfp'))) {
+          unlocked = true;
         }
       }
 
@@ -4711,6 +4903,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView user={user} />} />
+            <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
@@ -4792,6 +4985,7 @@ export default function App() {
               isDaily={location.state?.isDaily} 
               onQuizComplete={evaluateBadges} 
             />} />
+            <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-three-body-problem" element={<MCQuizView key="trivia-three-body-problem" questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-the-dark-forest" element={<MCQuizView key="trivia-the-dark-forest" questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -4832,6 +5026,14 @@ export default function App() {
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
+
+            {/* Kung Fu Panda Universe */}
+            <Route path="/selector-kung-fu-panda" element={<KungFuPandaSelector />} />
+            <Route path="/trivia-kfp-1" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_1_TRIVIA} title="Volume I: The Beginning" scoreLabel="KFP: The Beginning" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-2" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_2_TRIVIA} title="Volume II: Inner Peace" scoreLabel="KFP: Inner Peace" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-3" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_3_TRIVIA} title="Volume III: Mastery" scoreLabel="KFP: Mastery" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-4" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_4_TRIVIA} title="Volume IV: Evolution" scoreLabel="KFP: Evolution" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-random" element={<MCQuizView user={user} questions={kfpRandomQuestions} title="The Dragon Challenge" scoreLabel="KFP: Mixed Trial" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Mario Trivia */}
             <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

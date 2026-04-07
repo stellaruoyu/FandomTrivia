@@ -4,7 +4,7 @@ export const NAV_LINKS = [
   { name: 'Home', href: '#' },
   { name: 'Leaderboards', href: '#' },
   { name: 'Categories', href: '#' },
-  { name: 'News & Blog', href: '/blog/super-mario-galaxy-quiz' },
+  { name: 'News & Blog', href: '/blog' },
 ];
 
 export const DASHBOARD_NAV_LINKS = [
@@ -112,6 +112,22 @@ export const BADGES: Badge[] = [
     description: 'Solved the "Who am I?" Daily Riddle.',
     icon: 'Lightbulb',
     color: 'text-indigo-400'
+  },
+  {
+    id: 'adventure-bay-hero',
+    name: 'Adventure Bay Hero',
+    description: 'Complete the PAW Patrol rescue challenge.',
+    icon: 'ShieldCheck',
+    color: 'text-blue-400',
+    targetQuiz: 'pawpatrol'
+  },
+  {
+    id: 'dragon-warrior',
+    name: 'Dragon Warrior',
+    description: 'Master the art of Kung Fu in any Panda quiz.',
+    icon: 'Trophy',
+    color: 'text-amber-300',
+    targetQuiz: 'kung-fu-panda'
   }
 ];
 
@@ -194,6 +210,26 @@ export const UNIVERSES = [
     image: '/images/supermario.jpg',
     buttonText: 'Jump into Action',
     icon: 'Star'
+  },
+  {
+    id: 'pawpatrol',
+    title: 'PAW Patrol',
+    tags: ['Animation', 'Rescue', 'Kids'],
+    description: 'Adventure Bay is in trouble! Join Ryder and the pups on their most heroic missions yet. No job is too big, no pup is too small!',
+    image: '/images/pawpatrol.jpg',
+    seoAlt: 'The PAW Patrol team in front of the Lookout tower',
+    buttonText: 'Start the Rescue',
+    icon: 'ShieldCheck'
+  },
+  {
+    id: 'kung-fu-panda',
+    title: 'Kung Fu Panda',
+    tags: ['Animation', 'Action', 'Comedy'],
+    description: "Believe in yourself and your destiny. Join Po, the Furious Five, and Master Shifu on their journey to master the art of Kung Fu and protect China.",
+    image: '/images/kungfupanda.jpg',
+    seoAlt: 'Po, the Furious Five, and other characters from Kung Fu Panda in a dynamic pose',
+    buttonText: 'Join the Dragon Warrior',
+    icon: 'Trophy'
   }
 ];
 
@@ -5432,6 +5468,14 @@ export const DAILY_QUIZZES = [
     path: "/trivia-frozen-1",
     image: "/images/frozen.jpg",
     color: "from-sky-600/20 to-blue-600/20"
+  },
+  {
+    id: "paw-patrol-rescue",
+    title: "PAW Patrol: Mission Ready",
+    description: "No job is too big, no pup is too small! Test your knowledge of Adventure Bay's finest rescue team.",
+    path: "/trivia-pawpatrol",
+    image: "/images/pawpatrol.jpg",
+    color: "from-blue-600/20 to-red-600/20"
   }
 ];
 
@@ -5477,6 +5521,451 @@ export const DAILY_RIDDLES = [
     clue: "I am the \"Chosen One\" who brought balance to the Force, but first I had to fall to the Dark Side.",
     answer: "Anakin Skywalker",
     image: "/images/riddles/anakin.png"
+  },
+  {
+    id: "riddle-8",
+    clue: "I am a 10-year-old leader of a rescue team. I drive a high-tech ATV and always say, 'No job is too big, no pup is too small!'",
+    answer: "Ryder",
+    image: "/images/pawpatrol.jpg"
   }
+];
+
+// --- PAW Patrol Trivia ---
+
+export const PAW_PATROL_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which breed of dog is Marshall, the team's fire fighting pup?",
+    options: ["German Shepherd", "Dalmatian", "English Bulldog", "Cockapoo"],
+    answer: "Dalmatian",
+    evidence: "Marshall is a Dalmatian.",
+  },
+  {
+    id: 2,
+    question: "According to the standard mission briefing line-up, which pup stands between Zuma and Chase?",
+    options: ["Rocky", "Skye", "Rubble", "Marshall"],
+    answer: "Rubble",
+    evidence: "During standard mission briefings, the pups line up in the following order: Marshall, Zuma, Rubble, Chase, Rocky, and Skye.",
+  },
+  {
+    id: 3,
+    question: "What specific environmental fear does Tracker possess, as revealed in 'Tracker Joins the Pups!'?",
+    options: ["Water", "Heights", "The dark", "Spiders"],
+    answer: "The dark",
+    evidence: "Tracker: The dark (episode revealed: ' Tracker Joins the Pups!')",
+  },
+  {
+    id: 4,
+    question: "How old is the PAW Patrol leader, Ryder?",
+    options: ["8 years old", "10 years old", "12 years old", "6 years old"],
+    answer: "10 years old",
+    evidence: "Ryder, the leader of the Paw Patrol, is reportedly 10 years old.",
+  },
+  {
+    id: 5,
+    question: "Which secondary pup member is a Husky who lives in an igloo?",
+    options: ["Tracker", "Rex", "Everest", "Al"],
+    answer: "Everest",
+    evidence: "I am Everest. I used to live alone in an igloo until Jake invited me to help out in Adventure Bay on his mountain.",
+  },
+  {
+    id: 6,
+    question: "What icon is located on Skye's food bowl to represent her aviation specialty?",
+    options: ["Stars", "Anchor", "Clouds", "Propeller"],
+    answer: "Clouds",
+    evidence: "Skye has clouds on her bowl because she flies through the air for her job.",
+  },
+  {
+    id: 7,
+    question: "Which pup was the last of the original six members to join the PAW Patrol?",
+    options: ["Rocky", "Zuma", "Skye", "Rubble"],
+    answer: "Rubble",
+    evidence: "I am Rubble. I was the last of the first six pups to join the PAW Patrol.",
+  },
+  {
+    id: 8,
+    question: "What is Chase's specific allergy that often interferes with his police duties?",
+    options: ["Brussels sprouts", "Cats and feathers", "Pollon", "Dust"],
+    answer: "Cats and feathers",
+    evidence: "What is Chase allergic to? Cats and feathers.",
+  },
+  {
+    id: 9,
+    question: "Zuma, the water rescue pup, has a documented fear of which creature?",
+    options: ["Eagles", "Snakes", "Blobfish", "Spiders"],
+    answer: "Blobfish",
+    evidence: "Zuma: Ghosts (episode revealed: ' Pups and the Ghost Pirate'), crocodiles (episode revealed: ' Pups Save the Critters') and blobfish (episode revealed: ' Valiente: A Tracker Story')",
+  },
+  {
+    id: 10,
+    question: "Which character uses the catchphrase 'Don't lose it, reuse it!'?",
+    options: ["Rubble", "Ryder", "Rocky", "Marshall"],
+    answer: "Rocky",
+    evidence: "I am Rocky. I drive a recycling truck and am good with tools. 'Don't lose it, reuse it!' is something I say a lot.",
+  },
+  {
+    id: 11,
+    question: "Ryder's high-tech ATV is capable of transforming into a snowmobile.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Which PAW Patrol character drives a high-tech ATV that can turn into a jet ski or snowmobile? Answer: Ryder.",
+  },
+  {
+    id: 12,
+    question: "According to the 'Pups Save a Toof' episode, Ryder’s greatest fear is eating Brussels sprouts.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Ryder: Eating Brussels sprouts (episode revealed: ' Pups Save a Toof')",
+  },
+  {
+    id: 13,
+    question: "Rocky is a mixed-breed pup who loves taking bubble baths.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "I am Rocky... I really hate baths and water in general.",
+  },
+  {
+    id: 14,
+    question: "The Pup Tags glow only when the pups are eating to signal it is mealtime.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "How do the Pups know when Ryder is calling them to the Lookout for a mission? Their Pup Tags glow!",
+  },
+  {
+    id: 15,
+    question: "Zuma is a Chocolate Labrador who is afraid of ghosts.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Zuma: Ghosts (episode revealed: ' Pups and the Ghost Pirate')",
+  },
+];
+
+// --- Kung Fu Panda Trivia ---
+
+export const KUNG_FU_PANDA_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What is the exact number of scrolls used to populate the shelves in the Hall of Warriors at the Jade Palace?",
+    options: ["1,000", "10,000", "22,388", "50,000"],
+    answer: "22,388",
+    evidence: "It actually took 22,388 scrolls to fill up the shelves in the back of the Jade Palace's Hall of Warriors, even though there's only supposed to be 1,000.",
+  },
+  {
+    id: 2,
+    question: "In the film's 'color language' system, which color was strategically used to represent knowledge and wisdom?",
+    options: ["Red", "Blue", "Green", "Gold"],
+    answer: "Green",
+    evidence: "Green was the color for knowledge and wisdom.",
+  },
+  {
+    id: 3,
+    question: "The landscape of the Valley of Peace was inspired by which two real-life Chinese regions?",
+    options: ["The Gobi Desert and Himalayan Range", "The Li River Valley and Yellow Mountain", "The Yangtze River and Forbidden City", "The Pearl River Delta and Mount Tai"],
+    answer: "The Li River Valley and Yellow Mountain",
+    evidence: "The Valley of Peace's landscape was inspired by the Li River Valley and Yellow Mountain regions of China.",
+  },
+  {
+    id: 4,
+    question: "What is the specific meaning of the name 'Oogway' when written in its Mandarin form?",
+    options: ["Grand Master", "Wise Teacher", "Land turtle", "Tortoise"],
+    answer: "Tortoise",
+    evidence: "'Oogway,' written in its Mandarin form, is 'wu-gui,' which means tortoise.",
+  },
+  {
+    id: 5,
+    question: "According to the production notes, how many years did it take for DreamWorks to complete the first Kung Fu Panda film?",
+    options: ["Two years", "Three years", "Four years", "Five years"],
+    answer: "Four years",
+    evidence: "'Kung Fu Panda' took four years to complete.",
+  },
+  {
+    id: 6,
+    question: "The visual design of the entrance to the Jade Palace was inspired by George Lucas's Skywalker Ranch.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The scene when the awe-struck Po enters the Jade Palace was inspired by the director's first experience entering 'Star Wars' creator George Lucas' Skywalker Ranch.",
+  },
+  {
+    id: 7,
+    question: "The Dragon Scroll contains the secret to the 'Wuxi Finger Hold' written in ancient ink.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Po is confused at first as to why there is nothing written on the scroll. It is completely blank!",
+  },
+  {
+    id: 8,
+    question: "In the early stages of story development, the character Mantis was intended to be a villainous traitor.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Mantis originally started out as a villain? Early in story development, Mantis was a traitor conspiring with Tai Lung...",
+  },
+  {
+    id: 9,
+    question: "During a confrontation with the Furious Five, Master Shifu successfully defended himself using only a flute.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Afterwards, the Furious Five attacked him. But the great Master Shifu managed to fend off their attacks, using only his flute.",
+  },
+  {
+    id: 10,
+    question: "The messenger goose who travels to Chorh-Gom Prison to warn of Tai Lung's escape is named Mr. Pong.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Zeng is voiced by Dan Fogler, and is a messenger goose.",
+  },
+];
+
+export const KUNG_FU_PANDA_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "In what year was the animated sequel 'Kung Fu Panda 2' released in theaters?",
+    options: ["2010", "2011", "2012", "2013"],
+    answer: "2011",
+    evidence: "'Kung Fu Panda 2' was released in 2011.",
+  },
+  {
+    id: 2,
+    question: "Which director led the production of 'Kung Fu Panda 2'?",
+    options: ["Markus Manninen", "Jennifer Yuh", "Laurie L. Dove", "James Hong"],
+    answer: "Jennifer Yuh",
+    evidence: "The film was directed by Jennifer Yuh and received an Academy Award nomination for best animated feature film of the year.",
+  },
+  {
+    id: 3,
+    question: "Which of the following was NOT a working subtitle considered for the second film?",
+    options: ["Pandamonium", "The Kaboom of Doom", "The Fist of Po", "Kung Fu Panda 2"],
+    answer: "The Fist of Po",
+    evidence: "Both 'Pandamonium' and 'The Kaboom of Doom' were considered as working subtitles before filmmakers decided on 'Kung Fu Panda 2'.",
+  },
+  {
+    id: 4,
+    question: "Which character does Gary Oldman provide the voice for in 'Kung Fu Panda 2'?",
+    options: ["Master Thundering Rhino", "Lord Shen", "Wolf Boss", "Master Ox"],
+    answer: "Lord Shen",
+    evidence: "Lord Shen is voiced by actor Gary Oldman.",
+  },
+  {
+    id: 5,
+    question: "Jean-Claude Van Damme made his debut as a voice actor in this film as which character?",
+    options: ["Master Rhino", "Master Croc", "Master Ox", "Wolf Boss"],
+    answer: "Master Croc",
+    evidence: "He voices Master Croc in 'Kung Fu Panda 2'. The film marked the debut of Van Damme as a voice actor in an animated film.",
+  },
+  {
+    id: 6,
+    question: "Which actor provides the voice for Master Thundering Rhino?",
+    options: ["Bryan Cranston", "Victor Garber", "Dennis Haysbert", "Ian McShane"],
+    answer: "Victor Garber",
+    evidence: "Victor Garber plays the voice of 'Kung Fu Panda 2' character Master Thundering Rhino.",
+  },
+  {
+    id: 7,
+    question: "Po and the Furious Five travel to which city to confront the antagonist in the sequel?",
+    options: ["Beijing", "Shanghai", "Gongmen City", "The Valley of Peace"],
+    answer: "Gongmen City",
+    evidence: "They travel to Gongmen City to confront Shen.",
+  },
+  {
+    id: 8,
+    question: "The fictional Gongmen City was inspired by which real-life walled city in China?",
+    options: ["Pingyao", "Beijing", "Skywalker Ranch", "The Li River Valley"],
+    answer: "Pingyao",
+    evidence: "Filmmakers traveled to China and found the inspiration for the fictional Gongmen City in the real walled city of Pingyao.",
+  },
+  {
+    id: 9,
+    question: "In which country is the 'Kung Fu Panda' franchise set?",
+    options: ["Korea", "Taiwan", "China", "Japan"],
+    answer: "China",
+    evidence: "China is the country setting for the animated movie 'Kung Fu Panda'.",
+  },
+  {
+    id: 10,
+    question: "What is Lord Shen’s mysterious weapon used to threaten kung fu in the sequel?",
+    options: ["A fire lance", "A sword", "A cannon", "A shuriken"],
+    answer: "A cannon",
+    evidence: "Shen's mysterious weapon in 'Kung Fu Panda 2' is a cannon.",
+  },
+  {
+    id: 11,
+    question: "The character of Lord Shen was originally created to be an evil mayor in the first 2008 movie.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Shen character was originally created to be an evil mayor in the 2008 movie 'Kung Fu Panda' but was dropped before production began.",
+  },
+  {
+    id: 12,
+    question: "The weapon Shen uses in the film is based on technology believed to have been invented around 900 C.E.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Chinese are believed to have invented the first crude cannons around 900 C.E.",
+  },
+  {
+    id: 13,
+    question: "Master Oogway is one of the characters who does not appear in 'Kung Fu Panda 2'.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Along with Zeng and Tai Lung, Master Oogway does not appear in 'Kung Fu Panda 2'.",
+  },
+  {
+    id: 14,
+    question: "Zeng and Tai Lung are returning characters in the sequel 'Kung Fu Panda 2'.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Along with Zeng and Tai Lung, Master Oogway does not appear in 'Kung Fu Panda 2'.",
+  },
+];
+
+export const KUNG_FU_PANDA_3_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which actor, known for his award-winning role as Walter White in 'Breaking Bad,' voices Po's biological father, Li?",
+    options: ["Bob Odenkirk", "Dean Norris", "Bryan Cranston", "Giancarlo Esposito"],
+    answer: "Bryan Cranston",
+    evidence: "Bryan Cranston voices Li in Kung Fu Panda 3.",
+  },
+  {
+    id: 2,
+    question: "Kai is the first primary villain in the Kung Fu Panda film franchise who does not have a British accent.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "American actor J.K. Simmons voices Kai, while British actors Gary Oldman and Ian McShane voice the villains from the first two films.",
+  },
+  {
+    id: 3,
+    question: "On what specific date was 'Kung Fu Panda 3' released in the United States?",
+    options: ["June 6, 2008", "May 26, 2011", "January 29, 2016", "April 6, 2026"],
+    answer: "January 29, 2016",
+    evidence: "'Kung Fu Panda 3' was released Jan. 29, 2016.",
+  },
+  {
+    id: 4,
+    question: "Which American actor provides the voice for the villainous Spirit Warrior, Kai?",
+    options: ["Gary Oldman", "Ian McShane", "J.K. Simmons", "Dustin Hoffman"],
+    answer: "J.K. Simmons",
+    evidence: "American actor J.K. Simmons voices Kai.",
+  },
+  {
+    id: 5,
+    question: "Which of the following locations was introduced to the franchise's universe specifically in the third film?",
+    options: ["Gongmen City", "The Valley of Peace", "The Spirit Realm", "Chorh-Gom Prison"],
+    answer: "The Spirit Realm",
+    evidence: "Universe > Locations includes Spirit Realm.",
+  },
+  {
+    id: 6,
+    question: "The character Mei Mei is officially categorized as a panda in the franchise directory.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Pandas include Mei Mei.",
+  },
+  {
+    id: 7,
+    question: "The voice actor for Li, Bryan Cranston, received which of the following accolades for his role as Walter White?",
+    options: ["A Pulitzer Prize", "Multiple Emmys and a Golden Globe", "An Academy Award for Best Animation", "A Tony Award"],
+    answer: "Multiple Emmys and a Golden Globe",
+    evidence: "Cranston won multiple Emmys and a Golden Globe for his role in Breaking Bad.",
+  },
+  {
+    id: 8,
+    question: "Which young character is listed in the official Panda directory alongside Lei Lei and Li?",
+    options: ["Zeng", "Bao", "Wolf Boss", "Master Shifu"],
+    answer: "Bao",
+    evidence: "Pandas include Bao.",
+  },
+  {
+    id: 9,
+    question: "General Kai is listed in the official franchise wiki under the 'Villains' character category.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Villains include General Kai.",
+  },
+  {
+    id: 10,
+    question: "Which specific location serves as the primary habitat for the community of pandas introduced in the third film?",
+    options: ["Gongmen City", "The Valley of Peace", "The Jade Palace", "Panda Village"],
+    answer: "Panda Village",
+    evidence: "Universe > Locations includes Panda Village.",
+  },
+];
+
+export const KUNG_FU_PANDA_4_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which new antagonist is introduced in the Kung Fu Panda 4 era as a primary threat?",
+    options: ["Tai Lung", "Lord Shen", "The Chameleon", "General Kai"],
+    answer: "The Chameleon",
+    evidence: "The Chameleon is the primary threat in KFP 4.",
+  },
+  {
+    id: 2,
+    question: "In the expanded geography of Kung Fu Panda 4, which location is listed alongside the Valley of Peace?",
+    options: ["Juniper City", "Jade Cave", "Firework Shop", "Rug Shop"],
+    answer: "Juniper City",
+    evidence: "Juniper City is the key setting in KFP 4.",
+  },
+  {
+    id: 3,
+    question: "According to the franchise's consistent 'Color Language,' what does the color Red symbolize?",
+    options: ["Evil", "Knowledge", "Power", "Heroism"],
+    answer: "Power",
+    evidence: "Red was a color for power.",
+  },
+  {
+    id: 4,
+    question: "The character 'Zhen' is classified under which category in the Kung Fu Panda Wiki sidebar?",
+    options: ["Masters", "Furious Five", "Villains", "Other"],
+    answer: "Other",
+    evidence: "Zhen is listed in the 'Other' category.",
+  },
+  {
+    id: 5,
+    question: "In the symbolic color palette of the series, which color is reserved for 'Knowledge and Wisdom'?",
+    options: ["Gold", "Green", "Blue", "Red"],
+    answer: "Green",
+    evidence: "Green was the color for knowledge and wisdom.",
+  },
+  {
+    id: 6,
+    question: "Which of the following characters is listed in the 'Other' section of the Wiki sidebar alongside Zhen?",
+    options: ["Master Croc", "Han", "Wolf Boss", "General Kai"],
+    answer: "Han",
+    evidence: "Han is listed in the 'Other' characters category.",
+  },
+  {
+    id: 7,
+    question: "What does the color Gold represent within the thematic rules of the Kung Fu Panda universe?",
+    options: ["Power", "Evil", "Heroism", "Wisdom"],
+    answer: "Heroism",
+    evidence: "Gold was the color for heroism.",
+  },
+  {
+    id: 8,
+    question: "In the franchise's consistent 'Color Language,' Blue is used as an evil or negative color.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Blue was an evil or negative color.",
+  },
+  {
+    id: 9,
+    question: "Juniper City is a location listed in the Universe section of the Kung Fu Panda Wiki.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Juniper City is listed under the Universe section.",
+  },
+  {
+    id: 10,
+    question: "The Chameleon is categorized in the Wiki sidebar as a member of the Kung Fu Council.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "The Chameleon is listed in the 'Villains' category.",
+  },
+];
+
+export const KUNG_FU_PANDA_RANDOM_TRIVIA: MCTriviaQuestion[] = [
+  ...KUNG_FU_PANDA_1_TRIVIA,
+  ...KUNG_FU_PANDA_2_TRIVIA,
+  ...KUNG_FU_PANDA_3_TRIVIA,
+  ...KUNG_FU_PANDA_4_TRIVIA,
 ];
 
