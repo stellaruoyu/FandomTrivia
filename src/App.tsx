@@ -16,7 +16,7 @@ import {
   Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette, Trash2
 } from 'lucide-react';
 import {
-  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS, DAILY_QUIZZES,
+  NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
   KPOP_TRIVIA, TWILIGHT_MC_TRIVIA, TWILIGHT_BOOK_TRIVIA, NEW_MOON_TRIVIA, ECLIPSE_TRIVIA, BREAKING_DAWN_TRIVIA, MIDNIGHT_SUN_TRIVIA, LIFE_AND_DEATH_TRIVIA,
 
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
@@ -28,7 +28,9 @@ import {
   MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
   PAW_PATROL_TRIVIA,
   KUNG_FU_PANDA_1_TRIVIA, KUNG_FU_PANDA_2_TRIVIA, KUNG_FU_PANDA_3_TRIVIA, KUNG_FU_PANDA_4_TRIVIA, KUNG_FU_PANDA_RANDOM_TRIVIA,
-  MCTriviaQuestion, BADGES, Badge, DAILY_RIDDLES
+  TOY_STORY_1_TRIVIA, TOY_STORY_2_TRIVIA, TOY_STORY_3_TRIVIA, TOY_STORY_4_TRIVIA, TOY_STORY_RANDOM_TRIVIA, TOY_STORY_GRADES,
+  DOG_MAN_TRIVIA_BOOK1, DOG_MAN_TRIVIA_BOOK2, DOG_MAN_TRIVIA_BOOK3, DOG_MAN_TRIVIA_BOOK4, DOG_MAN_TRIVIA_BOOK5, DOG_MAN_TRIVIA_BOOK6, DOG_MAN_TRIVIA_BOOK7, DOG_MAN_TRIVIA_BOOK8, DOG_MAN_TRIVIA_BOOK9, DOG_MAN_TRIVIA_BOOK10, DOG_MAN_TRIVIA_BOOK11, DOG_MAN_TRIVIA_BOOK12, DOG_MAN_TRIVIA_BOOK13, DOG_MAN_TRIVIA_BOOK14, DOG_MAN_GRADES,
+  MCTriviaQuestion, BADGES, Badge
 } from './constants';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
@@ -46,8 +48,6 @@ const normalizeSlug = (id: string): string => {
 
 const getQuizTitle = (quizId: string): string => {
   const normalizedId = normalizeSlug(quizId);
-  const daily = DAILY_QUIZZES.find(q => q.id === normalizedId);
-  if (daily) return daily.title;
 
   const map: Record<string, string> = {
     'twilight-book-1': 'Twilight: Book 1',
@@ -81,7 +81,27 @@ const getQuizTitle = (quizId: string): string => {
     'kfp-2': 'Kung Fu Panda 2',
     'kfp-3': 'Kung Fu Panda 3',
     'kfp-4': 'Kung Fu Panda 4',
-    'kfp-random': 'Dragon Warrior Challenge'
+    'kfp-random': 'Dragon Warrior Challenge',
+    'toy-story-1': 'Toy Story',
+    'toy-story-2': 'Toy Story 2',
+    'toy-story-3': 'Toy Story 3',
+    'toy-story-4': 'Toy Story 4',
+    'toy-story-random': 'The Ultimate Toy Box',
+    'dog-man-book1': 'Dog Man: Book 1',
+    'dog-man-book2': 'Dog Man: Book 2',
+    'dog-man-book3': 'Dog Man: Book 3',
+    'dog-man-book4': 'Dog Man: Book 4',
+    'dog-man-book5': 'Dog Man: Book 5',
+    'dog-man-book6': 'Dog Man: Book 6',
+    'dog-man-book7': 'Dog Man: Book 7',
+    'dog-man-book8': 'Dog Man: Book 8',
+    'dog-man-book9': 'Dog Man: Book 9',
+    'dog-man-book10': 'Dog Man: Book 10',
+    'dog-man-book11': 'Dog Man: Book 11',
+    'dog-man-book12': 'Dog Man: Book 12',
+    'dog-man-book13': 'Dog Man: Book 13',
+    'dog-man-book14': 'Dog Man: Book 14',
+    'dog-man-random': 'Supa Buddies Mixed Challenge'
   };
 
   return map[normalizedId] || normalizedId;
@@ -98,7 +118,8 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('frozen')) return 'Frozen Universe';
   if (q.includes('mario')) return 'Super Mario';
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return 'Rescue Universe';
-  if (q.includes('kung fu panda') || q.includes('kfp')) return 'Kung Fu Panda Universe';
+  if (q.includes('panda') || q.includes('kfp')) return 'Kung Fu Panda';
+  if (q.includes('toy-story') || q.includes('toy story')) return 'Toy Story';
   return 'Other Challenges';
 };
 
@@ -114,6 +135,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('frozen')) return '/images/frozen.jpg';
   if (q.includes('mario')) return '/images/supermario.jpg';
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return '/images/pawpatrol.jpg';
+  if (q.includes('toy-story') || q.includes('toy story')) return '/images/toystory.jpg';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -820,6 +842,101 @@ const CookiePolicyView = ({ key }: { key?: string }) => (
   </LegalPage>
 );
 
+const DailyMysteryChallenge = () => {
+  const navigate = useNavigate();
+  
+  // Use current date as seed for consistent daily selection
+  const dailyUniverse = useMemo(() => {
+    const today = new Date();
+    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
+    return UNIVERSES[dayOfYear % UNIVERSES.length];
+  }, []);
+
+  const handleStart = () => {
+    if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'kpop') navigate('/trivia-kpop', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'three-body') navigate('/selector-three-body', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'zootopia') navigate('/selector-zootopia', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'despicable-me') navigate('/selector-despicable-me', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'frozen') navigate('/selector-frozen', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'super-mario') navigate('/selector-super-mario', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'pawpatrol') navigate('/trivia-pawpatrol', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'toy-story') navigate('/selector-toy-story', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-7xl mx-auto mb-16 px-6"
+    >
+      <div className="relative group overflow-hidden rounded-3xl">
+        {/* Animated Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-purple-500/20 to-primary/20 group-hover:opacity-100 transition-opacity blur-3xl -z-10"></div>
+        
+        <div className="relative bg-card-dark border border-white/10 p-10 rounded-3xl backdrop-blur-3xl overflow-hidden flex flex-col md:flex-row items-center gap-10">
+          
+          <div className="flex-1 space-y-8 z-10 text-center md:text-left">
+            <div className="space-y-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                Daily Mystery Challenge
+              </span>
+              <h2 className="text-4xl md:text-5xl font-black italic text-white tracking-tighter leading-tight mt-4">
+                {dailyUniverse.title} <br/> <span className="text-primary">Challenge</span>
+              </h2>
+            </div>
+            
+            <p className="text-lg text-slate-400 font-medium leading-relaxed max-w-lg">
+              {dailyUniverse.description}
+            </p>
+
+            <button 
+              onClick={handleStart}
+              className="group/btn relative inline-flex items-center gap-3 bg-primary hover:bg-primary-dark text-white font-black px-10 py-5 rounded-2xl transition-all shadow-xl shadow-primary/30 uppercase tracking-widest text-sm overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Start Challenge <PlayCircle className="size-5 transition-transform group-hover/btn:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
+            </button>
+          </div>
+
+          <div className="relative size-48 md:size-64 flex-shrink-0">
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl animate-pulse"></div>
+            <div className="relative size-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+               <img 
+                src={dailyUniverse.image} 
+                alt={dailyUniverse.title}
+                className="size-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
+            {/* Floating Icons */}
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 4 }}
+              className="absolute -top-4 -right-4 bg-amber-500 p-3 rounded-xl shadow-lg shadow-amber-500/30 -rotate-12"
+            >
+              <Trophy className="size-6 text-slate-950" />
+            </motion.div>
+            <motion.div 
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 3, delay: 1 }}
+              className="absolute -bottom-4 -left-4 bg-primary p-3 rounded-xl shadow-lg shadow-primary/30 rotate-12"
+            >
+              <Zap className="size-6 text-white" />
+            </motion.div>
+          </div>
+
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Footer = ({ isDashboard, onShowInfo }: { 
   isDashboard: boolean, 
   onShowInfo: (title: string, content: string) => void
@@ -887,6 +1004,8 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
           <li><Link to="/trivia-pawpatrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
           <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
+          <li><Link to="/selector-toy-story" className="hover:text-amber-500 transition-colors">Toy Story</Link></li>
+          <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
         </ul>
       </div>
 
@@ -3017,9 +3136,12 @@ const FrozenSelector = () => {
               <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                 Thaw Quiz <ArrowRight className="size-3" />
               </div>
-              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
-                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
-                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                  <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                </div>
               </div>
             </div>
           </motion.button>
@@ -3096,9 +3218,12 @@ const MarioSelector = () => {
               <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                 Start Mission <ArrowRight className="size-3" />
               </div>
-              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
-                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
-                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                  <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                </div>
               </div>
             </div>
           </motion.button>
@@ -3176,9 +3301,12 @@ const DespicableMeSelector = () => {
               <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                 Start Quiz <ArrowRight className="size-3" />
               </div>
-              <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
-                <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
-                <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                  <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                </div>
               </div>
             </div>
           </motion.button>
@@ -3190,225 +3318,8 @@ const DespicableMeSelector = () => {
 };
 
 
-const DailyRiddle = ({ onUnlockBadge }: { onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void }) => {
-  const [answer, setAnswer] = useState('');
-  const [status, setStatus] = useState<'idle' | 'correct' | 'error'>('idle');
-  const [isSolved, setIsSolved] = useState(false);
 
-  const todayRiddle = useMemo(() => {
-    const day = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-    return DAILY_RIDDLES[day % DAILY_RIDDLES.length];
-  }, []);
 
-  useEffect(() => {
-    const solved = localStorage.getItem(`riddle_solved_${todayRiddle.id}`);
-    if (solved) setIsSolved(true);
-  }, [todayRiddle.id]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isSolved || status === 'correct') return;
-
-    if (answer.trim().toLowerCase() === todayRiddle.answer.toLowerCase()) {
-      setStatus('correct');
-      setIsSolved(true);
-      localStorage.setItem(`riddle_solved_${todayRiddle.id}`, 'true');
-      onUnlockBadge('riddle_solver', 100, false, todayRiddle.image);
-      
-      // Success Haptic/Sound simulation or actual call if available
-      try {
-        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3');
-        audio.volume = 0.3;
-        audio.play().catch(() => {});
-      } catch (err) {}
-    } else {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 2000);
-    }
-  };
-
-  return (
-    <motion.section 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="max-w-7xl mx-auto px-6 mb-20"
-    >
-      <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/10 shadow-2xl p-8 md:p-12">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indigo-500/10 to-transparent"></div>
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
-          <div className="flex-1 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest">
-              <Sparkles className="size-3" />
-              Daily "Who am I?" Riddle
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-white italic uppercase tracking-tight leading-tight">
-              I have a tricky <span className="text-indigo-400">Secret Clue...</span>
-            </h2>
-            <p className="text-lg text-slate-300 font-medium leading-relaxed italic">
-              "{todayRiddle.clue}"
-            </p>
-            
-            {isSolved ? (
-              <motion.div 
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="flex items-center gap-5 p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400"
-              >
-                <div className="size-20 rounded-2xl overflow-hidden border border-indigo-500/30 flex-shrink-0">
-                  <img src={todayRiddle.image} alt={todayRiddle.answer} className="size-full object-cover" />
-                </div>
-                <div>
-                  <p className="font-black uppercase tracking-widest text-xs mb-1">Mystery Solved!</p>
-                  <p className="text-sm font-bold text-slate-200">You've unlocked the <span className="text-indigo-400">{todayRiddle.answer}</span> badge.</p>
-                </div>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 relative">
-                  <input 
-                    type="text" 
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
-                    disabled={status === 'correct'}
-                    placeholder="Type your answer here..."
-                    className={`w-full bg-white/5 border ${status === 'error' ? 'border-red-500/50' : 'border-white/10'} rounded-2xl px-6 py-4 text-white font-bold focus:outline-none focus:border-indigo-500/50 transition-all`}
-                  />
-                  {status === 'error' && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute -bottom-6 left-2 text-[10px] font-black text-red-500 uppercase tracking-widest"
-                    >
-                      Not quite right... Try again!
-                    </motion.p>
-                  )}
-                </div>
-                <button 
-                  type="submit"
-                  disabled={!answer.trim() || status === 'correct'}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2"
-                >
-                  <Search className="size-4" />
-                  Unlock
-                </button>
-              </form>
-            )}
-          </div>
-          <div className="hidden lg:block w-1/3">
-            <div className="relative aspect-square">
-              <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
-              <div className="relative z-10 w-full h-full border border-white/5 bg-white/5 backdrop-blur-xl rounded-[2rem] flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform duration-700">
-                <div className="flex flex-col items-center gap-4 p-8 text-center">
-                  <div className="size-20 rounded-3xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
-                    <Lightbulb className="size-10 text-indigo-400" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xl font-black text-white italic uppercase tracking-tight">Secret Badge</p>
-                    <p className="text-xs text-slate-400 font-bold leading-tight">Can you solve the mystery of the day?</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
-};
-
-const DailyMysteryQuiz = ({ setUser }: { 
-  setUser: React.Dispatch<React.SetStateAction<User | null>>, 
-  key?: string
-}) => {
-  const navigate = useNavigate();
-  const { getQuizCount, formatCount } = useQuizStats();
-  
-  const dailyQuiz = useMemo(() => {
-    const today = new Date();
-    // Use local date for the seed (YYYY-MM-DD format as a string)
-    const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-    
-    // Simple deterministic hash for better "randomness" than a cycle
-    let hash = 0;
-    for (let i = 0; i < dateStr.length; i++) {
-        hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
-        hash |= 0; // Convert to 32bit integer
-    }
-    
-    const index = Math.abs(hash) % DAILY_QUIZZES.length;
-    return DAILY_QUIZZES[index];
-  }, []);
-
-  return (
-    <motion.section 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="max-w-7xl mx-auto px-6 mb-20"
-    >
-      <div className="relative overflow-hidden rounded-3xl bg-card-dark border border-white/10 shadow-2xl group">
-        {/* Background Decorative Elements */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${dailyQuiz.color} opacity-30 transition-opacity duration-700 group-hover:opacity-40`}></div>
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[80px]"></div>
-        
-        <div className="relative z-10 flex flex-col lg:flex-row items-center gap-10 p-8 md:p-12 lg:p-16">
-          {/* Image Container */}
-          <div className="w-full lg:w-2/5 aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10 relative">
-            <img 
-              src={dailyQuiz.image} 
-              alt={dailyQuiz.title} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute bottom-4 left-4 flex items-center gap-2">
-              <div className="px-3 py-1 rounded-full bg-primary/80 backdrop-blur-md text-[10px] font-black text-white uppercase tracking-widest border border-white/20">
-                Today's Challenge
-              </div>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-[0.2em] text-xs">
-                <Sparkles className="size-4 animate-pulse" />
-                Featured Challenge
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-tight">
-                Today's Daily <br /> Challenge is... <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">{dailyQuiz.title}</span>
-              </h2>
-            </div>
-            
-            <p className="text-lg text-slate-400 font-medium max-w-2xl">
-              {dailyQuiz.description}
-            </p>
-
-            <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6">
-              <button
-                onClick={() => navigate(dailyQuiz.path)}
-                className="bg-gradient-to-r from-primary to-purple-600 text-white font-black italic uppercase px-12 py-5 rounded-2xl flex items-center justify-center gap-3 hover:scale-105 transition-all duration-300 group shadow-xl shadow-primary/30"
-              >
-                Start Quiz Now! <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <div className="flex items-center gap-4">
-                <div className="hidden sm:flex items-center gap-2 text-slate-500 font-black text-[10px] uppercase tracking-widest">
-                  <Clock className="size-3" />
-                  Ends at Midnight
-                </div>
-                <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
-                  <span className="text-sm font-black text-white">{formatCount(getQuizCount(dailyQuiz.id))}</span>
-                  <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-1">takes</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
-};
 
 const BlogListView = () => {
   const navigate = useNavigate();
@@ -3562,9 +3473,12 @@ const BlogView = () => {
         onClick={(e) => {
           const target = e.target as HTMLElement;
           const anchor = target.closest('a');
-          if (anchor && anchor.getAttribute('href')?.startsWith('/')) {
-            e.preventDefault();
-            navigate(anchor.getAttribute('href')!);
+          if (anchor) {
+            const href = anchor.getAttribute('href');
+            if (href && href.startsWith('/')) {
+              e.preventDefault();
+              navigate(href);
+            }
           }
         }}
       />
@@ -3719,10 +3633,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
         </div>
       </section>
 
-
-      <DailyMysteryQuiz setUser={setUser} />
-      
-      <DailyRiddle onUnlockBadge={onUnlockBadge} />
+      <DailyMysteryChallenge />
 
       {/* Universe Grid */}
 
@@ -3779,14 +3690,19 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'frozen') navigate('/selector-frozen');
                       if (universe.id === 'super-mario') navigate('/selector-super-mario');
                       if (universe.id === 'pawpatrol') navigate('/trivia-pawpatrol');
+                      if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
+                      if (universe.id === 'toy-story') navigate('/selector-toy-story');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
                     {universe.buttonText}
                   </button>
-                  <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-3 rounded-xl min-w-fit">
-                    <span className="text-sm font-black text-white">{formatCount(getUniverseCount(universe.id))}</span>
-                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-0.5">takes</span>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-3 rounded-xl min-w-fit">
+                      <span className="text-sm font-black text-white">{formatCount(getUniverseCount(universe.id))}</span>
+                      <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-0.5">takes</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4447,6 +4363,128 @@ const EmojiRain = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const ToyStorySelector = () => {
+  const navigate = useNavigate();
+  const movies = [
+    { id: '1', title: 'Toy Story (1995)', route: '/trivia-toy-story-1', color: 'from-blue-500/20 to-blue-600/20', border: 'border-blue-500/30' },
+    { id: '2', title: 'Toy Story 2 (1999)', route: '/trivia-toy-story-2', color: 'from-red-500/20 to-red-600/20', border: 'border-red-500/30' },
+    { id: '3', title: 'Toy Story 3 (2010)', route: '/trivia-toy-story-3', color: 'from-amber-500/20 to-amber-600/20', border: 'border-amber-500/30' },
+    { id: '4', title: 'Toy Story 4 (2019)', route: '/trivia-toy-story-4', color: 'from-purple-500/20 to-purple-600/20', border: 'border-purple-500/30' },
+    { id: 'random', title: 'Mixed Toy Box', route: '/trivia-toy-story-random', color: 'from-primary/20 to-primary/40', border: 'border-primary/50', isSpecial: true },
+  ];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="container mx-auto px-4 py-32 max-w-4xl"
+    >
+      <div className="flex items-center gap-4 mb-12">
+        <button onClick={() => navigate('/')} className="p-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
+          <ChevronLeft className="size-6" />
+        </button>
+        <div>
+          <h1 className="text-4xl font-black uppercase tracking-tighter">Toy Story Universe</h1>
+          <p className="text-slate-400">Select a cinematic milestone to begin your trivia adventure.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {movies.map((movie) => (
+          <motion.div
+            key={movie.id}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(movie.route)}
+            className={`group relative p-8 rounded-3xl border ${movie.border} bg-gradient-to-br ${movie.color} cursor-pointer transition-all duration-300 overflow-hidden shadow-2xl backdrop-blur-sm`}
+          >
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-black uppercase tracking-tight mb-1">{movie.title}</h3>
+                <p className="text-white/60 text-sm font-medium tracking-wide uppercase">
+                  {movie.isSpecial ? 'Infinite Challenge' : `Movie ${movie.id}`}
+                </p>
+              </div>
+              <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:bg-primary transition-colors">
+                <PlayCircle className="size-6" />
+              </div>
+            </div>
+            
+            <div className="absolute -right-4 -bottom-4 size-32 bg-white/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-500" />
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
+const DogManSelector = () => {
+  const navigate = useNavigate();
+  const books = [
+    { id: '1', title: 'Book 1: Dog Man', route: '/trivia-dog-man-book1', color: 'from-blue-500/20 to-blue-600/20', border: 'border-blue-500/30' },
+    { id: '2', title: 'Book 2: Unleashed', route: '/trivia-dog-man-book2', color: 'from-red-500/20 to-red-600/20', border: 'border-red-500/30' },
+    { id: '3', title: 'Book 3: A Tale of Two Kitties', route: '/trivia-dog-man-book3', color: 'from-amber-500/20 to-amber-600/20', border: 'border-amber-500/30' },
+    { id: '4', title: 'Book 4: Dog Man and Cat Kid', route: '/trivia-dog-man-book4', color: 'from-purple-500/20 to-purple-600/20', border: 'border-purple-500/30' },
+    { id: '5', title: 'Book 5: Lord of the Fleas', route: '/trivia-dog-man-book5', color: 'from-green-500/20 to-green-600/20', border: 'border-green-500/30' },
+    { id: '6', title: 'Book 6: Brawl of the Wild', route: '/trivia-dog-man-book6', color: 'from-indigo-500/20 to-indigo-600/20', border: 'border-indigo-500/30' },
+    { id: '7', title: 'Book 7: For Whom the Ball Rolls', route: '/trivia-dog-man-book7', color: 'from-sky-500/20 to-sky-600/20', border: 'border-sky-500/30' },
+    { id: '8', title: 'Book 8: Fetch-22', route: '/trivia-dog-man-book8', color: 'from-emerald-500/20 to-emerald-600/20', border: 'border-emerald-500/30' },
+    { id: '9', title: 'Book 9: Grime and Punishment', route: '/trivia-dog-man-book9', color: 'from-rose-500/20 to-rose-600/20', border: 'border-rose-500/30' },
+    { id: '10', title: 'Book 10: Mothering Heights', route: '/trivia-dog-man-book10', color: 'from-violet-500/20 to-violet-600/20', border: 'border-violet-500/30' },
+    { id: '11', title: 'Book 11: 20,000 Fleas Under the Sea', route: '/trivia-dog-man-book11', color: 'from-cyan-500/20 to-cyan-600/20', border: 'border-cyan-500/30' },
+    { id: '12', title: 'Book 12: The Scarlet Shedder', route: '/trivia-dog-man-book12', color: 'from-crimson-500/20 to-crimson-600/20', border: 'border-crimson-500/30' },
+    { id: '13', title: 'Book 13: Big Jim Begins', route: '/trivia-dog-man-book13', color: 'from-orange-500/20 to-orange-600/20', border: 'border-orange-500/30' },
+    { id: '14', title: 'Book 14: Big Jim Believes', route: '/trivia-dog-man-book14', color: 'from-yellow-500/20 to-yellow-600/20', border: 'border-yellow-500/30' },
+    { id: 'random', title: 'Mixed Dog Box', route: '/trivia-dog-man-random', color: 'from-primary/20 to-primary/40', border: 'border-primary/50', isSpecial: true },
+  ];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="container mx-auto px-4 py-32 max-w-4xl"
+    >
+      <div className="flex items-center gap-4 mb-12">
+        <button onClick={() => navigate('/')} className="p-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
+          <ChevronLeft className="size-6" />
+        </button>
+        <div>
+          <h1 className="text-4xl font-black uppercase tracking-tighter">Dog Man Universe</h1>
+          <p className="text-slate-400">Select a graphic novel to begin your Supa Buddy trivia adventure.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {books.map((book) => (
+          <motion.div
+            key={book.id}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(book.route)}
+            className={`group relative p-8 rounded-3xl border ${book.border} bg-gradient-to-br ${book.color} cursor-pointer transition-all duration-300 overflow-hidden shadow-2xl backdrop-blur-sm`}
+          >
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-black uppercase tracking-tight mb-1">{book.title}</h3>
+                <p className="text-white/60 text-sm font-medium tracking-wide uppercase">
+                  {book.isSpecial ? 'Infinite Challenge' : `Book ${book.id}`}
+                </p>
+              </div>
+              <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:bg-primary transition-colors">
+                <PlayCircle className="size-6" />
+              </div>
+            </div>
+            
+            <div className="absolute -right-4 -bottom-4 size-32 bg-white/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-500" />
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 const KungFuPandaSelector = () => {
   const navigate = useNavigate();
   return (
@@ -4566,6 +4604,14 @@ export default function App() {
 
   const kfpRandomQuestions = useMemo(() => 
     [...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_3_TRIVIA || []), ...(KUNG_FU_PANDA_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const toyStoryRandomQuestions = useMemo(() => 
+    [...(TOY_STORY_1_TRIVIA || []), ...(TOY_STORY_2_TRIVIA || []), ...(TOY_STORY_3_TRIVIA || []), ...(TOY_STORY_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const dogManRandomQuestions = useMemo(() => 
+    [...(DOG_MAN_TRIVIA_BOOK1 || []), ...(DOG_MAN_TRIVIA_BOOK2 || []), ...(DOG_MAN_TRIVIA_BOOK3 || []), ...(DOG_MAN_TRIVIA_BOOK4 || []), ...(DOG_MAN_TRIVIA_BOOK5 || []), ...(DOG_MAN_TRIVIA_BOOK6 || []), ...(DOG_MAN_TRIVIA_BOOK7 || []), ...(DOG_MAN_TRIVIA_BOOK8 || []), ...(DOG_MAN_TRIVIA_BOOK9 || []), ...(DOG_MAN_TRIVIA_BOOK10 || []), ...(DOG_MAN_TRIVIA_BOOK11 || []), ...(DOG_MAN_TRIVIA_BOOK12 || []), ...(DOG_MAN_TRIVIA_BOOK13 || []), ...(DOG_MAN_TRIVIA_BOOK14 || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   useEffect(() => {
@@ -4781,6 +4827,7 @@ export default function App() {
     BADGES.forEach(badge => {
       // Skip the ones we just added manually via streak logic
       if (newlyUnlocked.some(nb => nb.id === badge.id)) return;
+      if (unlockedBadgeIds.includes(badge.id)) return;
       if (unlockedBadgeIds.includes(badge.id)) return; // Already unlocked
 
       let unlocked = false;
@@ -4795,10 +4842,6 @@ export default function App() {
         unlocked = true;
       }
       
-      // Daily Riddle Solver
-      if (badge.id === 'riddle_solver' && quizId === 'riddle_solver') {
-        unlocked = true;
-      }
 
       // Universe completion badges
       if (badge.targetQuiz) {
@@ -4817,15 +4860,15 @@ export default function App() {
           unlocked = true;
         } else if (badge.targetQuiz === 'kung-fu-panda' && (titleLower.includes('kung fu panda') || titleLower.includes('kfp'))) {
           unlocked = true;
+        } else if (badge.targetQuiz === 'toy-story' && titleLower.includes('toy story')) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'dog-man' && titleLower.includes('dog man')) {
+          unlocked = true;
         }
       }
 
       if (unlocked) {
-        if (badge.id === 'riddle_solver' && imageUrl) {
-          newlyUnlocked.push({ ...badge, imageUrl });
-        } else {
-          newlyUnlocked.push(badge);
-        }
+        newlyUnlocked.push(badge);
       }
     });
 
@@ -5034,6 +5077,32 @@ export default function App() {
             <Route path="/trivia-kfp-3" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_3_TRIVIA} title="Volume III: Mastery" scoreLabel="KFP: Mastery" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-kfp-4" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_4_TRIVIA} title="Volume IV: Evolution" scoreLabel="KFP: Evolution" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-kfp-random" element={<MCQuizView user={user} questions={kfpRandomQuestions} title="The Dragon Challenge" scoreLabel="KFP: Mixed Trial" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            
+            {/* Toy Story Universe */}
+            <Route path="/selector-toy-story" element={<ToyStorySelector />} />
+            <Route path="/trivia-toy-story-1" element={<MCQuizView user={user} questions={TOY_STORY_1_TRIVIA} title="Toy Story" scoreLabel="Toy Story" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-2" element={<MCQuizView user={user} questions={TOY_STORY_2_TRIVIA} title="Toy Story 2" scoreLabel="Toy Story 2" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-3" element={<MCQuizView user={user} questions={TOY_STORY_3_TRIVIA} title="Toy Story 3" scoreLabel="Toy Story 3" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-4" element={<MCQuizView user={user} questions={TOY_STORY_4_TRIVIA} title="Toy Story 4" scoreLabel="Toy Story 4" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-random" element={<MCQuizView user={user} questions={toyStoryRandomQuestions} title="Mixed Toy Box" scoreLabel="Toy Story Mixed" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            
+            {/* Dog Man Universe */}
+            <Route path="/selector-dog-man" element={<DogManSelector />} />
+            <Route path="/trivia-dog-man-book1" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK1} title="Book 1: Dog Man" scoreLabel="Dog Man: Book 1" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book2" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK2} title="Book 2: Unleashed" scoreLabel="Dog Man: Book 2" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book3" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK3} title="Book 3: A Tale of Two Kitties" scoreLabel="Dog Man: Book 3" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book4" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK4} title="Book 4: Dog Man and Cat Kid" scoreLabel="Dog Man: Book 4" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book5" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK5} title="Book 5: Lord of the Fleas" scoreLabel="Dog Man: Book 5" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book6" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK6} title="Book 6: Brawl of the Wild" scoreLabel="Dog Man: Book 6" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book7" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK7} title="Book 7: For Whom the Ball Rolls" scoreLabel="Dog Man: Book 7" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book8" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK8} title="Book 8: Fetch-22" scoreLabel="Dog Man: Book 8" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book9" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK9} title="Book 9: Grime and Punishment" scoreLabel="Dog Man: Book 9" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book10" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK10} title="Book 10: Mothering Heights" scoreLabel="Dog Man: Book 10" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book11" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK11} title="Book 11: Twenty Thousand Fleas Under the Sea" scoreLabel="Dog Man: Book 11" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book12" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK12} title="Book 12: The Scarlet Shedder" scoreLabel="Dog Man: Book 12" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book13" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK13} title="Book 13: Big Jim Begins" scoreLabel="Dog Man: Book 13" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book14" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK14} title="Book 14: Big Jim Believes" scoreLabel="Dog Man: Book 14" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-random" element={<MCQuizView user={user} questions={dogManRandomQuestions} title="Mixed Dog Box" scoreLabel="Dog Man Mixed" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Mario Trivia */}
             <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

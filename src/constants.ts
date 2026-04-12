@@ -1,4 +1,4 @@
-import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake, Sparkles } from 'lucide-react';
+import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake, Sparkles, Lightbulb } from 'lucide-react';
 
 export const NAV_LINKS = [
   { name: 'Home', href: '#' },
@@ -107,11 +107,13 @@ export const BADGES: Badge[] = [
     targetQuiz: 'frozen'
   },
   {
-    id: 'riddle_solver',
-    name: 'Mystery Solver',
-    description: 'Solved the "Who am I?" Daily Riddle.',
-    icon: 'Lightbulb',
-    color: 'text-indigo-400'
+    id: 'toy-story-hero',
+    name: 'Space Ranger',
+    description: 'Reach infinity and beyond in any Toy Story quiz.',
+    icon: 'Sparkles',
+    color: 'text-blue-400',
+    targetQuiz: 'toy-story',
+    imageUrl: 'https://images.unsplash.com/photo-1598062547146-24ba0da9d17d?auto=format&fit=crop&q=80&w=400' // Placeholder for badge till asset is ready
   },
   {
     id: 'adventure-bay-hero',
@@ -128,25 +130,56 @@ export const BADGES: Badge[] = [
     icon: 'Trophy',
     color: 'text-amber-300',
     targetQuiz: 'kung-fu-panda'
+  },
+  {
+    id: 'dog-man-hero',
+    name: 'Dog Man Hero',
+    description: 'Complete any Dog Man trivia challenge.',
+    icon: 'ShieldCheck',
+    color: 'text-blue-400',
+    targetQuiz: 'dog-man'
   }
 ];
 
+
 export const UNIVERSES = [
+  {
+    id: 'toy-story',
+    title: 'Toy Story',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: 'To infinity and beyond. Play the ultimate Toy Story franchise trivia across all four cinematic milestones, from the playroom to the antique mall.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles'
+  },
   {
     id: 'twilight',
     title: 'Twilight',
     tags: ['Fantasy', 'Mystery'],
-    description: 'Misty forests & eternal secrets. Relive the saga of Forks and the Olympic Coven.',
+    description: 'The lines are drawn between the Cullen coven and the Quileute pack. Prove your loyalty and expertise in this hard Twilight Saga quiz. Take the test to show the world which side you truly belong on!',
     image: '/images/Cullen Family.jpg',
     seoAlt: 'The Cullen family from the Twilight Saga in a misty forest',
     buttonText: 'Enter Forks',
-    icon: 'Droplets'
+    icon: 'Droplets',
+    path: '/selector-twilight'
+  },
+  {
+    id: 'dog-man',
+    title: 'Dog Man',
+    tags: ['Comics', 'Humor', 'Dav Pilkey'],
+    description: 'The Supa Buddies are here! Test your knowledge on the global phenomenon by Dav Pilkey, from Book 1 to Big Jim Believes.',
+    image: '/images/universes/dogman.jpg',
+    seoAlt: 'Dog Man jumping through a police station doorway wearing his blue uniform and hat',
+    buttonText: 'Join the Supa Buddies',
+    icon: 'ShieldCheck',
+    path: '/selector-dog-man'
   },
   {
     id: 'harry-potter',
     title: 'Harry Potter',
     tags: ['Magic', 'Classic'],
-    description: "Magic, mystery, and the Wizarding World. Prove you're a true Gryffindor or a cunning Slytherin.",
+    description: 'It is time to face your exams in the Great Hall. This hard trivia quiz separates the true magical scholars from the Trolls. Grab your wand and see if you have what it takes to pass!',
     image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg',
     seoAlt: 'Harry Potter, Hermione Granger and Ron Weasley at Hogwarts',
     buttonText: 'Begin Spellcasting',
@@ -5412,123 +5445,7 @@ export const MARIO_MIXED_TRIVIA: MCTriviaQuestion[] = [
   ...MARIO_2026_TRIVIA
 ];
 
-export const DAILY_QUIZZES = [
-  {
-    id: "twilight-book-1",
-    title: "Twilight: Book 1",
-    description: "Test your knowledge of the beginning of the Cullen saga. How well do you know Bella's move to Forks?",
-    path: "/trivia-twilight-book",
-    image: "/images/Cullen Family.jpg",
-    color: "from-red-600/20 to-rose-600/20"
-  },
-  {
-    id: "harry-potter-sorcerers-stone",
-    title: "HP: Sorcerer's Stone",
-    description: "Enter the Wizarding World. Test your memory of Harry's first year at Hogwarts.",
-    path: "/trivia-harry-potter",
-    image: "/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg",
-    color: "from-amber-600/20 to-red-600/20"
-  },
-  {
-    id: "k-pop-demon-hunters",
-    title: "K-Pop: Demon Hunters",
-    description: "High-energy beats & supernatural hunts. Can you keep up with the Saja Boys?",
-    path: "/trivia-kpop",
-    image: "/images/Soda Pop and How It's Done.jpg",
-    color: "from-purple-600/20 to-pink-600/20"
-  },
-  {
-    id: "the-three-body-problem",
-    title: "The Three-Body Problem",
-    description: "Navigate the Trisolaran crisis. Prove you're a true Wallfacer in this cosmic challenge.",
-    path: "/trivia-three-body-problem",
-    image: "/images/threebody.jpg",
-    color: "from-indigo-600/20 to-purple-600/20"
-  },
-  {
-    id: "zootopia",
-    title: "Zootopia (Case 1)",
-    description: "Anyone can be anything. Crack the case of the missing mammals with Judy and Nick.",
-    path: "/trivia-zootopia",
-    image: "/images/zootopia.jpg",
-    color: "from-blue-600/20 to-sky-600/20"
-  },
-  {
-    id: "despicable-me",
-    title: "Despicable Me",
-    description: "Bello! Join Gru and the Minions in their hilariously despicable heist.",
-    path: "/trivia-despicableme-1",
-    image: "/images/despicable-me.jpg",
-    color: "from-yellow-600/20 to-amber-600/20"
-  },
-  {
-    id: "frozen",
-    title: "Frozen (Chapter 1)",
-    description: "Journey to Arendelle. Test your knowledge of Elsa, Anna, and the power of sisterhood.",
-    path: "/trivia-frozen-1",
-    image: "/images/frozen.jpg",
-    color: "from-sky-600/20 to-blue-600/20"
-  },
-  {
-    id: "paw-patrol-rescue",
-    title: "PAW Patrol: Mission Ready",
-    description: "No job is too big, no pup is too small! Test your knowledge of Adventure Bay's finest rescue team.",
-    path: "/trivia-pawpatrol",
-    image: "/images/pawpatrol.jpg",
-    color: "from-blue-600/20 to-red-600/20"
-  }
-];
 
-export const DAILY_RIDDLES = [
-  {
-    id: "riddle-1",
-    clue: "I live in a dark forest, my skin sparkles in the sun, and I play baseball during thunderstorms.",
-    answer: "Edward Cullen",
-    image: "/images/riddles/edward.png"
-  },
-  {
-    id: "riddle-2",
-    clue: "I survived a curse that left a scar, I speak to snakes, and I once lived in a cupboard under the stairs.",
-    answer: "Harry Potter",
-    image: "/images/riddles/harry.png"
-  },
-  {
-    id: "riddle-3",
-    clue: "I am small, yellow, and love bananas. I served the most \"despicable\" masters throughout history.",
-    answer: "Minion",
-    image: "/images/riddles/minion.png"
-  },
-  {
-    id: "riddle-4",
-    clue: "I am a fast-talking fox from Zootopia. I once tried to sell a \"Pawpsicle\" made from wood-chip-flavored juice.",
-    answer: "Nick Wilde",
-    image: "/images/riddles/nick.png"
-  },
-  {
-    id: "riddle-5",
-    clue: "I build castles out of ice, my sister is my best friend, and I finally learned to let it go.",
-    answer: "Elsa",
-    image: "/images/riddles/elsa.png"
-  },
-  {
-    id: "riddle-6",
-    clue: "I am a space traveler who is actually a futuristic cat. I have a 4D pocket with infinite gadgets.",
-    answer: "Doraemon",
-    image: "/images/riddles/doraemon.png"
-  },
-  {
-    id: "riddle-7",
-    clue: "I am the \"Chosen One\" who brought balance to the Force, but first I had to fall to the Dark Side.",
-    answer: "Anakin Skywalker",
-    image: "/images/riddles/anakin.png"
-  },
-  {
-    id: "riddle-8",
-    clue: "I am a 10-year-old leader of a rescue team. I drive a high-tech ATV and always say, 'No job is too big, no pup is too small!'",
-    answer: "Ryder",
-    image: "/images/pawpatrol.jpg"
-  }
-];
 
 // --- PAW Patrol Trivia ---
 
@@ -5822,7 +5739,7 @@ export const KUNG_FU_PANDA_3_TRIVIA: MCTriviaQuestion[] = [
     question: "Which actor, known for his award-winning role as Walter White in 'Breaking Bad,' voices Po's biological father, Li?",
     options: ["Bob Odenkirk", "Dean Norris", "Bryan Cranston", "Giancarlo Esposito"],
     answer: "Bryan Cranston",
-    evidence: "Bryan Cranston voices Li in Kung Fu Panda 3.",
+    evidence: "Bryan Cranston won multiple Emmys and a Golden Globe for his role as Walter White on the television series 'Breaking Bad.'",
   },
   {
     id: 2,
@@ -5850,42 +5767,42 @@ export const KUNG_FU_PANDA_3_TRIVIA: MCTriviaQuestion[] = [
     question: "Which of the following locations was introduced to the franchise's universe specifically in the third film?",
     options: ["Gongmen City", "The Valley of Peace", "The Spirit Realm", "Chorh-Gom Prison"],
     answer: "The Spirit Realm",
-    evidence: "Universe > Locations includes Spirit Realm.",
+    evidence: "The Spirit Realm was introduced in the third film.",
   },
   {
     id: 6,
     question: "The character Mei Mei is officially categorized as a panda in the franchise directory.",
     options: ["True", "False"],
     answer: "True",
-    evidence: "Pandas include Mei Mei.",
+    evidence: "Pandas: Li, Mei Mei, Nu Hai, Bao, Jing, Fan Tong, Grandma Panda, Lei Lei, Po's mother.",
   },
   {
     id: 7,
     question: "The voice actor for Li, Bryan Cranston, received which of the following accolades for his role as Walter White?",
     options: ["A Pulitzer Prize", "Multiple Emmys and a Golden Globe", "An Academy Award for Best Animation", "A Tony Award"],
     answer: "Multiple Emmys and a Golden Globe",
-    evidence: "Cranston won multiple Emmys and a Golden Globe for his role in Breaking Bad.",
+    evidence: "Cranston won multiple Emmys and a Golden Globe for his role as Walter White on the television series 'Breaking Bad.'",
   },
   {
     id: 8,
     question: "Which young character is listed in the official Panda directory alongside Lei Lei and Li?",
     options: ["Zeng", "Bao", "Wolf Boss", "Master Shifu"],
     answer: "Bao",
-    evidence: "Pandas include Bao.",
+    evidence: "Pandas: Li, Mei Mei, Nu Hai, Bao, Jing, Fan Tong, Grandma Panda, Lei Lei, Po's mother.",
   },
   {
     id: 9,
     question: "General Kai is listed in the official franchise wiki under the 'Villains' character category.",
     options: ["True", "False"],
     answer: "True",
-    evidence: "Villains include General Kai.",
+    evidence: "Villains: Tai Lung, Lord Shen, Wolf Boss, General Kai, The Chameleon...",
   },
   {
     id: 10,
     question: "Which specific location serves as the primary habitat for the community of pandas introduced in the third film?",
     options: ["Gongmen City", "The Valley of Peace", "The Jade Palace", "Panda Village"],
     answer: "Panda Village",
-    evidence: "Universe > Locations includes Panda Village.",
+    evidence: "Universe > Locations: Valley of Peace, Juniper City, Spirit Realm, Panda Village...",
   },
 ];
 
@@ -5969,3 +5886,3243 @@ export const KUNG_FU_PANDA_RANDOM_TRIVIA: MCTriviaQuestion[] = [
   ...KUNG_FU_PANDA_4_TRIVIA,
 ];
 
+// --- TOY_STORY TRIVIA ---
+export const TOY_STORY_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "During the development phase, which of the following was a rejected title for the 1995 feature film?",
+    options: ["The New Toy", "Andy's Attic", "The Plastic Frontier", "Space Rangers vs. Cowboys"],
+    answer: "The New Toy",
+    evidence: "\"rejected titles for Toy Story included The New Toy, The Cowboy & the Spaceman, The Favorite, and Toyz in the Hood.\" — Disney Wiki"
+  },
+  {
+    id: 2,
+    question: "The evolution of Buzz Lightyear's character name included several iterations; what was the character's name immediately after 'Lunar Larry' but prior to 'Buzz'?",
+    options: ["Morph", "Tempus", "Tinny", "Bizz"],
+    answer: "Tempus",
+    evidence: "\"Tinny's name changed to Lunar Larry, then Tempus from Morph, and eventually Buzz Lightyear.\" — Disney Wiki"
+  },
+  {
+    id: 3,
+    question: "According to production records regarding early casting, which actor was the primary choice to provide the voice for the character of Woody?",
+    options: ["Jim Carrey", "Billy Crystal", "Arnold Schwarzenegger", "John Travolta"],
+    answer: "Billy Crystal",
+    evidence: "\"The producers first approached Jim Carrey for Buzz and Billy Crystal for Woody.\" — HowStuffWorks"
+  },
+  {
+    id: 4,
+    question: "Pixar production was temporarily halted in 1993 after a disastrous early screening of the 'Black Friday' reel, which depicted Woody as a sarcastic character.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The result was disastrous... The new script made Woody a more likable character, instead of the 'sarcastic jerk' he had been.\" — Disney Wiki"
+  },
+  {
+    id: 5,
+    question: "The 1995 release of 'Toy Story' marked the first-ever animated film voice roles for both Tom Hanks and Tim Allen.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"This is the first film where Tom Hanks and Tim Allen do voice acting in an animated film.\" — Disney Wiki"
+  },
+  {
+    id: 6,
+    question: "What was the specific philosophical justification Mattel provided for refusing to license the Barbie doll for the original 1995 production?",
+    options: ["They feared the doll being depicted in a destructive environment.", "They did not want the doll to have a fixed persona that limited children's imagination.", "They were concerned about the 3D rendering quality.", "They were already developing a standalone Barbie film."],
+    answer: "They did not want the doll to have a fixed persona that limited children's imagination.",
+    evidence: "\"They philosophically felt girls who play with Barbie dolls are projecting their personalities onto the doll... give the doll a voice and animate it, you're creating a persona.\" — Disney Wiki"
+  },
+  {
+    id: 7,
+    question: "What was Woody's specific tactical intent when he attempted to use the RC car at Andy's desk?",
+    options: ["To knock Buzz out of the window.", "To hide Buzz behind the desk so Andy would choose Woody for the trip.", "To race Buzz and establish dominance.", "To alert the Green Army Men to Buzz's location."],
+    answer: "To hide Buzz behind the desk so Andy would choose Woody for the trip.",
+    evidence: "\"Woody, knowing Andy will choose Buzz, plans to trap him in a gap behind Andy's desk by using RC so Andy won't find him and choose him instead.\" — Disney Wiki"
+  },
+  {
+    id: 8,
+    question: "Where does Buzz Lightyear first encounter the definitive evidence that he is a toy rather than a real Space Ranger?",
+    options: ["At the Dinoco gas station during an argument with Woody.", "Inside the 'Claw' machine at Pizza Planet.", "On a television commercial at Sid Phillips' house.", "While examining his own laser at the moving truck."],
+    answer: "On a television commercial at Sid Phillips' house.",
+    evidence: "\"Buzz comes upon a TV where he sees a commercial... reading 'MADE IN TAIWAN' on the inside of his wrist communicator, he realizes that Woody was right.\" — Disney Wiki"
+  },
+  {
+    id: 9,
+    question: "In the 1995 film, what color is the cowboy hat worn by the human character Andy Davis?",
+    options: ["Brown", "Tan", "Red", "Black"],
+    answer: "Red",
+    evidence: "\"In 'Toy Story', what color is Andy's cowboy hat? Answer: red\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 10,
+    question: "Although received as a Christmas gift at the conclusion of the 1995 film, the family dog, Buster (a Dachshund), is not physically seen on-screen during the first movie.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"At the end of 'Toy Story'... Andy receives Buster... Although Buster is not seen at this time, he is shown in the second and third films.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 11,
+    question: "In the film's opening sequence, Andy Davis utilizes Mr. Potato Head to portray a character known as the 'one-eyed villain'.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"He pretends that Mr. Potato Head is a one-eyed villain robbing money whom Woody must try to defeat.\" — Disney Wiki"
+  },
+  {
+    id: 12,
+    question: "During the transport sequence to Pizza Planet, what specific location in the delivery truck does Buzz Lightyear select as a 'safer' hideout?",
+    options: ["The cargo bed", "The cockpit (backseat)", "The glove compartment", "Under the chassis"],
+    answer: "The cockpit (backseat)",
+    evidence: "\"Buzz goes to the cockpit (backseat) as it is safer although Woody says they should go to the truck (the cargo).\" — Disney Wiki"
+  },
+  {
+    id: 13,
+    question: "What is the name of the establishment that functions as a recurring setting for Andy's family and features a space-themed arcade?",
+    options: ["Pizza Planet", "Meatball Mania", "Galaxy Grill", "Star Command Cafe"],
+    answer: "Pizza Planet",
+    evidence: "\"Andy and his family (with some of the toys) frequent this restaurant... Pizza Planet\" — HowStuffWorks"
+  },
+  {
+    id: 14,
+    question: "According to the film's technical trivia records, what is the age of the antagonist Sid Phillips?",
+    options: ["9", "10", "11", "12"],
+    answer: "11",
+    evidence: "\"In this film, Sid, who was the main villain, was 11 years old.\" — Disney Wiki"
+  },
+  {
+    id: 15,
+    question: "Sid Phillips performs a 'mutation' experiment on his sister Hannah’s doll, Janie; with what specific animal part does he replace the doll's head?",
+    options: ["A shark's fin", "A pterodactyl head", "A spider's legs", "A robotic eye"],
+    answer: "A pterodactyl head",
+    evidence: "\"Janie is Sid's sister's (Hannah's) doll, until Sid takes her and puts a pterodactyl head on her.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 16,
+    question: "The Mutant Toys in Sid's room, initially feared as cannibals, are eventually revealed to be benevolent characters who assist in repairing Buzz Lightyear's detached arm.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"The mutant toys then return and swarm over Buzz, and... Woody finds that they have repaired him and reconnected his arm.\" — Disney Wiki"
+  },
+  {
+    id: 17,
+    question: "To facilitate the escape from Sid Phillips, Woody and the Mutant Toys violate the toys' most sacred rule by coming to life and speaking directly to Sid.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"They decide to break the rules and allow him to see that they can move on their own. Woody even speaks to him through his voice box...\" — Disney Wiki"
+  },
+  {
+    id: 18,
+    question: "What primary technical failure causes the RC car to lose its pursuit of the moving truck during the film's climax?",
+    options: ["The tires detach", "The antenna breaks", "The batteries become depleted", "The remote is lost by Woody"],
+    answer: "The batteries become depleted",
+    evidence: "\"but fail when RC's batteries run out (becoming depleted).\" — Disney Wiki"
+  },
+  {
+    id: 19,
+    question: "Which of the following Pixar short film titles is explicitly visible on the spine of a book located behind Woody during the toy meeting?",
+    options: ["Knick Knack", "Geri's Game", "Luxo Jr.", "For the Birds"],
+    answer: "Knick Knack",
+    evidence: "\"behind him are books with the titles of several Pixar Shorts, like 'Tin Toy' by John Lasseter, 'Knick Knack', 'Red's Dream'...\" — Disney Wiki"
+  },
+  {
+    id: 20,
+    question: "A large-scale version of a Mickey Mouse watch is utilized as wall decor in Andy Davis's room in the 1995 film.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"A large version of the Mickey Mouse watch can be seen on Andy's wall.\" — Disney Wiki"
+  }
+];
+
+export const TOY_STORY_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "In 'Toy Story 2,' what is the name of the international destination where Al intends to ship the Roundup gang?",
+    options: ["China", "Japan", "South Korea", "Germany"],
+    answer: "Japan",
+    evidence: "\"Al sells the gang to a collector in Japan, but they escape just in time.\" — HowStuffWorks"
+  },
+  {
+    id: 2,
+    question: "Which singer performs the version of 'You've Got a Friend in Me' heard at the end of 'Toy Story 2'?",
+    options: ["Randy Newman", "Josh Groban", "Tony Bennett", "Robert Goulet"],
+    answer: "Robert Goulet",
+    evidence: "\"Randy Newman wrote the song... but Goulet covers it in the sequel.\" — HowStuffWorks"
+  },
+  {
+    id: 3,
+    question: "What specific breed of dog is Andy's pet, Buster, who first appears in action during the 1999 sequel?",
+    options: ["Beagle", "Golden Retriever", "Dachshund", "Pug"],
+    answer: "Dachshund",
+    evidence: "\"In the 'Toy Story' movies, what kind of dog is Buster? Answer: Dachshund\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 4,
+    question: "Why was Woody unable to go to Cowboy Camp with Andy in 'Toy Story 2'?",
+    options: ["He was lost in a garage sale", "Andy's mom sold him", "Andy accidentally ripped his arm", "He was replaced by Buzz"],
+    answer: "Andy accidentally ripped his arm",
+    evidence: "\"Andy accidentally rips off Woody's arm just before they're supposed to leave for camp.\" — HowStuffWorks"
+  },
+  {
+    id: 5,
+    question: "In his television commercials for Al's Toy Barn, what costume does Al McWhiggin wear?",
+    options: ["A teddy bear", "A cowboy", "A chicken", "A dinosaur"],
+    answer: "A chicken",
+    evidence: "\"In the ads, Al is 'Chicken Man.'\" — HowStuffWorks"
+  },
+  {
+    id: 6,
+    question: "What was the name of the original owner who eventually gave Jessie the Yodeling Cowgirl away?",
+    options: ["Molly", "Emily", "Bonnie", "Daisy"],
+    answer: "Emily",
+    evidence: "\"In a 'Toy Story 2' flashback, Jessie talks about her first owner, Emily.\" — HowStuffWorks"
+  },
+  {
+    id: 7,
+    question: "During the elevator shaft battle in 'Toy Story 2,' Emperor Zurg is revealed to be Buzz Lightyear's father.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Zurg is Buzz's nemesis ... and his father.\" — HowStuffWorks"
+  },
+  {
+    id: 8,
+    question: "The character of Jessie is voiced by Joan Cusack, although Sarah McLachlan provides her singing voice.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Joan Cusack voices Jessie, but Sarah McLachlan sings her song.\" — HowStuffWorks"
+  },
+  {
+    id: 9,
+    question: "Stinky Pete the Prospector was one of the main characters in the fictional 1950s show 'Woody's Roundup.'",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Jessie, her horse, Bullseye, and Stinky Pete the Prospector were the main characters in 'Woody's Roundup.'\" — HowStuffWorks"
+  },
+  {
+    id: 10,
+    question: "At the conclusion of 'Toy Story 2,' the three Pizza Planet aliens are recognized as the adopted children of Mr. and Mrs. Potato Head.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Mr. and Mrs. Potato Head began looking after them, and they are often recognized as their adopted children.\" — 350 Toy Story Trivia Questions"
+  }
+];
+
+export const TOY_STORY_3_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "In 'Toy Story 3', what is the specific occupation of the legacy character Sid Phillips?",
+    options: ["Mail Carrier", "Garbage Man", "Construction Worker", "Security Guard"],
+    answer: "Garbage Man",
+    evidence: "\"In the beginning of 'Toy Story 3' you can see Sid collecting garbage... At the end of the movie, you can see him standing outside the truck.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 2,
+    question: "Which new character is the first to introduce themselves to Woody after he is taken to Bonnie's house?",
+    options: ["Trixie", "Dolly", "Mr. Pricklepants", "Buttercup"],
+    answer: "Buttercup",
+    evidence: "\"After Bonnie leaves, Woody meets the other toys, which is when Buttercup introduces himself.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 3,
+    question: "Lotso's secret lair and meeting place for his gang at Sunnyside Daycare is located where?",
+    options: ["Inside a supply closet", "Behind a bookshelf", "Inside a vending machine", "In the ceiling tiles"],
+    answer: "Inside a vending machine",
+    evidence: "\"The toys' lair is inside a vending machine.\" — HowStuffWorks"
+  },
+  {
+    id: 4,
+    question: "During the incinerator sequence, who are the first two characters to physically hold hands with Jessie?",
+    options: ["Woody and Buzz", "Buzz and Bullseye", "Slinky and Rex", "Hamm and Mr. Potato Head"],
+    answer: "Buzz and Bullseye",
+    evidence: "\"Buzz looks down and grabs Jessie's hand. Jessie puts her other hand on Bullseye's front hoof.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 5,
+    question: "Who informs Woody that the only viable way to escape Sunnyside Daycare is through the trash system?",
+    options: ["Chuckles", "Ken", "A Chatter Telephone", "Big Baby"],
+    answer: "A Chatter Telephone",
+    evidence: "\"The toy phone gives Woody the scoop on the trash system.\" — HowStuffWorks"
+  },
+  {
+    id: 6,
+    question: "In addition to Best Animated Feature Film, 'Toy Story 3' won an Academy Award for which category?",
+    options: ["Best Original Screenplay", "Best Sound Editing", "Best Original Song", "Best Visual Effects"],
+    answer: "Best Original Song",
+    evidence: "\"'Toy Story 3' won Best Animated Feature and Best Original Song ('We Belong Together').\" — HowStuffWorks"
+  },
+  {
+    id: 7,
+    question: "Which characters are responsible for the last-minute rescue of the gang from the dump incinerator?",
+    options: ["Sarge and the Paratroopers", "The Little Green Aliens", "Buzz and Woody", "Bonnie's parents"],
+    answer: "The Little Green Aliens",
+    evidence: "\"The gang is rescued at the last minute by the little green aliens (The Claw).\" — HowStuffWorks"
+  },
+  {
+    id: 8,
+    question: "What are the physical characteristics of the Sunnyside leader, Lotso?",
+    options: ["Purple bear with a blue nose", "Pink bear with a white belly and strawberry scent", "Brown bear with a red bowtie", "White bear that smells like vanilla"],
+    answer: "Pink bear with a white belly and strawberry scent",
+    evidence: "\"Lotso is a pink bear that smells like strawberries with a white belly.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 9,
+    question: "Lotso's trauma began when his owner, Daisy, accidentally left him at a rest stop along with Big Baby and Chuckles.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Daisy accidentally left Lotso, Big Baby and Chuckles at a rest stop.\" — HowStuffWorks"
+  },
+  {
+    id: 10,
+    question: "Trixie the Triceratops is first introduced at Sunnyside Daycare before being moved to Bonnie's house.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Trixie is a Triceratops who is first seen at Bonnie's house in the third movie.\" — 350 Toy Story Trivia Questions"
+  }
+];
+
+export const TOY_STORY_4_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "At the beginning of Toy Story 4, who is the specific toy the group attempts to rescue from being swept away in the rain?",
+    options: ["Tinny", "Race Car", "Slinky Dog", "A barrel of monkeys"],
+    answer: "Race Car",
+    evidence: "\"Woody was able to rescue Race Car from being swept away during a rain storm.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 2,
+    question: "Where does Woody have his first reunion with Bo Peep after she had been gone for nine years?",
+    options: ["Second Chance Antiques", "The Carnival", "A park in Grand Basin", "Bonnie's Kindergarten"],
+    answer: "A park in Grand Basin",
+    evidence: "\"Bo Peep rescued Woody from the children at the park in Grand Basin.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 3,
+    question: "Which stuffed animal duo does Buzz Lightyear encounter while tied up at a carnival game?",
+    options: ["Bunny and Duck", "Ducky and Bunny", "Bear and Chicken", "Bunny and Chick"],
+    answer: "Ducky and Bunny",
+    evidence: "\"While searching for Woody, Buzz Lightyear met two stuffed animals... Ducky and Bunny.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 4,
+    question: "What tactical action does Jessie take to prevent Bonnie's parents from driving the RV out of Grand Basin?",
+    options: ["She hides the keys", "She jams the gear shift", "She punctures a tire with a nail", "She triggers the car alarm"],
+    answer: "She punctures a tire with a nail",
+    evidence: "\"Jesse used a nail found on the ground to puncture a tire on the RV.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 5,
+    question: "How does Buzz Lightyear ultimately obtain the key to Gabby-Gabby's cabinet in the antique store?",
+    options: ["Ducky and Bunny steal it", "The owner lays it down in front of him", "He picks the lock", "He finds it in the trash"],
+    answer: "The owner lays it down in front of him",
+    evidence: "\"While Buzz, Bunny, and Ducky were trying to figure out how to get the key... she laid the key in front of Buzz.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 6,
+    question: "One year after the events of the main film, Bonnie creates another new toy in first grade. What is this toy made of?",
+    options: ["A spork", "A plastic fork", "A popsicle stick", "A plastic knife"],
+    answer: "A plastic knife",
+    evidence: "\"One year later, Bonnie came home from first grade with a new toy... made of a plastic knife.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 7,
+    question: "Who does Woody appoint as the new leader of the toys by handing over his sheriff's badge?",
+    options: ["Buzz", "Forky", "Jessie", "Bo Peep"],
+    answer: "Jessie",
+    evidence: "\"Woody gave Jesse his sheriff's badge making her the leader of the toys.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 8,
+    question: "Gabby-Gabby's primary motivation for wanting Woody's voice box is so that the antique store owner's granddaughter, Harmony, will choose her.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"Gabby-Gabby wanted Woody's voice box so Harmony would choose her.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 9,
+    question: "Bonnie writes her name on a popsicle stick to complete the creation of Forky.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "\"On the popsicle stick, Bonnie wrote her name and took Forky home with her.\" — 350 Toy Story Trivia Questions"
+  },
+  {
+    id: 10,
+    question: "At the conclusion of the film, Woody chooses to return to Bonnie's house with Buzz and the rest of the gang.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "\"Woody stayed with Bo Peep and they traveled with the carnival.\" — 350 Toy Story Trivia Questions"
+  }
+];
+
+export const TOY_STORY_RANDOM_TRIVIA: MCTriviaQuestion[] = [
+  ...TOY_STORY_1_TRIVIA,
+  ...TOY_STORY_2_TRIVIA,
+  ...TOY_STORY_3_TRIVIA,
+  ...TOY_STORY_4_TRIVIA,
+].sort(() => 0.5 - Math.random()).slice(0, 15);
+
+export const TOY_STORY_GRADES = [
+  { threshold: 95, label: 'Star Command Ranger', color: 'text-green-400', character: { name: 'Buzz Lightyear', image: '/images/toystory.jpg', desc: 'To infinity and beyond! You are a true Space Ranger.' } },
+  { threshold: 80, label: 'Sheriff', color: 'text-amber-500', character: { name: 'Woody', image: '/images/toystory.jpg', desc: 'You are the favorite deputy! Outstanding knowledge.' } },
+  { threshold: 60, label: 'Roundup Gang', color: 'text-orange-400', character: { name: 'Jessie', image: '/images/toystory.jpg', desc: 'Yee-haw! You know your stuff.' } },
+  { threshold: 40, label: 'Pizza Planet Alien', color: 'text-emerald-400', character: { name: 'Little Green Men', image: '/images/toystory.jpg', desc: 'The claw has chosen you... but you need more practice.' } },
+  { threshold: 0, label: 'Lost Toy', color: 'text-slate-400', character: { name: 'Sid\'s Mutant Toys', image: '/images/toystory.jpg', desc: 'You might need some repair work back at Andy\'s room.' } },
+];
+
+export const DOG_MAN_GRADES = [
+  { threshold: 95, label: 'Police Chief', color: 'text-blue-400', character: { name: 'The Chief', image: '/images/dogman_chief.jpg', desc: 'You are the head of the force! Your knowledge is legendary.' } },
+  { threshold: 80, label: 'Dog Man Hero', color: 'text-yellow-400', character: { name: 'Dog Man', image: '/images/dogman_hero.jpg', desc: 'You are a master of crime-fighting and trivia!' } },
+  { threshold: 60, label: 'Cat Kid', color: 'text-orange-400', character: { name: 'Li\'l Petey', image: '/images/lil_petey.jpg', desc: 'You have a heart of gold and great instincts.' } },
+  { threshold: 40, label: 'Petey\'s Minion', color: 'text-slate-400', character: { name: 'Petey the Cat', image: '/images/petey.jpg', desc: 'You are plotting something... maybe more study time?' } },
+  { threshold: 0, label: 'Barkknight Candidate', color: 'text-red-400', character: { name: '80-HD', image: '/images/80hd.jpg', desc: 'A bit more practice and you will be a legend.' } },
+];
+
+/** DOG MAN TRIVIA DATASETS **/
+
+export const DOG_MAN_TRIVIA_BOOK1: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "In what specific grade were George and Harold when they conceived the idea for 'Captain Underpants'?",
+    "options": [
+      "Kindergarten",
+      "Second Grade",
+      "Third Grade",
+      "Fourth Grade"
+    ],
+    "answer": "Fourth Grade",
+    "evidence": "Then one day in 4th Grade, they got a new idea... They started making a new comic. Captain Underpants."
+  },
+  {
+    "id": 2,
+    "question": "From which business did the Chief purchase his brand new couch?",
+    "options": [
+      "Scholastic Furniture",
+      "Luke and Andrew's Furniture",
+      "Phil & Dav's Decor",
+      "The Tree House Gallery"
+    ],
+    "answer": "Luke and Andrew's Furniture",
+    "evidence": "Luke and Andrew's Furniture... My new couch is here!!!!"
+  },
+  {
+    "id": 3,
+    "question": "When reviving Dog Man, what specific technical improvement did George attempt to implement?",
+    "options": [
+      "Drawing more simpler",
+      "Using better colors",
+      "Spelling more better",
+      "Writing longer chapters"
+    ],
+    "answer": "Spelling more better",
+    "evidence": "George Tried To SPELL more better..."
+  },
+  {
+    "id": 4,
+    "question": "Which of the following names is NOT listed by George and Harold as one of their missing 'doubles'?",
+    "options": [
+      "Tony",
+      "Orlando",
+      "Dawn",
+      "Alek"
+    ],
+    "answer": "Alek",
+    "evidence": "Where are our doubles? Where's Tony, Orlando, and Dawn?"
+  },
+  {
+    "id": 5,
+    "question": "What was the exact title of the 'epic novella' that served as George and Harold's very first comic?",
+    "options": [
+      "The Adventures of Dog Man",
+      "The Advencers of Dog Man",
+      "Dog Man vs. Mecha-Flippy",
+      "Captain Underpants"
+    ],
+    "answer": "The Advencers of Dog Man",
+    "evidence": "Their very first comic was a epic novella called: The Advencers of Dog Man."
+  },
+  {
+    "id": 6,
+    "question": "The Chief explicitly labels Officer Knight and Greg the Dog as 'the worst cops EVER!' after they ruin his furniture.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "You're the worst cops EVER! Get out of my sight!!!"
+  },
+  {
+    "id": 7,
+    "question": "What is the name of the structure from which Petey is observed monitoring the police officers with binoculars?",
+    "options": [
+      "The Cat's Lair",
+      "Petey's Secret Lab",
+      "The Binocular Tower",
+      "The Villain Vault"
+    ],
+    "answer": "Petey's Secret Lab",
+    "evidence": "Uh-oh... Petey's Secret Lab."
+  },
+  {
+    "id": 8,
+    "question": "George and Harold's initial meeting occurred while they were both in kindergarten.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "One time, George met Harold in kindergarten."
+  },
+  {
+    "id": 9,
+    "question": "The decision to create a new Dog Man comic book was sparked by the discovery of a box of old comics in a tree house.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "It's a box full of old Dog Man comics we made when we were kids... Let's make a new comic book."
+  },
+  {
+    "id": 10,
+    "question": "According to the 'Behind the Scenes' section, who specifically tried to 'draw more simpler' for the reborn comic?",
+    "options": [
+      "George",
+      "Harold",
+      "The Chief",
+      "Officer Knight"
+    ],
+    "answer": "Harold",
+    "evidence": "...Harold tried To draw more simpler..."
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK2: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "What is the official title of the second book in the Dog Man series?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man: A Tale of Two Kitties",
+      "Dog Man: Lord of the Fleas",
+      "Dog Man: Brawl of the Wild"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 2,
+    "question": "Based on the archival metadata, what is the total page count for this volume?",
+    "options": [
+      "150 pages",
+      "229 pages",
+      "250 pages",
+      "100 pages"
+    ],
+    "answer": "229 pages",
+    "evidence": "More 1/229"
+  },
+  {
+    "id": 3,
+    "question": "Which version of the character Petey appears as a central plot figure in Book 2?",
+    "options": [
+      "Giant Petey",
+      "Robot Petey",
+      "Flat Petey",
+      "Invisible Petey"
+    ],
+    "answer": "Flat Petey",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 4,
+    "question": "What primary mechanical elements are frequently used by characters to drive the narrative forward in this book?",
+    "options": [
+      "Magic Spells",
+      "Scientific Inventions",
+      "Time Travel",
+      "Nature Skills"
+    ],
+    "answer": "Scientific Inventions",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 5,
+    "question": "In the official Dav Pilkey series index, where is 'Unleashed' positioned?",
+    "options": [
+      "Book 1",
+      "Book 3",
+      "Book 2",
+      "Book 5"
+    ],
+    "answer": "Book 2",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 6,
+    "question": "The title of this specific volume is 'Dog Man Unleashed'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 7,
+    "question": "The book's digital pagination ends at page 229.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "228-229"
+  },
+  {
+    "id": 8,
+    "question": "The character Flat Petey is a significant narrative element in this book.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 9,
+    "question": "Dog Man Unleashed is the first volume in the series timeline.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 10,
+    "question": "Scientific inventions are key devices used by characters within the plot.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 11,
+    "question": "What is the official title of the second book in the Dog Man series?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man: A Tale of Two Kitties",
+      "Dog Man: Lord of the Fleas",
+      "Dog Man: Brawl of the Wild"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 12,
+    "question": "Based on the archival metadata, what is the total page count for this volume?",
+    "options": [
+      "150 pages",
+      "229 pages",
+      "250 pages",
+      "100 pages"
+    ],
+    "answer": "229 pages",
+    "evidence": "More 1/229"
+  },
+  {
+    "id": 13,
+    "question": "Which version of the character Petey appears as a central plot figure in Book 2?",
+    "options": [
+      "Giant Petey",
+      "Robot Petey",
+      "Flat Petey",
+      "Invisible Petey"
+    ],
+    "answer": "Flat Petey",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 14,
+    "question": "What primary mechanical elements are frequently used by characters to drive the narrative forward in this book?",
+    "options": [
+      "Magic Spells",
+      "Scientific Inventions",
+      "Time Travel",
+      "Nature Skills"
+    ],
+    "answer": "Scientific Inventions",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 15,
+    "question": "In the official Dav Pilkey series index, where is 'Unleashed' positioned?",
+    "options": [
+      "Book 1",
+      "Book 3",
+      "Book 2",
+      "Book 5"
+    ],
+    "answer": "Book 2",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 16,
+    "question": "The title of this specific volume is 'Dog Man Unleashed'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 17,
+    "question": "The book's digital pagination ends at page 229.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "228-229"
+  },
+  {
+    "id": 18,
+    "question": "The character Flat Petey is a significant narrative element in this book.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 19,
+    "question": "Dog Man Unleashed is the first volume in the series timeline.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 20,
+    "question": "Scientific inventions are key devices used by characters within the plot.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK3: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the document title, what is the specific subtitle of Dog Man #3?",
+    "options": [
+      "A Tale of Two Kitties",
+      "The Bark of the Wild",
+      "For Whom the Ball Rolls",
+      "Grime and Punishment"
+    ],
+    "answer": "A Tale of Two Kitties",
+    "evidence": "Dog Man #3 A Tale Of Two Kitties"
+  },
+  {
+    "id": 2,
+    "question": "The author of Dog Man #3 is listed as Dav Pilkey.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dav Pilkey"
+  },
+  {
+    "id": 3,
+    "question": "What is the total number of pages indicated in the navigation metadata?",
+    "options": [
+      "100",
+      "200",
+      "264",
+      "300"
+    ],
+    "answer": "264",
+    "evidence": "More 1/264"
+  },
+  {
+    "id": 4,
+    "question": "Which digital navigation feature allows the user to see small versions of all pages at once?",
+    "options": [
+      "Zoom In",
+      "Thumbnails",
+      "Search",
+      "Auto Flip"
+    ],
+    "answer": "Thumbnails",
+    "evidence": "Thumbnails"
+  },
+  {
+    "id": 5,
+    "question": "The digital interface includes a feature called 'Auto Flip'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 6,
+    "question": "What is the volume number of this specific book within the Dog Man series?",
+    "options": [
+      "Book #1",
+      "Book #2",
+      "Book #3",
+      "Book #4"
+    ],
+    "answer": "Book #3",
+    "evidence": "Dog Man #3"
+  },
+  {
+    "id": 7,
+    "question": "Which button would a user click to manage audio levels in this digital edition?",
+    "options": [
+      "Sound Off",
+      "Zoom In",
+      "Social Share",
+      "Email"
+    ],
+    "answer": "Sound Off",
+    "evidence": "Sound Off"
+  },
+  {
+    "id": 8,
+    "question": "The interface provides a direct option to 'Social Share' the content.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Social Share"
+  },
+  {
+    "id": 9,
+    "question": "Which tool is available for finding specific words or phrases within the text?",
+    "options": [
+      "Search",
+      "Thumbnails",
+      "Next Page",
+      "Fullscreen"
+    ],
+    "answer": "Search",
+    "evidence": "Search"
+  },
+  {
+    "id": 10,
+    "question": "The navigation menu allows a user to jump directly to the 'Last' page.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Last"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK4: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "In this specific digital flipbook edition, which entity is credited with the upload and hosting of the file?",
+    "options": [
+      "Petey the Cat\u2019s Lab",
+      "DIGITAL PSS BHARATHIYAR SJK (T) BANGI",
+      "Scholastic Digital Library",
+      "The George and Harold Press"
+    ],
+    "answer": "DIGITAL PSS BHARATHIYAR SJK (T) BANGI",
+    "evidence": "Dog-Man-and-Cat-Kid DIGITAL PSS BHARATHIYAR SJK (T) BANGI Follow"
+  },
+  {
+    "id": 2,
+    "question": "What is the exact total page count of the digital artifact for 'Dog Man and Cat Kid' as indicated by the navigation bar?",
+    "options": [
+      "220",
+      "244",
+      "256",
+      "268"
+    ],
+    "answer": "256",
+    "evidence": "ExploreAll123...255256P:01"
+  },
+  {
+    "id": 3,
+    "question": "On what specific date was this digital version of 'Dog Man and Cat Kid' published to the FlipHTML5 platform?",
+    "options": [
+      "July 03, 2021",
+      "August 12, 2020",
+      "January 01, 2022",
+      "June 15, 2021"
+    ],
+    "answer": "July 03, 2021",
+    "evidence": "Dog-Man-and-Cat-Kid Published on Jul 03,2021"
+  },
+  {
+    "id": 4,
+    "question": "Which two characters are explicitly highlighted in the title of this fourth volume of the series?",
+    "options": [
+      "Dog Man and Petey",
+      "George and Harold",
+      "Dog Man and Cat Kid",
+      "Cat Kid and 80-HD"
+    ],
+    "answer": "Dog Man and Cat Kid",
+    "evidence": "Dog-Man-and-Cat-Kid Published on Jul 03,2021"
+  },
+  {
+    "id": 5,
+    "question": "According to the 'Explore' metadata path, which category is this digital book listed under?",
+    "options": [
+      "Magazines",
+      "Others",
+      "Textbooks",
+      "Recipes"
+    ],
+    "answer": "Others",
+    "evidence": "HomeExploreOthersDog-Man-and-Cat-Kid"
+  },
+  {
+    "id": 6,
+    "question": "What primary digital format is explicitly identified for this file in the 'Content Types' section of the source platform?",
+    "options": [
+      "Interactive Video",
+      "Flipbook",
+      "PowerPoint",
+      "Word Document"
+    ],
+    "answer": "Flipbook",
+    "evidence": "Content Types Flipbook Ebook"
+  },
+  {
+    "id": 7,
+    "question": "In the series hierarchy provided in the digital title, which volume number is assigned to 'Dog Man and Cat Kid'?",
+    "options": [
+      "Volume 3",
+      "Volume 4",
+      "Volume 5",
+      "Volume 1"
+    ],
+    "answer": "Volume 4",
+    "evidence": "Source Context identifies the work as 'Dog Man 4: Dog Man and Cat Kid'"
+  },
+  {
+    "id": 8,
+    "question": "The digital version of this book hosted by DIGITAL PSS BHARATHIYAR SJK (T) BANGI was published in the month of July.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Published on Jul 03,2021"
+  },
+  {
+    "id": 9,
+    "question": "According to the digital source context, the total number of pages in the flipbook's navigation exceeds 300.",
+    "options": null,
+    "answer": "False",
+    "evidence": "The navigation numbers end at 256."
+  },
+  {
+    "id": 10,
+    "question": "The digital platform FlipHTML5 identifies 'Education' as one of the industries or popular uses for its content solutions.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Solutions Popular Uses ... Education"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK5: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the reader's structural metadata, what is the maximum page depth recorded for the 'Lord of the Fleas' document?",
+    "options": [
+      "54 pages",
+      "55 pages",
+      "56 pages",
+      "58 pages"
+    ],
+    "answer": "56 pages",
+    "evidence": "Zoom In 1/56"
+  },
+  {
+    "id": 2,
+    "question": "The user interface command 'Auto Flip' is located within the same functional cluster as 'Thumbnails' and 'Social Share'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails\nAuto Flip\nSocial Share"
+  },
+  {
+    "id": 3,
+    "question": "In the primary navigation header, which specific command follows the 'Next Page' function?",
+    "options": [
+      "Last",
+      "Search",
+      "Thumbnails",
+      "More"
+    ],
+    "answer": "Last",
+    "evidence": "Next Page\nLast"
+  },
+  {
+    "id": 4,
+    "question": "The document\u2019s pagination schema utilizes a triad structure where individual page entries (e.g., 12, 13) are followed by a combined page-span entry (e.g., 12-13).",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "12\n13\n12-13"
+  },
+  {
+    "id": 5,
+    "question": "Within the extended interface menu, which navigational command is positioned immediately following 'Fullscreen'?",
+    "options": [
+      "More",
+      "Print",
+      "Social Share",
+      "Zoom In"
+    ],
+    "answer": "More",
+    "evidence": "Fullscreen\nMore"
+  },
+  {
+    "id": 6,
+    "question": "The 'Search' function is uniquely positioned only at the absolute beginning of the document's metadata sequence.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "56\n56\nSearch"
+  },
+  {
+    "id": 7,
+    "question": "Following the indexing of the 44-45 page span, what is the next sequential combined range listed in the metadata?",
+    "options": [
+      "45-46",
+      "46-47",
+      "47-48",
+      "48-49"
+    ],
+    "answer": "46-47",
+    "evidence": "44-45\n46\n47\n46-47"
+  },
+  {
+    "id": 8,
+    "question": "The numerical index concludes with a repeated entry for page '56' prior to the final 'Search' command.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "56\n56"
+  },
+  {
+    "id": 9,
+    "question": "Which interface element is nested between 'Fullscreen' and 'Search' in the secondary 'More' command sequence?",
+    "options": [
+      "More",
+      "Print",
+      "Social Share",
+      "Thumbnails"
+    ],
+    "answer": "More",
+    "evidence": "Fullscreen\nMore\nSearch"
+  },
+  {
+    "id": 10,
+    "question": "The document's interface provides a 'Print' function directly preceding the 'Fullscreen' option.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Print\n\nFullscreen"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK6: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "In the digital header, how is the title of the book specifically punctuated and formatted?",
+    "options": [
+      "Dog Man: Brawl of the Wild",
+      "Dog Man-Brawl of the wild",
+      "Dog Man\u2014Brawl of the Wild",
+      "Dogman: Brawl of the wild"
+    ],
+    "answer": "Dog Man-Brawl of the wild",
+    "evidence": "Dog Man-Brawl of the wild"
+  },
+  {
+    "id": 2,
+    "question": "What is the specific page count indicator listed in the 'More' navigation section?",
+    "options": [
+      "1/200",
+      "1/215",
+      "1/225",
+      "1/250"
+    ],
+    "answer": "1/225",
+    "evidence": "More 1/225"
+  },
+  {
+    "id": 3,
+    "question": "True or False: The digital interface includes a specific toggle labeled 'Sound Off' for the reading experience.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Sound Off"
+  },
+  {
+    "id": 4,
+    "question": "In the navigation sequence, which feature is located directly between 'Last' and 'Search'?",
+    "options": [
+      "Auto Flip",
+      "Zoom In",
+      "Thumbnails",
+      "Social Share"
+    ],
+    "answer": "Zoom In",
+    "evidence": "Last Zoom In Search"
+  },
+  {
+    "id": 5,
+    "question": "Which interface tool is designated for the automatic progression of the book's pages?",
+    "options": [
+      "Smart Scroll",
+      "Auto Flip",
+      "Page Play",
+      "Fast Forward"
+    ],
+    "answer": "Auto Flip",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 6,
+    "question": "True or False: A 'Thumbnails' feature is available to allow users to view page grids.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails"
+  },
+  {
+    "id": 7,
+    "question": "In the technical feature list, which option immediately follows 'Social Share'?",
+    "options": [
+      "Email",
+      "Next Page",
+      "Fullscreen",
+      "Zoom In"
+    ],
+    "answer": "Fullscreen",
+    "evidence": "Social Share Fullscreen"
+  },
+  {
+    "id": 8,
+    "question": "Which of the following functions is explicitly listed as a primary navigation button to reach the end of the file?",
+    "options": [
+      "Finish",
+      "Last",
+      "End",
+      "Final Page"
+    ],
+    "answer": "Last",
+    "evidence": "Last"
+  },
+  {
+    "id": 9,
+    "question": "True or False: The interface provides an 'Email' function within the secondary feature set.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Email"
+  },
+  {
+    "id": 10,
+    "question": "What is the first navigation command listed in the primary UI sequence of the document?",
+    "options": [
+      "Start",
+      "Cover",
+      "First",
+      "Home"
+    ],
+    "answer": "First",
+    "evidence": "First"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK7: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "In the Dog Man series, which volume is titled 'For Whom The Ball Rolls'?",
+    "options": [
+      "Dog Man #5",
+      "Dog Man #6",
+      "Dog Man #7",
+      "Dog Man #8"
+    ],
+    "answer": "Dog Man #7",
+    "evidence": "Dog Man #7 For Whom The Ball Rolls"
+  },
+  {
+    "id": 2,
+    "question": "What is the official subtitle for the seventh Dog Man book?",
+    "options": [
+      "The Ball Rolls On",
+      "For Whom The Ball Rolls",
+      "The Rolling Ball",
+      "Where the Ball Rolls"
+    ],
+    "answer": "For Whom The Ball Rolls",
+    "evidence": "[Email](mailto:?subject=Dog Man #7 For Whom The Ball Rolls&body=https://online.anyflip.com/mcmol/upfu/mobile/index.html)"
+  },
+  {
+    "id": 3,
+    "question": "True or False: The digital excerpt for 'Dog Man #7 For Whom The Ball Rolls' lists a total of 11 thumbnails.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails 1 2 3 4 5 6 7 8 9 10 11 1/11"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK8: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the document\u2019s primary index located in the footer, what is the total number of pages comprising the Dog Man: Fetch-22 digital framework?",
+    "options": [
+      "120",
+      "240",
+      "280",
+      "480"
+    ],
+    "answer": "240",
+    "evidence": "More 1/240"
+  },
+  {
+    "id": 2,
+    "question": "Within the primary navigation suite, which specific command is positioned directly between the 'First' and 'Next Page' buttons?",
+    "options": [
+      "Last",
+      "Home",
+      "Previous Page",
+      "Settings"
+    ],
+    "answer": "Previous Page",
+    "evidence": "First Previous Page Next Page Last"
+  },
+  {
+    "id": 3,
+    "question": "Which tool is explicitly provided within the primary toolset to allow for the granular adjustment of the book's visual detail?",
+    "options": [
+      "Contrast Toggle",
+      "Zoom In",
+      "Night Mode",
+      "Font Scaler"
+    ],
+    "answer": "Zoom In",
+    "evidence": "Zoom In Search Thumbnails"
+  },
+  {
+    "id": 4,
+    "question": "In the document\u2019s raw page metadata sequence, which specific page entry follows immediately after the '10-11' spread?",
+    "options": [
+      "11",
+      "11-12",
+      "12",
+      "13"
+    ],
+    "answer": "12",
+    "evidence": "10-11 12 13 12-13"
+  },
+  {
+    "id": 5,
+    "question": "Which interactive feature is listed as the final option in the primary social and distribution toolset?",
+    "options": [
+      "Print",
+      "Social Share",
+      "Download PDF",
+      "Archive"
+    ],
+    "answer": "Social Share",
+    "evidence": "Auto Flip Sound On Social Share"
+  },
+  {
+    "id": 6,
+    "question": "The digital interface for Dog Man: Fetch-22 includes an 'Auto Flip' feature located within the secondary menu for hands-free navigation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 7,
+    "question": "The digital framework lacks a native 'Search' function, requiring the user to navigate the 240 pages without text-query support.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Search"
+  },
+  {
+    "id": 8,
+    "question": "The interface provides a specific 'Sound On' toggle, allowing users to enable or disable audio feedback during the reading experience.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Sound On"
+  },
+  {
+    "id": 9,
+    "question": "A 'Fullscreen' mode is explicitly listed as an option within the document's secondary interface controls.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Fullscreen Email"
+  },
+  {
+    "id": 10,
+    "question": "The toolset includes a 'Thumbnails' view to facilitate a visual overview of the document's page ranges.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK9: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the hosting platform's metadata, what is the specific publication date of this version of 'Dog Man Grime and Punishment'?",
+    "options": [
+      "February 01, 2024",
+      "February 01, 2026",
+      "January 01, 2024",
+      "March 01, 2024"
+    ],
+    "answer": "February 01, 2024",
+    "evidence": "Published on Feb 01,2024"
+  },
+  {
+    "id": 2,
+    "question": "Which entity is identified in the site footer as the copyright holder of the hosting platform, Wonder Idea Technology Limited?",
+    "options": [
+      "Jin Cai",
+      "Wonder Idea Technology Limited",
+      "Mango Animate",
+      "Global Users"
+    ],
+    "answer": "Wonder Idea Technology Limited",
+    "evidence": "\u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED"
+  },
+  {
+    "id": 3,
+    "question": "Based on the digital navigation bar used to explore the book, what is the final page number indicated in the sequence?",
+    "options": [
+      "100",
+      "200",
+      "240",
+      "239"
+    ],
+    "answer": "240",
+    "evidence": "...238239240"
+  },
+  {
+    "id": 4,
+    "question": "True or False: The digital metadata for this specific flipbook lists the 'Description' field as 'No description.'",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Description: No description"
+  },
+  {
+    "id": 5,
+    "question": "The hosting service for this specific digital preview is identified by which platform name?",
+    "options": [
+      "FlipHTML5",
+      "Facebook",
+      "Twitter",
+      "Wonder Idea"
+    ],
+    "answer": "FlipHTML5",
+    "evidence": "Flipbook by Jin Cai | FlipHTML5"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK10: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the FlipHTML5 metadata, who is the specific uploader of the 'Dog Man: Mothering Heights' flipbook?",
+    "options": [
+      "dav.pilkey",
+      "hailey.rafer",
+      "scholastic.admin",
+      "wonder.idea"
+    ],
+    "answer": "hailey.rafer"
+  },
+  {
+    "id": 2,
+    "question": "On what specific date was the digital version of 'Dog Man: Mothering Heights' published on the FlipHTML5 platform?",
+    "options": [
+      "Jan 01, 2024",
+      "Dec 25, 2025",
+      "Apr 06, 2025",
+      "Aug 15, 2026"
+    ],
+    "answer": "Apr 06, 2025"
+  },
+  {
+    "id": 3,
+    "question": "Which entity is listed in the metadata footer as holding the copyright for the platform software in 2026?",
+    "options": [
+      "Scholastic Inc.",
+      "Mango Animate Blog",
+      "WONDER IDEA TECHNOLOGY LIMITED",
+      "Global Users Group"
+    ],
+    "answer": "WONDER IDEA TECHNOLOGY LIMITED"
+  },
+  {
+    "id": 4,
+    "question": "The FlipHTML5 platform lists 'PDF Chatbot' and 'AI Assistant' as available features for digital content creation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True"
+  },
+  {
+    "id": 5,
+    "question": "The metadata for 'Dog Man: Mothering Heights' includes a detailed 500-word summary in the 'Description' field.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK11: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "On what specific date was the 'Dog Man 11: Twenty Thousand Fleas Under the Sea - PDF Room' published on the FlipHTML5 platform?",
+    "options": [
+      "July 24, 2024",
+      "July 26, 2026",
+      "January 11, 2024",
+      "August 15, 2011"
+    ],
+    "answer": "July 24, 2024",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room Published on Jul 24,2024"
+  },
+  {
+    "id": 2,
+    "question": "Which specific username is associated with uploading the 'PDF Room' version of the book?",
+    "options": [
+      "dogmanfan_2024",
+      "superabdelrahman2011",
+      "wonder_idea_tech",
+      "dav_pilkey_digital"
+    ],
+    "answer": "superabdelrahman2011",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room - Flipbook by superabdelrahman2011"
+  },
+  {
+    "id": 3,
+    "question": "According to the footer information, what is the specific copyright year and technology group associated with the hosting software?",
+    "options": [
+      "2024 Scholastic Digital Media",
+      "2024 PDF Room International",
+      "2026 WONDER IDEA TECHNOLOGY LIMITED",
+      "2025 Mango Animate Studios"
+    ],
+    "answer": "2026 WONDER IDEA TECHNOLOGY LIMITED",
+    "evidence": "\u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED. All rights reserved"
+  },
+  {
+    "id": 4,
+    "question": "Which AI-driven tools are explicitly listed under the 'Office Tools' section for content creation on this platform?",
+    "options": [
+      "Automated Character Rigger",
+      "Create Video & Photo with AI",
+      "AI Storyboard Generator",
+      "Auto-Captioning Suite"
+    ],
+    "answer": "Create Video & Photo with AI",
+    "evidence": "Office Tools: Create Video & Photo with AI. So What? This feature enables fans to generate derivative visual content, accelerating the viral spread of the Dog Man IP across digital channels."
+  },
+  {
+    "id": 5,
+    "question": "When contrasting the platform's 'Popular Uses' against its 'Content Types,' which of the following is categorized as a 'Popular Use'?",
+    "options": [
+      "Textbook",
+      "Education",
+      "Brand Book",
+      "Lookbook"
+    ],
+    "answer": "Education",
+    "evidence": "Solutions: Popular Uses: Education; Content Types: Textbook. So What? Categorizing Dog Man 11 within 'Education' solutions allows for targeted distribution in academic gamification environments."
+  },
+  {
+    "id": 6,
+    "question": "The platform's accessibility features include a 'PDF Chatbot' to connect content with people.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Connect Content with People: PDF Chatbot. So What? The chatbot serves as an AI-driven interface for accessibility, allowing readers to interact with the Dog Man 11 metadata in real-time."
+  },
+  {
+    "id": 7,
+    "question": "Which of the following is listed under 'Office Tools' on the platform hosting the document?",
+    "options": [
+      "Character Creator",
+      "Create Video & Photo with AI",
+      "Drawing Tablet Sync",
+      "Storyboarding Pro"
+    ],
+    "answer": "Create Video & Photo with AI",
+    "evidence": "Office Tools Create Video & Photo with AI"
+  },
+  {
+    "id": 8,
+    "question": "In the 'Solutions' section, which industry is NOT specifically listed as a target for these digital tools?",
+    "options": [
+      "Real Estate",
+      "Nonprofit",
+      "Aerospace",
+      "Fashion & Beauty"
+    ],
+    "answer": "Aerospace",
+    "evidence": "Industries Real Estate Travel Nonprofit Restaurant Ecommerce Fashion & Beauty Retail & Wholesale"
+  },
+  {
+    "id": 9,
+    "question": "What is the primary content type category for the Dog Man 11 document as indicated in the header?",
+    "options": [
+      "Newsletter",
+      "Flipbook",
+      "Cookbook",
+      "Menu"
+    ],
+    "answer": "Flipbook",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room - Flipbook by superabdelrahman2011"
+  },
+  {
+    "id": 10,
+    "question": "Which platform social sharing option is explicitly mentioned in the document footer?",
+    "options": [
+      "Instagram",
+      "Twitter",
+      "LinkedIn",
+      "Snapchat"
+    ],
+    "answer": "Twitter",
+    "evidence": "Explore More Twitter Facebook Policies"
+  },
+  {
+    "id": 11,
+    "question": "Which of the following 'Other Products' is listed by the technology provider?",
+    "options": [
+      "Mango Animate Blog",
+      "Pineapple PDF Pro",
+      "Apple Animation",
+      "Orange Office"
+    ],
+    "answer": "Mango Animate Blog",
+    "evidence": "Explore Our Other Products: ... Mango Animate Blog"
+  },
+  {
+    "id": 12,
+    "question": "Under the 'Support' section, where can a user find tutorials and FAQs?",
+    "options": [
+      "Learning Center",
+      "Help Center",
+      "Webinars",
+      "Live Chat"
+    ],
+    "answer": "Help Center",
+    "evidence": "Help Center Check out our knowledge base with detailed tutorials and FAQs."
+  },
+  {
+    "id": 13,
+    "question": "The platform offers a 'PDF Chatbot' as a feature to connect content with people.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Connect Content with People ... PDF Chatbot"
+  },
+  {
+    "id": 14,
+    "question": "The source context mentions that 'Excel to Catalog' is an available feature under content creation.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Features Create Digital Content ... Excel to Catalog"
+  },
+  {
+    "id": 15,
+    "question": "The document indicates there are only 9 days left in the current free trial.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Enjoying your free trial? Only 9 days left!"
+  },
+  {
+    "id": 16,
+    "question": "Singing Photos is listed as one of the 'Other Products' explored by the technology company.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Explore Our Other Products: ... Singing Photos"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK12: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the digital record on FlipHTML5, who is the specific uploader of the 'Dog man scarlet shedder full book' flipbook?",
+    "options": [
+      "Soniya Raees",
+      "WONDER IDEA TECHNOLOGY",
+      "Mango Animate",
+      "Global Users"
+    ],
+    "answer": "Soniya Raees",
+    "evidence": "HomeExploreOthersDog man scarlet shedder full book Soniya Raees Follow"
+  },
+  {
+    "id": 2,
+    "question": "On what specific date was this version of the 'Dog man scarlet shedder' flipbook published to the platform?",
+    "options": [
+      "Aug 17, 2024",
+      "Aug 17, 2026",
+      "Aug 17, 2023",
+      "Jan 01, 2024"
+    ],
+    "answer": "Aug 17, 2024",
+    "evidence": "Dog man scarlet shedder full book Published on Aug 17,2024"
+  },
+  {
+    "id": 3,
+    "question": "The source metadata indicates that there is 'No description' provided for this specific digital publication.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog man scarlet shedder full book Published on Aug 17,2024 Description: No description"
+  },
+  {
+    "id": 4,
+    "question": "The footer of the hosting platform attributes the software copyright to which entity?",
+    "options": [
+      "WONDER IDEA TECHNOLOGY LIMITED",
+      "Soniya Raees",
+      "Mango Animate Blog",
+      "Talking Photo AI"
+    ],
+    "answer": "WONDER IDEA TECHNOLOGY LIMITED",
+    "evidence": "Flipbook Software \u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED. All rights reserved"
+  },
+  {
+    "id": 5,
+    "question": "The source context displays a trial notification at the top of the interface; how many days are remaining in this trial?",
+    "options": [
+      "9 days",
+      "17 days",
+      "2026 days",
+      "Unlimited"
+    ],
+    "answer": "9 days",
+    "evidence": "Enjoying your free trial? Only 9 days left! Upgrade Now"
+  },
+  {
+    "id": 6,
+    "question": "The digital artifact is explicitly categorized as a 'Flipbook' in its title and platform metadata.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog man scarlet shedder full book - Flipbook by Soniya Raees | FlipHTML5"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK13: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "According to the source material, who is the credited author of 'Dog Man Big Jim Begins'?",
+    "options": [
+      "Jeff Kinney",
+      "Dav Pilkey",
+      "Lincoln Peirce",
+      "Stephen Pastis"
+    ],
+    "answer": "Dav Pilkey"
+  },
+  {
+    "id": 2,
+    "question": "What is the full title of the book as displayed in the digital interface?",
+    "options": [
+      "Dog Man Big Jim Begins",
+      "Dog Man: Big Jim's Return",
+      "Dog Man: The New Adventure",
+      "The Adventures of Big Jim"
+    ],
+    "answer": "Dog Man Big Jim Begins"
+  },
+  {
+    "id": 3,
+    "question": "The digital interface for 'Dog Man Big Jim Begins' confirms that the total page count is 225.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True"
+  }
+];
+
+export const DOG_MAN_TRIVIA_BOOK14: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "What is the exact page count recorded for the document titled Dog Man Big Jim Believes?",
+    "options": [
+      "220 pages",
+      "225 pages",
+      "226 pages",
+      "240 pages"
+    ],
+    "answer": "226 pages",
+    "evidence": "47K views 226 pages"
+  },
+  {
+    "id": 2,
+    "question": "According to the source metadata, who is the author of Dog Man Big Jim Believes?",
+    "options": [
+      "Jeff Kinney",
+      "Dav Pilkey",
+      "Lincoln Peirce",
+      "SpicyRenSpice"
+    ],
+    "answer": "Dav Pilkey",
+    "evidence": "Dog Man Big Jim Believes (Dav Pilkey)"
+  },
+  {
+    "id": 3,
+    "question": "In the 'You might also like' section, which related Dog Man title is listed as having 229 pages?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man 8",
+      "Dog Man-1",
+      "Dog Man - Big Jim Begins"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed PDF 90% (10) Dog Man Unleashed 229 pages"
+  },
+  {
+    "id": 4,
+    "question": "Which specific user is credited with the upload of the Dog Man Big Jim Believes document in the provided metadata?",
+    "options": [
+      "Scribd Inc.",
+      "Anna's Archive",
+      "SpicyRenSpice",
+      "Z-Library"
+    ],
+    "answer": "SpicyRenSpice",
+    "evidence": "Uploaded by SpicyRenSpice"
+  },
+  {
+    "id": 5,
+    "question": "What is the exact name of the related 'Big Jim' title mentioned in the source that is distinct from Big Jim Believes?",
+    "options": [
+      "Big Jim's Big Day",
+      "Dog Man - Big Jim Begins",
+      "Big Jim Believes (Book 14)",
+      "Big Jim and the Bad Guys"
+    ],
+    "answer": "Dog Man - Big Jim Begins",
+    "evidence": "Dog Man - Big Jim Begins - A Grap - Dav Pi PDF 79% (14) Dog Man - Big Jim Begins - A Grap - Dav Pi 225 pages"
+  },
+  {
+    "id": 6,
+    "question": "True or False: The page count of Dog Man Big Jim Believes is exactly the same as Jeff Kinney - Diary of a Wimpy Kid 12 The Getaway.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Jeff Kinney - Diary of A Wimpy Kid 12 The Getaway PDF 86% (318) Jeff Kinney - Diary of A Wimpy Kid 12 The Getaway 226 pages"
+  },
+  {
+    "id": 7,
+    "question": "True or False: Dog Man 8 is recorded as having more pages than Dog Man Big Jim Believes.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man 8 PDF 86% (7) Dog Man 8 220 pages"
+  },
+  {
+    "id": 8,
+    "question": "True or False: The source context includes a listing for a full-length book titled Cat Kid Comic Club 4.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Cat Kid Comic Club 4 Excerpt PDF 69% (13) Cat Kid Comic Club 4 Excerpt 23 pages"
+  },
+  {
+    "id": 9,
+    "question": "True or False: Dog Man: Grime and Punishment (Book 9) is the longest Dog Man title mentioned in the 'You might also like' list, at 240 pages.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man - For Whom The Ball Rolls PDF 88% (40) Dog Man - For Whom The Ball Rolls 241 pages"
+  },
+  {
+    "id": 10,
+    "question": "True or False: The original Dog Man-1 listed in the related items contains fewer than 60 pages.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man-1 PDF 93% (27) Dog Man-1 58 pages"
+  }
+];
+
+export const DOG_MAN_RANDOM_TRIVIA: MCTriviaQuestion[] = [
+  {
+    "id": 1,
+    "question": "In what specific grade were George and Harold when they conceived the idea for 'Captain Underpants'?",
+    "options": [
+      "Kindergarten",
+      "Second Grade",
+      "Third Grade",
+      "Fourth Grade"
+    ],
+    "answer": "Fourth Grade",
+    "evidence": "Then one day in 4th Grade, they got a new idea... They started making a new comic. Captain Underpants."
+  },
+  {
+    "id": 2,
+    "question": "From which business did the Chief purchase his brand new couch?",
+    "options": [
+      "Scholastic Furniture",
+      "Luke and Andrew's Furniture",
+      "Phil & Dav's Decor",
+      "The Tree House Gallery"
+    ],
+    "answer": "Luke and Andrew's Furniture",
+    "evidence": "Luke and Andrew's Furniture... My new couch is here!!!!"
+  },
+  {
+    "id": 3,
+    "question": "When reviving Dog Man, what specific technical improvement did George attempt to implement?",
+    "options": [
+      "Drawing more simpler",
+      "Using better colors",
+      "Spelling more better",
+      "Writing longer chapters"
+    ],
+    "answer": "Spelling more better",
+    "evidence": "George Tried To SPELL more better..."
+  },
+  {
+    "id": 4,
+    "question": "Which of the following names is NOT listed by George and Harold as one of their missing 'doubles'?",
+    "options": [
+      "Tony",
+      "Orlando",
+      "Dawn",
+      "Alek"
+    ],
+    "answer": "Alek",
+    "evidence": "Where are our doubles? Where's Tony, Orlando, and Dawn?"
+  },
+  {
+    "id": 5,
+    "question": "What was the exact title of the 'epic novella' that served as George and Harold's very first comic?",
+    "options": [
+      "The Adventures of Dog Man",
+      "The Advencers of Dog Man",
+      "Dog Man vs. Mecha-Flippy",
+      "Captain Underpants"
+    ],
+    "answer": "The Advencers of Dog Man",
+    "evidence": "Their very first comic was a epic novella called: The Advencers of Dog Man."
+  },
+  {
+    "id": 6,
+    "question": "The Chief explicitly labels Officer Knight and Greg the Dog as 'the worst cops EVER!' after they ruin his furniture.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "You're the worst cops EVER! Get out of my sight!!!"
+  },
+  {
+    "id": 7,
+    "question": "What is the name of the structure from which Petey is observed monitoring the police officers with binoculars?",
+    "options": [
+      "The Cat's Lair",
+      "Petey's Secret Lab",
+      "The Binocular Tower",
+      "The Villain Vault"
+    ],
+    "answer": "Petey's Secret Lab",
+    "evidence": "Uh-oh... Petey's Secret Lab."
+  },
+  {
+    "id": 8,
+    "question": "George and Harold's initial meeting occurred while they were both in kindergarten.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "One time, George met Harold in kindergarten."
+  },
+  {
+    "id": 9,
+    "question": "The decision to create a new Dog Man comic book was sparked by the discovery of a box of old comics in a tree house.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "It's a box full of old Dog Man comics we made when we were kids... Let's make a new comic book."
+  },
+  {
+    "id": 10,
+    "question": "According to the 'Behind the Scenes' section, who specifically tried to 'draw more simpler' for the reborn comic?",
+    "options": [
+      "George",
+      "Harold",
+      "The Chief",
+      "Officer Knight"
+    ],
+    "answer": "Harold",
+    "evidence": "...Harold tried To draw more simpler..."
+  },
+  {
+    "id": 11,
+    "question": "What is the official title of the second book in the Dog Man series?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man: A Tale of Two Kitties",
+      "Dog Man: Lord of the Fleas",
+      "Dog Man: Brawl of the Wild"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 12,
+    "question": "Based on the archival metadata, what is the total page count for this volume?",
+    "options": [
+      "150 pages",
+      "229 pages",
+      "250 pages",
+      "100 pages"
+    ],
+    "answer": "229 pages",
+    "evidence": "More 1/229"
+  },
+  {
+    "id": 13,
+    "question": "Which version of the character Petey appears as a central plot figure in Book 2?",
+    "options": [
+      "Giant Petey",
+      "Robot Petey",
+      "Flat Petey",
+      "Invisible Petey"
+    ],
+    "answer": "Flat Petey",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 14,
+    "question": "What primary mechanical elements are frequently used by characters to drive the narrative forward in this book?",
+    "options": [
+      "Magic Spells",
+      "Scientific Inventions",
+      "Time Travel",
+      "Nature Skills"
+    ],
+    "answer": "Scientific Inventions",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 15,
+    "question": "In the official Dav Pilkey series index, where is 'Unleashed' positioned?",
+    "options": [
+      "Book 1",
+      "Book 3",
+      "Book 2",
+      "Book 5"
+    ],
+    "answer": "Book 2",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 16,
+    "question": "The title of this specific volume is 'Dog Man Unleashed'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 17,
+    "question": "The book's digital pagination ends at page 229.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "228-229"
+  },
+  {
+    "id": 18,
+    "question": "The character Flat Petey is a significant narrative element in this book.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 19,
+    "question": "Dog Man Unleashed is the first volume in the series timeline.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 20,
+    "question": "Scientific inventions are key devices used by characters within the plot.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 21,
+    "question": "What is the official title of the second book in the Dog Man series?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man: A Tale of Two Kitties",
+      "Dog Man: Lord of the Fleas",
+      "Dog Man: Brawl of the Wild"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 22,
+    "question": "Based on the archival metadata, what is the total page count for this volume?",
+    "options": [
+      "150 pages",
+      "229 pages",
+      "250 pages",
+      "100 pages"
+    ],
+    "answer": "229 pages",
+    "evidence": "More 1/229"
+  },
+  {
+    "id": 23,
+    "question": "Which version of the character Petey appears as a central plot figure in Book 2?",
+    "options": [
+      "Giant Petey",
+      "Robot Petey",
+      "Flat Petey",
+      "Invisible Petey"
+    ],
+    "answer": "Flat Petey",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 24,
+    "question": "What primary mechanical elements are frequently used by characters to drive the narrative forward in this book?",
+    "options": [
+      "Magic Spells",
+      "Scientific Inventions",
+      "Time Travel",
+      "Nature Skills"
+    ],
+    "answer": "Scientific Inventions",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 25,
+    "question": "In the official Dav Pilkey series index, where is 'Unleashed' positioned?",
+    "options": [
+      "Book 1",
+      "Book 3",
+      "Book 2",
+      "Book 5"
+    ],
+    "answer": "Book 2",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 26,
+    "question": "The title of this specific volume is 'Dog Man Unleashed'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 27,
+    "question": "The book's digital pagination ends at page 229.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "228-229"
+  },
+  {
+    "id": 28,
+    "question": "The character Flat Petey is a significant narrative element in this book.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 29,
+    "question": "Dog Man Unleashed is the first volume in the series timeline.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 30,
+    "question": "Scientific inventions are key devices used by characters within the plot.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man Unleashed {2}"
+  },
+  {
+    "id": 31,
+    "question": "According to the document title, what is the specific subtitle of Dog Man #3?",
+    "options": [
+      "A Tale of Two Kitties",
+      "The Bark of the Wild",
+      "For Whom the Ball Rolls",
+      "Grime and Punishment"
+    ],
+    "answer": "A Tale of Two Kitties",
+    "evidence": "Dog Man #3 A Tale Of Two Kitties"
+  },
+  {
+    "id": 32,
+    "question": "The author of Dog Man #3 is listed as Dav Pilkey.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dav Pilkey"
+  },
+  {
+    "id": 33,
+    "question": "What is the total number of pages indicated in the navigation metadata?",
+    "options": [
+      "100",
+      "200",
+      "264",
+      "300"
+    ],
+    "answer": "264",
+    "evidence": "More 1/264"
+  },
+  {
+    "id": 34,
+    "question": "Which digital navigation feature allows the user to see small versions of all pages at once?",
+    "options": [
+      "Zoom In",
+      "Thumbnails",
+      "Search",
+      "Auto Flip"
+    ],
+    "answer": "Thumbnails",
+    "evidence": "Thumbnails"
+  },
+  {
+    "id": 35,
+    "question": "The digital interface includes a feature called 'Auto Flip'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 36,
+    "question": "What is the volume number of this specific book within the Dog Man series?",
+    "options": [
+      "Book #1",
+      "Book #2",
+      "Book #3",
+      "Book #4"
+    ],
+    "answer": "Book #3",
+    "evidence": "Dog Man #3"
+  },
+  {
+    "id": 37,
+    "question": "Which button would a user click to manage audio levels in this digital edition?",
+    "options": [
+      "Sound Off",
+      "Zoom In",
+      "Social Share",
+      "Email"
+    ],
+    "answer": "Sound Off",
+    "evidence": "Sound Off"
+  },
+  {
+    "id": 38,
+    "question": "The interface provides a direct option to 'Social Share' the content.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Social Share"
+  },
+  {
+    "id": 39,
+    "question": "Which tool is available for finding specific words or phrases within the text?",
+    "options": [
+      "Search",
+      "Thumbnails",
+      "Next Page",
+      "Fullscreen"
+    ],
+    "answer": "Search",
+    "evidence": "Search"
+  },
+  {
+    "id": 40,
+    "question": "The navigation menu allows a user to jump directly to the 'Last' page.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Last"
+  },
+  {
+    "id": 41,
+    "question": "In this specific digital flipbook edition, which entity is credited with the upload and hosting of the file?",
+    "options": [
+      "Petey the Cat\u2019s Lab",
+      "DIGITAL PSS BHARATHIYAR SJK (T) BANGI",
+      "Scholastic Digital Library",
+      "The George and Harold Press"
+    ],
+    "answer": "DIGITAL PSS BHARATHIYAR SJK (T) BANGI",
+    "evidence": "Dog-Man-and-Cat-Kid DIGITAL PSS BHARATHIYAR SJK (T) BANGI Follow"
+  },
+  {
+    "id": 42,
+    "question": "What is the exact total page count of the digital artifact for 'Dog Man and Cat Kid' as indicated by the navigation bar?",
+    "options": [
+      "220",
+      "244",
+      "256",
+      "268"
+    ],
+    "answer": "256",
+    "evidence": "ExploreAll123...255256P:01"
+  },
+  {
+    "id": 43,
+    "question": "On what specific date was this digital version of 'Dog Man and Cat Kid' published to the FlipHTML5 platform?",
+    "options": [
+      "July 03, 2021",
+      "August 12, 2020",
+      "January 01, 2022",
+      "June 15, 2021"
+    ],
+    "answer": "July 03, 2021",
+    "evidence": "Dog-Man-and-Cat-Kid Published on Jul 03,2021"
+  },
+  {
+    "id": 44,
+    "question": "Which two characters are explicitly highlighted in the title of this fourth volume of the series?",
+    "options": [
+      "Dog Man and Petey",
+      "George and Harold",
+      "Dog Man and Cat Kid",
+      "Cat Kid and 80-HD"
+    ],
+    "answer": "Dog Man and Cat Kid",
+    "evidence": "Dog-Man-and-Cat-Kid Published on Jul 03,2021"
+  },
+  {
+    "id": 45,
+    "question": "According to the 'Explore' metadata path, which category is this digital book listed under?",
+    "options": [
+      "Magazines",
+      "Others",
+      "Textbooks",
+      "Recipes"
+    ],
+    "answer": "Others",
+    "evidence": "HomeExploreOthersDog-Man-and-Cat-Kid"
+  },
+  {
+    "id": 46,
+    "question": "What primary digital format is explicitly identified for this file in the 'Content Types' section of the source platform?",
+    "options": [
+      "Interactive Video",
+      "Flipbook",
+      "PowerPoint",
+      "Word Document"
+    ],
+    "answer": "Flipbook",
+    "evidence": "Content Types Flipbook Ebook"
+  },
+  {
+    "id": 47,
+    "question": "In the series hierarchy provided in the digital title, which volume number is assigned to 'Dog Man and Cat Kid'?",
+    "options": [
+      "Volume 3",
+      "Volume 4",
+      "Volume 5",
+      "Volume 1"
+    ],
+    "answer": "Volume 4",
+    "evidence": "Source Context identifies the work as 'Dog Man 4: Dog Man and Cat Kid'"
+  },
+  {
+    "id": 48,
+    "question": "The digital version of this book hosted by DIGITAL PSS BHARATHIYAR SJK (T) BANGI was published in the month of July.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Published on Jul 03,2021"
+  },
+  {
+    "id": 49,
+    "question": "According to the digital source context, the total number of pages in the flipbook's navigation exceeds 300.",
+    "options": null,
+    "answer": "False",
+    "evidence": "The navigation numbers end at 256."
+  },
+  {
+    "id": 50,
+    "question": "The digital platform FlipHTML5 identifies 'Education' as one of the industries or popular uses for its content solutions.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Solutions Popular Uses ... Education"
+  },
+  {
+    "id": 51,
+    "question": "According to the reader's structural metadata, what is the maximum page depth recorded for the 'Lord of the Fleas' document?",
+    "options": [
+      "54 pages",
+      "55 pages",
+      "56 pages",
+      "58 pages"
+    ],
+    "answer": "56 pages",
+    "evidence": "Zoom In 1/56"
+  },
+  {
+    "id": 52,
+    "question": "The user interface command 'Auto Flip' is located within the same functional cluster as 'Thumbnails' and 'Social Share'.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails\nAuto Flip\nSocial Share"
+  },
+  {
+    "id": 53,
+    "question": "In the primary navigation header, which specific command follows the 'Next Page' function?",
+    "options": [
+      "Last",
+      "Search",
+      "Thumbnails",
+      "More"
+    ],
+    "answer": "Last",
+    "evidence": "Next Page\nLast"
+  },
+  {
+    "id": 54,
+    "question": "The document\u2019s pagination schema utilizes a triad structure where individual page entries (e.g., 12, 13) are followed by a combined page-span entry (e.g., 12-13).",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "12\n13\n12-13"
+  },
+  {
+    "id": 55,
+    "question": "Within the extended interface menu, which navigational command is positioned immediately following 'Fullscreen'?",
+    "options": [
+      "More",
+      "Print",
+      "Social Share",
+      "Zoom In"
+    ],
+    "answer": "More",
+    "evidence": "Fullscreen\nMore"
+  },
+  {
+    "id": 56,
+    "question": "The 'Search' function is uniquely positioned only at the absolute beginning of the document's metadata sequence.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "56\n56\nSearch"
+  },
+  {
+    "id": 57,
+    "question": "Following the indexing of the 44-45 page span, what is the next sequential combined range listed in the metadata?",
+    "options": [
+      "45-46",
+      "46-47",
+      "47-48",
+      "48-49"
+    ],
+    "answer": "46-47",
+    "evidence": "44-45\n46\n47\n46-47"
+  },
+  {
+    "id": 58,
+    "question": "The numerical index concludes with a repeated entry for page '56' prior to the final 'Search' command.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "56\n56"
+  },
+  {
+    "id": 59,
+    "question": "Which interface element is nested between 'Fullscreen' and 'Search' in the secondary 'More' command sequence?",
+    "options": [
+      "More",
+      "Print",
+      "Social Share",
+      "Thumbnails"
+    ],
+    "answer": "More",
+    "evidence": "Fullscreen\nMore\nSearch"
+  },
+  {
+    "id": 60,
+    "question": "The document's interface provides a 'Print' function directly preceding the 'Fullscreen' option.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Print\n\nFullscreen"
+  },
+  {
+    "id": 61,
+    "question": "In the digital header, how is the title of the book specifically punctuated and formatted?",
+    "options": [
+      "Dog Man: Brawl of the Wild",
+      "Dog Man-Brawl of the wild",
+      "Dog Man\u2014Brawl of the Wild",
+      "Dogman: Brawl of the wild"
+    ],
+    "answer": "Dog Man-Brawl of the wild",
+    "evidence": "Dog Man-Brawl of the wild"
+  },
+  {
+    "id": 62,
+    "question": "What is the specific page count indicator listed in the 'More' navigation section?",
+    "options": [
+      "1/200",
+      "1/215",
+      "1/225",
+      "1/250"
+    ],
+    "answer": "1/225",
+    "evidence": "More 1/225"
+  },
+  {
+    "id": 63,
+    "question": "True or False: The digital interface includes a specific toggle labeled 'Sound Off' for the reading experience.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Sound Off"
+  },
+  {
+    "id": 64,
+    "question": "In the navigation sequence, which feature is located directly between 'Last' and 'Search'?",
+    "options": [
+      "Auto Flip",
+      "Zoom In",
+      "Thumbnails",
+      "Social Share"
+    ],
+    "answer": "Zoom In",
+    "evidence": "Last Zoom In Search"
+  },
+  {
+    "id": 65,
+    "question": "Which interface tool is designated for the automatic progression of the book's pages?",
+    "options": [
+      "Smart Scroll",
+      "Auto Flip",
+      "Page Play",
+      "Fast Forward"
+    ],
+    "answer": "Auto Flip",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 66,
+    "question": "True or False: A 'Thumbnails' feature is available to allow users to view page grids.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails"
+  },
+  {
+    "id": 67,
+    "question": "In the technical feature list, which option immediately follows 'Social Share'?",
+    "options": [
+      "Email",
+      "Next Page",
+      "Fullscreen",
+      "Zoom In"
+    ],
+    "answer": "Fullscreen",
+    "evidence": "Social Share Fullscreen"
+  },
+  {
+    "id": 68,
+    "question": "Which of the following functions is explicitly listed as a primary navigation button to reach the end of the file?",
+    "options": [
+      "Finish",
+      "Last",
+      "End",
+      "Final Page"
+    ],
+    "answer": "Last",
+    "evidence": "Last"
+  },
+  {
+    "id": 69,
+    "question": "True or False: The interface provides an 'Email' function within the secondary feature set.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Email"
+  },
+  {
+    "id": 70,
+    "question": "What is the first navigation command listed in the primary UI sequence of the document?",
+    "options": [
+      "Start",
+      "Cover",
+      "First",
+      "Home"
+    ],
+    "answer": "First",
+    "evidence": "First"
+  },
+  {
+    "id": 71,
+    "question": "In the Dog Man series, which volume is titled 'For Whom The Ball Rolls'?",
+    "options": [
+      "Dog Man #5",
+      "Dog Man #6",
+      "Dog Man #7",
+      "Dog Man #8"
+    ],
+    "answer": "Dog Man #7",
+    "evidence": "Dog Man #7 For Whom The Ball Rolls"
+  },
+  {
+    "id": 72,
+    "question": "What is the official subtitle for the seventh Dog Man book?",
+    "options": [
+      "The Ball Rolls On",
+      "For Whom The Ball Rolls",
+      "The Rolling Ball",
+      "Where the Ball Rolls"
+    ],
+    "answer": "For Whom The Ball Rolls",
+    "evidence": "[Email](mailto:?subject=Dog Man #7 For Whom The Ball Rolls&body=https://online.anyflip.com/mcmol/upfu/mobile/index.html)"
+  },
+  {
+    "id": 73,
+    "question": "True or False: The digital excerpt for 'Dog Man #7 For Whom The Ball Rolls' lists a total of 11 thumbnails.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails 1 2 3 4 5 6 7 8 9 10 11 1/11"
+  },
+  {
+    "id": 74,
+    "question": "According to the document\u2019s primary index located in the footer, what is the total number of pages comprising the Dog Man: Fetch-22 digital framework?",
+    "options": [
+      "120",
+      "240",
+      "280",
+      "480"
+    ],
+    "answer": "240",
+    "evidence": "More 1/240"
+  },
+  {
+    "id": 75,
+    "question": "Within the primary navigation suite, which specific command is positioned directly between the 'First' and 'Next Page' buttons?",
+    "options": [
+      "Last",
+      "Home",
+      "Previous Page",
+      "Settings"
+    ],
+    "answer": "Previous Page",
+    "evidence": "First Previous Page Next Page Last"
+  },
+  {
+    "id": 76,
+    "question": "Which tool is explicitly provided within the primary toolset to allow for the granular adjustment of the book's visual detail?",
+    "options": [
+      "Contrast Toggle",
+      "Zoom In",
+      "Night Mode",
+      "Font Scaler"
+    ],
+    "answer": "Zoom In",
+    "evidence": "Zoom In Search Thumbnails"
+  },
+  {
+    "id": 77,
+    "question": "In the document\u2019s raw page metadata sequence, which specific page entry follows immediately after the '10-11' spread?",
+    "options": [
+      "11",
+      "11-12",
+      "12",
+      "13"
+    ],
+    "answer": "12",
+    "evidence": "10-11 12 13 12-13"
+  },
+  {
+    "id": 78,
+    "question": "Which interactive feature is listed as the final option in the primary social and distribution toolset?",
+    "options": [
+      "Print",
+      "Social Share",
+      "Download PDF",
+      "Archive"
+    ],
+    "answer": "Social Share",
+    "evidence": "Auto Flip Sound On Social Share"
+  },
+  {
+    "id": 79,
+    "question": "The digital interface for Dog Man: Fetch-22 includes an 'Auto Flip' feature located within the secondary menu for hands-free navigation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Auto Flip"
+  },
+  {
+    "id": 80,
+    "question": "The digital framework lacks a native 'Search' function, requiring the user to navigate the 240 pages without text-query support.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Search"
+  },
+  {
+    "id": 81,
+    "question": "The interface provides a specific 'Sound On' toggle, allowing users to enable or disable audio feedback during the reading experience.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Sound On"
+  },
+  {
+    "id": 82,
+    "question": "A 'Fullscreen' mode is explicitly listed as an option within the document's secondary interface controls.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Fullscreen Email"
+  },
+  {
+    "id": 83,
+    "question": "The toolset includes a 'Thumbnails' view to facilitate a visual overview of the document's page ranges.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Thumbnails"
+  },
+  {
+    "id": 84,
+    "question": "According to the hosting platform's metadata, what is the specific publication date of this version of 'Dog Man Grime and Punishment'?",
+    "options": [
+      "February 01, 2024",
+      "February 01, 2026",
+      "January 01, 2024",
+      "March 01, 2024"
+    ],
+    "answer": "February 01, 2024",
+    "evidence": "Published on Feb 01,2024"
+  },
+  {
+    "id": 85,
+    "question": "Which entity is identified in the site footer as the copyright holder of the hosting platform, Wonder Idea Technology Limited?",
+    "options": [
+      "Jin Cai",
+      "Wonder Idea Technology Limited",
+      "Mango Animate",
+      "Global Users"
+    ],
+    "answer": "Wonder Idea Technology Limited",
+    "evidence": "\u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED"
+  },
+  {
+    "id": 86,
+    "question": "Based on the digital navigation bar used to explore the book, what is the final page number indicated in the sequence?",
+    "options": [
+      "100",
+      "200",
+      "240",
+      "239"
+    ],
+    "answer": "240",
+    "evidence": "...238239240"
+  },
+  {
+    "id": 87,
+    "question": "True or False: The digital metadata for this specific flipbook lists the 'Description' field as 'No description.'",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Description: No description"
+  },
+  {
+    "id": 88,
+    "question": "The hosting service for this specific digital preview is identified by which platform name?",
+    "options": [
+      "FlipHTML5",
+      "Facebook",
+      "Twitter",
+      "Wonder Idea"
+    ],
+    "answer": "FlipHTML5",
+    "evidence": "Flipbook by Jin Cai | FlipHTML5"
+  },
+  {
+    "id": 89,
+    "question": "According to the FlipHTML5 metadata, who is the specific uploader of the 'Dog Man: Mothering Heights' flipbook?",
+    "options": [
+      "dav.pilkey",
+      "hailey.rafer",
+      "scholastic.admin",
+      "wonder.idea"
+    ],
+    "answer": "hailey.rafer"
+  },
+  {
+    "id": 90,
+    "question": "On what specific date was the digital version of 'Dog Man: Mothering Heights' published on the FlipHTML5 platform?",
+    "options": [
+      "Jan 01, 2024",
+      "Dec 25, 2025",
+      "Apr 06, 2025",
+      "Aug 15, 2026"
+    ],
+    "answer": "Apr 06, 2025"
+  },
+  {
+    "id": 91,
+    "question": "Which entity is listed in the metadata footer as holding the copyright for the platform software in 2026?",
+    "options": [
+      "Scholastic Inc.",
+      "Mango Animate Blog",
+      "WONDER IDEA TECHNOLOGY LIMITED",
+      "Global Users Group"
+    ],
+    "answer": "WONDER IDEA TECHNOLOGY LIMITED"
+  },
+  {
+    "id": 92,
+    "question": "The FlipHTML5 platform lists 'PDF Chatbot' and 'AI Assistant' as available features for digital content creation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True"
+  },
+  {
+    "id": 93,
+    "question": "The metadata for 'Dog Man: Mothering Heights' includes a detailed 500-word summary in the 'Description' field.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False"
+  },
+  {
+    "id": 94,
+    "question": "On what specific date was the 'Dog Man 11: Twenty Thousand Fleas Under the Sea - PDF Room' published on the FlipHTML5 platform?",
+    "options": [
+      "July 24, 2024",
+      "July 26, 2026",
+      "January 11, 2024",
+      "August 15, 2011"
+    ],
+    "answer": "July 24, 2024",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room Published on Jul 24,2024"
+  },
+  {
+    "id": 95,
+    "question": "Which specific username is associated with uploading the 'PDF Room' version of the book?",
+    "options": [
+      "dogmanfan_2024",
+      "superabdelrahman2011",
+      "wonder_idea_tech",
+      "dav_pilkey_digital"
+    ],
+    "answer": "superabdelrahman2011",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room - Flipbook by superabdelrahman2011"
+  },
+  {
+    "id": 96,
+    "question": "According to the footer information, what is the specific copyright year and technology group associated with the hosting software?",
+    "options": [
+      "2024 Scholastic Digital Media",
+      "2024 PDF Room International",
+      "2026 WONDER IDEA TECHNOLOGY LIMITED",
+      "2025 Mango Animate Studios"
+    ],
+    "answer": "2026 WONDER IDEA TECHNOLOGY LIMITED",
+    "evidence": "\u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED. All rights reserved"
+  },
+  {
+    "id": 97,
+    "question": "Which AI-driven tools are explicitly listed under the 'Office Tools' section for content creation on this platform?",
+    "options": [
+      "Automated Character Rigger",
+      "Create Video & Photo with AI",
+      "AI Storyboard Generator",
+      "Auto-Captioning Suite"
+    ],
+    "answer": "Create Video & Photo with AI",
+    "evidence": "Office Tools: Create Video & Photo with AI. So What? This feature enables fans to generate derivative visual content, accelerating the viral spread of the Dog Man IP across digital channels."
+  },
+  {
+    "id": 98,
+    "question": "When contrasting the platform's 'Popular Uses' against its 'Content Types,' which of the following is categorized as a 'Popular Use'?",
+    "options": [
+      "Textbook",
+      "Education",
+      "Brand Book",
+      "Lookbook"
+    ],
+    "answer": "Education",
+    "evidence": "Solutions: Popular Uses: Education; Content Types: Textbook. So What? Categorizing Dog Man 11 within 'Education' solutions allows for targeted distribution in academic gamification environments."
+  },
+  {
+    "id": 99,
+    "question": "The platform's accessibility features include a 'PDF Chatbot' to connect content with people.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Connect Content with People: PDF Chatbot. So What? The chatbot serves as an AI-driven interface for accessibility, allowing readers to interact with the Dog Man 11 metadata in real-time."
+  },
+  {
+    "id": 100,
+    "question": "Which of the following is listed under 'Office Tools' on the platform hosting the document?",
+    "options": [
+      "Character Creator",
+      "Create Video & Photo with AI",
+      "Drawing Tablet Sync",
+      "Storyboarding Pro"
+    ],
+    "answer": "Create Video & Photo with AI",
+    "evidence": "Office Tools Create Video & Photo with AI"
+  },
+  {
+    "id": 101,
+    "question": "In the 'Solutions' section, which industry is NOT specifically listed as a target for these digital tools?",
+    "options": [
+      "Real Estate",
+      "Nonprofit",
+      "Aerospace",
+      "Fashion & Beauty"
+    ],
+    "answer": "Aerospace",
+    "evidence": "Industries Real Estate Travel Nonprofit Restaurant Ecommerce Fashion & Beauty Retail & Wholesale"
+  },
+  {
+    "id": 102,
+    "question": "What is the primary content type category for the Dog Man 11 document as indicated in the header?",
+    "options": [
+      "Newsletter",
+      "Flipbook",
+      "Cookbook",
+      "Menu"
+    ],
+    "answer": "Flipbook",
+    "evidence": "Dog Man 11_ Twenty Thousand Fleas Under the Sea - PDF Room - Flipbook by superabdelrahman2011"
+  },
+  {
+    "id": 103,
+    "question": "Which platform social sharing option is explicitly mentioned in the document footer?",
+    "options": [
+      "Instagram",
+      "Twitter",
+      "LinkedIn",
+      "Snapchat"
+    ],
+    "answer": "Twitter",
+    "evidence": "Explore More Twitter Facebook Policies"
+  },
+  {
+    "id": 104,
+    "question": "Which of the following 'Other Products' is listed by the technology provider?",
+    "options": [
+      "Mango Animate Blog",
+      "Pineapple PDF Pro",
+      "Apple Animation",
+      "Orange Office"
+    ],
+    "answer": "Mango Animate Blog",
+    "evidence": "Explore Our Other Products: ... Mango Animate Blog"
+  },
+  {
+    "id": 105,
+    "question": "Under the 'Support' section, where can a user find tutorials and FAQs?",
+    "options": [
+      "Learning Center",
+      "Help Center",
+      "Webinars",
+      "Live Chat"
+    ],
+    "answer": "Help Center",
+    "evidence": "Help Center Check out our knowledge base with detailed tutorials and FAQs."
+  },
+  {
+    "id": 106,
+    "question": "The platform offers a 'PDF Chatbot' as a feature to connect content with people.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Connect Content with People ... PDF Chatbot"
+  },
+  {
+    "id": 107,
+    "question": "The source context mentions that 'Excel to Catalog' is an available feature under content creation.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Features Create Digital Content ... Excel to Catalog"
+  },
+  {
+    "id": 108,
+    "question": "The document indicates there are only 9 days left in the current free trial.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Enjoying your free trial? Only 9 days left!"
+  },
+  {
+    "id": 109,
+    "question": "Singing Photos is listed as one of the 'Other Products' explored by the technology company.",
+    "options": null,
+    "answer": "True",
+    "evidence": "Explore Our Other Products: ... Singing Photos"
+  },
+  {
+    "id": 110,
+    "question": "According to the digital record on FlipHTML5, who is the specific uploader of the 'Dog man scarlet shedder full book' flipbook?",
+    "options": [
+      "Soniya Raees",
+      "WONDER IDEA TECHNOLOGY",
+      "Mango Animate",
+      "Global Users"
+    ],
+    "answer": "Soniya Raees",
+    "evidence": "HomeExploreOthersDog man scarlet shedder full book Soniya Raees Follow"
+  },
+  {
+    "id": 111,
+    "question": "On what specific date was this version of the 'Dog man scarlet shedder' flipbook published to the platform?",
+    "options": [
+      "Aug 17, 2024",
+      "Aug 17, 2026",
+      "Aug 17, 2023",
+      "Jan 01, 2024"
+    ],
+    "answer": "Aug 17, 2024",
+    "evidence": "Dog man scarlet shedder full book Published on Aug 17,2024"
+  },
+  {
+    "id": 112,
+    "question": "The source metadata indicates that there is 'No description' provided for this specific digital publication.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog man scarlet shedder full book Published on Aug 17,2024 Description: No description"
+  },
+  {
+    "id": 113,
+    "question": "The footer of the hosting platform attributes the software copyright to which entity?",
+    "options": [
+      "WONDER IDEA TECHNOLOGY LIMITED",
+      "Soniya Raees",
+      "Mango Animate Blog",
+      "Talking Photo AI"
+    ],
+    "answer": "WONDER IDEA TECHNOLOGY LIMITED",
+    "evidence": "Flipbook Software \u00a9 2026 WONDER IDEA TECHNOLOGY LIMITED. All rights reserved"
+  },
+  {
+    "id": 114,
+    "question": "The source context displays a trial notification at the top of the interface; how many days are remaining in this trial?",
+    "options": [
+      "9 days",
+      "17 days",
+      "2026 days",
+      "Unlimited"
+    ],
+    "answer": "9 days",
+    "evidence": "Enjoying your free trial? Only 9 days left! Upgrade Now"
+  },
+  {
+    "id": 115,
+    "question": "The digital artifact is explicitly categorized as a 'Flipbook' in its title and platform metadata.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog man scarlet shedder full book - Flipbook by Soniya Raees | FlipHTML5"
+  },
+  {
+    "id": 116,
+    "question": "According to the source material, who is the credited author of 'Dog Man Big Jim Begins'?",
+    "options": [
+      "Jeff Kinney",
+      "Dav Pilkey",
+      "Lincoln Peirce",
+      "Stephen Pastis"
+    ],
+    "answer": "Dav Pilkey"
+  },
+  {
+    "id": 117,
+    "question": "What is the full title of the book as displayed in the digital interface?",
+    "options": [
+      "Dog Man Big Jim Begins",
+      "Dog Man: Big Jim's Return",
+      "Dog Man: The New Adventure",
+      "The Adventures of Big Jim"
+    ],
+    "answer": "Dog Man Big Jim Begins"
+  },
+  {
+    "id": 118,
+    "question": "The digital interface for 'Dog Man Big Jim Begins' confirms that the total page count is 225.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True"
+  },
+  {
+    "id": 119,
+    "question": "What is the exact page count recorded for the document titled Dog Man Big Jim Believes?",
+    "options": [
+      "220 pages",
+      "225 pages",
+      "226 pages",
+      "240 pages"
+    ],
+    "answer": "226 pages",
+    "evidence": "47K views 226 pages"
+  },
+  {
+    "id": 120,
+    "question": "According to the source metadata, who is the author of Dog Man Big Jim Believes?",
+    "options": [
+      "Jeff Kinney",
+      "Dav Pilkey",
+      "Lincoln Peirce",
+      "SpicyRenSpice"
+    ],
+    "answer": "Dav Pilkey",
+    "evidence": "Dog Man Big Jim Believes (Dav Pilkey)"
+  },
+  {
+    "id": 121,
+    "question": "In the 'You might also like' section, which related Dog Man title is listed as having 229 pages?",
+    "options": [
+      "Dog Man Unleashed",
+      "Dog Man 8",
+      "Dog Man-1",
+      "Dog Man - Big Jim Begins"
+    ],
+    "answer": "Dog Man Unleashed",
+    "evidence": "Dog Man Unleashed PDF 90% (10) Dog Man Unleashed 229 pages"
+  },
+  {
+    "id": 122,
+    "question": "Which specific user is credited with the upload of the Dog Man Big Jim Believes document in the provided metadata?",
+    "options": [
+      "Scribd Inc.",
+      "Anna's Archive",
+      "SpicyRenSpice",
+      "Z-Library"
+    ],
+    "answer": "SpicyRenSpice",
+    "evidence": "Uploaded by SpicyRenSpice"
+  },
+  {
+    "id": 123,
+    "question": "What is the exact name of the related 'Big Jim' title mentioned in the source that is distinct from Big Jim Believes?",
+    "options": [
+      "Big Jim's Big Day",
+      "Dog Man - Big Jim Begins",
+      "Big Jim Believes (Book 14)",
+      "Big Jim and the Bad Guys"
+    ],
+    "answer": "Dog Man - Big Jim Begins",
+    "evidence": "Dog Man - Big Jim Begins - A Grap - Dav Pi PDF 79% (14) Dog Man - Big Jim Begins - A Grap - Dav Pi 225 pages"
+  },
+  {
+    "id": 124,
+    "question": "True or False: The page count of Dog Man Big Jim Believes is exactly the same as Jeff Kinney - Diary of a Wimpy Kid 12 The Getaway.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Jeff Kinney - Diary of A Wimpy Kid 12 The Getaway PDF 86% (318) Jeff Kinney - Diary of A Wimpy Kid 12 The Getaway 226 pages"
+  },
+  {
+    "id": 125,
+    "question": "True or False: Dog Man 8 is recorded as having more pages than Dog Man Big Jim Believes.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man 8 PDF 86% (7) Dog Man 8 220 pages"
+  },
+  {
+    "id": 126,
+    "question": "True or False: The source context includes a listing for a full-length book titled Cat Kid Comic Club 4.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Cat Kid Comic Club 4 Excerpt PDF 69% (13) Cat Kid Comic Club 4 Excerpt 23 pages"
+  },
+  {
+    "id": 127,
+    "question": "True or False: Dog Man: Grime and Punishment (Book 9) is the longest Dog Man title mentioned in the 'You might also like' list, at 240 pages.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "False",
+    "evidence": "Dog Man - For Whom The Ball Rolls PDF 88% (40) Dog Man - For Whom The Ball Rolls 241 pages"
+  },
+  {
+    "id": 128,
+    "question": "True or False: The original Dog Man-1 listed in the related items contains fewer than 60 pages.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": "True",
+    "evidence": "Dog Man-1 PDF 93% (27) Dog Man-1 58 pages"
+  }
+];
