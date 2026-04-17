@@ -1789,7 +1789,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
   const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
-  const [matchEndMode, setMatchEndMode] = useState<'first_finisher' | 'timer'>('first_finisher');
+  const [matchEndMode, setMatchEndMode] = useState<'question_goal' | 'timer'>('question_goal');
+  const [matchQuestionGoal, setMatchQuestionGoal] = useState(questions.length);
   const [matchTimeLimitSec, setMatchTimeLimitSec] = useState(180);
   const [matchTimerEndsAt, setMatchTimerEndsAt] = useState<number | null>(null);
   const [hostControlsOpen, setHostControlsOpen] = useState(false);
@@ -1842,6 +1843,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setMatchParticipants(lobbyPlayers);
     }
   }, [sessionQuestions, lobbyPlayers]);
+
+  useEffect(() => {
+    if (sessionQuestions.length === 0) return;
+    setMatchQuestionGoal(prev => Math.min(Math.max(1, prev), sessionQuestions.length));
+  }, [sessionQuestions.length]);
 
   // Initialize and shuffle questions for this session
   useEffect(() => {
@@ -1944,12 +1950,16 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
   const applyHostMatchSettings = () => {
     if (!isHost || !isMultiplayerMode || !matchRoomId) return;
-    const nextEndsAt = matchEndMode === 'timer' ? Date.now() + (matchTimeLimitSec * 1000) : null;
+    const safeQuestionGoal = Math.min(Math.max(1, matchQuestionGoal), total);
+    const safeTimeLimitSec = Math.min(Math.max(60, matchTimeLimitSec), 1440 * 60);
+    const nextEndsAt = matchEndMode === 'timer' ? Date.now() + (safeTimeLimitSec * 1000) : null;
+    setMatchQuestionGoal(safeQuestionGoal);
+    setMatchTimeLimitSec(safeTimeLimitSec);
     setMatchTimerEndsAt(nextEndsAt);
     supabase.channel(matchRoomId).send({
       type: 'broadcast',
       event: 'match_settings',
-      payload: { endMode: matchEndMode, timeLimitSec: matchTimeLimitSec, timerEndsAt: nextEndsAt }
+      payload: { endMode: matchEndMode, questionGoal: safeQuestionGoal, timeLimitSec: safeTimeLimitSec, timerEndsAt: nextEndsAt }
     });
     setHostControlsOpen(false);
   };
@@ -1964,12 +1974,16 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }
 
     setSessionQuestions(finalQuestions);
-    const initialTimerEndsAt = matchEndMode === 'timer' ? Date.now() + (matchTimeLimitSec * 1000) : null;
+    const initialQuestionGoal = Math.min(Math.max(1, matchQuestionGoal), finalQuestions.length);
+    const initialTimeLimitSec = Math.min(Math.max(60, matchTimeLimitSec), 1440 * 60);
+    const initialTimerEndsAt = matchEndMode === 'timer' ? Date.now() + (initialTimeLimitSec * 1000) : null;
+    setMatchQuestionGoal(initialQuestionGoal);
+    setMatchTimeLimitSec(initialTimeLimitSec);
     setMatchTimerEndsAt(initialTimerEndsAt);
 
     await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
     supabase.channel(`room:${roomCode}`).send({
-      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions, endMode: matchEndMode, timeLimitSec: matchTimeLimitSec, timerEndsAt: initialTimerEndsAt }
+      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions, endMode: matchEndMode, questionGoal: initialQuestionGoal, timeLimitSec: initialTimeLimitSec, timerEndsAt: initialTimerEndsAt }
     });
     setMatchRoomId(`room:${roomCode}`);
     setGameState('playing');
@@ -2062,7 +2076,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       .on('broadcast', { event: 'game_start' }, ({ payload }) => {
         if (!isHost && payload.questions) {
           setSessionQuestions(payload.questions);
-          setMatchEndMode(payload.endMode || 'first_finisher');
+          setMatchEndMode(payload.endMode || 'question_goal');
+          setMatchQuestionGoal(payload.questionGoal || payload.questions.length || 1);
           setMatchTimeLimitSec(payload.timeLimitSec || 180);
           setMatchTimerEndsAt(payload.timerEndsAt || null);
           setMatchRoomId(`room:${roomCode}`);
@@ -2178,7 +2193,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         }));
       })
       .on('broadcast', { event: 'match_settings' }, ({ payload }) => {
-        setMatchEndMode(payload.endMode || 'first_finisher');
+        setMatchEndMode(payload.endMode || 'question_goal');
+        setMatchQuestionGoal(payload.questionGoal || sessionQuestions.length || questions.length || 1);
         setMatchTimeLimitSec(payload.timeLimitSec || 180);
         setMatchTimerEndsAt(payload.timerEndsAt || null);
       })
@@ -2566,56 +2582,62 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   };
 
   const handleNext = () => {
-    if (currentQ < total - 1) {
+    const finalAnswers = { ...userAnswers };
+    const currentId = user?.id || sessionId;
+    const completedQuestions = Object.keys(finalAnswers).length;
+    const reachedQuestionGoal = isMultiplayerMode && matchEndMode === 'question_goal' && completedQuestions >= matchQuestionGoal;
+    const reachedQuestionListEnd = currentQ >= total - 1;
+    const shouldFinalizeCurrentPlayer = reachedQuestionGoal || reachedQuestionListEnd;
+
+    if (!shouldFinalizeCurrentPlayer) {
       setCurrentQ(prev => prev + 1);
       setSelected(null);
-    } else {
-      const endTime = Date.now();
-      const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
-      const finalAnswers = { ...userAnswers };
-      const currentId = user?.id || sessionId;
-      const resultPayload = {
-        userId: currentId,
-        allAnswers: finalAnswers,
-        isFinished: true,
+      return;
+    }
+
+    const endTime = Date.now();
+    const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
+    const resultPayload = {
+      userId: currentId,
+      allAnswers: finalAnswers,
+      isFinished: true,
+      completionTime: durationSeconds,
+      answeredCount: completedQuestions
+    };
+
+    setCompletionTime(durationSeconds);
+    setHasCompletedAllQuestions(true);
+    setPlayerProgress(prev => ({
+      ...prev,
+      [currentId]: {
+        answeredCount: completedQuestions,
         completionTime: durationSeconds,
-        answeredCount: Object.keys(finalAnswers).length
-      };
+        isFinished: true
+      }
+    }));
 
-      setCompletionTime(durationSeconds);
-      setHasCompletedAllQuestions(true);
-      setPlayerProgress(prev => ({
-        ...prev,
-        [currentId]: {
-          answeredCount: Object.keys(finalAnswers).length,
-          completionTime: durationSeconds,
-          isFinished: true
-        }
-      }));
+    if (matchRoomId && isMultiplayerMode) {
+      supabase.channel(matchRoomId).send({
+        type: 'broadcast',
+        event: 'final_results',
+        payload: resultPayload
+      });
 
-      if (matchRoomId && isMultiplayerMode) {
+      if (matchEndMode === 'question_goal' && reachedQuestionGoal) {
         supabase.channel(matchRoomId).send({
           type: 'broadcast',
-          event: 'final_results',
-          payload: resultPayload
+          event: 'match_end',
+          payload: { reason: 'completed', winnerId: currentId }
         });
-
-        if (matchEndMode === 'first_finisher') {
-          supabase.channel(matchRoomId).send({
-            type: 'broadcast',
-            event: 'match_end',
-            payload: { reason: 'completed', winnerId: currentId }
-          });
-          finalizeQuizSession('completed', durationSeconds);
-          return;
-        }
-
-        setSelected(null);
+        finalizeQuizSession('completed', durationSeconds);
         return;
       }
 
-      finalizeQuizSession('completed', durationSeconds);
+      setSelected(null);
+      return;
     }
+
+    finalizeQuizSession('completed', durationSeconds);
   };
 
   const handleRestart = () => {
@@ -2639,7 +2661,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setMatchParticipants([]);
     setPlayerScores({});
     setPlayerProgress({});
-    setMatchEndMode('first_finisher');
+    setMatchEndMode('question_goal');
+    setMatchQuestionGoal(questions.length);
     setMatchTimeLimitSec(180);
     setMatchTimerEndsAt(null);
     setHostControlsOpen(false);
@@ -2892,7 +2915,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
             {isMultiplayerMode && matchEndReason && (
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                {matchEndReason === 'timer' ? 'Match ended when the timer ran out' : 'Match ended when a player finished all assigned questions'}
+                {matchEndReason === 'timer' ? 'Match ended when the timer ran out' : `Match ended when a player reached ${matchQuestionGoal} answered question${matchQuestionGoal === 1 ? '' : 's'}`}
               </p>
             )}
 
@@ -3275,7 +3298,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               <div className="flex flex-wrap items-center gap-3">
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Match End Rule</span>
                 <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
-                  {matchEndMode === 'timer' ? `Timer • ${formatTime(timeRemainingSec)}` : 'First finisher'}
+                  {matchEndMode === 'timer' ? `Timer • ${formatTime(timeRemainingSec)}` : `First to ${matchQuestionGoal}`}
                 </span>
                 {matchEndMode === 'timer' && (
                   <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">
@@ -3310,13 +3333,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
             <div className="grid gap-3 md:grid-cols-2">
               <button
-                onClick={() => setMatchEndMode('first_finisher')}
+                onClick={() => setMatchEndMode('question_goal')}
                 className={`rounded-xl border px-4 py-4 text-left transition-all ${
-                  matchEndMode === 'first_finisher' ? 'border-primary bg-primary/10 text-white' : 'border-white/10 bg-white/5 text-slate-300'
+                  matchEndMode === 'question_goal' ? 'border-primary bg-primary/10 text-white' : 'border-white/10 bg-white/5 text-slate-300'
                 }`}
               >
-                <p className="text-xs font-black uppercase tracking-widest">End On Finish</p>
-                <p className="mt-1 text-xs text-slate-400">Quiz ends as soon as one player finishes every assigned question.</p>
+                <p className="text-xs font-black uppercase tracking-widest">Question Target</p>
+                <p className="mt-1 text-xs text-slate-400">Quiz ends as soon as one player answers the host-set number of questions.</p>
               </button>
               <button
                 onClick={() => setMatchEndMode('timer')}
@@ -3324,24 +3347,39 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   matchEndMode === 'timer' ? 'border-primary bg-primary/10 text-white' : 'border-white/10 bg-white/5 text-slate-300'
                 }`}
               >
-                <p className="text-xs font-black uppercase tracking-widest">End On Timer</p>
-                <p className="mt-1 text-xs text-slate-400">Quiz ends when the room timer runs out, even if some players are still answering.</p>
+                <p className="text-xs font-black uppercase tracking-widest">Timer</p>
+                <p className="mt-1 text-xs text-slate-400">Quiz ends when the host-set timer runs out, even if players are still answering.</p>
               </button>
             </div>
 
-            {matchEndMode === 'timer' && (
+            {matchEndMode === 'question_goal' ? (
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Time Limit</label>
-                <select
-                  value={matchTimeLimitSec}
-                  onChange={(e) => setMatchTimeLimitSec(Number(e.target.value))}
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Question Target</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={total}
+                  value={matchQuestionGoal}
+                  onChange={(e) => setMatchQuestionGoal(Math.min(total, Math.max(1, Number(e.target.value) || 1)))}
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold text-white outline-none"
-                >
-                  <option value={60}>1 minute</option>
-                  <option value={120}>2 minutes</option>
-                  <option value={180}>3 minutes</option>
-                  <option value={300}>5 minutes</option>
-                </select>
+                />
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Maximum: {total} questions</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Timer Length In Minutes</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={1440}
+                  value={Math.max(1, Math.floor(matchTimeLimitSec / 60))}
+                  onChange={(e) => {
+                    const nextMinutes = Math.min(1440, Math.max(1, Number(e.target.value) || 1));
+                    setMatchTimeLimitSec(nextMinutes * 60);
+                  }}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold text-white outline-none"
+                />
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Maximum: 1440 minutes</p>
               </div>
             )}
 
@@ -3384,6 +3422,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <Clock className="size-4 text-blue-300" />
                   <span className="text-sm font-black text-blue-300">Time remaining: {formatTime(timeRemainingSec)}</span>
                 </div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Your score is locked until the room timer ends.</p>
               </div>
             </motion.div>
           ) : (
