@@ -21,6 +21,7 @@ import {
 
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
+  HOPPERS_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
@@ -29,6 +30,7 @@ import {
   PAW_PATROL_TRIVIA,
   KUNG_FU_PANDA_1_TRIVIA, KUNG_FU_PANDA_2_TRIVIA, KUNG_FU_PANDA_3_TRIVIA, KUNG_FU_PANDA_4_TRIVIA, KUNG_FU_PANDA_RANDOM_TRIVIA,
   TOY_STORY_1_TRIVIA, TOY_STORY_2_TRIVIA, TOY_STORY_3_TRIVIA, TOY_STORY_4_TRIVIA, TOY_STORY_RANDOM_TRIVIA, TOY_STORY_GRADES,
+  SHREK_1_TRIVIA, SHREK_2_TRIVIA, SHREK_3_TRIVIA, SHREK_4_TRIVIA, SHREK_GRADES,
   DOG_MAN_TRIVIA_BOOK1, DOG_MAN_TRIVIA_BOOK2, DOG_MAN_TRIVIA_BOOK3, DOG_MAN_TRIVIA_BOOK4, DOG_MAN_TRIVIA_BOOK5, DOG_MAN_TRIVIA_BOOK6, DOG_MAN_TRIVIA_BOOK7, DOG_MAN_TRIVIA_BOOK8, DOG_MAN_TRIVIA_BOOK9, DOG_MAN_TRIVIA_BOOK10, DOG_MAN_TRIVIA_BOOK11, DOG_MAN_TRIVIA_BOOK12, DOG_MAN_TRIVIA_BOOK13, DOG_MAN_TRIVIA_BOOK14, DOG_MAN_GRADES,
   MCTriviaQuestion, BADGES, Badge
 } from './constants';
@@ -87,6 +89,11 @@ const getQuizTitle = (quizId: string): string => {
     'toy-story-3': 'Toy Story 3',
     'toy-story-4': 'Toy Story 4',
     'toy-story-random': 'The Ultimate Toy Box',
+    'shrek-1': 'Shrek',
+    'shrek-2': 'Shrek 2',
+    'shrek-3': 'Shrek the Third',
+    'shrek-4': 'Shrek Forever After',
+    'shrek-random': 'Shrek Mixed Challenge',
     'dog-man-book1': 'Dog Man: Book 1',
     'dog-man-book2': 'Dog Man: Book 2',
     'dog-man-book3': 'Dog Man: Book 3',
@@ -101,7 +108,8 @@ const getQuizTitle = (quizId: string): string => {
     'dog-man-book12': 'Dog Man: Book 12',
     'dog-man-book13': 'Dog Man: Book 13',
     'dog-man-book14': 'Dog Man: Book 14',
-    'dog-man-random': 'Supa Buddies Mixed Challenge'
+    'dog-man-random': 'Supa Buddies Mixed Challenge',
+    'hoppers': 'Hoppers (2026)'
   };
 
   return map[normalizedId] || normalizedId;
@@ -120,6 +128,8 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return 'Rescue Universe';
   if (q.includes('panda') || q.includes('kfp')) return 'Kung Fu Panda';
   if (q.includes('toy-story') || q.includes('toy story')) return 'Toy Story';
+  if (q.includes('shrek')) return 'Shrek';
+  if (q.includes('hoppers')) return 'Hoppers';
   return 'Other Challenges';
 };
 
@@ -136,6 +146,8 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('mario')) return '/images/supermario.jpg';
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return '/images/pawpatrol.jpg';
   if (q.includes('toy-story') || q.includes('toy story')) return '/images/toystory.jpg';
+  if (q.includes('shrek')) return '/images/shrek.jpg';
+  if (q.includes('hoppers')) return '/images/hoppers.webp';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -854,17 +866,19 @@ const DailyMysteryChallenge = () => {
 
   const handleStart = () => {
     if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'kpop') navigate('/trivia-kpop', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'kpop') navigate('/selector-kpop', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'three-body') navigate('/selector-three-body', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'zootopia') navigate('/selector-zootopia', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'despicable-me') navigate('/selector-despicable-me', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'frozen') navigate('/selector-frozen', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'super-mario') navigate('/selector-super-mario', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'pawpatrol') navigate('/trivia-pawpatrol', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'pawpatrol') navigate('/selector-paw-patrol', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'toy-story') navigate('/selector-toy-story', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'shrek') navigate('/selector-shrek', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
   };
 
   return (
@@ -998,14 +1012,16 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-harry-potter" className="hover:text-amber-400 transition-colors">Harry Potter World</Link></li>
           <li><Link to="/selector-twilight" className="hover:text-red-400 transition-colors">Twilight Saga</Link></li>
           <li><Link to="/selector-three-body" className="hover:text-indigo-400 transition-colors">Three-Body Problem</Link></li>
-          <li><Link to="/trivia-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
+          <li><Link to="/selector-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
           <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
-          <li><Link to="/trivia-pawpatrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
+          <li><Link to="/selector-paw-patrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
           <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
           <li><Link to="/selector-toy-story" className="hover:text-amber-500 transition-colors">Toy Story</Link></li>
+          <li><Link to="/selector-shrek" className="hover:text-green-400 transition-colors">Shrek</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
+          <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
         </ul>
       </div>
 
@@ -1184,6 +1200,179 @@ const HPBookSelector = ({ key }: { key?: string }) => {
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
               <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
               <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const HOPPERS_GRADES = [
+  { threshold: 90, label: 'Pond Authority', color: 'text-amber-400', character: { name: 'Mabel', image: '/images/hoppers.webp', desc: 'You mastered the pond rules and the mind-casting lore.' } },
+  { threshold: 70, label: 'Mind-Casting Insider', color: 'text-purple-400', character: { name: 'Dr. Sam', image: '/images/hoppers.webp', desc: 'Strong work. You know the science, the stakes, and the hidden details.' } },
+  { threshold: 50, label: 'Curious Hopper', color: 'text-blue-400', character: { name: 'King George', image: '/images/hoppers.webp', desc: 'You are getting comfortable in the pond, but there is more to learn.' } },
+  { threshold: 0, label: 'New to the Pond', color: 'text-slate-400', character: { name: 'Crush', image: '/images/hoppers.webp', desc: 'You just arrived. Time to start hopping through the trivia.' } },
+];
+
+const KPOP_GRADES = [
+  { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
+  { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
+  { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
+  { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
+];
+
+const HoppersSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-200">Mission</span></h1>
+        <Helmet>
+          <title>Hoppers Trivia & Movie Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your Hoppers knowledge with verified trivia on Mabel, the pond rules, mind-casting technology, and Pixar production details." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-hoppers" />
+          <meta property="og:title" content="Hoppers Trivia & Movie Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Enter the pond and test your Hoppers knowledge with our verified movie quiz." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Hoppers", item: "https://fandom-trivia.vercel.app/selector-hoppers" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the Hoppers quiz to test your knowledge of the film's characters, rules, and hidden details.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: "Film 1", title: "Hoppers (2026)", desc: `${HOPPERS_TRIVIA.length} verified questions`, icon: "🐸", view: 'trivia-hoppers', gradient: 'from-emerald-600/20 to-cyan-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const KPopSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-200">Challenge</span></h1>
+        <Helmet>
+          <title>K-Pop Demon Hunters Trivia | Fandom Trivia</title>
+          <meta name="description" content="Test your K-Pop: Demon Hunters knowledge in a single high-energy challenge packed with music, lore, and supernatural action." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-kpop" />
+          <meta property="og:title" content="K-Pop Demon Hunters Trivia | Fandom Trivia" />
+          <meta property="og:description" content="Enter the spotlight and take the K-Pop: Demon Hunters quiz." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "K-Pop: Demon Hunters", item: "https://fandom-trivia.vercel.app/selector-kpop" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the quiz to test your knowledge of the songs, characters, and demon-hunting lore.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: "Film 1", title: "K-Pop: Demon Hunters", desc: `${KPOP_TRIVIA.length} questions`, icon: "🎤", view: 'trivia-kpop', gradient: 'from-pink-600/20 to-purple-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const PawPatrolSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-200">Mission</span></h1>
+        <Helmet>
+          <title>PAW Patrol Trivia | Fandom Trivia</title>
+          <meta name="description" content="Join Ryder and the pups for a single rescue-ready PAW Patrol trivia challenge." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-paw-patrol" />
+          <meta property="og:title" content="PAW Patrol Trivia | Fandom Trivia" />
+          <meta property="og:description" content="No job is too big, no pup is too small. Take the PAW Patrol quiz." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "PAW Patrol", item: "https://fandom-trivia.vercel.app/selector-paw-patrol" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the quiz to test your rescue knowledge in Adventure Bay.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: "Overall Quiz", title: "PAW Patrol: Mission Ready", desc: `${PAW_PATROL_TRIVIA.length} questions`, icon: "🐾", view: 'trivia-pawpatrol', gradient: 'from-blue-600/20 to-cyan-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
               Start Quiz <ArrowRight className="size-3" />
@@ -3682,16 +3871,19 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                     onClick={(e) => {
                       e.stopPropagation();
                       if (universe.id === 'twilight') navigate('/selector-twilight');
-                      if (universe.id === 'kpop') navigate('/trivia-kpop');
+                      if (universe.id === 'kpop') navigate('/selector-kpop');
                       if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
                       if (universe.id === 'three-body') navigate('/selector-three-body');
                       if (universe.id === 'zootopia') navigate('/selector-zootopia');
                       if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
                       if (universe.id === 'frozen') navigate('/selector-frozen');
                       if (universe.id === 'super-mario') navigate('/selector-super-mario');
-                      if (universe.id === 'pawpatrol') navigate('/trivia-pawpatrol');
+                      if (universe.id === 'pawpatrol') navigate('/selector-paw-patrol');
                       if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
                       if (universe.id === 'toy-story') navigate('/selector-toy-story');
+                      if (universe.id === 'shrek') navigate('/selector-shrek');
+                      if (universe.id === 'dog-man') navigate('/selector-dog-man');
+                      if (universe.id === 'hoppers') navigate('/selector-hoppers');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
@@ -4365,55 +4557,113 @@ const EmojiRain = ({ onComplete }: { onComplete: () => void }) => {
 
 const ToyStorySelector = () => {
   const navigate = useNavigate();
-  const movies = [
-    { id: '1', title: 'Toy Story (1995)', route: '/trivia-toy-story-1', color: 'from-blue-500/20 to-blue-600/20', border: 'border-blue-500/30' },
-    { id: '2', title: 'Toy Story 2 (1999)', route: '/trivia-toy-story-2', color: 'from-red-500/20 to-red-600/20', border: 'border-red-500/30' },
-    { id: '3', title: 'Toy Story 3 (2010)', route: '/trivia-toy-story-3', color: 'from-amber-500/20 to-amber-600/20', border: 'border-amber-500/30' },
-    { id: '4', title: 'Toy Story 4 (2019)', route: '/trivia-toy-story-4', color: 'from-purple-500/20 to-purple-600/20', border: 'border-purple-500/30' },
-    { id: 'random', title: 'Mixed Toy Box', route: '/trivia-toy-story-random', color: 'from-primary/20 to-primary/40', border: 'border-primary/50', isSpecial: true },
-  ];
-
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="container mx-auto px-4 py-32 max-w-4xl"
-    >
-      <div className="flex items-center gap-4 mb-12">
-        <button onClick={() => navigate('/')} className="p-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
-          <ChevronLeft className="size-6" />
-        </button>
-        <div>
-          <h1 className="text-4xl font-black uppercase tracking-tighter">Toy Story Universe</h1>
-          <p className="text-slate-400">Select a cinematic milestone to begin your trivia adventure.</p>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-amber-300">Film</span></h1>
+          <Helmet>
+            <title>Toy Story Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Toy Story knowledge across all four films. From Andy's room to Bonnie's adventures, see if you belong in the toy box." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-toy-story" />
+            <meta property="og:title" content="Toy Story Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play Toy Story quizzes across all four films and prove you know every toy in the box." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "Toy Story", item: "https://fandom-trivia.vercel.app/selector-toy-story" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try a random mix from the full series.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            { label: "Film 1", title: "Toy Story", desc: "20 questions from the original adventure", icon: "🤠", view: 'trivia-toy-story-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+            { label: "Film 2", title: "Toy Story 2", desc: "20 questions on Woody, Jessie, and Al's Toy Barn", icon: "⭐", view: 'trivia-toy-story-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Film 3", title: "Toy Story 3", desc: "20 questions on Sunnyside and the great escape", icon: "🧸", view: 'trivia-toy-story-3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 4", title: "Toy Story 4", desc: "20 questions on Forky, Bo Peep, and the carnival", icon: "🪀", view: 'trivia-toy-story-4', gradient: 'from-purple-600/20 to-pink-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-toy-story-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
         </div>
       </div>
+    </motion.div>
+  );
+};
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {movies.map((movie) => (
-          <motion.div
-            key={movie.id}
-            whileHover={{ scale: 1.02, y: -4 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(movie.route)}
-            className={`group relative p-8 rounded-3xl border ${movie.border} bg-gradient-to-br ${movie.color} cursor-pointer transition-all duration-300 overflow-hidden shadow-2xl backdrop-blur-sm`}
-          >
-            <div className="relative z-10 flex items-center justify-between">
+const ShrekSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-lime-300">Film</span></h1>
+          <Helmet>
+            <title>Shrek Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Shrek knowledge across all four films. From the swamp to Far Far Away, prove you know every layer of the franchise." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-shrek" />
+            <meta property="og:title" content="Shrek Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play Shrek quizzes across all four movies and prove you belong in the swamp." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "Shrek", item: "https://fandom-trivia.vercel.app/selector-shrek" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try a random mix from the full saga.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            { label: "Film 1", title: "Shrek", desc: `${SHREK_1_TRIVIA.length} questions`, icon: "🧅", view: 'trivia-shrek-1', gradient: 'from-green-600/20 to-lime-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+            { label: "Film 2", title: "Shrek 2", desc: `${SHREK_2_TRIVIA.length} questions`, icon: "👢", view: 'trivia-shrek-2', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 3", title: "Shrek the Third", desc: `${SHREK_3_TRIVIA.length} questions`, icon: "👑", view: 'trivia-shrek-3', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: "Film 4", title: "Shrek Forever After", desc: `${SHREK_4_TRIVIA.length} questions`, icon: "🪄", view: 'trivia-shrek-4', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-shrek-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
               <div>
-                <h3 className="text-2xl font-black uppercase tracking-tight mb-1">{movie.title}</h3>
-                <p className="text-white/60 text-sm font-medium tracking-wide uppercase">
-                  {movie.isSpecial ? 'Infinite Challenge' : `Movie ${movie.id}`}
-                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
               </div>
-              <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:bg-primary transition-colors">
-                <PlayCircle className="size-6" />
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
               </div>
-            </div>
-            
-            <div className="absolute -right-4 -bottom-4 size-32 bg-white/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-500" />
-          </motion.div>
-        ))}
+            </motion.button>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -4421,65 +4671,66 @@ const ToyStorySelector = () => {
 
 const DogManSelector = () => {
   const navigate = useNavigate();
-  const books = [
-    { id: '1', title: 'Book 1: Dog Man', route: '/trivia-dog-man-book1', color: 'from-blue-500/20 to-blue-600/20', border: 'border-blue-500/30' },
-    { id: '2', title: 'Book 2: Unleashed', route: '/trivia-dog-man-book2', color: 'from-red-500/20 to-red-600/20', border: 'border-red-500/30' },
-    { id: '3', title: 'Book 3: A Tale of Two Kitties', route: '/trivia-dog-man-book3', color: 'from-amber-500/20 to-amber-600/20', border: 'border-amber-500/30' },
-    { id: '4', title: 'Book 4: Dog Man and Cat Kid', route: '/trivia-dog-man-book4', color: 'from-purple-500/20 to-purple-600/20', border: 'border-purple-500/30' },
-    { id: '5', title: 'Book 5: Lord of the Fleas', route: '/trivia-dog-man-book5', color: 'from-green-500/20 to-green-600/20', border: 'border-green-500/30' },
-    { id: '6', title: 'Book 6: Brawl of the Wild', route: '/trivia-dog-man-book6', color: 'from-indigo-500/20 to-indigo-600/20', border: 'border-indigo-500/30' },
-    { id: '7', title: 'Book 7: For Whom the Ball Rolls', route: '/trivia-dog-man-book7', color: 'from-sky-500/20 to-sky-600/20', border: 'border-sky-500/30' },
-    { id: '8', title: 'Book 8: Fetch-22', route: '/trivia-dog-man-book8', color: 'from-emerald-500/20 to-emerald-600/20', border: 'border-emerald-500/30' },
-    { id: '9', title: 'Book 9: Grime and Punishment', route: '/trivia-dog-man-book9', color: 'from-rose-500/20 to-rose-600/20', border: 'border-rose-500/30' },
-    { id: '10', title: 'Book 10: Mothering Heights', route: '/trivia-dog-man-book10', color: 'from-violet-500/20 to-violet-600/20', border: 'border-violet-500/30' },
-    { id: '11', title: 'Book 11: 20,000 Fleas Under the Sea', route: '/trivia-dog-man-book11', color: 'from-cyan-500/20 to-cyan-600/20', border: 'border-cyan-500/30' },
-    { id: '12', title: 'Book 12: The Scarlet Shedder', route: '/trivia-dog-man-book12', color: 'from-crimson-500/20 to-crimson-600/20', border: 'border-crimson-500/30' },
-    { id: '13', title: 'Book 13: Big Jim Begins', route: '/trivia-dog-man-book13', color: 'from-orange-500/20 to-orange-600/20', border: 'border-orange-500/30' },
-    { id: '14', title: 'Book 14: Big Jim Believes', route: '/trivia-dog-man-book14', color: 'from-yellow-500/20 to-yellow-600/20', border: 'border-yellow-500/30' },
-    { id: 'random', title: 'Mixed Dog Box', route: '/trivia-dog-man-random', color: 'from-primary/20 to-primary/40', border: 'border-primary/50', isSpecial: true },
-  ];
-
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="container mx-auto px-4 py-32 max-w-4xl"
-    >
-      <div className="flex items-center gap-4 mb-12">
-        <button onClick={() => navigate('/')} className="p-3 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
-          <ChevronLeft className="size-6" />
-        </button>
-        <div>
-          <h1 className="text-4xl font-black uppercase tracking-tighter">Dog Man Universe</h1>
-          <p className="text-slate-400">Select a graphic novel to begin your Supa Buddy trivia adventure.</p>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-yellow-300">Book</span></h1>
+          <Helmet>
+            <title>Dog Man Trivia & Book Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Dog Man knowledge across the full graphic novel series. From Petey to Big Jim, see how well you know the Supa Buddy universe." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-dog-man" />
+            <meta property="og:title" content="Dog Man Trivia & Book Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play Dog Man quizzes across the graphic novel series and prove you're a true Supa Buddy expert." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "Dog Man", item: "https://fandom-trivia.vercel.app/selector-dog-man" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a book to test your knowledge, or try a random mix from the full series.</p>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {books.map((book) => (
-          <motion.div
-            key={book.id}
-            whileHover={{ scale: 1.02, y: -4 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(book.route)}
-            className={`group relative p-8 rounded-3xl border ${book.border} bg-gradient-to-br ${book.color} cursor-pointer transition-all duration-300 overflow-hidden shadow-2xl backdrop-blur-sm`}
-          >
-            <div className="relative z-10 flex items-center justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {[
+            { label: "Book 1", title: "Dog Man", desc: "20 questions from the first book", icon: "🐶", view: 'trivia-dog-man-book1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+            { label: "Book 2", title: "Unleashed", desc: "20 questions on Petey's return", icon: "🐱", view: 'trivia-dog-man-book2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Book 3", title: "A Tale of Two Kitties", desc: "20 questions on Li'l Petey's debut", icon: "🐾", view: 'trivia-dog-man-book3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Book 4", title: "Dog Man and Cat Kid", desc: "20 questions on a new partnership", icon: "📚", view: 'trivia-dog-man-book4', gradient: 'from-purple-600/20 to-fuchsia-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+            { label: "Book 5", title: "Lord of the Fleas", desc: "20 questions on the tiny villains", icon: "🪲", view: 'trivia-dog-man-book5', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+            { label: "Book 6", title: "Brawl of the Wild", desc: "20 questions on exile and redemption", icon: "🌲", view: 'trivia-dog-man-book6', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: "Book 7", title: "For Whom the Ball Rolls", desc: "20 questions on fetch and friendship", icon: "🎾", view: 'trivia-dog-man-book7', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: "Book 8", title: "Fetch-22", desc: "20 questions on clones and chaos", icon: "🦴", view: 'trivia-dog-man-book8', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Book 9", title: "Grime and Punishment", desc: "20 questions on justice and dirt", icon: "🧼", view: 'trivia-dog-man-book9', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Book 10", title: "Mothering Heights", desc: "20 questions on family twists", icon: "🏔️", view: 'trivia-dog-man-book10', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+            { label: "Book 11", title: "Twenty Thousand Fleas Under the Sea", desc: "20 questions on the underwater mission", icon: "🌊", view: 'trivia-dog-man-book11', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+            { label: "Book 12", title: "The Scarlet Shedder", desc: "20 questions on the crimson outbreak", icon: "🍅", view: 'trivia-dog-man-book12', gradient: 'from-red-700/20 to-rose-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Book 13", title: "Big Jim Begins", desc: "20 questions on the origin story", icon: "💥", view: 'trivia-dog-man-book13', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: "Book 14", title: "Big Jim Believes", desc: "20 questions on the latest chapter", icon: "⭐", view: 'trivia-dog-man-book14', gradient: 'from-yellow-600/20 to-amber-500/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 14 books", icon: "🎲", view: 'trivia-dog-man-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(book => (
+            <motion.button
+              key={book.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${book.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{book.icon}</div>
               <div>
-                <h3 className="text-2xl font-black uppercase tracking-tight mb-1">{book.title}</h3>
-                <p className="text-white/60 text-sm font-medium tracking-wide uppercase">
-                  {book.isSpecial ? 'Infinite Challenge' : `Book ${book.id}`}
-                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
               </div>
-              <div className="size-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:bg-primary transition-colors">
-                <PlayCircle className="size-6" />
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
               </div>
-            </div>
-            
-            <div className="absolute -right-4 -bottom-4 size-32 bg-white/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-500" />
-          </motion.div>
-        ))}
+            </motion.button>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -4488,60 +4739,53 @@ const DogManSelector = () => {
 const KungFuPandaSelector = () => {
   const navigate = useNavigate();
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-24 pb-12 px-6 relative"
-    >
-      <div className="max-w-6xl mx-auto space-y-12">
-        <div className="flex flex-col md:flex-row items-center gap-8 bg-card-dark/50 backdrop-blur-xl p-8 rounded-3xl border border-white/10 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: 'url(\"/images/kungfupanda.jpg\")' }}></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-card-dark via-card-dark/80 to-transparent"></div>
-          
-          <div className="relative z-10 size-48 rounded-2xl overflow-hidden shadow-2xl border-2 border-primary/50 group-hover:border-primary transition-colors">
-            <img src="/images/kungfupanda.jpg" alt="Kung Fu Panda" className="w-full h-full object-cover" />
-          </div>
-          
-          <div className="relative z-10 flex-1 space-y-4">
-            <div className="flex items-center gap-3">
-              <Trophy className="size-6 text-primary" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Universe Hub</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">Kung Fu Panda</h1>
-            <p className="text-lg text-slate-400 max-w-xl font-medium leading-relaxed italic">
-              "There is no secret ingredient. It's just you." Master the four volumes of the Dragon Warrior's journey.
-            </p>
-          </div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-300">Film</span></h1>
+          <Helmet>
+            <title>Kung Fu Panda Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Kung Fu Panda knowledge across all four films. From Po's first training session to the Chameleon's rise, prove you're the Dragon Warrior." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-kung-fu-panda" />
+            <meta property="og:title" content="Kung Fu Panda Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Master the Valley of Peace with Kung Fu Panda quizzes spanning all four films." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "Kung Fu Panda", item: "https://fandom-trivia.vercel.app/selector-kung-fu-panda" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try a random mix from the full saga.</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { id: '1', title: 'Volume I: The Beginning', color: 'primary', route: '/trivia-kfp-1', desc: 'Po\'s journey from noodle shop to Jade Palace.' },
-            { id: '2', title: 'Volume II: Inner Peace', color: 'accent', route: '/trivia-kfp-2', desc: 'Stop Lord Shen and uncover Po\'s mysterious past.' },
-            { id: '3', title: 'Volume III: Mastery', color: 'purple-500', route: '/trivia-kfp-3', desc: 'Defeat Kai and master the power of Chi.' },
-            { id: '4', title: 'Volume IV: Evolution', color: 'green-500', route: '/trivia-kfp-4', desc: 'The Chameleon arises. Train the next Dragon Warrior.' },
-            { id: 'random', title: 'The Dragon Challenge', color: 'amber-500', route: '/trivia-kfp-random', desc: 'A mixed trial across all four films. High difficulty.' }
-          ].map((vol) => (
-            <button
-              key={vol.id}
-              onClick={() => navigate(vol.route)}
-              className="group relative bg-card-dark rounded-2xl p-6 border border-white/5 hover:border-white/20 transition-all text-left overflow-hidden"
+            { label: "Film 1", title: "Kung Fu Panda", desc: "20 questions from Po's first adventure", icon: "🐼", view: 'trivia-kfp-1', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 2", title: "Kung Fu Panda 2", desc: "20 questions on Lord Shen and inner peace", icon: "🦚", view: 'trivia-kfp-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Film 3", title: "Kung Fu Panda 3", desc: "20 questions on Kai, chi, and panda village", icon: "🐂", view: 'trivia-kfp-3', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Film 4", title: "Kung Fu Panda 4", desc: "20 questions on Zhen and the Chameleon", icon: "🦊", view: 'trivia-kfp-4', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-kfp-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
             >
-              <div className={`absolute top-0 right-0 w-32 h-32 bg-${vol.color}/10 blur-3xl -mr-16 -mt-16 group-hover:bg-${vol.color}/20 transition-colors`}></div>
-              <div className="relative z-10 space-y-4">
-                <div className={`size-10 rounded-xl bg-${vol.color}/20 border border-${vol.color}/30 flex items-center justify-center`}>
-                  {vol.id === 'random' ? <Zap className={`size-5 text-${vol.color}`} /> : <Star className={`size-5 text-${vol.color}`} />}
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-white uppercase italic tracking-tight">{vol.title}</h3>
-                  <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-widest">{vol.desc}</p>
-                </div>
-                <div className="pt-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                  Begin Training <ArrowRight className="size-3" />
-                </div>
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
               </div>
-            </button>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
           ))}
         </div>
       </div>
@@ -4603,11 +4847,15 @@ export default function App() {
   []);
 
   const kfpRandomQuestions = useMemo(() => 
-    [...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_3_TRIVIA || []), ...(KUNG_FU_PANDA_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(KUNG_FU_PANDA_1_TRIVIA || []), ...(KUNG_FU_PANDA_2_TRIVIA || []), ...(KUNG_FU_PANDA_3_TRIVIA || []), ...(KUNG_FU_PANDA_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const toyStoryRandomQuestions = useMemo(() => 
     [...(TOY_STORY_1_TRIVIA || []), ...(TOY_STORY_2_TRIVIA || []), ...(TOY_STORY_3_TRIVIA || []), ...(TOY_STORY_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const shrekRandomQuestions = useMemo(() => 
+    [...(SHREK_1_TRIVIA || []), ...(SHREK_2_TRIVIA || []), ...(SHREK_3_TRIVIA || []), ...(SHREK_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const dogManRandomQuestions = useMemo(() => 
@@ -4949,12 +5197,7 @@ export default function App() {
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
-            <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={[
-              { threshold: 90, label: 'Demon Hunter Elite', color: 'text-amber-400', character: { name: 'Master Saja', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have mastered the supernatural rhythm. The shadows fear your precision.' } },
-              { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
-              { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
-              { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
-            ]} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -5028,7 +5271,13 @@ export default function App() {
               isDaily={location.state?.isDaily} 
               onQuizComplete={evaluateBadges} 
             />} />
+            <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-shrek-1" element={<MCQuizView key="trivia-shrek-1" questions={SHREK_1_TRIVIA} title="Shrek" scoreLabel="Shrek" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-shrek-2" element={<MCQuizView key="trivia-shrek-2" questions={SHREK_2_TRIVIA} title="Shrek 2" scoreLabel="Shrek 2" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-shrek-3" element={<MCQuizView key="trivia-shrek-3" questions={SHREK_3_TRIVIA} title="Shrek the Third" scoreLabel="Shrek the Third" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-shrek-4" element={<MCQuizView key="trivia-shrek-4" questions={SHREK_4_TRIVIA} title="Shrek Forever After" scoreLabel="Shrek Forever After" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-shrek-random" element={<MCQuizView key="trivia-shrek-random" questions={shrekRandomQuestions} title="Shrek Mixed Challenge" scoreLabel="Shrek Mixed Challenge" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-three-body-problem" element={<MCQuizView key="trivia-three-body-problem" questions={THREE_BODY_PROBLEM_TRIVIA} title="The Three-Body Problem" scoreLabel="The Three-Body Problem" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-the-dark-forest" element={<MCQuizView key="trivia-the-dark-forest" questions={THE_DARK_FOREST_TRIVIA} title="The Dark Forest" scoreLabel="The Dark Forest" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-deaths-end" element={<MCQuizView key="trivia-deaths-end" questions={DEATHS_END_TRIVIA} title="Death's End" scoreLabel="Death's End" grades={THREE_BODY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -5064,19 +5313,23 @@ export default function App() {
             {/* Selectors */}
             <Route path="/selector-twilight" element={<TwilightBookSelector key="selector-twilight" />} />
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
+            <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
+            <Route path="/selector-paw-patrol" element={<PawPatrolSelector key="selector-paw-patrol" />} />
+            <Route path="/selector-hoppers" element={<HoppersSelector key="selector-hoppers" />} />
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />
             <Route path="/selector-zootopia" element={<ZootopiaSelector />} />
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
+            <Route path="/selector-shrek" element={<ShrekSelector />} />
 
             {/* Kung Fu Panda Universe */}
             <Route path="/selector-kung-fu-panda" element={<KungFuPandaSelector />} />
-            <Route path="/trivia-kfp-1" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_1_TRIVIA} title="Volume I: The Beginning" scoreLabel="KFP: The Beginning" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-kfp-2" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_2_TRIVIA} title="Volume II: Inner Peace" scoreLabel="KFP: Inner Peace" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-kfp-3" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_3_TRIVIA} title="Volume III: Mastery" scoreLabel="KFP: Mastery" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-kfp-4" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_4_TRIVIA} title="Volume IV: Evolution" scoreLabel="KFP: Evolution" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-kfp-random" element={<MCQuizView user={user} questions={kfpRandomQuestions} title="The Dragon Challenge" scoreLabel="KFP: Mixed Trial" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-1" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_1_TRIVIA} title="Kung Fu Panda" scoreLabel="Kung Fu Panda" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-2" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_2_TRIVIA} title="Kung Fu Panda 2" scoreLabel="Kung Fu Panda 2" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-3" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_3_TRIVIA} title="Kung Fu Panda 3" scoreLabel="Kung Fu Panda 3" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-4" element={<MCQuizView user={user} questions={KUNG_FU_PANDA_4_TRIVIA} title="Kung Fu Panda 4" scoreLabel="Kung Fu Panda 4" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-kfp-random" element={<MCQuizView user={user} questions={kfpRandomQuestions} title="Kung Fu Panda Mixed Challenge" scoreLabel="Kung Fu Panda Mixed Challenge" grades={KUNG_FU_PANDA_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Toy Story Universe */}
             <Route path="/selector-toy-story" element={<ToyStorySelector />} />
@@ -5084,25 +5337,25 @@ export default function App() {
             <Route path="/trivia-toy-story-2" element={<MCQuizView user={user} questions={TOY_STORY_2_TRIVIA} title="Toy Story 2" scoreLabel="Toy Story 2" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-toy-story-3" element={<MCQuizView user={user} questions={TOY_STORY_3_TRIVIA} title="Toy Story 3" scoreLabel="Toy Story 3" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-toy-story-4" element={<MCQuizView user={user} questions={TOY_STORY_4_TRIVIA} title="Toy Story 4" scoreLabel="Toy Story 4" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-toy-story-random" element={<MCQuizView user={user} questions={toyStoryRandomQuestions} title="Mixed Toy Box" scoreLabel="Toy Story Mixed" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-random" element={<MCQuizView user={user} questions={toyStoryRandomQuestions} title="Toy Story Mixed Challenge" scoreLabel="Toy Story Mixed Challenge" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Dog Man Universe */}
             <Route path="/selector-dog-man" element={<DogManSelector />} />
-            <Route path="/trivia-dog-man-book1" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK1} title="Book 1: Dog Man" scoreLabel="Dog Man: Book 1" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book2" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK2} title="Book 2: Unleashed" scoreLabel="Dog Man: Book 2" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book3" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK3} title="Book 3: A Tale of Two Kitties" scoreLabel="Dog Man: Book 3" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book4" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK4} title="Book 4: Dog Man and Cat Kid" scoreLabel="Dog Man: Book 4" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book5" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK5} title="Book 5: Lord of the Fleas" scoreLabel="Dog Man: Book 5" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book6" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK6} title="Book 6: Brawl of the Wild" scoreLabel="Dog Man: Book 6" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book7" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK7} title="Book 7: For Whom the Ball Rolls" scoreLabel="Dog Man: Book 7" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book8" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK8} title="Book 8: Fetch-22" scoreLabel="Dog Man: Book 8" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book9" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK9} title="Book 9: Grime and Punishment" scoreLabel="Dog Man: Book 9" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book10" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK10} title="Book 10: Mothering Heights" scoreLabel="Dog Man: Book 10" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book11" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK11} title="Book 11: Twenty Thousand Fleas Under the Sea" scoreLabel="Dog Man: Book 11" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book12" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK12} title="Book 12: The Scarlet Shedder" scoreLabel="Dog Man: Book 12" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book13" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK13} title="Book 13: Big Jim Begins" scoreLabel="Dog Man: Book 13" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-book14" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK14} title="Book 14: Big Jim Believes" scoreLabel="Dog Man: Book 14" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-dog-man-random" element={<MCQuizView user={user} questions={dogManRandomQuestions} title="Mixed Dog Box" scoreLabel="Dog Man Mixed" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book1" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK1} title="Dog Man" scoreLabel="Dog Man" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book2" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK2} title="Dog Man: Unleashed" scoreLabel="Dog Man: Unleashed" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book3" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK3} title="Dog Man: A Tale of Two Kitties" scoreLabel="Dog Man: A Tale of Two Kitties" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book4" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK4} title="Dog Man and Cat Kid" scoreLabel="Dog Man and Cat Kid" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book5" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK5} title="Dog Man: Lord of the Fleas" scoreLabel="Dog Man: Lord of the Fleas" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book6" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK6} title="Dog Man: Brawl of the Wild" scoreLabel="Dog Man: Brawl of the Wild" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book7" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK7} title="Dog Man: For Whom the Ball Rolls" scoreLabel="Dog Man: For Whom the Ball Rolls" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book8" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK8} title="Dog Man: Fetch-22" scoreLabel="Dog Man: Fetch-22" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book9" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK9} title="Dog Man: Grime and Punishment" scoreLabel="Dog Man: Grime and Punishment" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book10" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK10} title="Dog Man: Mothering Heights" scoreLabel="Dog Man: Mothering Heights" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book11" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK11} title="Dog Man: Twenty Thousand Fleas Under the Sea" scoreLabel="Dog Man: Twenty Thousand Fleas Under the Sea" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book12" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK12} title="Dog Man: The Scarlet Shedder" scoreLabel="Dog Man: The Scarlet Shedder" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book13" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK13} title="Dog Man: Big Jim Begins" scoreLabel="Dog Man: Big Jim Begins" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-book14" element={<MCQuizView user={user} questions={DOG_MAN_TRIVIA_BOOK14} title="Dog Man: Big Jim Believes" scoreLabel="Dog Man: Big Jim Believes" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-dog-man-random" element={<MCQuizView user={user} questions={dogManRandomQuestions} title="Dog Man Mixed Challenge" scoreLabel="Dog Man Mixed Challenge" grades={DOG_MAN_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Mario Trivia */}
             <Route path="/trivia-mario-2023" element={<MCQuizView key="trivia-mario-2023" questions={MARIO_2023_TRIVIA} title="The Super Mario Bros. (2023)" scoreLabel="Super Mario Bros. (2023)" grades={MARIO_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

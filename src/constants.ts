@@ -138,6 +138,14 @@ export const BADGES: Badge[] = [
     icon: 'ShieldCheck',
     color: 'text-blue-400',
     targetQuiz: 'dog-man'
+  },
+  {
+    id: 'swamp-champion',
+    name: 'Swamp Champion',
+    description: 'Complete any Shrek trivia challenge.',
+    icon: 'Trophy',
+    color: 'text-green-400',
+    targetQuiz: 'shrek'
   }
 ];
 
@@ -176,6 +184,17 @@ export const UNIVERSES = [
     path: '/selector-dog-man'
   },
   {
+    id: 'hoppers',
+    title: 'Hoppers',
+    tags: ['Animation', 'Pixar', 'Sci-Fi'],
+    description: 'Mind-casting, pond rules, and Pixar deep cuts. Test your knowledge of Hoppers with verified trivia from the film\'s early lore and production details.',
+    image: '/images/hoppers.webp',
+    seoAlt: 'Hoppers animals poster featuring the film\'s animal cast',
+    buttonText: 'Enter the Pond',
+    icon: 'Search',
+    path: '/selector-hoppers'
+  },
+  {
     id: 'harry-potter',
     title: 'Harry Potter',
     tags: ['Magic', 'Classic'],
@@ -184,6 +203,17 @@ export const UNIVERSES = [
     seoAlt: 'Harry Potter, Hermione Granger and Ron Weasley at Hogwarts',
     buttonText: 'Begin Spellcasting',
     icon: 'Wand2'
+  },
+  {
+    id: 'shrek',
+    title: 'Shrek',
+    tags: ['Animation', 'Comedy', 'Fairy Tale'],
+    description: 'From the swamp to Far Far Away, test your knowledge of Shrek, Fiona, Donkey, Puss in Boots, and the whole twisted fairy tale saga.',
+    image: '/images/shrek.jpg',
+    seoAlt: 'Shrek standing in front of a green forest backdrop',
+    buttonText: 'Enter the Swamp',
+    icon: 'Trophy',
+    path: '/selector-shrek'
   },
   {
     id: 'kpop',
@@ -6262,6 +6292,519 @@ export const TOY_STORY_GRADES = [
   { threshold: 60, label: 'Roundup Gang', color: 'text-orange-400', character: { name: 'Jessie', image: '/images/toystory.jpg', desc: 'Yee-haw! You know your stuff.' } },
   { threshold: 40, label: 'Pizza Planet Alien', color: 'text-emerald-400', character: { name: 'Little Green Men', image: '/images/toystory.jpg', desc: 'The claw has chosen you... but you need more practice.' } },
   { threshold: 0, label: 'Lost Toy', color: 'text-slate-400', character: { name: 'Sid\'s Mutant Toys', image: '/images/toystory.jpg', desc: 'You might need some repair work back at Andy\'s room.' } },
+];
+
+export const HOPPERS_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What is the name of Mabel's classroom pet turtle?",
+    options: ["Squirt", "Crush", "Tank", "Sheldon"],
+    answer: "Crush",
+    evidence: "Mabel's classroom pet turtle is named 'Crush.'"
+  },
+  {
+    id: 2,
+    question: "During the initial Mind-Casting sequence, what specific text is Mabel seen typing?",
+    options: ["Hello world", "Can you hear me?", "We are your friends", "Property of Dr. Sam"],
+    answer: "We are your friends",
+    evidence: "What text is Mabel typing... We are your friends."
+  },
+  {
+    id: 3,
+    question: "Which animal group is King George shown helping, demonstrating his admirable kindness?",
+    options: ["Tiny mice", "Lost squirrels", "Baby birds", "Injured frogs"],
+    answer: "Tiny mice",
+    evidence: "Who is King George helping? Some tiny mice."
+  },
+  {
+    id: 4,
+    question: "What animal does Mabel transform into through the mind-casting technology?",
+    options: ["A squirrel", "A rabbit", "A beaver", "A deer"],
+    answer: "A beaver",
+    evidence: "Will Mabel successfully hop into a beaver? Yes."
+  },
+  {
+    id: 5,
+    question: "Who is the primary scientist responsible for inventing the Hoppers technology?",
+    options: ["Dr. Nisha", "Dr. Sam", "Dr. Tanaka", "Dr. Grindle"],
+    answer: "Dr. Sam",
+    evidence: "Who invented the Hoppers technology? Dr. Sam."
+  },
+  {
+    id: 6,
+    question: "True or False: The first rule of the pond is 'don't be a stranger.'",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Rule number one: don't be a stranger."
+  },
+  {
+    id: 7,
+    question: "True or False: Mabel is accidentally electrocuted during her first 'hop' into the beaver body.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Will Mabel be electrocuted? No."
+  },
+  {
+    id: 8,
+    question: "True or False: The third rule of the pond states that 'we're all in this together.'",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Rule number three: we're all in this together."
+  },
+  {
+    id: 9,
+    question: "True or False: Dr. Sam warns that the mind-casting technology must never fall into the wrong hands.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "This technology must never fall into the wrong hands."
+  },
+  {
+    id: 10,
+    question: "True or False: Ellen the Bear successfully eats Loaf during the lunch-time sequence.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Will Loaf be eaten by Ellen here? No."
+  },
+  {
+    id: 11,
+    question: "Exactly how many ants were featured in the 'Destroy the Dam' scene?",
+    options: ["12,500", "19,436", "21,982", "15,000"],
+    answer: "19,436",
+    evidence: "There were 19,436 ants in the 'Destroy the Dam' scene."
+  },
+  {
+    id: 12,
+    question: "True or False: The release date for Hoppers, March 6, is the same day Pixar previously released Onward.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "This is the second Pixar film to be released on March 6, after 2020's Onward."
+  },
+  {
+    id: 13,
+    question: "Which actor provides the voice for King George?",
+    options: ["Bobby Moynihan", "Melissa Villasenor", "Isiah Whitlock Jr.", "Demetri Martin"],
+    answer: "Bobby Moynihan",
+    evidence: "Bobby Moynihan voices King George."
+  },
+  {
+    id: 14,
+    question: "How many butterflies were technically required to lift the Apex Predator in the film?",
+    options: ["413", "19,436", "39,256", "50,000"],
+    answer: "39,256",
+    evidence: "It took 39,256 butterflies to lift the Apex Predator."
+  },
+  {
+    id: 15,
+    question: "True or False: The legendary room number A113 appears as Dr. Sam's office number.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "A113 appears as Dr. Sam's office number."
+  }
+];
+
+export const SHREK_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "In the opening sequence, what specific item does Shrek use to wash his back while taking a mud bath?",
+    options: ["A tree branch", "A flat stone", "A brush", "A loofah"],
+    answer: "A brush",
+    evidence: "During the opening credits, Shrek is seen in a mud bath using a brush to wash his back."
+  },
+  {
+    id: 2,
+    question: "What is the specific wait-time displayed on the sign at the information booth in Duloc?",
+    options: ["15 minutes", "30 minutes", "45 minutes", "60 minutes"],
+    answer: "45 minutes",
+    evidence: "A sign in Duloc indicates the wait is 45 minutes."
+  },
+  {
+    id: 3,
+    question: "When the fairy tale creatures are being sold, what do Lord Farquaad's guards specifically call Pinocchio?",
+    options: ["A wooden brat", "A possessed toy", "A magical puppet", "A lying splinter"],
+    answer: "A possessed toy",
+    evidence: "Pinocchio is referred to as a 'possessed toy'."
+  },
+  {
+    id: 4,
+    question: "What is the name of the executioner Lord Farquaad calls upon to intimidate the Magic Mirror?",
+    options: ["Thelonius", "Maximillian", "Gorgon", "Balthazar"],
+    answer: "Thelonius",
+    evidence: "Lord Farquaad specifically addresses his executioner as Thelonius."
+  },
+  {
+    id: 5,
+    question: "During his interrogation, what is the Gingerbread Man's defiant response when asked where the other creatures are?",
+    options: ["Bite me", "Eat me", "Never!", "Go to the swamp"],
+    answer: "Eat me",
+    evidence: "The Gingerbread Man yells 'Eat me!'"
+  },
+  {
+    id: 6,
+    question: "The final song of the film, 'I'm a Believer,' features vocal contributions from Eddie Murphy.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The movie version of 'I'm a Believer' includes Eddie Murphy's vocals."
+  },
+  {
+    id: 7,
+    question: "Princess Fiona's burp during the film was a real burp recorded by voice actress Cameron Diaz.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "A real burp from Cameron Diaz was used in the film."
+  },
+  {
+    id: 8,
+    question: "Which specific object does Shrek use to mount the dragon during the rescue mission, only for it to disappear in the next scene?",
+    options: ["A leather saddle", "A rope", "A chain", "A wooden harness"],
+    answer: "A chain",
+    evidence: "Shrek uses the chain on the dragon's collar to climb onto her back."
+  },
+  {
+    id: 9,
+    question: "Which character says the line: 'No, I'm just a little uncomfortable about going over a rickety bridge over a boiling lake of lava!'?",
+    options: ["Shrek", "Donkey", "Princess Fiona", "Lord Farquaad"],
+    answer: "Donkey",
+    evidence: "Donkey says this while crossing the bridge over the lava moat."
+  },
+  {
+    id: 10,
+    question: "The dragon guarding Princess Fiona in her tower is explicitly described as a fire-breathing dragon.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Princess Fiona is being guarded by a fire-breathing dragon."
+  }
+];
+
+export const SHREK_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What specific secret did the Fairy Godmother use to manipulate and maintain control over King Harold?",
+    options: ["He was an ogre", "He was a frog", "He was a commoner", "He was a former assassin"],
+    answer: "He was a frog",
+    evidence: "King Harold had originally been transformed from a frog."
+  },
+  {
+    id: 2,
+    question: "Julie Andrews, the voice of Queen Lillian, also played Queen Clarisse Renaldi in which year?",
+    options: ["1949", "1957", "2001", "2004"],
+    answer: "2001",
+    evidence: "Julie Andrews played Queen Clarisse Renaldi in 2001."
+  },
+  {
+    id: 3,
+    question: "What is the very first line of dialogue spoken by Shrek as he and Fiona return to the swamp from their honeymoon?",
+    options: ["It's good to be home", "I need a mud bath", "Donkey, get out of here", "What a trip"],
+    answer: "It's good to be home",
+    evidence: "Shrek says, 'It's good to be home.'"
+  },
+  {
+    id: 4,
+    question: "During Puss in Boots' attack, he bursts through Shrek's shirt in a parody of which 1979 science fiction classic?",
+    options: ["Star Wars", "Alien", "Blade Runner", "Star Trek"],
+    answer: "Alien",
+    evidence: "The scene references the chestburster moment from Alien."
+  },
+  {
+    id: 5,
+    question: "When the Far, Far Away Police Department arrests Puss in Boots, what incriminating item do the knights find on him?",
+    options: ["A bag of gold", "A stolen potion", "A little bag of catnip", "A knife in each boot"],
+    answer: "A little bag of catnip",
+    evidence: "The knights discover a little bag of catnip."
+  },
+  {
+    id: 6,
+    question: "What is the official name of the transformation potion Shrek and Donkey steal from the Fairy Godmother's factory?",
+    options: ["The Potion of Beauty", "The Happily Ever After Potion", "The True Love Potion", "The Royal Transformation Draught"],
+    answer: "The Happily Ever After Potion",
+    evidence: "The potion is called the Happily Ever After Potion."
+  },
+  {
+    id: 7,
+    question: "Shrek is sent to meet the assassin Puss in Boots at which inn?",
+    options: ["The Dancing Dragon", "The Leaky Cauldron", "The Poison Apple", "The Poison Mushroom"],
+    answer: "The Poison Apple",
+    evidence: "Puss in Boots is introduced at the Poison Apple."
+  },
+  {
+    id: 8,
+    question: "Upon meeting Puss, Donkey objects by claiming which role is already filled?",
+    options: ["The Brave Knight", "The Loyal Sidekick", "The Annoying Talking Animal", "The Fearless Leader"],
+    answer: "The Annoying Talking Animal",
+    evidence: "Donkey says the position of annoying talking animal has already been filled."
+  },
+  {
+    id: 9,
+    question: "During the escape from the dungeon, revealing that Pinocchio is wearing what makes his nose grow?",
+    options: ["Boxer shorts", "Bikinis", "Briefs", "A thong"],
+    answer: "A thong",
+    evidence: "Pinocchio's nose grows when it is revealed he is wearing a thong."
+  },
+  {
+    id: 10,
+    question: "Shrek 2 was the first film in the franchise to include a personal dedication in the credits.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Shrek 2 was the first film to have a dedication to someone."
+  },
+  {
+    id: 11,
+    question: "The introduction of Puss in Boots at the inn is a parody of Aragorn's introduction in The Fellowship of the Ring.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Puss's intro parallels Aragorn/Strider at the Prancing Pony."
+  },
+  {
+    id: 12,
+    question: "Shrek's human form was designed with no resemblance to Mike Myers.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Shrek's human form intentionally resembles Mike Myers."
+  },
+  {
+    id: 13,
+    question: "Jennifer Saunders performed all of the singing for the Fairy Godmother.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Jennifer Saunders performed all of her own singing."
+  },
+  {
+    id: 14,
+    question: "The Far Far Away knights use pepper grinders as a medieval parody of pepper spray.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Pepper grinders are used as the medieval version of pepper spray."
+  },
+  {
+    id: 15,
+    question: "Mongo the giant gingerbread man shares a roar sound effect with the original Japanese Godzilla.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Mongo's roar matches the original Japanese Godzilla."
+  }
+];
+
+export const SHREK_3_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Who is identified by King Harold as the only other heir to the throne besides Shrek?",
+    options: ["Merlin", "Arthur", "Prince Charming", "Harold Jr."],
+    answer: "Arthur",
+    evidence: "King Harold tells Shrek that Arthur is the only other heir."
+  },
+  {
+    id: 2,
+    question: "At what specific moment does Fiona inform Shrek that she is pregnant?",
+    options: ["At the royal funeral", "As Shrek departs on a boat to find Arthur", "During a dinner party", "After the final play"],
+    answer: "As Shrek departs on a boat to find Arthur",
+    evidence: "Fiona reveals the pregnancy as Shrek leaves by boat."
+  },
+  {
+    id: 3,
+    question: "Why are Shrek and Fiona acting as temporary rulers of Far Far Away at the beginning of the movie?",
+    options: ["The King has retired", "The King is sick", "They won a contest", "The King was kidnapped"],
+    answer: "The King is sick",
+    evidence: "They take on royal duties because the King is sick."
+  },
+  {
+    id: 4,
+    question: "What does Arthur do to his high school peers immediately before leaving with Shrek?",
+    options: ["He gives a speech about being a soon-to-be king", "He apologizes for his behavior", "He challenges the principal", "He gives them his diploma"],
+    answer: "He gives a speech about being a soon-to-be king",
+    evidence: "Arthur brags to his peers as he leaves."
+  },
+  {
+    id: 5,
+    question: "King Harold passes away at the beginning of Shrek the Third.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "King Harold dies at the beginning of the film."
+  },
+  {
+    id: 6,
+    question: "Shrek embarks on the quest to find Arthur so he can avoid becoming the next king.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Shrek looks for Arthur so he doesn't have to become king."
+  },
+  {
+    id: 7,
+    question: "Where does Prince Charming assemble his team of villains to fight for 'Their Happily Ever After'?",
+    options: ["The Poison Apple", "The Gingerbread House", "The Haunted Forest", "The Dragon's Keep"],
+    answer: "The Poison Apple",
+    evidence: "Prince Charming recruits the villains at the Poison Apple Bar."
+  },
+  {
+    id: 8,
+    question: "Which of these specific villains are recruited by Prince Charming at the Poison Apple Bar?",
+    options: ["The Big Bad Wolf and Gingy", "Captain Hook, the Wicked Queen, and a Cyclops", "The Three Bears and Pinocchio", "Lord Farquaad and the Magic Mirror"],
+    answer: "Captain Hook, the Wicked Queen, and a Cyclops",
+    evidence: "Those villains are specifically named as recruits."
+  },
+  {
+    id: 9,
+    question: "What method of transportation do the villains use to reach Far Far Away?",
+    options: ["Magic carpets", "Witches' brooms", "A giant beanstalk", "Dragon-back"],
+    answer: "Witches' brooms",
+    evidence: "They fly to Far Far Away on witches' brooms."
+  },
+  {
+    id: 10,
+    question: "Who provides the warning to Shrek about Prince Charming's plan while stuck in a puppeteer booth?",
+    options: ["Donkey", "Puss", "Pinocchio", "Gingy"],
+    answer: "Pinocchio",
+    evidence: "Pinocchio warns Shrek while trapped in the booth."
+  },
+  {
+    id: 11,
+    question: "Antonio Banderas, voicing Puss in Boots, must play the character while he is stuck in the body of which animal?",
+    options: ["Donkey", "A Dragon", "A Mouse", "A Horse"],
+    answer: "Donkey",
+    evidence: "Puss and Donkey switch bodies."
+  },
+  {
+    id: 12,
+    question: "How many Dronkeys show up to swarm Donkey in Shrek the Third?",
+    options: ["Three", "Four", "Five", "Six"],
+    answer: "Five",
+    evidence: "Five Dronkeys appear."
+  },
+  {
+    id: 13,
+    question: "What is Shrek doing when the stage curtain accidentally opens in the film's beginning?",
+    options: ["Sleeping", "Having someone scratch his butt", "Eating", "Crying"],
+    answer: "Having someone scratch his butt",
+    evidence: "A servant is using a wire brush to scratch Shrek's butt."
+  },
+  {
+    id: 14,
+    question: "Shrek the Third is the first film in the main Shrek series not to open with a fairytale book.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "It is the first and only Shrek film without the fairytale book opening."
+  },
+  {
+    id: 15,
+    question: "In a departure from the rest of the series, Shrek does not roar at any character in this film.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "This is the only main Shrek film where he does not roar."
+  }
+];
+
+export const SHREK_4_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What are the names of Shrek and Fiona's three children?",
+    options: ["Francis, Finnegan, and Francesca", "Fergus, Farkle, and Felicia", "Fred, Felix, and Freda", "Falcon, Fabian, and Felicity"],
+    answer: "Fergus, Farkle, and Felicia",
+    evidence: "Their children are Fergus, Farkle, and Felicia."
+  },
+  {
+    id: 2,
+    question: "At the birthday party, what specific action does the boy known as 'Butter Pants' repeatedly ask Shrek to perform?",
+    options: ["Eat a slug", "Do a dance", "Roar", "Laugh"],
+    answer: "Roar",
+    evidence: "Butter Pants keeps asking Shrek to roar."
+  },
+  {
+    id: 3,
+    question: "Which specific wig does Rumpelstiltskin wear when he is conducting formal business?",
+    options: ["The Angry Wig", "The Speech Wig", "The Business Wig", "The Victory Wig"],
+    answer: "The Business Wig",
+    evidence: "Rumpelstiltskin puts on the Business Wig for formal dealings."
+  },
+  {
+    id: 4,
+    question: "What food item does Cookie, the chef of the Ogre resistance, plan to serve after the battle?",
+    options: ["Tortillas", "Chimichangas", "Eyeball Martinis", "Waffles"],
+    answer: "Chimichangas",
+    evidence: "Cookie plans to serve chimichangas."
+  },
+  {
+    id: 5,
+    question: "What is the 'Exit Clause' required to nullify any contract signed with Rumpelstiltskin?",
+    options: ["A dragon's hiss", "True love's kiss", "Finding Rumpel's sister", "Locating a magic mirror"],
+    answer: "True love's kiss",
+    evidence: "The contract can only be nullified by true love's kiss."
+  },
+  {
+    id: 6,
+    question: "In the alternate reality, Donkey falls for a trap in the woods involving what food item?",
+    options: ["A gingerbread house", "Syrup-covered waffles", "A plate of chimichangas", "A bowl of eyeball soup"],
+    answer: "Syrup-covered waffles",
+    evidence: "Donkey is lured in by syrup-covered waffles."
+  },
+  {
+    id: 7,
+    question: "How did Walt Dohrn secure the role of the villain Rumpelstiltskin?",
+    options: ["He won an open casting call", "He was the lead singer of Smash Mouth", "He performed the voice during storyboard meetings as Head of Story", "He was a famous Broadway actor"],
+    answer: "He performed the voice during storyboard meetings as Head of Story",
+    evidence: "Walt Dohrn earned the part through his scratch voice work as Head of Story."
+  },
+  {
+    id: 8,
+    question: "Rumpelstiltskin claims he did not break his promise to free all ogres because Fiona is kept behind for what reason?",
+    options: ["She is his legal wife", "She isn't 'all ogre' due to her curse", "She is the resistance leader", "She signed a separate deal"],
+    answer: "She isn't 'all ogre' due to her curse",
+    evidence: "He argues Fiona is not fully ogre because of her curse."
+  },
+  {
+    id: 9,
+    question: "What method does the Pied Piper use to capture Shrek and the other ogres?",
+    options: ["Magical binding chains", "Forcing them to dance to a flute beat", "Laying out waffle traps", "Using a giant magnet"],
+    answer: "Forcing them to dance to a flute beat",
+    evidence: "The Pied Piper uses his flute to force the ogres into a dance."
+  },
+  {
+    id: 10,
+    question: "How does Rumpelstiltskin first lure Shrek into his carriage to initiate the deal?",
+    options: ["He invades Shrek's swamp", "He pretends to be trapped under the carriage", "He sends a messenger to the birthday party", "He appears in Shrek's dreams"],
+    answer: "He pretends to be trapped under the carriage",
+    evidence: "Rumpel stages an accident so Shrek will help him."
+  },
+  {
+    id: 11,
+    question: "In the alternate reality, Puss in Boots slides down a scratching pole in his cat house.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Puss slides down a scratching pole and plops off the bottom."
+  },
+  {
+    id: 12,
+    question: "When the timeline is reversed, Shrek returns to the birthday party at the exact moment he was originally supposed to roar.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Shrek returns to the party right at the moment of the roar."
+  },
+  {
+    id: 13,
+    question: "Donkey says he wants to work for Old MacDonald in the alternate reality.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Donkey specifically says he doesn't want to work for Old MacDonald."
+  },
+  {
+    id: 14,
+    question: "Shrek Forever After is the only film in the franchise where Shrek is shown crying.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Production trivia identifies this as the only Shrek film showing him cry."
+  },
+  {
+    id: 15,
+    question: "The end credits of Shrek Forever After feature a montage of clips from all three previous Shrek films.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The credits include a montage from the earlier Shrek films."
+  }
+];
+
+export const SHREK_GRADES = [
+  { threshold: 95, label: 'Swamp Legend', color: 'text-green-400', character: { name: 'Shrek', image: '/images/shrek.jpg', desc: 'You know every layer of the swamp and every joke in Far Far Away.' } },
+  { threshold: 80, label: 'Royal Insider', color: 'text-amber-400', character: { name: 'Princess Fiona', image: '/images/shrek.jpg', desc: 'Excellent recall. You could survive any royal dinner and any fairy tale ambush.' } },
+  { threshold: 60, label: 'Loyal Sidekick', color: 'text-blue-400', character: { name: 'Donkey', image: '/images/shrek.jpg', desc: 'You are talking your way through the lore pretty well.' } },
+  { threshold: 40, label: 'Booted Challenger', color: 'text-orange-400', character: { name: 'Puss in Boots', image: '/images/shrek.jpg', desc: 'You have style, but you still need sharper franchise recall.' } },
+  { threshold: 0, label: 'Fresh from Duloc', color: 'text-slate-400', character: { name: 'Lord Farquaad', image: '/images/shrek.jpg', desc: 'You need more time in the swamp before claiming your happily ever after.' } },
 ];
 
 export const DOG_MAN_GRADES = [
