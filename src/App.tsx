@@ -1789,7 +1789,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
   const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
+  const [matchEndMode, setMatchEndMode] = useState<'first_finisher' | 'timer'>('first_finisher');
+  const [matchTimeLimitSec, setMatchTimeLimitSec] = useState(180);
+  const [matchTimerEndsAt, setMatchTimerEndsAt] = useState<number | null>(null);
+  const [hostControlsOpen, setHostControlsOpen] = useState(false);
   const hostLeftTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const matchEndedRef = useRef(false);
 
   const [opponentScore, setOpponentScore] = useState(0);
   const [teamScore, setTeamScore] = useState(0); // My team's overall score
@@ -1797,6 +1802,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [myTeamId, setMyTeamId] = useState<'A'|'B'|null>(null);
   const [matchParticipants, setMatchParticipants] = useState<any[]>([]);
   const [playerScores, setPlayerScores] = useState<Record<string, {score: number, team: 'A'|'B'|null}>>({});
+  const [playerProgress, setPlayerProgress] = useState<Record<string, { answeredCount: number; completionTime: number | null; isFinished: boolean }>>({});
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -1813,6 +1819,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [shuffleKey, setShuffleKey] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [hasCompletedAllQuestions, setHasCompletedAllQuestions] = useState(false);
+  const [matchEndReason, setMatchEndReason] = useState<'completed' | 'timer' | null>(null);
+  const [timerNow, setTimerNow] = useState(() => Date.now());
   const [sessionId] = useState(() => {
     const key = `fandom_trivia_session_${scoreLabel}`;
     let id = sessionStorage.getItem(key);
@@ -1825,6 +1834,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
   const answeredCount = Object.keys(scores).length;
+  const isMultiplayerMode = gameMode === 'versus' || gameMode === 'team';
 
   // Sync match participants once when the quiz starts
   useEffect(() => {
@@ -1917,6 +1927,33 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setLobbyError('');
   };
 
+  const finalizeQuizSession = (reason: 'completed' | 'timer', completionOverride?: number | null) => {
+    if (matchEndedRef.current) return;
+    matchEndedRef.current = true;
+
+    setFinished(true);
+    setMatchEndReason(reason);
+    setHasCompletedAllQuestions(true);
+    const finalDuration = completionOverride ?? (startTime ? Math.floor((Date.now() - startTime) / 1000) : 0);
+    setCompletionTime(finalDuration);
+
+    if (onQuizComplete) {
+      onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
+    }
+  };
+
+  const applyHostMatchSettings = () => {
+    if (!isHost || !isMultiplayerMode || !matchRoomId) return;
+    const nextEndsAt = matchEndMode === 'timer' ? Date.now() + (matchTimeLimitSec * 1000) : null;
+    setMatchTimerEndsAt(nextEndsAt);
+    supabase.channel(matchRoomId).send({
+      type: 'broadcast',
+      event: 'match_settings',
+      payload: { endMode: matchEndMode, timeLimitSec: matchTimeLimitSec, timerEndsAt: nextEndsAt }
+    });
+    setHostControlsOpen(false);
+  };
+
   const startRoomGame = async () => {
     let finalQuestions = [];
     if (showSpecificQuestions) {
@@ -1927,10 +1964,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }
 
     setSessionQuestions(finalQuestions);
+    const initialTimerEndsAt = matchEndMode === 'timer' ? Date.now() + (matchTimeLimitSec * 1000) : null;
+    setMatchTimerEndsAt(initialTimerEndsAt);
 
     await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
     supabase.channel(`room:${roomCode}`).send({
-      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions }
+      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions, endMode: matchEndMode, timeLimitSec: matchTimeLimitSec, timerEndsAt: initialTimerEndsAt }
     });
     setMatchRoomId(`room:${roomCode}`);
     setGameState('playing');
@@ -2023,6 +2062,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       .on('broadcast', { event: 'game_start' }, ({ payload }) => {
         if (!isHost && payload.questions) {
           setSessionQuestions(payload.questions);
+          setMatchEndMode(payload.endMode || 'first_finisher');
+          setMatchTimeLimitSec(payload.timeLimitSec || 180);
+          setMatchTimerEndsAt(payload.timerEndsAt || null);
           setMatchRoomId(`room:${roomCode}`);
           setGameState('playing');
         }
@@ -2118,7 +2160,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         }));
       })
       .on('broadcast', { event: 'final_results' }, ({ payload }) => {
-        const { userId, allAnswers } = payload;
+        const { userId, allAnswers, completionTime: remoteCompletionTime, answeredCount: remoteAnsweredCount, isFinished } = payload;
         const currentId = user?.id || sessionId;
         if (userId === currentId) return;
         
@@ -2126,6 +2168,30 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           ...prev,
           [userId]: { ...(prev[userId] || {}), ...allAnswers }
         }));
+        setPlayerProgress(prev => ({
+          ...prev,
+          [userId]: {
+            answeredCount: remoteAnsweredCount ?? Object.keys(allAnswers || {}).length,
+            completionTime: remoteCompletionTime ?? null,
+            isFinished: !!isFinished
+          }
+        }));
+      })
+      .on('broadcast', { event: 'match_settings' }, ({ payload }) => {
+        setMatchEndMode(payload.endMode || 'first_finisher');
+        setMatchTimeLimitSec(payload.timeLimitSec || 180);
+        setMatchTimerEndsAt(payload.timerEndsAt || null);
+      })
+      .on('broadcast', { event: 'match_end' }, ({ payload }) => {
+        const { reason } = payload;
+        const currentId = user?.id || sessionId;
+        setPlayerAnswers(prev => ({
+          ...prev,
+          [currentId]: { ...(prev[currentId] || {}), ...userAnswers }
+        }));
+        if (!matchEndedRef.current) {
+          finalizeQuizSession(reason === 'timer' ? 'timer' : 'completed');
+        }
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
@@ -2162,6 +2228,32 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setStartTime(Date.now());
     }
   }, [gameState, startTime]);
+
+  useEffect(() => {
+    if (gameState !== 'playing' || !isMultiplayerMode || matchEndMode !== 'timer' || !matchTimerEndsAt || finished) return;
+
+    setTimerNow(Date.now());
+    const interval = window.setInterval(() => {
+      setTimerNow(Date.now());
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [gameState, isMultiplayerMode, matchEndMode, matchTimerEndsAt, finished]);
+
+  useEffect(() => {
+    if (gameState !== 'playing' || !isMultiplayerMode || matchEndMode !== 'timer' || !matchTimerEndsAt || finished) return;
+    if (timerNow < matchTimerEndsAt) return;
+
+    if (isHost && matchRoomId && !matchEndedRef.current) {
+      supabase.channel(matchRoomId).send({
+        type: 'broadcast',
+        event: 'match_end',
+        payload: { reason: 'timer' }
+      });
+    }
+
+    finalizeQuizSession('timer');
+  }, [timerNow, gameState, isMultiplayerMode, matchEndMode, matchTimerEndsAt, finished, isHost, matchRoomId]);
 
   const navigate = useNavigate();
 
@@ -2478,28 +2570,51 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setCurrentQ(prev => prev + 1);
       setSelected(null);
     } else {
-      setFinished(true);
       const endTime = Date.now();
       const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
-      setCompletionTime(durationSeconds);
+      const finalAnswers = { ...userAnswers };
+      const currentId = user?.id || sessionId;
+      const resultPayload = {
+        userId: currentId,
+        allAnswers: finalAnswers,
+        isFinished: true,
+        completionTime: durationSeconds,
+        answeredCount: Object.keys(finalAnswers).length
+      };
 
-      // Final synchronization for multiplayer results
-      if (matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
-        const currentId = user?.id || sessionId;
+      setCompletionTime(durationSeconds);
+      setHasCompletedAllQuestions(true);
+      setPlayerProgress(prev => ({
+        ...prev,
+        [currentId]: {
+          answeredCount: Object.keys(finalAnswers).length,
+          completionTime: durationSeconds,
+          isFinished: true
+        }
+      }));
+
+      if (matchRoomId && isMultiplayerMode) {
         supabase.channel(matchRoomId).send({
           type: 'broadcast',
           event: 'final_results',
-          payload: { 
-            userId: currentId, 
-            allAnswers: userAnswers,
-            isFinished: true 
-          }
+          payload: resultPayload
         });
+
+        if (matchEndMode === 'first_finisher') {
+          supabase.channel(matchRoomId).send({
+            type: 'broadcast',
+            event: 'match_end',
+            payload: { reason: 'completed', winnerId: currentId }
+          });
+          finalizeQuizSession('completed', durationSeconds);
+          return;
+        }
+
+        setSelected(null);
+        return;
       }
 
-      if (onQuizComplete) {
-        onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
-      }
+      finalizeQuizSession('completed', durationSeconds);
     }
   };
 
@@ -2519,6 +2634,19 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setGameState('mode_selection');
     setGameMode(null);
     setOpponentScore(0);
+    setTeamScore(0);
+    setOpponentTeamScore(0);
+    setMatchParticipants([]);
+    setPlayerScores({});
+    setPlayerProgress({});
+    setMatchEndMode('first_finisher');
+    setMatchTimeLimitSec(180);
+    setMatchTimerEndsAt(null);
+    setHostControlsOpen(false);
+    setHasCompletedAllQuestions(false);
+    setMatchEndReason(null);
+    setTimerNow(Date.now());
+    matchEndedRef.current = false;
   };
 
   const handleSaveScore = async () => {
@@ -2606,6 +2734,47 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
   const derivedTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId) : correctCount;
   const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+  const timeRemainingSec = matchEndMode === 'timer' && matchTimerEndsAt
+    ? Math.max(0, Math.ceil((matchTimerEndsAt - timerNow) / 1000))
+    : null;
+  const multiplayerLeaderboard = isMultiplayerMode
+    ? activeParticipants.map((participant, index) => {
+        const isCurrentPlayer = participant.id === currentId;
+        const answers = isCurrentPlayer ? userAnswers : (playerAnswers[participant.id] || {});
+        const progress = isCurrentPlayer
+          ? {
+              answeredCount,
+              completionTime,
+              isFinished: hasCompletedAllQuestions || finished
+            }
+          : (playerProgress[participant.id] || {
+              answeredCount: Object.keys(answers).length,
+              completionTime: null,
+              isFinished: false
+            });
+        const score = isCurrentPlayer ? correctCount : calculateUserScore(participant.id);
+        const team = index % 2 === 0 ? 'A' : 'B';
+
+        return {
+          id: participant.id,
+          name: participant.name || `Player ${index + 1}`,
+          picture: participant.picture,
+          score,
+          answeredCount: progress.answeredCount ?? Object.keys(answers).length,
+          completionTime: progress.completionTime,
+          isFinished: progress.isFinished,
+          isCurrentPlayer,
+          team
+        };
+      }).sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (b.answeredCount !== a.answeredCount) return b.answeredCount - a.answeredCount;
+        if (a.completionTime === null && b.completionTime === null) return 0;
+        if (a.completionTime === null) return 1;
+        if (b.completionTime === null) return -1;
+        return a.completionTime - b.completionTime;
+      })
+    : [];
 
   // Determine who goes to which track line
   // If myTeamId is 'A', then I am Team A. Otherwise (null, 'B', etc.), I am Team B.
@@ -2721,6 +2890,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               </div>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Quiz Complete!</h2>
+            {isMultiplayerMode && matchEndReason && (
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                {matchEndReason === 'timer' ? 'Match ended when the timer ran out' : 'Match ended when a player finished all assigned questions'}
+              </p>
+            )}
 
             {character && (
               <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl backdrop-blur-md max-w-md mx-auto transform hover:scale-105 transition-transform">
@@ -2839,6 +3013,44 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           )}
 
           <div className="mt-12 space-y-6 pt-12 border-t border-white/10">
+            {isMultiplayerMode && multiplayerLeaderboard.length > 0 && (
+              <div className="max-w-2xl mx-auto space-y-4">
+                <div className="text-center space-y-2">
+                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Final Match Leaderboard</h3>
+                  <p className="text-xs text-slate-400 font-medium">This leaderboard only covers this room.</p>
+                </div>
+                <div className="space-y-3">
+                  {multiplayerLeaderboard.map((entry, index) => (
+                    <div
+                      key={entry.id}
+                      className={`flex items-center gap-4 rounded-2xl border p-4 ${
+                        entry.isCurrentPlayer ? 'bg-primary/10 border-primary/30' : 'bg-white/5 border-white/10'
+                      }`}
+                    >
+                      <div className="w-8 text-center text-lg font-black text-white">#{index + 1}</div>
+                      <SimpleAvatar name={entry.name} picture={entry.picture} size={44} />
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-sm font-black text-white truncate">
+                          {entry.name} {entry.isCurrentPlayer ? '(You)' : ''}
+                        </p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                          {gameMode === 'team' ? `Team ${entry.team}` : 'Solo score'}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-black text-white">{entry.score}/{total}</p>
+                        <p className="text-[10px] font-bold text-slate-400">{entry.answeredCount} answered</p>
+                      </div>
+                      <div className="text-right min-w-[72px]">
+                        <p className="text-sm font-black text-blue-300">{formatTime(entry.completionTime)}</p>
+                        <p className="text-[10px] font-bold text-slate-500">{entry.isFinished ? 'Finished' : 'Timed out'}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col items-center gap-2">
               <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Match Breakdown</h3>
               <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-black uppercase tracking-widest">
@@ -3057,6 +3269,93 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           </div>
         </div>
 
+        {isMultiplayerMode && (
+          <div className="grid gap-4 md:grid-cols-[1fr_auto]">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Match End Rule</span>
+                <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
+                  {matchEndMode === 'timer' ? `Timer • ${formatTime(timeRemainingSec)}` : 'First finisher'}
+                </span>
+                {matchEndMode === 'timer' && (
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">
+                    Room countdown is live
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {isHost && (
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setHostControlsOpen(prev => !prev)}
+                  className="rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/20 transition-all"
+                >
+                  {hostControlsOpen ? 'Hide Match Controls' : 'Match Controls'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isHost && isMultiplayerMode && hostControlsOpen && (
+          <div className="rounded-2xl border border-primary/20 bg-card-dark p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-white">Host Match Controls</h3>
+                <p className="text-xs text-slate-400">Only the host sees this after the room starts.</p>
+              </div>
+              <Settings className="size-4 text-primary" />
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              <button
+                onClick={() => setMatchEndMode('first_finisher')}
+                className={`rounded-xl border px-4 py-4 text-left transition-all ${
+                  matchEndMode === 'first_finisher' ? 'border-primary bg-primary/10 text-white' : 'border-white/10 bg-white/5 text-slate-300'
+                }`}
+              >
+                <p className="text-xs font-black uppercase tracking-widest">End On Finish</p>
+                <p className="mt-1 text-xs text-slate-400">Quiz ends as soon as one player finishes every assigned question.</p>
+              </button>
+              <button
+                onClick={() => setMatchEndMode('timer')}
+                className={`rounded-xl border px-4 py-4 text-left transition-all ${
+                  matchEndMode === 'timer' ? 'border-primary bg-primary/10 text-white' : 'border-white/10 bg-white/5 text-slate-300'
+                }`}
+              >
+                <p className="text-xs font-black uppercase tracking-widest">End On Timer</p>
+                <p className="mt-1 text-xs text-slate-400">Quiz ends when the room timer runs out, even if some players are still answering.</p>
+              </button>
+            </div>
+
+            {matchEndMode === 'timer' && (
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Time Limit</label>
+                <select
+                  value={matchTimeLimitSec}
+                  onChange={(e) => setMatchTimeLimitSec(Number(e.target.value))}
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold text-white outline-none"
+                >
+                  <option value={60}>1 minute</option>
+                  <option value={120}>2 minutes</option>
+                  <option value={180}>3 minutes</option>
+                  <option value={300}>5 minutes</option>
+                </select>
+              </div>
+            )}
+
+            <div className="flex justify-end">
+              <button
+                onClick={applyHostMatchSettings}
+                className="rounded-xl bg-primary px-5 py-3 text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary/90 transition-all"
+              >
+                Apply To Room
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Progress bar */}
         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
           <div className="h-full bg-gradient-to-r from-primary to-purple-400 transition-all duration-300 rounded-full" style={{ width: `${((currentQ + 1) / total) * 100}%` }} />
@@ -3064,6 +3363,30 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
         {/* Question Card */}
         <AnimatePresence mode="wait">
+          {isMultiplayerMode && matchEndMode === 'timer' && hasCompletedAllQuestions && !finished ? (
+            <motion.div
+              key="waiting-for-match-end"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25 }}
+              className="bg-card-dark rounded-2xl border border-white/10 p-8 shadow-2xl space-y-6"
+            >
+              <div className="text-center space-y-4">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20">
+                  <Clock className="size-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black text-white uppercase tracking-tight">Questions Complete</h3>
+                  <p className="text-slate-300 font-medium">You finished your assigned questions. The room will end when the timer expires.</p>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-4 py-2">
+                  <Clock className="size-4 text-blue-300" />
+                  <span className="text-sm font-black text-blue-300">Time remaining: {formatTime(timeRemainingSec)}</span>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
           <motion.div key={currentQ} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }} className="bg-card-dark rounded-2xl border border-white/10 p-8 shadow-2xl space-y-6">
             <div className="flex items-start gap-4">
               <span className="flex-shrink-0 size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-sm">
@@ -3136,6 +3459,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               </motion.button>
             )}
           </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Question dots */}
