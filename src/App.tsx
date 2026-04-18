@@ -1793,6 +1793,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [lobbyLogs, setLobbyLogs] = useState<{id: string, text: string, type: 'join' | 'leave' | 'info'}[]>([]);
   const [hostLeft, setHostLeft] = useState(false);
   const lobbyPlayersRef = useRef<{id: string, name: string, isHost: boolean}[]>([]);
+  const lobbyChannelRef = useRef<any>(null);
+  const gameChannelRef = useRef<any>(null);
   const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
   const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
@@ -1807,7 +1809,14 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [opponentTeamScore, setOpponentTeamScore] = useState(0); // Enemy team's overall score
   const [myTeamId, setMyTeamId] = useState<'A'|'B'|null>(null);
   const [matchParticipants, setMatchParticipants] = useState<any[]>([]);
-  const [playerScores, setPlayerScores] = useState<Record<string, {score: number, team: 'A'|'B'|null}>>({});
+  const [playerScores, setPlayerScores] = useState<Record<string, {
+    score: number,
+    team: 'A'|'B'|null,
+    answeredCount?: number,
+    completionTime?: number | null,
+    isFinished?: boolean,
+    name?: string
+  }>>({});
   const [playerProgress, setPlayerProgress] = useState<Record<string, { answeredCount: number; completionTime: number | null; isFinished: boolean }>>({});
   const [opponentNames, setOpponentNames] = useState<string[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
@@ -1958,6 +1967,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }
   };
 
+  const sendLobbyEvent = async (event: string, payload: Record<string, any>) => {
+    if (!lobbyChannelRef.current) return;
+    await lobbyChannelRef.current.send({
+      type: 'broadcast',
+      event,
+      payload
+    });
+  };
+
+  const sendMatchEvent = async (event: string, payload: Record<string, any>) => {
+    if (!gameChannelRef.current) return;
+    await gameChannelRef.current.send({
+      type: 'broadcast',
+      event,
+      payload
+    });
+  };
+
   const startRoomGame = async () => {
     let finalQuestions = [];
     if (showSpecificQuestions) {
@@ -1970,14 +1997,22 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setSessionQuestions(finalQuestions);
     const initialQuestionGoal = Math.min(Math.max(1, matchQuestionGoal), finalQuestions.length);
     const initialTimeLimitSec = Math.min(Math.max(60, matchTimeLimitSec), 1440 * 60);
-    const initialTimerEndsAt = Date.now() + (initialTimeLimitSec * 1000);
+    const startedAt = Date.now();
+    const initialTimerEndsAt = startedAt + (initialTimeLimitSec * 1000);
     setMatchQuestionGoal(initialQuestionGoal);
     setMatchTimeLimitSec(initialTimeLimitSec);
     setMatchTimerEndsAt(initialTimerEndsAt);
+    setStartTime(startedAt);
+    setTimerNow(startedAt);
 
     await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
-    supabase.channel(`room:${roomCode}`).send({
-      type: 'broadcast', event: 'game_start', payload: { message: 'Go!', questions: finalQuestions, questionGoal: initialQuestionGoal, timeLimitSec: initialTimeLimitSec, timerEndsAt: initialTimerEndsAt }
+    await sendLobbyEvent('game_start', {
+      message: 'Go!',
+      questions: finalQuestions,
+      questionGoal: initialQuestionGoal,
+      timeLimitSec: initialTimeLimitSec,
+      timerEndsAt: initialTimerEndsAt,
+      startedAt
     });
     setMatchRoomId(`room:${roomCode}`);
     setGameState('playing');
@@ -1990,6 +2025,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const channel = supabase.channel(`room:${roomCode}`, {
        config: { presence: { key: user?.id || sessionId } }
     });
+    lobbyChannelRef.current = channel;
 
     const handleBeforeUnload = () => {
       if (isHost) {
@@ -2073,6 +2109,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           setMatchQuestionGoal(payload.questionGoal || payload.questions.length || 1);
           setMatchTimeLimitSec(payload.timeLimitSec || 180);
           setMatchTimerEndsAt(payload.timerEndsAt || null);
+          setStartTime(payload.startedAt || Date.now());
+          setTimerNow(Date.now());
           setMatchRoomId(`room:${roomCode}`);
           setGameState('playing');
         }
@@ -2090,6 +2128,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       if (hostLeftTimeoutRef.current) clearTimeout(hostLeftTimeoutRef.current);
+      if (lobbyChannelRef.current === channel) {
+        lobbyChannelRef.current = null;
+      }
       channel.untrack().then(() => supabase.removeChannel(channel));
     };
   }, [gameState, roomCode, isHost, user, gameMode]);
@@ -2100,6 +2141,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const gameChannel = supabase.channel(matchRoomId, {
       config: { presence: { key: user?.id || sessionId } }
     });
+    gameChannelRef.current = gameChannel;
     
     const handleBeforeUnload = () => {
       if (isHost) {
@@ -2144,18 +2186,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
          setHostLeft(true);
       })
       .on('broadcast', { event: 'score_update' }, ({ payload }) => {
-        const { userId, score, team } = payload;
+        const { userId, score, team, answeredCount: remoteAnsweredCount, name } = payload;
         const currentId = user?.id || sessionId;
         if (userId === currentId) return;
 
         if (gameMode === 'versus') {
           setOpponentScore(score);
-        } else if (gameMode === 'team') {
-          setPlayerScores(prev => ({
-            ...prev,
-            [userId]: { score, team }
-          }));
         }
+
+        setPlayerScores(prev => ({
+          ...prev,
+          [userId]: {
+            ...(prev[userId] || {}),
+            score,
+            team,
+            name: name || prev[userId]?.name,
+            answeredCount: remoteAnsweredCount ?? prev[userId]?.answeredCount
+          }
+        }));
       })
       .on('broadcast', { event: 'answer_update' }, ({ payload }) => {
         const { userId, questionIndex, answer } = payload;
@@ -2168,13 +2216,34 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         }));
       })
       .on('broadcast', { event: 'final_results' }, ({ payload }) => {
-        const { userId, allAnswers, completionTime: remoteCompletionTime, answeredCount: remoteAnsweredCount, isFinished } = payload;
+        const {
+          userId,
+          allAnswers,
+          completionTime: remoteCompletionTime,
+          answeredCount: remoteAnsweredCount,
+          isFinished,
+          score: remoteScore,
+          team,
+          name
+        } = payload;
         const currentId = user?.id || sessionId;
         if (userId === currentId) return;
         
         setPlayerAnswers(prev => ({
           ...prev,
           [userId]: { ...(prev[userId] || {}), ...allAnswers }
+        }));
+        setPlayerScores(prev => ({
+          ...prev,
+          [userId]: {
+            ...(prev[userId] || {}),
+            score: remoteScore ?? prev[userId]?.score ?? calculateUserScore(userId),
+            team: team ?? prev[userId]?.team ?? null,
+            name: name || prev[userId]?.name,
+            answeredCount: remoteAnsweredCount ?? Object.keys(allAnswers || {}).length,
+            completionTime: remoteCompletionTime ?? prev[userId]?.completionTime ?? null,
+            isFinished: !!isFinished
+          }
         }));
         setPlayerProgress(prev => ({
           ...prev,
@@ -2209,6 +2278,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       if (hostLeftTimeoutRef.current) clearTimeout(hostLeftTimeoutRef.current);
+      if (gameChannelRef.current === gameChannel) {
+        gameChannelRef.current = null;
+      }
       gameChannel.untrack().then(() => supabase.removeChannel(gameChannel));
     };
   }, [gameState, matchRoomId, gameMode, user, isHost]);
@@ -2217,13 +2289,15 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   useEffect(() => {
     if (gameState === 'playing' && matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
       const currentId = user?.id || sessionId;
-      supabase.channel(matchRoomId).send({
-        type: 'broadcast',
-        event: 'score_update',
-        payload: { userId: currentId, score: correctCount, team: myTeamId }
+      void sendMatchEvent('score_update', {
+        userId: currentId,
+        score: correctCount,
+        team: myTeamId,
+        answeredCount,
+        name: getDisplayName(user, 'Guest Fan')
       });
     }
-  }, [correctCount, gameState, matchRoomId, gameMode, myTeamId, user]);
+  }, [correctCount, answeredCount, gameState, matchRoomId, gameMode, myTeamId, user]);
 
   // Handle startTime initialization when game starts
   useEffect(() => {
@@ -2248,11 +2322,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     if (timerNow < matchTimerEndsAt) return;
 
     if (isHost && matchRoomId && !matchEndedRef.current) {
-      supabase.channel(matchRoomId).send({
-        type: 'broadcast',
-        event: 'match_end',
-        payload: { reason: 'timer' }
-      });
+      void sendMatchEvent('match_end', { reason: 'timer' });
     }
 
     finalizeQuizSession('timer');
@@ -2599,11 +2669,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     // Broadcast answer to other players
     if (gameState === 'playing' && matchRoomId && (gameMode === 'versus' || gameMode === 'team')) {
       const currentId = user?.id || sessionId;
-      supabase.channel(matchRoomId).send({
-        type: 'broadcast',
-        event: 'answer_update',
-        payload: { userId: currentId, questionIndex: currentQ, answer: option }
-      });
+      void sendMatchEvent('answer_update', { userId: currentId, questionIndex: currentQ, answer: option });
     }
   };
 
@@ -2628,11 +2694,26 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       allAnswers: finalAnswers,
       isFinished: true,
       completionTime: durationSeconds,
-      answeredCount: completedQuestions
+      answeredCount: completedQuestions,
+      score: correctCount,
+      team: myTeamId,
+      name: getDisplayName(user, 'Guest Fan')
     };
 
     setCompletionTime(durationSeconds);
     setHasCompletedAllQuestions(true);
+    setPlayerScores(prev => ({
+      ...prev,
+      [currentId]: {
+        ...(prev[currentId] || {}),
+        score: correctCount,
+        team: myTeamId,
+        name: getDisplayName(user, 'Guest Fan'),
+        answeredCount: completedQuestions,
+        completionTime: durationSeconds,
+        isFinished: true
+      }
+    }));
     setPlayerProgress(prev => ({
       ...prev,
       [currentId]: {
@@ -2643,18 +2724,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }));
 
     if (matchRoomId && isMultiplayerMode) {
-      supabase.channel(matchRoomId).send({
-        type: 'broadcast',
-        event: 'final_results',
-        payload: resultPayload
-      });
+      void sendMatchEvent('final_results', resultPayload);
 
       if ((reachedQuestionGoal || reachedQuestionListEnd) && !matchEndedRef.current) {
-        supabase.channel(matchRoomId).send({
-          type: 'broadcast',
-          event: 'match_end',
-          payload: { reason: 'completed', winnerId: currentId }
-        });
+        void sendMatchEvent('match_end', { reason: 'completed', winnerId: currentId });
         finalizeQuizSession('completed', durationSeconds);
         return;
       }
@@ -2788,6 +2861,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     ? activeParticipants.map((participant, index) => {
         const isCurrentPlayer = participant.id === currentId;
         const answers = isCurrentPlayer ? userAnswers : (playerAnswers[participant.id] || {});
+        const syncedPlayer = playerScores[participant.id];
         const progress = isCurrentPlayer
           ? {
               answeredCount,
@@ -2795,23 +2869,23 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               isFinished: hasCompletedAllQuestions || finished
             }
           : (playerProgress[participant.id] || {
-              answeredCount: Object.keys(answers).length,
-              completionTime: null,
-              isFinished: false
+              answeredCount: syncedPlayer?.answeredCount ?? Object.keys(answers).length,
+              completionTime: syncedPlayer?.completionTime ?? null,
+              isFinished: syncedPlayer?.isFinished ?? false
             });
-        const score = isCurrentPlayer ? correctCount : calculateUserScore(participant.id);
+        const score = isCurrentPlayer ? correctCount : (syncedPlayer?.score ?? calculateUserScore(participant.id));
         const team = index % 2 === 0 ? 'A' : 'B';
 
         return {
           id: participant.id,
-          name: participant.name || `Player ${index + 1}`,
+          name: syncedPlayer?.name || participant.name || `Player ${index + 1}`,
           picture: participant.picture,
           score,
-          answeredCount: progress.answeredCount ?? Object.keys(answers).length,
-          completionTime: progress.completionTime,
-          isFinished: progress.isFinished,
+          answeredCount: progress.answeredCount ?? syncedPlayer?.answeredCount ?? Object.keys(answers).length,
+          completionTime: progress.completionTime ?? syncedPlayer?.completionTime ?? null,
+          isFinished: progress.isFinished ?? syncedPlayer?.isFinished ?? false,
           isCurrentPlayer,
-          team
+          team: syncedPlayer?.team ?? team
         };
       }).sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score;
