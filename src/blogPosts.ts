@@ -11,6 +11,146 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'moana-quiz',
+    title: 'Moana Quiz: Can You Actually Conquer the Ultimate Ocean Lore Challenge?',
+    metaDescription: 'Think you know Moana? Take the ultimate Moana quiz and test your knowledge of Maui, Te Fiti, wayfinding, Motufetu, and ocean lore.',
+    date: '2026-04-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/moana.jpg',
+    keywords: ['Moana quiz', 'Moana trivia', 'Moana personality test', 'Moana 2 quiz', 'Maui trivia', 'wayfinding quiz', 'Te Fiti lore', 'Disney ocean knowledge test'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Moana</strong> is not just a Disney adventure. It is a story about identity, courage, ancestors, ocean lore, living legends, and the call to go beyond the reef even when everyone else says stay put. If you are searching for the ultimate <strong>Moana quiz</strong>, this is where you find out whether you are a true master wayfinder or just someone who remembers the songs and the coconut pirates.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-moana" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Moana Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Moana Trivia Is Harder Than It Looks</h2>
+      <p>Almost everyone remembers the broad strokes. Moana wants more than life on Motunui. Maui has a magical fishhook. The Heart of Te Fiti matters. HeiHei is chaos. But a real <strong>Moana trivia</strong> challenge goes deeper than the obvious. It asks whether you remember details like the meaning of Moana's name, the exact significance of wayfinding, the mythology around Te Fiti, and the specific lore introduced in <strong>Moana 2</strong>.</p>
+      <p class="mt-4">That is what makes a serious <strong>Disney ocean knowledge test</strong> so satisfying. It separates fans who truly know the story from fans who are leaning on nostalgia, soundtrack energy, and a vague memory of Maui singing his way through the plot.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-moana" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-cyan-300">Challenge:</span> Test your Moana knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Moana Character Are You Most Like?</h2>
+      <p>Every fandom eventually turns into a personality debate. Before you <a href="/selector-moana" class="text-primary hover:text-primary/80 font-bold">take the Moana quiz</a>, ask yourself which energy actually feels like yours.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Moana:</strong> Brave, curious, stubborn, and willing to keep going when the ocean calls you somewhere bigger.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Maui:</strong> Loud, powerful, dramatic, and fully convinced you deserve credit for everything impressive.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Tala:</strong> Wise, intuitive, mischievous, and always able to see the deeper truth under the surface.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>HeiHei:</strong> Chaotic, unforgettable, somehow still part of the mission, and impossible to ignore.</li>
+      </ul>
+
+      <p>That is why <strong>Moana personality tests</strong>, character rankings, and lore conversations keep pulling fans back in. These characters feel iconic because they represent different ways of facing fear, destiny, family pressure, and the unknown.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A perfect score on a real <strong>Moana quiz</strong> takes more than remembering a few songs or picking Maui out of a lineup. You need to know what the story is really built on: navigation, ancestry, myth, symbols, and the emotional logic that connects the first film to the sequel.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Wayfinding Questions That Expose Casual Fans</h3>
+      <p>Can you remember what Moana's name literally means? Do you know what traditional navigation method guides her voyage? Can you identify what gives life in the story, what Maui needs to shapeshift, and which details define the Kakamora? These are the moments where a simple Disney fan becomes a real <strong>wayfinding quiz</strong> expert.</p>
+      <p class="mt-4">If you want to dominate this challenge, you need sharp recall on Motunui, Te Fiti, Te Ka, Maui's fishhook, and the cultural details that make the movie world feel larger than a typical animated adventure.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">Moana 2 Raises the Difficulty</h3>
+      <p>The sequel adds even more for dedicated fans to track. Now the fandom is not just debating the original voyage. It is talking about <strong>Motufetu</strong>, <strong>Nalo</strong>, <strong>Matangi</strong>, Simea, Moni, and the larger effort to reconnect the people of the ocean. That means more room for <strong>Moana fan theories</strong>, more lore to remember, and more opportunities for casual fans to get exposed when the questions get specific.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Original film recall:</strong> Can you handle questions about Te Fiti, Maui trivia, island symbols, and the details behind Moana's first voyage?</li>
+        <li><strong>Sequel knowledge:</strong> Do you actually remember Motufetu, Nalo, Matangi, and the new crew members from <strong>Moana 2</strong>?</li>
+        <li><strong>Deep-cut fandom:</strong> Are you confident enough on lore, symbolism, and ocean mythology to earn a top score without guessing?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Moana Quiz Worth Taking</h2>
+      <p>This is not a lazy five-question Disney recap. It is a real fandom challenge built for people who know the first voyage, remember the sequel details, and want to prove their memory goes beyond the soundtrack. Whether you are here for <strong>Maui trivia</strong>, a <strong>Te Fiti lore</strong> deep cut, a <strong>Moana 2 quiz</strong> challenge, or just the satisfaction of beating your friends, this is the test that gives your score actual meaning.</p>
+      <p class="mt-4">If you have ever claimed Moana is one of your favorite Disney stories, this is your chance to stop saying it and prove it. The ocean has chosen. Now the scoreboard gets a vote too.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-cyan-500/20 via-blue-900/40 to-amber-900/20 border border-cyan-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Go Beyond the Reef?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Only real fans can dominate this <strong>Moana trivia</strong> challenge. Test your memory, challenge your friends, and find out whether you are worthy of the title Master Wayfinder.</p>
+        <a href="/selector-moana" class="inline-block bg-gradient-to-r from-cyan-400 to-amber-400 hover:from-cyan-300 hover:to-amber-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(34,211,238,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(251,191,36,0.35)]">
+          Take the Ultimate Moana Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans know the songs. The best fans know the lore. Take the quiz and find out which kind you are.</p>
+    `
+  },
+  {
+    slug: 'star-wars-quiz',
+    title: 'Star Wars Quiz: Can You Actually Beat the Ultimate Galactic Knowledge Test?',
+    metaDescription: 'Think you know Star Wars? Take the ultimate Star Wars quiz and test your knowledge of Jedi, Sith, lore, battles, and galactic secrets.',
+    date: '2026-04-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/star-wars.jpg',
+    keywords: ['Star Wars quiz', 'Star Wars trivia', 'Star Wars personality test', 'Jedi lore quiz', 'Sith knowledge test', 'Luke Skywalker trivia', 'Darth Vader fan theories', 'Star Wars saga challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Star Wars</strong> is not a casual fandom. It is a galaxy of Jedi prophecies, Sith betrayals, clone conspiracies, rebel heroics, impossible family drama, and tiny lore details that fans remember for years. If you are searching for the ultimate <strong>Star Wars quiz</strong>, this is where you find out whether your knowledge is truly Council-level or whether you have been relying on vibes and nostalgia.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-star-wars" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Star Wars Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Star Wars Trivia Is So Brutal for Casual Fans</h2>
+      <p>Everyone knows the broad strokes. Darth Vader is Luke Skywalker's father. Yoda is wise. Han Solo flies the Millennium Falcon. Rey comes from the sequel trilogy. But a real <strong>Star Wars trivia</strong> challenge is not built on surface-level recall. It is built on details: the politics behind the Naboo crisis, the origins of the clone army, the specific logic of Jedi ranks, the small visual cues hidden in major battles, and the deep-cut facts that hardcore fans argue about for years.</p>
+      <p class="mt-4">That is what makes this <strong>galactic knowledge test</strong> so satisfying. It exposes the difference between fans who genuinely know the saga and fans who just remember the loudest moments. If you think you belong in the first group, now is the time to prove it.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-star-wars" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-300">Challenge:</span> Test your Star Wars knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Star Wars Character Are You Most Like?</h2>
+      <p>Every great fandom eventually turns into a personality debate. Before you <a href="/selector-star-wars" class="text-primary hover:text-primary/80 font-bold">take the Star Wars quiz</a>, ask yourself which energy feels most like your own.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Luke Skywalker:</strong> Hopeful, stubborn, idealistic, and always one step away from changing the fate of the galaxy.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Leia Organa:</strong> Strategic, fearless, sharp under pressure, and never interested in waiting around for someone else to save the day.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Obi-Wan Kenobi:</strong> Disciplined, perceptive, deeply loyal, and constantly cleaning up someone else's disastrous choices.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Darth Vader:</strong> Powerful, intense, emotionally complicated, and central to half the best <strong>Star Wars fan theories</strong> ever written.</li>
+      </ul>
+
+      <p>That is why <strong>Star Wars personality tests</strong>, lore debates, and character rankings never disappear. Fans do not just watch these characters. They identify with them, defend them, and analyze every decision they make across the saga.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A perfect score on a serious <strong>Star Wars saga challenge</strong> requires more than remembering lightsabers and famous quotes. You need to track the details across the prequels, original trilogy, and sequels. That means remembering who said what, where key battles happened, what smaller facts shaped larger events, and which pieces of lore casual viewers usually miss.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Jedi and Sith Questions That Separate Real Fans</h3>
+      <p>Do you remember how Jedi missions unfolded before the fall of the Republic? Can you keep straight the people, planets, and betrayals tied to Anakin Skywalker's collapse? Do you actually remember the hidden mechanics behind major sequel-era revelations, or do you just remember the emotional payoff? Those are the kinds of questions that turn a simple fandom post into a real <strong>Sith knowledge test</strong>.</p>
+      <p class="mt-4">This is where the score starts to matter. A true fan can move from Qui-Gon Jinn to Palpatine, from Naboo to Exegol, and from clone lore to rebel history without falling apart under pressure.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Details Fans Love Arguing About</h3>
+      <p>Part of the reason <strong>Star Wars trivia</strong> works so well is that the universe invites obsession. Fans argue about the smartest Jedi, the best trilogy, the most powerful Force user, the most tragic character arc, and which tiny detail changed the galaxy forever. That creates endless search interest around <strong>Luke Skywalker trivia</strong>, <strong>Darth Vader fan theories</strong>, prequel lore, clone army mysteries, and sequel trilogy reveals.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Prequel precision:</strong> Can you handle clone army details, Senate politics, and the chain of events that broke the Jedi Order?</li>
+        <li><strong>Original trilogy recall:</strong> Do you remember more than the iconic scenes? Can you track the settings, pilots, and strategic turning points?</li>
+        <li><strong>Sequel era memory:</strong> Are you confident on Rey, Kylo Ren, Exegol, and the reveals that reshaped the final trilogy?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Star Wars Quiz Worth Taking</h2>
+      <p>This is not a lazy five-question nostalgia post. It is a real <strong>Star Wars quiz</strong> designed for fans who want a challenge. It rewards people who remember the deep cuts, not just the obvious. It gives you a chance to settle debates with friends, flex your lore knowledge, and see whether your confidence holds up when the questions get specific.</p>
+      <p class="mt-4">If you have ever claimed that you know this galaxy inside out, this is your moment. No more hiding behind favorite-character lists or vague memories of lightsaber duels. Let the score speak for you.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-amber-500/20 via-sky-900/40 to-black border border-amber-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Prove You Belong on the Jedi Council?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Only the sharpest fans can dominate this <strong>Star Wars trivia</strong> challenge. Test your memory, challenge your friends, and find out whether you are truly galactic-elite.</p>
+        <a href="/selector-star-wars" class="inline-block bg-gradient-to-r from-amber-400 to-sky-500 hover:from-amber-300 hover:to-sky-400 text-white px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(251,191,36,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(56,189,248,0.35)]">
+          Take the Ultimate Star Wars Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Many fans know the quotes. Far fewer know the details. Take the quiz and find out which kind of fan you really are.</p>
+    `
+  },
+  {
     slug: 'shrek-quiz',
     title: 'Shrek Quiz: How Well Do You Really Know the Swamp, Far Far Away, and Every Layer of the Saga?',
     metaDescription: 'Take the ultimate Shrek quiz and test your knowledge of Shrek, Fiona, Donkey, Puss in Boots, and the whole Far Far Away saga.',

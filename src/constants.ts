@@ -59,6 +59,14 @@ export const BADGES: Badge[] = [
     targetQuiz: 'harry-potter'
   },
   {
+    id: 'star-wars-ace',
+    name: 'Galactic Ace',
+    description: 'Complete any Star Wars trivia challenge.',
+    icon: 'Star',
+    color: 'text-amber-300',
+    targetQuiz: 'star-wars'
+  },
+  {
     id: 'kpop_stan',
     name: 'Demon Hunter',
     description: 'Complete the K-Pop Demon Hunters quiz.',
@@ -105,6 +113,14 @@ export const BADGES: Badge[] = [
     icon: 'Star',
     color: 'text-sky-300',
     targetQuiz: 'frozen'
+  },
+  {
+    id: 'wayfinder',
+    name: 'Wayfinder',
+    description: 'Complete any Moana trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-cyan-300',
+    targetQuiz: 'moana'
   },
   {
     id: 'toy-story-hero',
@@ -205,6 +221,17 @@ export const UNIVERSES = [
     icon: 'Wand2'
   },
   {
+    id: 'star-wars',
+    title: 'Star Wars',
+    tags: ['Sci-Fi', 'Saga', 'Jedi'],
+    description: 'From Naboo and Coruscant to Endor and Exegol, test your Star Wars knowledge across the Skywalker saga in a galaxy-spanning challenge.',
+    image: '/images/star-wars.jpg',
+    seoAlt: 'Anakin Skywalker wielding a lightsaber in a stylized Star Wars portrait',
+    buttonText: 'Enter the Galaxy',
+    icon: 'Star',
+    path: '/selector-star-wars'
+  },
+  {
     id: 'shrek',
     title: 'Shrek',
     tags: ['Animation', 'Comedy', 'Fairy Tale'],
@@ -264,6 +291,17 @@ export const UNIVERSES = [
     seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
     buttonText: 'Join the Sisters',
     icon: 'Snowflake'
+  },
+  {
+    id: 'moana',
+    title: 'Moana',
+    tags: ['Disney', 'Adventure', 'Ocean'],
+    description: 'Sail beyond the reef and test your knowledge on Moana, Maui, wayfinding, Te Fiti, and the newest ocean voyage.',
+    image: '/images/moana.jpg',
+    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
+    buttonText: 'Set Sail',
+    icon: 'Sparkles',
+    path: '/selector-moana'
   },
   {
     id: 'super-mario',
