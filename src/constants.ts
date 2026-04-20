@@ -162,6 +162,14 @@ export const BADGES: Badge[] = [
     icon: 'Trophy',
     color: 'text-green-400',
     targetQuiz: 'shrek'
+  },
+  {
+    id: 'dragon-rider',
+    name: 'Dragon Rider',
+    description: 'Master the art of flight in any HTTYD trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-orange-400',
+    targetQuiz: 'httyd'
   }
 ];
 
@@ -302,6 +310,39 @@ export const UNIVERSES = [
     buttonText: 'Set Sail',
     icon: 'Sparkles',
     path: '/selector-moana'
+  },
+  {
+    id: 'minecraft',
+    title: 'Minecraft',
+    tags: ['Video Game', 'Adventure', 'Movie'],
+    description: 'Enter the Overworld and test your knowledge of A Minecraft Movie, from Steve and Garrett to piglins, portals, and blocky chaos.',
+    image: '/images/minecraft.jpg',
+    seoAlt: 'Official wide promotional banner for A Minecraft Movie featuring the cast (Jack Black, Jason Momoa, Danielle Brooks, Emma Myers, and Sebastian Hansen) in a lush Overworld landscape with a Nether portal and Minecraft mobs',
+    buttonText: 'Enter the Overworld',
+    icon: 'Sparkles',
+    path: '/selector-minecraft'
+  },
+  {
+    id: 'cat-in-the-hat',
+    title: 'Cat in the Hat',
+    tags: ['Comedy', 'Family', 'Dr. Seuss'],
+    description: 'Step into Anville and test your knowledge of the 2003 Cat in the Hat movie, from S.L.O.W. and the crate to purple goop and total household chaos.',
+    image: '/images/cat-in-the-hat.jpg',
+    seoAlt: 'The Cat in the Hat movie poster featuring Mike Myers as the Cat standing behind a red crate with the fish bowl on top',
+    buttonText: 'Open the Crate',
+    icon: 'Sparkles',
+    path: '/selector-cat-in-the-hat'
+  },
+  {
+    id: 'how-to-train-your-dragon',
+    title: 'How to Train Your Dragon',
+    tags: ['Animation', 'Adventure', 'DreamWorks'],
+    description: 'Fly from Berk to the Hidden World and test your knowledge across Hiccup, Toothless, dragon training, Alpha lore, and the full trilogy.',
+    image: '/images/httyd.jpg',
+    seoAlt: 'How to Train Your Dragon poster featuring Hiccup riding Toothless through the sky',
+    buttonText: 'Fly to Berk',
+    icon: 'Sparkles',
+    path: '/selector-how-to-train-your-dragon'
   },
   {
     id: 'super-mario',

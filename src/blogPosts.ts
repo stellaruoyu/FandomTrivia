@@ -11,6 +11,216 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'how-to-train-your-dragon-quiz',
+    title: 'How to Train Your Dragon Quiz: Can You Actually Conquer the Ultimate Berk Knowledge Test?',
+    metaDescription: 'Think you know HTTYD? Take the ultimate How to Train Your Dragon quiz and prove your Berk, Toothless, Alpha, and Hidden World lore.',
+    date: '2026-04-19',
+    author: 'Fandom Trivia Team',
+    image: '/images/httyd.jpg',
+    keywords: ['How to Train Your Dragon quiz', 'HTTYD quiz', 'How to Train Your Dragon trivia', 'Toothless trivia', 'Berk knowledge test', 'HTTYD personality test', 'Hidden World fan theories', 'Hiccup dragon lore'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>How to Train Your Dragon</strong> is not just a great animated trilogy. It is one of the most emotionally loaded, lore-rich, endlessly rewatchable fantasy franchises DreamWorks ever made. From Hiccup's first impossible bond with Toothless to Alpha dragons, dragon racing, Bewilderbeasts, and the final goodbye in the Hidden World, this series built a fandom that still loves testing every detail. If you think you know Berk better than everyone else, this <strong>How to Train Your Dragon quiz</strong> is where you prove it.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-how-to-train-your-dragon" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate How to Train Your Dragon Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why HTTYD Trivia Is Harder Than Fans Expect</h2>
+      <p>Everyone remembers the big moments. Hiccup wounds the Night Fury. Toothless becomes his closest ally. Stoick changes. Berk changes. The dragons become family. But a real <strong>HTTYD quiz</strong> is not about broad memory alone. It is about the details hardcore fans hang onto: what Hiccup calls Berk in the opening narration, the exact sequence of training dragons in the arena, what Stoick made Hiccup's helmet from, the software innovations behind the sequel, the identity of Drago's dragon trapper, and the specific logic behind the Light Fury and the Hidden World.</p>
+      <p class="mt-4">That is why a serious <strong>Berk knowledge test</strong> works so well. It does not reward people for simply recognizing Toothless. It rewards fans who actually remember the trilogy's lore, character arcs, and world-building. If you think your dragon memory is elite, this is the challenge that settles it.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-how-to-train-your-dragon" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-sky-300">Challenge:</span> Test your Dragon knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which How to Train Your Dragon Character Are You Most Like?</h2>
+      <p>Every strong fandom ends up becoming a personality debate, and <strong>How to Train Your Dragon</strong> is perfect for it. Before you <a href="/selector-how-to-train-your-dragon" class="text-primary hover:text-primary/80 font-bold">take the How to Train Your Dragon quiz</a>, ask yourself which kind of energy you bring to Berk.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Hiccup:</strong> Inventive, stubborn, emotionally sharp, and always trying to solve problems everyone else accepts as impossible.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Toothless:</strong> Loyal, fiercely protective, expressive without saying much, and absolutely central to every important moment.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Astrid:</strong> fearless, disciplined, and much more likely to win the argument and the fight.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Gobber:</strong> practical, battle-tested, sarcastic, and somehow still the person holding the whole training system together.</li>
+      </ul>
+
+      <p>That is why searches around a <strong>HTTYD personality test</strong>, character rankings, and <strong>Hidden World fan theories</strong> still hit so hard. Fans do not just love this franchise for the dragon designs. They love it because the characters feel personal, and every movie adds new layers to who they are.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A strong score on a real <strong>How to Train Your Dragon trivia</strong> challenge means you can move across the entire trilogy without falling apart. It means you remember the training ground details from the first film, the emotional and technical expansion of the second, and the biological, environmental, and legacy questions that define <strong>The Hidden World</strong>.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Berk and Training Questions That Expose Casual Fans</h3>
+      <p>Do you remember why Vikings gave children names like Hiccup? Can you name the exact order of the dragon species used in the training tests? Do you know what Gobber says matters more than a sword in the arena? These are the questions that separate casual viewers from people who genuinely know the first film.</p>
+      <p class="mt-4">Then the trilogy raises the difficulty. Now the questions become about <strong>Toothless trivia</strong>, Valka, Eret, the Bewilderbeast, Drago's methods, the role of the Alpha, the Hidden World's location, and the long-term fate of Hiccup and Astrid's family. That is where a surface-level fan gets exposed fast.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Details Dedicated Fans Actually Remember</h3>
+      <p>The best fandom quizzes always reward specificity. What made Toothless's eye-opening shot eerie enough to leave in the first movie? Which software suite transformed the sequel's animation process? What exactly is the Light Fury supposed to be? How many years pass before the epilogue reunion, and what are Hiccup's children called? Those are the details that make a real <strong>HTTYD quiz</strong> feel earned.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Movie 1 recall:</strong> Can you handle Berk facts, dragon training details, Stoick lore, and the Red Death battle without guessing?</li>
+        <li><strong>Movie 2 expansion:</strong> Do you actually remember Valka, Drago, Eret, the Alpha conflict, and the technical innovations tied to the sequel?</li>
+        <li><strong>Hidden World mastery:</strong> Are you ready for questions about Grimmel, the Light Fury, the Hidden World, and the trilogy's emotional ending?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the How to Train Your Dragon Quiz Worth Taking</h2>
+      <p>This is not a lazy nostalgia recap with a few Toothless questions and an easy score. It is a real trilogy challenge built for fans who think they know every flight path, every Alpha reveal, every Hiccup decision, and every painful goodbye. Whether you are here for <strong>Hiccup dragon lore</strong>, a harder <strong>How to Train Your Dragon trivia</strong> challenge, or just to prove your friends are bluffing, this is the quiz that makes the score matter.</p>
+      <p class="mt-4">If you have ever claimed this is one of your all-time favorite animated franchises, this is your moment. Berk is waiting. Toothless is watching. The scoreboard is ready.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-sky-500/20 via-cyan-900/40 to-black border border-sky-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Fly Back to Berk?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Only real fans can dominate this <strong>How to Train Your Dragon quiz</strong>. Test your knowledge, challenge your friends, and prove you belong among the riders.</p>
+        <a href="/selector-how-to-train-your-dragon" class="inline-block bg-gradient-to-r from-sky-300 to-cyan-400 hover:from-sky-200 hover:to-cyan-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(56,189,248,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(34,211,238,0.35)]">
+          Take the Ultimate How to Train Your Dragon Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans remember Toothless. The best fans remember the details. Take the quiz and prove which kind you are.</p>
+    `
+  },
+  {
+    slug: 'minecraft-quiz',
+    title: 'Minecraft Quiz: Can You Actually Survive the Ultimate Overworld Knowledge Test?',
+    metaDescription: 'Think you know A Minecraft Movie? Take the ultimate Minecraft quiz and prove your Steve, piglin, portal, and Overworld lore.',
+    date: '2026-04-19',
+    author: 'Fandom Trivia Team',
+    image: '/images/minecraft.jpg',
+    keywords: ['Minecraft quiz', 'Minecraft trivia', 'A Minecraft Movie quiz', 'Minecraft movie trivia', 'Steve trivia', 'Overworld knowledge test', 'Minecraft personality test', 'piglin fan theories'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Minecraft</strong> has always been bigger than blocks. It is creativity, survival panic, weirdly specific mob knowledge, and the kind of world-building fans carry around in their heads for years. Now that <strong>A Minecraft Movie</strong> has thrown Steve, Garrett, piglins, portals, and full Overworld chaos into the mix, the only real question is this: are you confident enough to take a serious <strong>Minecraft quiz</strong> and prove you were actually paying attention?</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-minecraft" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Minecraft Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Minecraft Trivia Is Harder Than Fans Think</h2>
+      <p>At first glance, a <strong>Minecraft trivia</strong> challenge sounds easy. You know Steve. You know creepers. You know the Overworld. But a real <strong>A Minecraft Movie quiz</strong> is not built on broad familiarity. It is built on details. It asks whether you remember what Steve yearned for as a child, what Garrett called himself, what item opened the path to the Overworld, what the villagers were like, and which enemy faction actually drove the story forward.</p>
+      <p class="mt-4">That is exactly why a good <strong>Overworld knowledge test</strong> works. It separates fans who genuinely locked into the movie's lore from fans who are relying on brand recognition, game memories, and a lot of confident guessing. If you think you are in the first group, this is your chance to prove it.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-minecraft" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Challenge:</span> Test your Minecraft knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Minecraft Character Are You Most Like?</h2>
+      <p>Every fandom eventually becomes a personality argument. Before you <a href="/selector-minecraft" class="text-primary hover:text-primary/80 font-bold">take the Minecraft quiz</a>, ask yourself which kind of movie energy you bring into the world.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Steve:</strong> Obsessive, adventurous, and fully ready to dig into danger if it means finding something bigger.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Garrett Garrison:</strong> Loud, overconfident, weirdly iconic, and always one big swing away from either triumph or disaster.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Natalie:</strong> Steady, smart, and much better at keeping the situation together than everyone around you.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Dennis:</strong> Loyal, memorable, and impossible to overlook if you actually care about the details.</li>
+      </ul>
+
+      <p>That is why searches around a <strong>Minecraft personality test</strong>, character rankings, and <strong>piglin fan theories</strong> make sense. Fans do not just want to replay the action. They want to measure how deeply they understand the people, creatures, and chaos inside the movie version of this universe.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A strong score on a serious <strong>Minecraft movie trivia</strong> challenge means you remember more than the broad premise. You remember how the world worked, what made each character stand out, and which smaller facts proved you were not just passively watching.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Portal and Piglin Questions That Expose Casual Fans</h3>
+      <p>Can you remember what had to be combined to open the portal to the Overworld? Do you know which faction served as the main threat? Can you identify what role the Iron Golem played in the village? These are the kinds of questions that turn a casual moviegoer into someone who can actually claim they passed a real <strong>Minecraft quiz</strong>.</p>
+      <p class="mt-4">The same goes for the specific oddities that make this movie version of Minecraft fun to talk about. If you really know the film, you should remember the villagers' habits, the ruler of the Nether, the details around Dennis, and the kind of oddball facts that make dedicated fans want to compare notes after the credits roll.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Details Dedicated Fans Remember</h3>
+      <p>This is where the best scores are earned. What was the first item Garrett crafted? What did Dawn keep in her car? What phrase got translated incorrectly? Which mob was singled out as a major presence, and what made it distinctive? A real <strong>Minecraft trivia</strong> challenge should push into those specifics, because that is where casual recognition stops and real fandom memory begins.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you track Steve, Garrett, Natalie, Henry, Dawn, and Dennis without mixing up who did what?</li>
+        <li><strong>World knowledge:</strong> Do you actually remember the Nether ruler, the piglin threat, the villagers, and the portal mechanics?</li>
+        <li><strong>Deep-cut fandom:</strong> Are you ready for a real <strong>A Minecraft Movie quiz</strong> that goes past the obvious and forces you to prove you noticed the weird details?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Minecraft Quiz Worth Taking</h2>
+      <p>This is not a lazy five-question recap thrown together for search traffic. It is a real challenge built for fans who want to prove they know the movie and not just the brand. Whether you are here for <strong>Steve trivia</strong>, a harder <strong>Minecraft movie quiz</strong>, or just to expose which friend in your group was bluffing, this is the test that makes the score matter.</p>
+      <p class="mt-4">If you have been telling people you know this world, now is the time to back it up. The Overworld is open. The piglins are waiting. Your memory is the only thing standing between you and a very embarrassing score.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-emerald-500/20 via-lime-900/40 to-black border border-emerald-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Enter the Overworld?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Only real fans can dominate this <strong>Minecraft quiz</strong>. Test your knowledge, challenge your friends, and see whether you actually deserve bragging rights.</p>
+        <a href="/selector-minecraft" class="inline-block bg-gradient-to-r from-emerald-400 to-lime-500 hover:from-emerald-300 hover:to-lime-400 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(52,211,153,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(132,204,22,0.35)]">
+          Take the Ultimate Minecraft Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans know the blocks. The best fans know the details. Take the quiz and prove which kind you are.</p>
+    `
+  },
+  {
+    slug: 'cat-in-the-hat-quiz',
+    title: 'Cat in the Hat Quiz: Can You Actually Survive the Ultimate Anville Chaos Test?',
+    metaDescription: 'Think you know The Cat in the Hat? Take the ultimate Cat in the Hat quiz and prove your Anville, S.L.O.W., and crate lore.',
+    date: '2026-04-19',
+    author: 'Fandom Trivia Team',
+    image: '/images/cat-in-the-hat.jpg',
+    keywords: ['Cat in the Hat quiz', 'Cat in the Hat trivia', 'The Cat in the Hat movie quiz', 'Anville quiz', 'S.L.O.W. vehicle trivia', 'Cat in the Hat personality test', 'Dr. Seuss movie fan theories', 'Mike Myers Cat in the Hat'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>The Cat in the Hat</strong> is not a normal family movie. It is one of the strangest, loudest, most chaotic early-2000s fandom artifacts ever made. Between the S.L.O.W., the red crate, the rules-breaking disaster inside the Walden house, and Mike Myers going full nightmare gremlin, this movie left an impression. The real question is whether your memory is strong enough to survive a real <strong>Cat in the Hat quiz</strong> without getting exposed.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-cat-in-the-hat" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Cat in the Hat Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Cat in the Hat Trivia Is Way Harder Than Fans Expect</h2>
+      <p>Everyone remembers the broad chaos. A giant cat shows up. The house gets destroyed. Thing 1 and Thing 2 make everything worse. The fish is stressed the entire time. But a serious <strong>Cat in the Hat trivia</strong> challenge is not built on broad memory alone. It is built on the weird details that only real fans remember: the name of the city, the exact personality labels from the Phunometer, the full meaning of <strong>S.L.O.W.</strong>, the shape of the lock on the crate, and the specific nonsense that turns the Walden house into the Mother of All Messes.</p>
+      <p class="mt-4">That is why this is not a lazy nostalgia post. It is a real <strong>Anville quiz</strong> built for people who think they know the movie inside out. If you are only running on vibes, one-liners, and a vague memory of the striped hat, your score is going to tell on you immediately.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-cat-in-the-hat" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Challenge:</span> Test your Cat in the Hat knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Cat in the Hat Character Are You Most Like?</h2>
+      <p>Every fandom turns into a personality debate eventually, and this movie is no exception. Before you <a href="/selector-cat-in-the-hat" class="text-primary hover:text-primary/80 font-bold">take the Cat in the Hat quiz</a>, ask yourself which energy actually matches yours.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Cat:</strong> Chaotic, theatrical, impossible to ignore, and completely convinced you are improving the situation even when you clearly are not.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Sally:</strong> Organized, sharp, deeply in control, and one bad afternoon away from a total breakdown.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Conrad:</strong> Rebellious, reckless, and always ready to make the problem much bigger before accidentally helping fix it.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Fish:</strong> Fully aware this is a disaster, loudly correct about everything, and somehow still ignored by everyone in the room.</li>
+      </ul>
+
+      <p>That is why searches around a <strong>Cat in the Hat personality test</strong>, character rankings, and <strong>Dr. Seuss movie fan theories</strong> still make sense. This movie is bizarre enough that fans do not just remember scenes. They remember energy.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A top score on a real <strong>The Cat in the Hat movie quiz</strong> takes more than remembering Mike Myers in makeup. You need to know the mechanical details, the visual jokes, and the rule-breaking weirdness that make this movie such a specific kind of fandom obsession.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The S.L.O.W. and Crate Questions That Expose Casual Fans</h3>
+      <p>Do you remember what <strong>S.L.O.W.</strong> actually stands for? Can you name the rejected earlier version of the vehicle name? Do you remember what the crate lock looks like, or where the crate was supposedly made? Those are the questions that separate fans who really paid attention from fans who just remember the costume design and the memes.</p>
+      <p class="mt-4">The same goes for the movie's tiny location and family details. If someone claims they know this movie, they should be able to tell you who Mrs. Kwan is, what city the Waldens live in, and what the Phunometer says about Sally and Conrad without needing a hint.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Mother of All Messes Is Where the Quiz Gets Serious</h3>
+      <p>This is where true <strong>Cat in the Hat trivia</strong> fans either dominate or completely fall apart. What do Joan's cookbooks turn into? What color is the goop? What does the Cat say when he answers the phone? What exactly is so irritating about Thing 1 and Thing 2? These are the details that make the movie feel less like a normal adaptation and more like a fever dream with rules.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you keep Joan Walden, Lawrence Quinn, Mrs. Kwan, Sally, Conrad, and Fish straight without guessing?</li>
+        <li><strong>Device and prop memory:</strong> Do you actually remember the <strong>S.L.O.W. vehicle trivia</strong>, the crate details, and the personality machine?</li>
+        <li><strong>Chaos-level fandom:</strong> Are you ready for questions about Anville, purple goop, the phone gag, and the exact flavor of nonsense that defines this movie?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Cat in the Hat Quiz Worth Taking</h2>
+      <p>This is not a five-question joke post. It is a real challenge made for fans who remember the weird details, not just the loudest scenes. Whether you are here for <strong>Cat in the Hat trivia</strong>, a nostalgia-fueled <strong>Dr. Seuss movie quiz</strong>, or just to prove your friends are not as sharp as they think they are, this is the test that gives the score actual meaning.</p>
+      <p class="mt-4">If you have ever claimed this movie is burned into your brain forever, now is the time to prove it. The Cat brought the chaos. You bring the receipts.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-rose-500/20 via-red-900/40 to-black border border-rose-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Enter Anville?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Only real fans can dominate this <strong>Cat in the Hat quiz</strong>. Test your memory, challenge your friends, and see whether you actually belong near the crate.</p>
+        <a href="/selector-cat-in-the-hat" class="inline-block bg-gradient-to-r from-rose-400 to-red-500 hover:from-rose-300 hover:to-red-400 text-white px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(244,63,94,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(239,68,68,0.35)]">
+          Take the Ultimate Cat in the Hat Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans remember the hat. The best fans remember the crate, the rules, and the chaos. Take the quiz and prove it.</p>
+    `
+  },
+  {
     slug: 'moana-quiz',
     title: 'Moana Quiz: Can You Actually Conquer the Ultimate Ocean Lore Challenge?',
     metaDescription: 'Think you know Moana? Take the ultimate Moana quiz and test your knowledge of Maui, Te Fiti, wayfinding, Motufetu, and ocean lore.',

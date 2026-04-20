@@ -47,6 +47,9 @@ import {
   STAR_WARS_SAGA_TRIVIA,
 } from './starWarsTrivia';
 import { MOANA_1_TRIVIA, MOANA_2_TRIVIA } from './moanaTrivia';
+import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
+import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
+import { MINECRAFT_TRIVIA } from './minecraftTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -148,7 +151,18 @@ const getQuizTitle = (quizId: string): string => {
     'moana-2': 'Moana 2',
     'moana-random': 'Moana Mixed Challenge',
     'moana-mixed-challenge': 'Moana Mixed Challenge',
-    'hoppers': 'Hoppers (2026)'
+    'the-cat-in-the-hat-2003': 'The Cat in the Hat (2003)',
+    'cat-in-the-hat': 'The Cat in the Hat (2003)',
+    'httyd-1': 'How to Train Your Dragon',
+    'how-to-train-your-dragon': 'How to Train Your Dragon',
+    'httyd-2': 'How to Train Your Dragon 2',
+    'how-to-train-your-dragon-2': 'How to Train Your Dragon 2',
+    'httyd-3': 'How to Train Your Dragon: The Hidden World',
+    'how-to-train-your-dragon-the-hidden-world': 'How to Train Your Dragon: The Hidden World',
+    'httyd-random': 'How to Train Your Dragon Mixed Challenge',
+    'hoppers': 'Hoppers (2026)',
+    'a-minecraft-movie-2025': 'A Minecraft Movie (2025)',
+    'minecraft': 'A Minecraft Movie (2025)',
   };
 
   return map[normalizedId] || normalizedId;
@@ -160,6 +174,9 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return 'Wizarding World';
   if (q.includes('star wars') || q.includes('star-wars')) return 'Star Wars Galaxy';
   if (q.includes('moana')) return 'Moana Universe';
+  if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return 'Cat in the Hat';
+  if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return 'How to Train Your Dragon';
+  if (q.includes('minecraft')) return 'Minecraft Universe';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
   if (q.includes('zootopia')) return 'Zootopia Universe';
@@ -181,6 +198,9 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg';
   if (q.includes('star wars') || q.includes('star-wars')) return '/images/star-wars.jpg';
   if (q.includes('moana')) return '/images/moana.jpg';
+  if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return '/images/cat-in-the-hat.jpg';
+  if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return '/images/httyd.jpg';
+  if (q.includes('minecraft')) return '/images/minecraft.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
@@ -253,6 +273,9 @@ const useQuizStats = () => {
       if (target === 'despicable-me' && (univName.includes('despicable') || id.includes('despicable'))) return sum + val;
       if (target === 'frozen' && (univName.includes('frozen') || id.includes('frozen'))) return sum + val;
       if (target === 'moana' && (univName.includes('moana') || id.includes('moana'))) return sum + val;
+      if (target === 'cat-in-the-hat' && (univName.includes('cat in the hat') || id.includes('cat-in-the-hat') || id.includes('cat in the hat'))) return sum + val;
+      if (target === 'how-to-train-your-dragon' && (univName.includes('how to train your dragon') || id.includes('httyd') || id.includes('train-your-dragon') || id.includes('train your dragon') || id.includes('hidden-world') || id.includes('hidden world'))) return sum + val;
+      if (target === 'minecraft' && (univName.includes('minecraft') || id.includes('minecraft'))) return sum + val;
       if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
       if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
       
@@ -480,6 +503,7 @@ const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[]
                         {badge.icon === 'Zap' && <Zap className={`size-8 ${isUnlocked ? badge.color + ' fill-current' : 'text-slate-600'}`} />}
                         {badge.icon === 'Globe' && <Globe className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
                         {badge.icon === 'Search' && <Search className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
+                        {badge.icon === 'Sparkles' && <Sparkles className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
                         {badge.icon === 'Lightbulb' && <Lightbulb className={`size-8 ${isUnlocked ? badge.color : 'text-slate-600'}`} />}
                       </>
                     )}
@@ -537,6 +561,7 @@ const BadgeNotification = ({ badge, onClose }: { badge: Badge, onClose: () => vo
               {badge.icon === 'Zap' && <Zap className={`size-6 ${badge.color} fill-current`} />}
               {badge.icon === 'Globe' && <Globe className={`size-6 ${badge.color}`} />}
               {badge.icon === 'Search' && <Search className={`size-6 ${badge.color}`} />}
+              {badge.icon === 'Sparkles' && <Sparkles className={`size-6 ${badge.color}`} />}
               {badge.icon === 'Lightbulb' && <Lightbulb className={`size-6 ${badge.color}`} />}
             </>
           )}
@@ -926,6 +951,9 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'despicable-me') navigate('/selector-despicable-me', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'frozen') navigate('/selector-frozen', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'moana') navigate('/selector-moana', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'minecraft') navigate('/selector-minecraft', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'super-mario') navigate('/selector-super-mario', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'pawpatrol') navigate('/selector-paw-patrol', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda', { state: { isDaily: true } });
@@ -1071,6 +1099,9 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
           <li><Link to="/selector-moana" className="hover:text-cyan-300 transition-colors">Moana Voyage</Link></li>
+          <li><Link to="/selector-cat-in-the-hat" className="hover:text-rose-400 transition-colors">Cat in the Hat</Link></li>
+          <li><Link to="/selector-how-to-train-your-dragon" className="hover:text-sky-400 transition-colors">How to Train Your Dragon</Link></li>
+          <li><Link to="/selector-minecraft" className="hover:text-emerald-400 transition-colors">Minecraft Overworld</Link></li>
           <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
           <li><Link to="/selector-paw-patrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
           <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
@@ -4128,6 +4159,199 @@ const MoanaSelector = () => {
   );
 };
 
+const MINECRAFT_GRADES = [
+  { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
+  { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
+  { threshold: 50, label: 'Village Survivor', color: 'text-blue-400', character: { name: 'Natalie', image: '/images/minecraft.jpg', desc: 'You made it through the chaos, but there is still more of the movie to study.' } },
+  { threshold: 0, label: 'Fresh Spawn', color: 'text-slate-400', character: { name: 'Dennis', image: '/images/minecraft.jpg', desc: 'You just spawned in. Grab some gear and try the Overworld again.' } },
+];
+
+const CAT_IN_THE_HAT_GRADES = [
+  { threshold: 90, label: 'Anville Chaos Master', color: 'text-rose-400', character: { name: 'The Cat', image: '/images/cat-in-the-hat.jpg', desc: 'You know the film\'s chaos, gadgets, and deep-cut details better than almost anyone.' } },
+  { threshold: 70, label: 'S.L.O.W. Specialist', color: 'text-amber-300', character: { name: 'Sally', image: '/images/cat-in-the-hat.jpg', desc: 'Strong recall. You kept control even after the Mother of All Messes showed up.' } },
+  { threshold: 50, label: 'Crate Explorer', color: 'text-blue-400', character: { name: 'Conrad', image: '/images/cat-in-the-hat.jpg', desc: 'You found your way through the chaos, but there are still more details hiding in the crate.' } },
+  { threshold: 0, label: 'Thing in Training', color: 'text-slate-400', character: { name: 'Thing 1', image: '/images/cat-in-the-hat.jpg', desc: 'A little more practice and you will be ready for a full run through Anville.' } },
+];
+
+const HTTYD_GRADES = [
+  { threshold: 90, label: 'Night Fury Rider', color: 'text-sky-300', character: { name: 'Hiccup', image: '/images/httyd.jpg', desc: 'You know Berk, dragon lore, and the trilogy\'s biggest moments at expert level.' } },
+  { threshold: 70, label: 'Alpha Bond', color: 'text-emerald-300', character: { name: 'Toothless', image: '/images/httyd.jpg', desc: 'Strong work. You handled the training grounds, Alpha battles, and Hidden World details well.' } },
+  { threshold: 50, label: 'Berk Explorer', color: 'text-amber-300', character: { name: 'Astrid', image: '/images/httyd.jpg', desc: 'You can hold your own in the arena, but there is still more dragon lore to learn.' } },
+  { threshold: 0, label: 'New Recruit', color: 'text-slate-400', character: { name: 'Gobber', image: '/images/httyd.jpg', desc: 'Grab a shield and head back to training. Berk is not done with you yet.' } },
+];
+
+const CatInTheHatSelector = () => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-red-200">Movie</span></h1>
+        <Helmet>
+          <title>Cat in the Hat Trivia & Movie Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge of The Cat in the Hat (2003), from Anville and S.L.O.W. to the crate, Thing 1 and Thing 2, and the Mother of All Messes." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-cat-in-the-hat" />
+          <meta property="og:title" content="Cat in the Hat Trivia & Movie Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Enter Anville and test your knowledge of The Cat in the Hat (2003) with 21 verified questions." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Cat in the Hat", item: "https://fandom-trivia.vercel.app/selector-cat-in-the-hat" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the movie to test your knowledge of Anville, the crate, the S.L.O.W., and the Cat's chaos.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+        {[
+          { label: 'Movie 1', title: 'The Cat in the Hat', desc: `${CAT_IN_THE_HAT_TRIVIA.length} questions`, icon: '🎩', view: 'trivia-cat-in-the-hat', gradient: 'from-rose-600/20 to-red-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+        ].map(movie => (
+          <motion.button
+            key={movie.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${movie.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${movie.gradient} border ${movie.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{movie.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{movie.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{movie.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{movie.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const HTTYDSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-cyan-200">Flight</span></h1>
+          <Helmet>
+            <title>How to Train Your Dragon Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your How to Train Your Dragon knowledge across the full trilogy, from Berk and dragon training to Drago, the Hidden World, and Toothless." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-how-to-train-your-dragon" />
+            <meta property="og:title" content="How to Train Your Dragon Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play How to Train Your Dragon quizzes across all three films and prove you belong in Berk." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "How to Train Your Dragon", item: "https://fandom-trivia.vercel.app/selector-how-to-train-your-dragon" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a film to test your knowledge, or try a random mix from the full trilogy.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {[
+            { label: 'Film 1', title: 'How to Train Your Dragon', desc: `${HTTYD_1_TRIVIA.length} questions`, icon: '🐉', view: 'trivia-httyd-1', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: 'Film 2', title: 'How to Train Your Dragon 2', desc: `${HTTYD_2_TRIVIA.length} questions`, icon: '❄️', view: 'trivia-httyd-2', gradient: 'from-indigo-600/20 to-sky-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: 'Film 3', title: 'The Hidden World', desc: `${HTTYD_3_TRIVIA.length} questions`, icon: '✨', view: 'trivia-httyd-3', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all 3 films', icon: '🎲', view: 'trivia-httyd-random', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const MinecraftSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-lime-200">Overworld Run</span></h1>
+        <Helmet>
+          <title>Minecraft Trivia & Movie Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your A Minecraft Movie knowledge on Steve, Garrett, piglins, portals, villagers, and Overworld chaos." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-minecraft" />
+          <meta property="og:title" content="Minecraft Trivia & Movie Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Enter the Overworld and test your knowledge of A Minecraft Movie with 25 verified questions." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Minecraft Universe", item: "https://fandom-trivia.vercel.app/selector-minecraft" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Start the movie quiz and see how well you know Steve, the piglin threat, and the trip through the Overworld.</p>
+      </div>
+      <div className="grid grid-cols-1 gap-5">
+        {[
+          { label: 'Movie Quiz', title: 'A Minecraft Movie (2025)', quizId: 'A Minecraft Movie (2025)', desc: `${MINECRAFT_TRIVIA.length} verified questions`, icon: '⛏️', view: 'trivia-minecraft', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(item.quizId))}</span>
+                  <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                </div>
+              </div>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 const MARIO_GRADES = [
   { threshold: 90, label: 'Star Child', color: 'text-yellow-400', character: { name: 'Rosalina', image: '/images/supermario.jpg', desc: 'Your knowledge is cosmic! You have unlocked the secrets of the star dust.' } },
   { threshold: 75, label: 'Super Brother', color: 'text-red-500', character: { name: 'Mario', image: '/images/supermario.jpg', desc: 'Let\'s-a go! You are a true hero of the Mushroom Kingdom.' } },
@@ -4476,7 +4700,6 @@ const LandingView = ({ setUser, onUnlockBadge }: {
   onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void,
   key?: string
 }) => {
-  const { getUniverseCount, formatCount } = useQuizStats();
   const navigate = useNavigate();
   return (
   <motion.div
@@ -4541,7 +4764,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Build v1.1.0 • Join 12.5K Active Players
+            Build v1.1.0
           </motion.div>
           <motion.h1
             initial={{ y: 20, opacity: 0 }}
@@ -4576,34 +4799,6 @@ const LandingView = ({ setUser, onUnlockBadge }: {
               View Rankings
             </button>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="max-w-7xl mx-auto px-6 mb-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { icon: Users, label: 'Active Players', value: '12,482', color: 'text-blue-500', bg: 'bg-blue-500/10' },
-            { icon: Trophy, label: 'Quizzes Taken', value: '1.2M+', color: 'text-primary', bg: 'bg-primary/10' },
-            { icon: Star, label: 'Global Rankings', value: '#1 Hub', color: 'text-amber-500', bg: 'bg-amber-500/10' },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white/5 border border-white/10 p-8 rounded-2xl flex items-center gap-6"
-            >
-              <div className={`size-14 rounded-xl ${stat.bg} flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="size-8" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
-                <p className="text-3xl font-black text-white">{stat.value}</p>
-              </div>
-            </motion.div>
-          ))}
         </div>
       </section>
 
@@ -4664,6 +4859,9 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
                       if (universe.id === 'frozen') navigate('/selector-frozen');
                       if (universe.id === 'moana') navigate('/selector-moana');
+                      if (universe.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat');
+                      if (universe.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon');
+                      if (universe.id === 'minecraft') navigate('/selector-minecraft');
                       if (universe.id === 'super-mario') navigate('/selector-super-mario');
                       if (universe.id === 'pawpatrol') navigate('/selector-paw-patrol');
                       if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
@@ -4676,13 +4874,6 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                   >
                     {universe.buttonText}
                   </button>
-                  <div className="flex flex-col items-end gap-1">
-                    <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
-                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-3 rounded-xl min-w-fit">
-                      <span className="text-sm font-black text-white">{formatCount(getUniverseCount(universe.id))}</span>
-                      <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider ml-0.5">takes</span>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -4691,6 +4882,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                 {universe.icon === 'Zap' && <Zap className="text-primary/70 size-10 fill-current" />}
                 {universe.icon === 'Search' && <Search className="text-white/50 size-10" />}
                 {universe.icon === 'Snowflake' && <Snowflake className="text-sky-300/50 size-10" />}
+                {universe.icon === 'Sparkles' && <Sparkles className="text-white/50 size-10" />}
               </div>
             </motion.div>
           ))}
@@ -5648,6 +5840,10 @@ export default function App() {
     [...(MOANA_1_TRIVIA || []), ...(MOANA_2_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
 
+  const httydRandomQuestions = useMemo(() => 
+    [...(HTTYD_1_TRIVIA || []), ...(HTTYD_2_TRIVIA || []), ...(HTTYD_3_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
   const marioRandomQuestions = useMemo(() => 
     [...(MARIO_2023_TRIVIA || []), ...(MARIO_2026_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
@@ -5783,6 +5979,8 @@ export default function App() {
                     unlocked = true;
                   } else if (badge.targetQuiz === 'twilight' && (titleLower.includes('twilight') || titleLower.includes('eclipse') || titleLower.includes('new moon') || titleLower.includes('breaking dawn') || titleLower.includes('midnight sun') || titleLower.includes('life and death'))) {
                     unlocked = true;
+                  } else if (badge.targetQuiz === 'httyd' && (titleLower.includes('how to train your dragon') || titleLower.includes('hidden world') || titleLower.includes('httyd'))) {
+                    unlocked = true;
                   } else if (badge.targetQuiz === 'three-body' && (titleLower.includes('three-body') || titleLower.includes('dark forest') || titleLower.includes('death\'s end'))) {
                     unlocked = true;
                   } else if (badge.targetQuiz === 'zootopia' && titleLower.includes('zootopia')) {
@@ -5909,6 +6107,8 @@ export default function App() {
         } else if (badge.targetQuiz === 'star-wars' && titleLower.includes('star wars')) {
           unlocked = true;
         } else if (badge.targetQuiz === 'twilight' && (titleLower.includes('twilight') || titleLower.includes('eclipse') || titleLower.includes('new moon') || titleLower.includes('breaking dawn') || titleLower.includes('midnight sun') || titleLower.includes('life and death'))) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'httyd' && (titleLower.includes('how to train your dragon') || titleLower.includes('hidden world') || titleLower.includes('httyd'))) {
           unlocked = true;
         } else if (badge.targetQuiz === 'three-body' && (titleLower.includes('three-body') || titleLower.includes('dark forest') || titleLower.includes('death\'s end'))) {
           unlocked = true;
@@ -6095,6 +6295,12 @@ export default function App() {
             <Route path="/trivia-moana-1" element={<MCQuizView key="trivia-moana-1" questions={MOANA_1_TRIVIA} title="Moana" scoreLabel="Moana" grades={MOANA_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-moana-2" element={<MCQuizView key="trivia-moana-2" questions={MOANA_2_TRIVIA} title="Moana 2" scoreLabel="Moana 2" grades={MOANA_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-moana-random" element={<MCQuizView key="trivia-moana-random" questions={moanaRandomQuestions} title="Moana Mixed Challenge" scoreLabel="Moana Mixed Challenge" grades={MOANA_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-cat-in-the-hat" element={<MCQuizView key="trivia-cat-in-the-hat" questions={CAT_IN_THE_HAT_TRIVIA} title="The Cat in the Hat (2003)" scoreLabel="The Cat in the Hat (2003)" grades={CAT_IN_THE_HAT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-httyd-1" element={<MCQuizView key="trivia-httyd-1" questions={HTTYD_1_TRIVIA} title="How to Train Your Dragon" scoreLabel="How to Train Your Dragon" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-httyd-2" element={<MCQuizView key="trivia-httyd-2" questions={HTTYD_2_TRIVIA} title="How to Train Your Dragon 2" scoreLabel="How to Train Your Dragon 2" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-httyd-3" element={<MCQuizView key="trivia-httyd-3" questions={HTTYD_3_TRIVIA} title="How to Train Your Dragon: The Hidden World" scoreLabel="How to Train Your Dragon: The Hidden World" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-httyd-random" element={<MCQuizView key="trivia-httyd-random" questions={httydRandomQuestions} title="How to Train Your Dragon Mixed Challenge" scoreLabel="How to Train Your Dragon Mixed Challenge" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-shrek-1" element={<MCQuizView key="trivia-shrek-1" questions={SHREK_1_TRIVIA} title="Shrek" scoreLabel="Shrek" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -6146,6 +6352,9 @@ export default function App() {
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             <Route path="/selector-moana" element={<MoanaSelector />} />
+            <Route path="/selector-cat-in-the-hat" element={<CatInTheHatSelector />} />
+            <Route path="/selector-how-to-train-your-dragon" element={<HTTYDSelector />} />
+            <Route path="/selector-minecraft" element={<MinecraftSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
 
