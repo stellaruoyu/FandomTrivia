@@ -54,6 +54,26 @@ import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
 
+declare global {
+  interface Window {
+    google?: {
+      translate?: {
+        TranslateElement: {
+          new (
+            options: { pageLanguage: string; layout: unknown; autoDisplay: boolean },
+            elementId: string
+          ): unknown;
+          InlineLayout?: {
+            SIMPLE: unknown;
+          };
+        };
+      };
+    };
+    googleTranslateElementInit?: () => void;
+    __googleTranslateLoaded?: boolean;
+  }
+}
+
 const normalizeSlug = (id: string): string => {
   return id.toLowerCase()
     .replace('trivia-', '')
@@ -1038,6 +1058,47 @@ const Footer = ({ isDashboard, onShowInfo }: {
   onShowInfo: (title: string, content: string) => void
 }) => {
   const navigate = useNavigate();
+  useEffect(() => {
+    const elementId = 'google_translate_element';
+
+    const initializeTranslate = () => {
+      const translateElement = window.google?.translate?.TranslateElement;
+      const container = document.getElementById(elementId);
+
+      if (!translateElement || !container || container.childElementCount > 0) return;
+
+      new translateElement(
+        {
+          pageLanguage: 'en',
+          layout: translateElement.InlineLayout?.SIMPLE,
+          autoDisplay: false,
+        },
+        elementId
+      );
+    };
+
+    window.googleTranslateElementInit = initializeTranslate;
+
+    if (window.google?.translate?.TranslateElement) {
+      initializeTranslate();
+      return;
+    }
+
+    if (window.__googleTranslateLoaded) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    script.dataset.googleTranslate = 'true';
+    script.onload = () => {
+      window.__googleTranslateLoaded = true;
+      initializeTranslate();
+    };
+
+    document.body.appendChild(script);
+    window.__googleTranslateLoaded = true;
+  }, []);
+
   return (
   <footer className={`border-t border-white/10 py-20 px-6 ${isDashboard ? 'bg-card-dark' : ''}`}>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto grid grid-cols-1 md:grid-cols-4 gap-12`}>
