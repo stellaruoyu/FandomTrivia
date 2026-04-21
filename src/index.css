@@ -16,11 +16,21 @@
 }
 
 /* Google Translate Customization */
-.goog-te-banner-frame.skiptranslate {
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt {
   display: none !important;
 }
+html,
 body {
   top: 0px !important;
+}
+.goog-te-combo {
+  background: transparent !important;
+  color: white !important;
+  border: none !important;
+  outline: none !important;
 }
 .goog-te-gadget-icon {
   display: none !important;
@@ -53,6 +63,14 @@ body {
 .goog-te-menu-frame {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
   border-radius: 8px !important;
+}
+
+/* Hide the inline attribution/footer clutter while keeping translation active */
+.skiptranslate {
+  font-size: 0 !important;
+}
+.skiptranslate iframe {
+  display: none !important;
 }
 
 .glass-nav {
