@@ -345,6 +345,17 @@ export const UNIVERSES = [
     path: '/selector-how-to-train-your-dragon'
   },
   {
+    id: 'avatar',
+    title: 'Avatar',
+    tags: ['Sci-Fi', 'Adventure', 'Pandora'],
+    description: 'Enter Pandora and prove your mastery of the Avatar saga, from the forest war to the reef and the Ash People.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg',
+    seoAlt: 'Portrait of Neytiri from Avatar',
+    buttonText: 'Enter Pandora',
+    icon: 'Sparkles',
+    path: '/selector-avatar'
+  },
+  {
     id: 'super-mario',
     title: 'Super Mario',
     tags: ['Video Game', 'Cosmic', 'Nintendo'],

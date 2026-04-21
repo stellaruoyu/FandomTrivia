@@ -1,6 +1,6 @@
 # 🖼️ Image Requests — FandomTrivia Landing Page
 
-All images are currently **placeholders** from `picsum.photos` (random stock photos). Below is what's needed for each.
+Most images are currently **placeholders** from `picsum.photos` (random stock photos). The Avatar section now uses a real Pandora-themed image from Wikimedia Commons. Below is what's needed for each.
 
 ---
 
@@ -25,6 +25,12 @@ These are tall, portrait-style cards (displayed at **800×1000 px**). The image 
 - **What's needed:** A high-energy, neon-lit image evoking K-Pop and demon hunting — neon lights, stage vibes, purple/pink/electric blue tones, supernatural energy
 - **Dimensions:** 800×1000 px (portrait)
 - **Tags shown on card:** `Neon` · `Hot`
+
+### 4. Avatar
+- **Current image:** `https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg`
+- **What's needed:** A character-forward Avatar image for the universe card — Neytiri portrait, strong blue tones, unmistakably Pandora
+- **Dimensions:** 800×1000 px (portrait)
+- **Tags shown on card:** `Sci-Fi` · `Adventure`
 
 ---
 

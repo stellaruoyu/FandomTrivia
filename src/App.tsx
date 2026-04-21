@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
@@ -49,6 +49,7 @@ import {
 import { MOANA_1_TRIVIA, MOANA_2_TRIVIA } from './moanaTrivia';
 import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
 import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
+import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA } from './avatarTrivia';
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
@@ -145,6 +146,11 @@ const getQuizTitle = (quizId: string): string => {
     'dog-man-book13': 'Dog Man: Book 13',
     'dog-man-book14': 'Dog Man: Book 14',
     'dog-man-random': 'Supa Buddies Mixed Challenge',
+    'avatar-1': 'Avatar (2009)',
+    'avatar-2': 'Avatar: The Way of Water',
+    'avatar-3': 'Avatar: Fire and Ash',
+    'avatar-random': 'Avatar Mixed Challenge',
+    'avatar': 'Avatar (2009)',
     'star-wars-episode-i': 'Star Wars: Episode I - The Phantom Menace',
     'star-wars-episode-i-the-phantom-menace': 'Star Wars: Episode I - The Phantom Menace',
     'star-wars-episode-ii': 'Star Wars: Episode II - Attack of the Clones',
@@ -196,6 +202,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('moana')) return 'Moana Universe';
   if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return 'Cat in the Hat';
   if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return 'How to Train Your Dragon';
+  if (q.includes('avatar')) return 'Avatar Universe';
   if (q.includes('minecraft')) return 'Minecraft Universe';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
@@ -220,6 +227,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('moana')) return '/images/moana.jpg';
   if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return '/images/cat-in-the-hat.jpg';
   if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return '/images/httyd.jpg';
+  if (q.includes('avatar')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg';
   if (q.includes('minecraft')) return '/images/minecraft.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
@@ -295,6 +303,7 @@ const useQuizStats = () => {
       if (target === 'moana' && (univName.includes('moana') || id.includes('moana'))) return sum + val;
       if (target === 'cat-in-the-hat' && (univName.includes('cat in the hat') || id.includes('cat-in-the-hat') || id.includes('cat in the hat'))) return sum + val;
       if (target === 'how-to-train-your-dragon' && (univName.includes('how to train your dragon') || id.includes('httyd') || id.includes('train-your-dragon') || id.includes('train your dragon') || id.includes('hidden-world') || id.includes('hidden world'))) return sum + val;
+      if (target === 'avatar' && (univName.includes('avatar') || id.includes('avatar'))) return sum + val;
       if (target === 'minecraft' && (univName.includes('minecraft') || id.includes('minecraft'))) return sum + val;
       if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
       if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
@@ -973,6 +982,7 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'moana') navigate('/selector-moana', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'avatar') navigate('/selector-avatar', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'minecraft') navigate('/selector-minecraft', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'super-mario') navigate('/selector-super-mario', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'pawpatrol') navigate('/selector-paw-patrol', { state: { isDaily: true } });
@@ -1162,6 +1172,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-moana" className="hover:text-cyan-300 transition-colors">Moana Voyage</Link></li>
           <li><Link to="/selector-cat-in-the-hat" className="hover:text-rose-400 transition-colors">Cat in the Hat</Link></li>
           <li><Link to="/selector-how-to-train-your-dragon" className="hover:text-sky-400 transition-colors">How to Train Your Dragon</Link></li>
+          <li><Link to="/selector-avatar" className="hover:text-cyan-300 transition-colors">Avatar Universe</Link></li>
           <li><Link to="/selector-minecraft" className="hover:text-emerald-400 transition-colors">Minecraft Overworld</Link></li>
           <li><Link to="/selector-super-mario" className="hover:text-red-500 transition-colors">Super Mario</Link></li>
           <li><Link to="/selector-paw-patrol" className="hover:text-blue-400 transition-colors">PAW Patrol Rescue</Link></li>
@@ -2074,6 +2085,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const completionTimeRef = useRef<number | null>(completionTime);
   const hasCompletedAllQuestionsRef = useRef(hasCompletedAllQuestions);
   const finishedRef = useRef(finished);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, []);
 
   // Sync match participants once when the quiz starts
   useEffect(() => {
@@ -4346,6 +4361,115 @@ const HTTYDSelector = () => {
           ))}
         </div>
       </div>
+  </motion.div>
+  );
+};
+
+const AVATAR_GRADES = [
+  {
+    threshold: 90,
+    label: 'Na\'vi Elder',
+    color: 'text-cyan-300',
+    character: {
+      name: 'Neytiri',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg',
+      desc: 'You know Pandora from the forest floor to the floating mountains. Eywa would approve.',
+    },
+  },
+  {
+    threshold: 70,
+    label: 'Omatikaya Hunter',
+    color: 'text-emerald-300',
+    character: {
+      name: 'Jake Sully',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg',
+      desc: 'Solid reflexes and strong lore knowledge. You can survive the next patrol.',
+    },
+  },
+  {
+    threshold: 50,
+    label: 'Pandora Explorer',
+    color: 'text-sky-300',
+    character: {
+      name: 'Kiri',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg',
+      desc: 'You are learning the ways of the world, but there is still more of Pandora to see.',
+    },
+  },
+  {
+    threshold: 0,
+    label: 'Sky Person',
+    color: 'text-slate-400',
+    character: {
+      name: 'Parker Selfridge',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg',
+      desc: 'You made it to Pandora, but the Na\'vi would like you to keep studying.',
+    },
+  },
+];
+
+const AvatarSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-emerald-200">Pandora</span></h1>
+          <Helmet>
+            <title>Avatar Trivia & Pandora Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Avatar knowledge across the 2009 film, The Way of Water, and Fire and Ash. Enter Pandora and prove you are Na'vi-level ready." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-avatar" />
+            <meta property="og:title" content="Avatar Trivia & Pandora Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play Avatar quizzes across the full saga and test your knowledge of Pandora, the Sullys, and the Ash People." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "Avatar Universe", item: "https://fandom-trivia.vercel.app/selector-avatar" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a film to test your knowledge, or take a mixed challenge from the full saga.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {[
+            { label: 'Film 1', title: 'Avatar (2009)', desc: `${AVATAR_1_TRIVIA.length} questions`, icon: '🌿', view: 'trivia-avatar-1', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+            { label: 'Film 2', title: 'The Way of Water', desc: `${AVATAR_2_TRIVIA.length} questions`, icon: '🌊', view: 'trivia-avatar-2', gradient: 'from-sky-600/20 to-indigo-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: 'Film 3', title: 'Fire and Ash', desc: `${AVATAR_3_TRIVIA.length} questions`, icon: '🔥', view: 'trivia-avatar-3', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from all 3 films', icon: '🎲', view: 'trivia-avatar-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.view}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+              </div>
+              <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  Start Quiz <ArrowRight className="size-3" />
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                  <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                  </div>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -4841,7 +4965,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
           >
-            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
+            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -4922,6 +5046,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'moana') navigate('/selector-moana');
                       if (universe.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat');
                       if (universe.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon');
+                      if (universe.id === 'avatar') navigate('/selector-avatar');
                       if (universe.id === 'minecraft') navigate('/selector-minecraft');
                       if (universe.id === 'super-mario') navigate('/selector-super-mario');
                       if (universe.id === 'pawpatrol') navigate('/selector-paw-patrol');
@@ -5836,6 +5961,19 @@ const KungFuPandaSelector = () => {
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    if (location.pathname.startsWith('/trivia-') || location.pathname.startsWith('/selector-') || location.pathname === '/blog' || location.pathname.startsWith('/blog/')) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  }, [location.pathname]);
+
   const [user, setUser] = useState<User | null>(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -5903,6 +6041,10 @@ export default function App() {
 
   const httydRandomQuestions = useMemo(() => 
     [...(HTTYD_1_TRIVIA || []), ...(HTTYD_2_TRIVIA || []), ...(HTTYD_3_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const avatarRandomQuestions = useMemo(() => 
+    [...AVATAR_RANDOM_TRIVIA].sort(() => 0.5 - Math.random()).slice(0, 15),
   []);
 
   const marioRandomQuestions = useMemo(() => 
@@ -6361,6 +6503,10 @@ export default function App() {
             <Route path="/trivia-httyd-2" element={<MCQuizView key="trivia-httyd-2" questions={HTTYD_2_TRIVIA} title="How to Train Your Dragon 2" scoreLabel="How to Train Your Dragon 2" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-httyd-3" element={<MCQuizView key="trivia-httyd-3" questions={HTTYD_3_TRIVIA} title="How to Train Your Dragon: The Hidden World" scoreLabel="How to Train Your Dragon: The Hidden World" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-httyd-random" element={<MCQuizView key="trivia-httyd-random" questions={httydRandomQuestions} title="How to Train Your Dragon Mixed Challenge" scoreLabel="How to Train Your Dragon Mixed Challenge" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-avatar-1" element={<MCQuizView key="trivia-avatar-1" questions={AVATAR_1_TRIVIA} title="Avatar (2009)" scoreLabel="Avatar (2009)" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-avatar-2" element={<MCQuizView key="trivia-avatar-2" questions={AVATAR_2_TRIVIA} title="Avatar: The Way of Water" scoreLabel="Avatar: The Way of Water" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-avatar-3" element={<MCQuizView key="trivia-avatar-3" questions={AVATAR_3_TRIVIA} title="Avatar: Fire and Ash" scoreLabel="Avatar: Fire and Ash" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -6415,6 +6561,7 @@ export default function App() {
             <Route path="/selector-moana" element={<MoanaSelector />} />
             <Route path="/selector-cat-in-the-hat" element={<CatInTheHatSelector />} />
             <Route path="/selector-how-to-train-your-dragon" element={<HTTYDSelector />} />
+            <Route path="/selector-avatar" element={<AvatarSelector />} />
             <Route path="/selector-minecraft" element={<MinecraftSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
