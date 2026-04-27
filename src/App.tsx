@@ -690,7 +690,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg }: {
+interface NavbarProps {
   isDashboard: boolean,
   user: User | null,
   onLogin: () => void,
@@ -702,7 +702,10 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   soundEnabled: boolean,
   onToggleSound: () => void,
   onTriggerEasterEgg?: () => void
-}) => {
+}
+
+const Navbar = (props: NavbarProps) => {
+  const { isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg } = props;
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const clickCountRef = useRef(0);
@@ -889,6 +892,152 @@ const InfoModal = ({ title, content, onClose }: { title: string, content: string
     </motion.div>
   </div>
 );
+
+const SearchModal = ({ onClose }: { onClose?: () => void }) => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const close = onClose ?? (() => navigate(-1));
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const universeRouteMap: Record<string, string> = {
+      'twilight': '/selector-twilight',
+      'harry-potter': '/selector-harry-potter',
+      'star-wars': '/selector-star-wars',
+      'kpop': '/selector-kpop',
+      'three-body': '/selector-three-body',
+      'zootopia': '/selector-zootopia',
+      'despicable-me': '/selector-despicable-me',
+      'frozen': '/selector-frozen',
+      'moana': '/selector-moana',
+      'cat-in-the-hat': '/selector-cat-in-the-hat',
+      'how-to-train-your-dragon': '/selector-how-to-train-your-dragon',
+      'avatar': '/selector-avatar',
+      'minecraft': '/selector-minecraft',
+      'super-mario': '/selector-super-mario',
+      'pawpatrol': '/selector-paw-patrol',
+      'kung-fu-panda': '/selector-kung-fu-panda',
+      'toy-story': '/selector-toy-story',
+      'shrek': '/selector-shrek',
+      'dog-man': '/selector-dog-man',
+      'hoppers': '/selector-hoppers',
+    };
+
+    const quizResults = UNIVERSES
+      .filter((universe) => {
+        if (!q) return true;
+        const haystack = [
+          universe.title,
+          universe.description,
+          ...(universe.tags || []),
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
+      })
+      .map((universe) => ({
+        type: 'quiz',
+        title: universe.title,
+        subtitle: universe.description,
+        href: universe.path || universeRouteMap[universe.id] || '/',
+        tags: universe.tags,
+        image: universe.image,
+      }));
+
+    const blogResults = BLOG_POSTS
+      .filter((post) => {
+        if (!q) return false;
+        const haystack = [post.title, post.metaDescription, ...(post.keywords || [])].join(' ').toLowerCase();
+        return haystack.includes(q);
+      })
+      .map((post) => ({
+        type: 'blog',
+        title: post.title,
+        subtitle: post.metaDescription,
+        href: `/blog/${post.slug}`,
+        tags: post.keywords.slice(0, 2),
+        image: post.image,
+      }));
+
+    return [...quizResults, ...blogResults].slice(0, 12);
+  }, [query]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [close]);
+
+  return (
+    <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm p-4 sm:p-6 flex items-start justify-center overflow-y-auto">
+      <div className="w-full max-w-3xl mt-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">Search Quizzes</p>
+            <h3 className="text-2xl font-black text-white tracking-tight">Find a quiz fast</h3>
+          </div>
+          <button onClick={close} className="size-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5">
+          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+            <Search className="size-5 text-slate-400" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search Avatar, Harry Potter, Twilight, blog guides..."
+              className="w-full bg-transparent outline-none text-white placeholder:text-slate-500 font-medium"
+              autoFocus
+            />
+          </div>
+
+          <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+            {results.length === 0 ? (
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
+                No quizzes matched that search.
+              </div>
+            ) : (
+              results.map((item) => (
+              <button
+                key={`${item.type}-${item.href}`}
+                onClick={() => {
+                  navigate(item.href, { replace: true });
+                  if (onClose) onClose();
+                  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                }}
+                  className="w-full text-left rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/30 transition-all p-4 md:p-5 flex flex-col md:flex-row gap-4"
+                >
+                  <div className="w-full md:w-40 h-40 md:h-28 rounded-xl overflow-hidden border border-white/10 bg-black/30 shrink-0">
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} className="size-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="size-full bg-gradient-to-br from-primary/20 to-cyan-500/10" />
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        {item.type === 'quiz' ? 'Quiz' : 'Blog'}
+                      </span>
+                      {(item.tags || []).slice(0, 2).map((tag: string) => (
+                        <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{tag}</span>
+                      ))}
+                    </div>
+                    <h4 className="text-white font-black tracking-tight text-lg">{item.title}</h4>
+                    <p className="text-sm text-slate-400 line-clamp-2">{item.subtitle}</p>
+                  </div>
+                  <ArrowRight className="size-4 text-slate-500 shrink-0 mt-1 hidden md:block" />
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const LegalPage = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const navigate = useNavigate();
@@ -4987,6 +5136,26 @@ const LandingView = ({ setUser, onUnlockBadge }: {
         </div>
       </section>
 
+      <section className="max-w-5xl mx-auto px-6 pb-10">
+<button
+          type="button"
+          onClick={() => navigate('/search')}
+          className="search-box-container w-full rounded-[2rem] border border-primary/30 bg-gradient-to-r from-primary/20 via-primary/10 to-cyan-500/10 px-6 py-6 sm:py-8 flex items-center justify-center gap-4 text-left shadow-2xl shadow-primary/10 hover:scale-[1.01] hover:border-primary/50 transition-all"
+        >
+          <div className="size-14 sm:size-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+            <Search className="size-7 sm:size-8 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-primary">Search Quizzes</p>
+            <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Find any quiz or blog fast</h3>
+            <p className="mt-2 text-sm sm:text-base text-slate-300 max-w-2xl">
+              Search by fandom, title, or topic and jump straight to the quiz you want.
+            </p>
+          </div>
+          <ArrowRight className="size-6 sm:size-7 text-white/70 shrink-0" />
+        </button>
+      </section>
+
       <DailyMysteryChallenge />
 
       {/* Universe Grid */}
@@ -6407,6 +6576,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView user={user} />} />
+            <Route path="/search" element={<SearchModal />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
