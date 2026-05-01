@@ -51,6 +51,7 @@ import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
 import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
 import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA } from './avatarTrivia';
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
+import { WICKED_PART_1_TRIVIA, WICKED_PART_2_TRIVIA, WICKED_MIXED_TRIVIA } from './wickedTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -126,6 +127,9 @@ const getQuizTitle = (quizId: string): string => {
     'toy-story-3': 'Toy Story 3',
     'toy-story-4': 'Toy Story 4',
     'toy-story-random': 'The Ultimate Toy Box',
+    'wicked-part-1': 'Wicked: Part 1',
+    'wicked-for-good': 'Wicked: For Good',
+    'wicked-random': 'Wicked Mixed Challenge',
     'shrek-1': 'Shrek',
     'shrek-2': 'Shrek 2',
     'shrek-3': 'Shrek the Third',
@@ -215,6 +219,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('toy-story') || q.includes('toy story')) return 'Toy Story';
   if (q.includes('shrek')) return 'Shrek';
   if (q.includes('hoppers')) return 'Hoppers';
+  if (q.includes('wicked')) return 'Wicked';
   return 'Other Challenges';
 };
 
@@ -239,6 +244,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('toy-story') || q.includes('toy story')) return '/images/toystory.jpg';
   if (q.includes('shrek')) return '/images/shrek.jpg';
   if (q.includes('hoppers')) return '/images/hoppers.webp';
+  if (q.includes('wicked')) return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -897,6 +903,36 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const close = onClose ?? (() => navigate(-1));
+  const recentSearchesKey = 'recentSearches';
+  const scrollYRef = useRef(0);
+
+  type SearchResultItem = {
+    type: 'quiz' | 'blog';
+    title: string;
+    subtitle: string;
+    href: string;
+    tags?: string[];
+    image?: string;
+  };
+
+  const [recentSearches, setRecentSearches] = useState<SearchResultItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(recentSearchesKey);
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed.filter(Boolean).slice(0, 6) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const saveRecentSearch = (item: SearchResultItem) => {
+    setRecentSearches((current) => {
+      const next = [item, ...current.filter((existing) => existing.href !== item.href)].slice(0, 6);
+      localStorage.setItem(recentSearchesKey, JSON.stringify(next));
+      return next;
+    });
+  };
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -955,7 +991,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
         href: `/blog/${post.slug}`,
         tags: post.keywords.slice(0, 2),
         image: post.image,
-      }));
+      })) as SearchResultItem[];
 
     return [...quizResults, ...blogResults].slice(0, 12);
   }, [query]);
@@ -968,8 +1004,38 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [close]);
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previousPosition = document.body.style.position;
+    const previousTop = document.body.style.top;
+    const previousLeft = document.body.style.left;
+    const previousRight = document.body.style.right;
+    const previousWidth = document.body.style.width;
+    const previousOverscrollBehavior = document.documentElement.style.overscrollBehavior;
+
+    scrollYRef.current = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollYRef.current}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.documentElement.style.overscrollBehavior = 'none';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.position = previousPosition;
+      document.body.style.top = previousTop;
+      document.body.style.left = previousLeft;
+      document.body.style.right = previousRight;
+      document.body.style.width = previousWidth;
+      document.documentElement.style.overscrollBehavior = previousOverscrollBehavior;
+      window.scrollTo({ top: scrollYRef.current, left: 0, behavior: 'auto' });
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm p-4 sm:p-6 flex items-start justify-center overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm p-4 sm:p-6 flex items-start justify-center overflow-y-auto overscroll-contain">
       <div className="w-full max-w-3xl mt-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
         <div className="p-6 border-b border-white/10 flex items-center justify-between gap-4">
           <div>
@@ -993,6 +1059,40 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
             />
           </div>
 
+          {recentSearches.length > 0 && query.trim() === '' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Recent Searches</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRecentSearches([]);
+                    localStorage.removeItem(recentSearchesKey);
+                  }}
+                  className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-500 hover:text-primary transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recentSearches.map((item) => (
+                  <button
+                    key={`recent-${item.href}`}
+                    type="button"
+                    onClick={() => {
+                      navigate(item.href, { replace: true });
+                      if (onClose) onClose();
+                      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10 hover:border-primary/30 transition-all"
+                  >
+                    <span className="max-w-[16rem] truncate">{item.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
             {results.length === 0 ? (
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
@@ -1003,6 +1103,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
               <button
                 key={`${item.type}-${item.href}`}
                 onClick={() => {
+                  saveRecentSearch(item);
                   navigate(item.href, { replace: true });
                   if (onClose) onClose();
                   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -1140,6 +1241,7 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'shrek') navigate('/selector-shrek', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
   };
 
   return (
@@ -1330,6 +1432,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-shrek" className="hover:text-green-400 transition-colors">Shrek</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
           <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
+          <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
         </ul>
       </div>
 
@@ -1604,6 +1707,13 @@ const KPOP_GRADES = [
   { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
 ];
 
+const WICKED_GRADES = [
+  { threshold: 90, label: 'Defied Gravity', color: 'text-emerald-400', character: { name: 'Elphaba', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'You know the politics, the magic, and the full arc of Oz.' } },
+  { threshold: 70, label: 'Emerald City Insider', color: 'text-lime-300', character: { name: 'Glinda', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'Strong work. You have a solid grasp of the film adaptations and their lore.' } },
+  { threshold: 50, label: 'Shiz Scholar', color: 'text-fuchsia-300', character: { name: 'Fiyero', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'You are getting there, but there is more Ozian history to learn.' } },
+  { threshold: 0, label: 'Munchkinland Newcomer', color: 'text-slate-400', character: { name: 'Nessarose', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'Time to study the spells, the songs, and the secrets of Wicked.' } },
+];
+
 const HoppersSelector = ({ key }: { key?: string }) => {
   const navigate = useNavigate();
   return (
@@ -1685,6 +1795,61 @@ const KPopSelector = ({ key }: { key?: string }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
           { label: "Film 1", title: "K-Pop: Demon Hunters", desc: `${KPOP_TRIVIA.length} questions`, icon: "🎤", view: 'trivia-kpop', gradient: 'from-pink-600/20 to-purple-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const WickedSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Defy Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-fuchsia-300">Gravity</span></h1>
+        <Helmet>
+          <title>Wicked Trivia & Oz Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your Wicked knowledge across both film parts. From Shiz to the Emerald City, prove you belong in Oz." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-wicked" />
+          <meta property="og:title" content="Wicked Trivia & Oz Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Enter Oz and take the Wicked quiz series." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Wicked", item: "https://fandom-trivia.vercel.app/selector-wicked" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a part or try a random mix from across the full Wicked story.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Part 1", title: "Wicked: Part 1", desc: `${WICKED_PART_1_TRIVIA.length} questions`, icon: "🧹", view: 'trivia-wicked-part-1', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Part 2", title: "Wicked: For Good", desc: `${WICKED_PART_2_TRIVIA.length} questions`, icon: "💚", view: 'trivia-wicked-part-2', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both parts", icon: "🎲", view: 'trivia-wicked-random', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -5114,7 +5279,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
           >
-            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
+            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, Wicked, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -5140,19 +5305,19 @@ const LandingView = ({ setUser, onUnlockBadge }: {
 <button
           type="button"
           onClick={() => navigate('/search')}
-          className="search-box-container w-full rounded-[2rem] border border-primary/30 bg-gradient-to-r from-primary/20 via-primary/10 to-cyan-500/10 px-6 py-6 sm:py-8 flex items-center justify-center gap-4 text-left shadow-2xl shadow-primary/10 hover:scale-[1.01] hover:border-primary/50 transition-all"
+          className="search-box-container w-full rounded-[1.5rem] border border-primary/30 bg-gradient-to-r from-primary/20 via-primary/10 to-cyan-500/10 px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-center gap-3 text-left shadow-2xl shadow-primary/10 hover:scale-[1.01] hover:border-primary/50 transition-all"
         >
-          <div className="size-14 sm:size-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
-            <Search className="size-7 sm:size-8 text-primary" />
+          <div className="size-11 sm:size-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+            <Search className="size-5 sm:size-6 text-primary" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-primary">Search Quizzes</p>
-            <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Find any quiz or blog fast</h3>
-            <p className="mt-2 text-sm sm:text-base text-slate-300 max-w-2xl">
+            <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">Find any quiz or blog fast</h3>
+            <p className="mt-1.5 text-sm text-slate-300 max-w-2xl">
               Search by fandom, title, or topic and jump straight to the quiz you want.
             </p>
           </div>
-          <ArrowRight className="size-6 sm:size-7 text-white/70 shrink-0" />
+          <ArrowRight className="size-5 sm:size-6 text-white/70 shrink-0" />
         </button>
       </section>
 
@@ -5224,6 +5389,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'shrek') navigate('/selector-shrek');
                       if (universe.id === 'dog-man') navigate('/selector-dog-man');
                       if (universe.id === 'hoppers') navigate('/selector-hoppers');
+                      if (universe.id === 'wicked') navigate('/selector-wicked');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
@@ -6514,20 +6680,20 @@ export default function App() {
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
       <Helmet>
         <title>Fandom Trivia</title>
-        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
+        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, Wicked, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fandom-trivia.vercel.app/" />
         <meta property="og:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
         <meta property="og:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://fandom-trivia.vercel.app/" />
         <meta property="twitter:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
         <meta property="twitter:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
       </Helmet>
 
@@ -6581,6 +6747,9 @@ export default function App() {
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -6722,6 +6891,7 @@ export default function App() {
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
             <Route path="/selector-star-wars" element={<StarWarsSelector />} />
             <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
+            <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
             <Route path="/selector-paw-patrol" element={<PawPatrolSelector key="selector-paw-patrol" />} />
             <Route path="/selector-hoppers" element={<HoppersSelector key="selector-hoppers" />} />
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />

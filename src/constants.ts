@@ -170,6 +170,14 @@ export const BADGES: Badge[] = [
     icon: 'Sparkles',
     color: 'text-orange-400',
     targetQuiz: 'httyd'
+  },
+  {
+    id: 'wicked-wanderer',
+    name: 'Wicked Wanderer',
+    description: 'Enter Oz and complete any Wicked trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-emerald-400',
+    targetQuiz: 'wicked'
   }
 ];
 
@@ -217,6 +225,17 @@ export const UNIVERSES = [
     buttonText: 'Enter the Pond',
     icon: 'Search',
     path: '/selector-hoppers'
+  },
+  {
+    id: 'wicked',
+    title: 'Wicked',
+    tags: ['Musical', 'Fantasy', 'Oz'],
+    description: 'Defy gravity and test your knowledge of Wicked across the film adaptations, from Shiz to the Emerald City.',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s',
+    seoAlt: 'Official Wicked movie logo from the film adaptation',
+    buttonText: 'Enter Oz',
+    icon: 'Sparkles',
+    path: '/selector-wicked'
   },
   {
     id: 'harry-potter',

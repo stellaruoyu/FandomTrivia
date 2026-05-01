@@ -11,6 +11,76 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'wicked-quiz',
+    title: 'Wicked Quiz: Can You Defy Gravity and Prove You Know Oz Better Than Anyone Else?',
+    metaDescription: 'Take the ultimate Wicked quiz and test your knowledge of Elphaba, Glinda, Fiyero, Shiz, and the Emerald City.',
+    date: '2026-04-30',
+    author: 'Fandom Trivia Team',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s',
+    keywords: ['Wicked quiz', 'Wicked trivia', 'Wicked personality test', 'Elphaba trivia', 'Glinda trivia', 'Wicked fan theories', 'Emerald City knowledge test', 'Oz quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Wicked</strong> has everything fandoms love: iconic characters, unforgettable songs, big emotional turns, and enough Oz lore to keep fans arguing for years. Between Elphaba, Glinda, Fiyero, Madame Morrible, Boq, Nessarose, the silver shoes, and the Emerald City, there is a lot to remember. If you think you know Oz inside out, this <strong>Wicked quiz</strong> is your chance to prove it.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-wicked" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Wicked Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Wicked Trivia Is Harder Than It Looks</h2>
+      <p>On the surface, plenty of fans can answer the obvious stuff. Elphaba is the green one. Glinda is the bubbly one. Fiyero is the charming one. But a real <strong>Wicked trivia</strong> challenge is not about broad recognition. It is about the details that matter: Elphaba's surname, the role of Shiz University, what Madame Morrible does with weather, why the silver shoes matter, and how the story connects to the larger world of Oz.</p>
+      <p class="mt-4">That is exactly why a serious <strong>Emerald City knowledge test</strong> works so well. It rewards fans who remember the plot, the production details, and the character arcs, not just the biggest musical numbers. If you think you have the answers, this is where you prove it.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-wicked" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-300">Challenge:</span> Test your Wicked knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Wicked Character Are You Most Like?</h2>
+      <p>Every great fandom turns into a personality debate sooner or later. Before you <a href="/selector-wicked" class="text-primary hover:text-primary/80 font-bold">take the Wicked quiz</a>, ask yourself which Ozian energy fits you best.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Elphaba:</strong> principled, intense, and impossible to ignore when something is unjust.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Glinda:</strong> charismatic, polished, and far smarter than people expect at first glance.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Fiyero:</strong> laid-back on the surface, but more important to the story than he first appears.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Madame Morrible:</strong> strategic, controlling, and always working the room.</li>
+      </ul>
+
+      <p>That is why searches for a <strong>Wicked personality test</strong>, <strong>Elphaba trivia</strong>, and <strong>Glinda trivia</strong> keep growing. Fans do not just want a recap. They want to know which character they are like and how deeply they understand the story.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A strong score on a real <strong>Wicked quiz</strong> means you remember more than the soundtrack. You know the details that give the story weight: the school setting, the politics of Oz, the rise of Elphaba, the role of the Wizard, and the emotional logic behind the big transformations.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Character Questions That Expose Casual Fans</h3>
+      <p>Can you remember Elphaba's surname? Do you know why the silver shoes are so important? Can you explain what Madame Morrible controls, or what makes Boq's transformation such a tragic turning point? Those are the kinds of questions that separate true fans from people who just know the biggest songs.</p>
+      <p class="mt-4">The story gets even more interesting when you factor in the two-part film structure. Part 1 introduces the friendships, rivalries, and political tensions. Part 2 pushes those threads into consequences, sacrifice, and the darker side of Oz. That means a real <strong>Wicked trivia</strong> challenge has room for everything from casting facts to plot turns.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Details Fans Actually Remember</h3>
+      <p>The best fandom quizzes reward specificity. What color are the shoes? Which city does the story move through? Which characters are at the center of the emotional split? How does the Wizard fit into Elphaba's origin story? These are the details that make a <strong>Wicked fan theories</strong> conversation fun, because they give fans something real to debate.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you track Elphaba, Glinda, Fiyero, Boq, Nessarose, and Morrible without mixing up their roles?</li>
+        <li><strong>Lore memory:</strong> Do you actually remember the silver shoes, Shiz University, and the Emerald City politics?</li>
+        <li><strong>Fan theory territory:</strong> Are you ready to discuss the bigger meaning behind power, friendship, and how Oz frames good and wickedness?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Wicked Quiz Worth Taking</h2>
+      <p>This is not a shallow roundup that only celebrates the songs. It is a real challenge for fans who want to prove they know the story, the characters, and the world of Oz. Whether you are here for <strong>Wicked trivia</strong>, a harder <strong>Oz quiz</strong>, or just a way to settle a friendly argument, this is the page that makes the score matter.</p>
+      <p class="mt-4">If you have been telling people you know Wicked better than they do, this is your moment. The Emerald City is waiting. Elphaba is watching. And the quiz is ready whenever you are.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-emerald-500/20 via-fuchsia-900/40 to-black border border-emerald-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Defy Gravity?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Take the ultimate <strong>Wicked quiz</strong>, test your Oz knowledge, and prove whether you are truly ready for the Emerald City.</p>
+        <a href="/selector-wicked" class="inline-block bg-gradient-to-r from-emerald-300 to-fuchsia-400 hover:from-emerald-200 hover:to-fuchsia-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(16,185,129,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(217,70,239,0.35)]">
+          Take the Ultimate Wicked Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans know the songs. The best fans know the lore, the characters, and the details that make Wicked unforgettable.</p>
+    `
+  },
+  {
     slug: 'how-to-train-your-dragon-quiz',
     title: 'How to Train Your Dragon Quiz: Can You Actually Conquer the Ultimate Berk Knowledge Test?',
     metaDescription: 'Think you know HTTYD? Take the ultimate How to Train Your Dragon quiz and prove your Berk, Toothless, Alpha, and Hidden World lore.',
