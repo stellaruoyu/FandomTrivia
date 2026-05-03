@@ -2376,6 +2376,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [hasCompletedAllQuestions, setHasCompletedAllQuestions] = useState(false);
   const [matchEndReason, setMatchEndReason] = useState<'completed' | 'timer' | null>(null);
   const [timerNow, setTimerNow] = useState(() => Date.now());
+  const [repeatCycle, setRepeatCycle] = useState(0);
+  const [matchScore, setMatchScore] = useState(0);
+  const [matchAnsweredCount, setMatchAnsweredCount] = useState(0);
   const [sessionId] = useState(() => {
     const key = `fandom_trivia_session_${scoreLabel}`;
     let id = sessionStorage.getItem(key);
@@ -2399,6 +2402,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const completionTimeRef = useRef<number | null>(completionTime);
   const hasCompletedAllQuestionsRef = useRef(hasCompletedAllQuestions);
   const finishedRef = useRef(finished);
+  const matchScoreRef = useRef(matchScore);
+  const matchAnsweredCountRef = useRef(matchAnsweredCount);
+  const isRepeatMatch = isMultiplayerMode && matchEndMode === 'timer';
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -2438,6 +2444,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     hasCompletedAllQuestionsRef.current = hasCompletedAllQuestions;
     finishedRef.current = finished;
   }, [correctCount, answeredCount, completionTime, hasCompletedAllQuestions, finished]);
+
+  useEffect(() => {
+    matchScoreRef.current = matchScore;
+    matchAnsweredCountRef.current = matchAnsweredCount;
+  }, [matchScore, matchAnsweredCount]);
 
   useEffect(() => {
     if (sessionQuestions.length === 0) return;
@@ -2544,9 +2555,21 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setCompletionTime(finalDuration);
 
     if (onQuizComplete) {
-      onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
+      const finalScore = isRepeatMatch ? matchScoreRef.current : correctCountRef.current;
+      const finalAnswered = isRepeatMatch ? matchAnsweredCountRef.current : answeredCountRef.current;
+      const pct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
+      onQuizComplete(scoreLabel, pct, !!isDaily);
     }
   };
+
+  function resetCurrentRoundState(nextCurrentQ = 0) {
+    setCurrentQ(nextCurrentQ);
+    setSelected(null);
+    setScores({});
+    setUserAnswers({});
+    setBotAnswers({});
+    setBotResults({});
+  }
 
   const sendLobbyEvent = async (event: string, payload: Record<string, any>) => {
     if (!lobbyChannelRef.current) return;
@@ -2867,6 +2890,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           [userId]: { ...(prev[userId] || {}), [questionIndex]: answer }
         }));
       })
+      .on('broadcast', { event: 'question_cycle' }, ({ payload }) => {
+        if (payload?.cycle !== undefined) {
+          setRepeatCycle(payload.cycle);
+        }
+        resetCurrentRoundState(payload?.currentQ ?? 0);
+      })
       .on('broadcast', { event: 'final_results' }, ({ payload }) => {
         const {
           userId,
@@ -2992,13 +3021,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       const currentId = user?.id || sessionId;
       void sendMatchEvent('score_update', {
         userId: currentId,
-        score: correctCount,
+        score: isRepeatMatch ? matchScore : correctCount,
         team: myTeamId,
-        answeredCount,
+        answeredCount: isRepeatMatch ? matchAnsweredCount : answeredCount,
         name: getDisplayName(user, 'Guest Fan')
       });
     }
-  }, [correctCount, answeredCount, gameState, matchRoomId, gameMode, myTeamId, user]);
+  }, [correctCount, answeredCount, matchScore, matchAnsweredCount, isRepeatMatch, gameState, matchRoomId, gameMode, myTeamId, user]);
 
   // Handle startTime initialization when game starts
   useEffect(() => {
@@ -3387,14 +3416,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       playCorrectSound();
+      if (isRepeatMatch) {
+        setMatchScore(prev => prev + 1);
+        setMatchAnsweredCount(prev => prev + 1);
+      }
     } else {
       const isCorrect = option.toLowerCase() === correctAnsString.toLowerCase();
       setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       if (isCorrect) {
         playCorrectSound();
+        if (isRepeatMatch) {
+          setMatchScore(prev => prev + 1);
+        }
       } else {
         playIncorrectSound();
+      }
+      if (isRepeatMatch) {
+        setMatchAnsweredCount(prev => prev + 1);
       }
     }
 
@@ -3411,12 +3450,18 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const completedQuestions = Object.keys(finalAnswers).length;
     const reachedQuestionGoal = isMultiplayerMode && matchEndMode === 'question_goal' && completedQuestions >= Math.min(matchQuestionGoal, total);
     const reachedQuestionListEnd = currentQ >= total - 1;
-    const shouldLoopQuestions = isMultiplayerMode && matchEndMode === 'timer' && reachedQuestionListEnd && !finished;
+    const shouldLoopQuestions = isRepeatMatch && reachedQuestionListEnd && !finished;
     const shouldFinalizeCurrentPlayer = reachedQuestionGoal || (!isMultiplayerMode && reachedQuestionListEnd);
 
     if (shouldLoopQuestions) {
-      setCurrentQ(0);
-      setSelected(null);
+      resetCurrentRoundState(0);
+      setRepeatCycle(prev => prev + 1);
+      if (isHost && matchRoomId) {
+        void sendMatchEvent('question_cycle', {
+          currentQ: 0,
+          cycle: repeatCycle + 1
+        });
+      }
       return;
     }
 
@@ -3428,13 +3473,15 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
     const endTime = Date.now();
     const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
+    const sessionScore = isRepeatMatch ? matchScoreRef.current : correctCountRef.current;
+    const sessionAnswered = isRepeatMatch ? matchAnsweredCountRef.current : answeredCountRef.current;
     const resultPayload = {
       userId: currentId,
       allAnswers: finalAnswers,
       isFinished: true,
       completionTime: durationSeconds,
-      answeredCount: completedQuestions,
-      score: correctCount,
+      answeredCount: sessionAnswered,
+      score: sessionScore,
       team: myTeamId,
       name: getDisplayName(user, 'Guest Fan')
     };
@@ -3445,10 +3492,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       ...prev,
       [currentId]: {
         ...(prev[currentId] || {}),
-        score: correctCount,
+        score: sessionScore,
         team: myTeamId,
         name: getDisplayName(user, 'Guest Fan'),
-        answeredCount: completedQuestions,
+        answeredCount: sessionAnswered,
         completionTime: durationSeconds,
         isFinished: true
       }
@@ -3456,7 +3503,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setPlayerProgress(prev => ({
       ...prev,
       [currentId]: {
-        answeredCount: completedQuestions,
+        answeredCount: sessionAnswered,
         completionTime: durationSeconds,
         isFinished: true
       }
@@ -3522,6 +3569,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setTimerNow(Date.now());
     setIsRealtimeReady(false);
     setFinalMatchResults([]);
+    setMatchScore(0);
+    setMatchAnsweredCount(0);
+    setRepeatCycle(0);
     matchEndedRef.current = false;
   };
 
@@ -3531,15 +3581,16 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       return;
     }
     setSaving(true);
-    const pct = Math.round((correctCount / total) * 100);
+    const scoreToSave = isRepeatMatch ? matchScore : correctCount;
+    const answeredToSave = isRepeatMatch ? matchAnsweredCount : total;
     try {
       const { error } = await supabase
         .from('scores')
         .insert({
           user_id: user.id,
           quiz_id: scoreLabel,
-          score: correctCount,
-          total: total,
+          score: scoreToSave,
+          total: answeredToSave,
           completion_time: completionTime,
           is_daily_challenge: !!isDaily
         });
@@ -3608,8 +3659,31 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return p.id !== currentId && pTeam === myTeamId;
   }) : null;
 
-  const derivedTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId) : correctCount;
-  const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+  const liveCorrectCount = isRepeatMatch ? matchScore : correctCount;
+  const liveAnsweredCount = isRepeatMatch ? matchAnsweredCount : answeredCount;
+  const derivedTeamScore = gameMode === 'team'
+    ? (isRepeatMatch
+      ? activeParticipants.reduce((sum, participant, index) => {
+          const participantTeam = playerScores[participant.id]?.team ?? (index % 2 === 0 ? 'A' : 'B');
+          const participantScore = participant.id === currentId
+            ? liveCorrectCount
+            : (playerScores[participant.id]?.score ?? calculateUserScore(participant.id));
+          return sum + (participantTeam === myTeamId ? participantScore : 0);
+        }, 0)
+      : getTeamProgress(myTeamId))
+    : liveCorrectCount;
+  const derivedOpponentTeamScore = gameMode === 'team'
+    ? (isRepeatMatch
+      ? activeParticipants.reduce((sum, participant, index) => {
+          const participantTeam = playerScores[participant.id]?.team ?? (index % 2 === 0 ? 'A' : 'B');
+          const participantScore = participant.id === currentId
+            ? liveCorrectCount
+            : (playerScores[participant.id]?.score ?? calculateUserScore(participant.id));
+          const opponentTeam = myTeamId === 'A' ? 'B' : 'A';
+          return sum + (participantTeam === opponentTeam ? participantScore : 0);
+        }, 0)
+      : getTeamProgress(myTeamId === 'A' ? 'B' : 'A'))
+    : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
   const timeRemainingSec = matchTimerEndsAt
     ? Math.max(0, Math.ceil((matchTimerEndsAt - timerNow) / 1000))
     : null;
@@ -3620,7 +3694,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         const syncedPlayer = playerScores[participant.id];
         const progress = isCurrentPlayer
           ? {
-              answeredCount,
+              answeredCount: liveAnsweredCount,
               completionTime,
               isFinished: hasCompletedAllQuestions || finished
             }
@@ -3629,7 +3703,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               completionTime: syncedPlayer?.completionTime ?? null,
               isFinished: syncedPlayer?.isFinished ?? false
             });
-        const score = isCurrentPlayer ? correctCount : (syncedPlayer?.score ?? calculateUserScore(participant.id));
+        const score = isCurrentPlayer ? liveCorrectCount : (syncedPlayer?.score ?? calculateUserScore(participant.id));
         const team = index % 2 === 0 ? 'A' : 'B';
 
         return {
@@ -3678,10 +3752,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const finalOpponentEntry = finalMatchResults.find(entry => !entry.isCurrentPlayer);
   const displayedOpponentScore = gameMode === 'bot'
     ? opponentScore
-    : (finalOpponentEntry ? finalOpponentEntry.score : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+    : (finalOpponentEntry ? finalOpponentEntry.score : (opponents[0] ? (playerScores[opponents[0].id]?.score ?? calculateUserScore(opponents[0].id)) : 0));
 
   if (finished) {
-    const pct = Math.round((correctCount / total) * 100);
+    const scoreForDisplay = gameMode === 'team' ? derivedTeamScore : liveCorrectCount;
+    const pctBase = isRepeatMatch ? liveAnsweredCount : total;
+    const pct = pctBase > 0 ? Math.round((scoreForDisplay / pctBase) * 100) : 0;
     const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
@@ -3791,10 +3867,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-2">
               <div className="space-y-1">
                 <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                  {gameMode === 'team' ? derivedTeamScore : correctCount}/{total}
+                  {scoreForDisplay}/{pctBase}
                 </p>
                 <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
-                  {gameMode === 'team' ? 'Team Coordinated Score' : 'Your Score'} ({gameMode === 'team' ? Math.round((derivedTeamScore / total) * 100) : pct}%)
+                  {gameMode === 'team' ? 'Team Coordinated Score' : 'Your Score'} ({pct}%)
                 </p>
               </div>
               
@@ -3805,18 +3881,18 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
                       {gameMode === 'team'
-                        ? `${derivedOpponentTeamScore}/${total}`
+                        ? `${derivedOpponentTeamScore}/${pctBase}`
                         : (gameMode !== 'bot' && !finalOpponentEntry && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
                           ? (opponents.length > 0 ? '0' : '...')
-                          : `${displayedOpponentScore}/${total}`}
+                          : `${displayedOpponentScore}/${pctBase}`}
                     </p>
                     <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
                       {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} 
                       {gameMode === 'team'
-                        ? ` (${Math.round((derivedOpponentTeamScore / total) * 100)}%)`
+                        ? ` (${pctBase > 0 ? Math.round((derivedOpponentTeamScore / pctBase) * 100) : 0}%)`
                         : (gameMode !== 'bot' && !finalOpponentEntry && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
                         ? (opponents.length > 0 ? '' : ' (Waiting...)')
-                        : ` (${Math.round((displayedOpponentScore / total) * 100)}%)`}
+                        : ` (${pctBase > 0 ? Math.round((displayedOpponentScore / pctBase) * 100) : 0}%)`}
                     </p>
                   </div>
                   <div className="hidden md:block w-px h-16 bg-white/10"></div>
@@ -3859,11 +3935,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             {gameMode === 'bot' && (
               <div className="w-full max-w-md mx-auto space-y-2">
                 <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                  <div className="h-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-500" style={{ width: `${(correctCount/total)*100}%` }} />
-                  <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${(opponentScore/total)*100}%` }} />
+                  <div className="h-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (scoreForDisplay/pctBase)*100 : 0}%` }} />
+                  <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (displayedOpponentScore/pctBase)*100 : 0}%` }} />
                 </div>
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-green-400">You ({correctCount})</span>
+                  <span className="text-green-400">You ({scoreForDisplay})</span>
                   <span className="text-red-400">Bot ({opponentScore})</span>
                 </div>
               </div>
@@ -3875,12 +3951,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
             <div className="w-full max-w-md mx-auto space-y-2">
               <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${gameMode === 'team' ? (derivedTeamScore/total)*100 : pct}%` }} />
-                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${100 - (gameMode === 'team' ? (derivedTeamScore/total)*100 : pct)}%` }} />
+                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (scoreForDisplay/pctBase)*100 : 0}%` }} />
+                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? 100 - ((scoreForDisplay/pctBase)*100) : 0}%` }} />
               </div>
               <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                <span className="text-green-400">{gameMode === 'team' ? derivedTeamScore : correctCount} Correct</span>
-                <span className="text-red-400">{total - (gameMode === 'team' ? derivedTeamScore : correctCount)} Incorrect</span>
+                  <span className="text-green-400">{scoreForDisplay} Correct</span>
+                  <span className="text-red-400">{Math.max(0, pctBase - scoreForDisplay)} Incorrect</span>
               </div>
             </div>
           </motion.div>
@@ -3926,7 +4002,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-black text-white">{entry.score}/{total}</p>
+                        <p className="text-sm font-black text-white">{entry.score}/{pctBase}</p>
                         <p className="text-[10px] font-bold text-slate-400">{entry.answeredCount} answered</p>
                       </div>
                       <div className="text-right min-w-[72px]">
