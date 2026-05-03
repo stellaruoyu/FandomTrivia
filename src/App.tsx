@@ -6390,6 +6390,8 @@ export default function App() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
+  const [pendingWelcomeInfo, setPendingWelcomeInfo] = useState<{title: string, content: string} | null>(null);
+  const [pendingWelcomeKey, setPendingWelcomeKey] = useState<string | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
   const [showEmojiRain, setShowEmojiRain] = useState(false);
@@ -6406,6 +6408,21 @@ export default function App() {
       return next;
     });
   };
+
+  const welcomeMessage = (displayName: string) => ({
+    title: `Welcome, ${displayName}`,
+    content: [
+      'Here is the quickest way to use Fandom Trivia:',
+      '',
+      '1. Pick a universe from the home page and open a quiz.',
+      '2. Choose Single, Bot, 1v1, or Team mode.',
+      '3. Answer questions, then tap Next to keep moving.',
+      '4. Save your score to appear on the global rankings.',
+      '5. Open the account menu to view history, badges, and sound settings.',
+      '',
+      'Tip: 1v1 and Team mode use the room lobby so everyone can join the same match.'
+    ].join('\n')
+  });
 
   const twilightRandomQuestions = useMemo(() => 
     [...(TWILIGHT_BOOK_TRIVIA || []), ...(NEW_MOON_TRIVIA || []), ...(ECLIPSE_TRIVIA || []), ...(BREAKING_DAWN_TRIVIA || []), ...(MIDNIGHT_SUN_TRIVIA || []), ...(LIFE_AND_DEATH_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
@@ -6520,6 +6537,20 @@ export default function App() {
       };
 
       setUser(appUser);
+
+      const welcomeSeenKey = `fandom_trivia_welcome_seen_${appUser.id}`;
+      const hasSeenWelcome = localStorage.getItem(welcomeSeenKey) === 'true';
+      const onboarding = welcomeMessage(appUser.username || appUser.name || 'Fan');
+
+      if (!hasSeenWelcome) {
+        if (appUser.username) {
+          setModalInfo(onboarding);
+          localStorage.setItem(welcomeSeenKey, 'true');
+        } else {
+          setPendingWelcomeInfo(onboarding);
+          setPendingWelcomeKey(welcomeSeenKey);
+        }
+      }
 
       if (!appUser.username) {
         setShowUsernameModal(true);
@@ -7042,6 +7073,14 @@ export default function App() {
             onComplete={(username) => {
               setUser(prev => prev ? { ...prev, username } : null);
               setShowUsernameModal(false);
+              if (pendingWelcomeInfo) {
+                setModalInfo(pendingWelcomeInfo);
+                if (pendingWelcomeKey) {
+                  localStorage.setItem(pendingWelcomeKey, 'true');
+                }
+                setPendingWelcomeInfo(null);
+                setPendingWelcomeKey(null);
+              }
             }}
           />
         )}
