@@ -3970,7 +3970,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               <Star className="size-4" />
               {saving ? 'Saving...' : 'Save to Leaderboard'}
             </button>
-          ) : (
+          ) : null}
+          {!scoreSaved && !user && (
+            <p className="text-center text-xs text-slate-400 font-medium leading-relaxed max-w-xl mx-auto">
+              Guest mode is fine for playing, but you need to sign in before your score can be saved to the leaderboard.
+            </p>
+          )}
+          {scoreSaved && (
             <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
               <Check className="size-4" /> Score saved!
             </p>
@@ -5270,9 +5276,10 @@ const BlogView = () => {
   );
 };
 
-const LandingView = ({ setUser, onUnlockBadge }: { 
+const LandingView = ({ setUser, onUnlockBadge, user }: { 
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
   onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void,
+  user: User | null,
   key?: string
 }) => {
   const navigate = useNavigate();
@@ -5373,6 +5380,32 @@ const LandingView = ({ setUser, onUnlockBadge }: {
             <button onClick={() => navigate('/rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
               View Rankings
             </button>
+          </motion.div>
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 grid gap-4 md:grid-cols-2 text-left max-w-4xl mx-auto"
+          >
+            <div className="rounded-2xl border border-primary/20 bg-primary/10 p-5 backdrop-blur-md">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">How to use the site</p>
+              <ol className="mt-3 space-y-2 text-sm text-slate-200 font-medium leading-relaxed list-decimal list-inside">
+                <li>Pick a universe below or start with the Daily Mystery Challenge.</li>
+                <li>Answer the quiz questions and review the source evidence.</li>
+                <li>Check the rankings to compare your score with other fans.</li>
+              </ol>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Saving your progress</p>
+              <p className="mt-3 text-sm text-slate-300 font-medium leading-relaxed">
+                {user ? (
+                  <>You&apos;re signed in, so your scores, badges, and history can be saved automatically.</>
+                ) : (
+                  <>You can play as a guest right away, but you need to sign in to save scores, badges, and quiz history.</>
+                )}
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -6852,7 +6885,7 @@ export default function App() {
             <Route path="/search" element={<SearchModal />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
-            <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
+            <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} user={user} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7057,7 +7090,7 @@ export default function App() {
             <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
-            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} />} />
+            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} user={user} />} />
             
             {/* Legal */}
             <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
