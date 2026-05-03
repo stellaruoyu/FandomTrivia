@@ -3971,11 +3971,6 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               {saving ? 'Saving...' : 'Save to Leaderboard'}
             </button>
           ) : null}
-          {!scoreSaved && !user && (
-            <p className="text-center text-xs text-slate-400 font-medium leading-relaxed max-w-xl mx-auto">
-              Guest mode is fine for playing, but you need to sign in before your score can be saved to the leaderboard.
-            </p>
-          )}
           {scoreSaved && (
             <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
               <Check className="size-4" /> Score saved!
@@ -5276,10 +5271,9 @@ const BlogView = () => {
   );
 };
 
-const LandingView = ({ setUser, onUnlockBadge, user }: { 
+const LandingView = ({ setUser, onUnlockBadge }: { 
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
   onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void,
-  user: User | null,
   key?: string
 }) => {
   const navigate = useNavigate();
@@ -5382,31 +5376,6 @@ const LandingView = ({ setUser, onUnlockBadge, user }: {
             </button>
           </motion.div>
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-8 grid gap-4 md:grid-cols-2 text-left max-w-4xl mx-auto"
-          >
-            <div className="rounded-2xl border border-primary/20 bg-primary/10 p-5 backdrop-blur-md">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">How to use the site</p>
-              <ol className="mt-3 space-y-2 text-sm text-slate-200 font-medium leading-relaxed list-decimal list-inside">
-                <li>Pick a universe below or start with the Daily Mystery Challenge.</li>
-                <li>Answer the quiz questions and review the source evidence.</li>
-                <li>Check the rankings to compare your score with other fans.</li>
-              </ol>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Saving your progress</p>
-              <p className="mt-3 text-sm text-slate-300 font-medium leading-relaxed">
-                {user ? (
-                  <>You&apos;re signed in, so your scores, badges, and history can be saved automatically.</>
-                ) : (
-                  <>You can play as a guest right away, but you need to sign in to save scores, badges, and quiz history.</>
-                )}
-              </p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -6423,8 +6392,7 @@ export default function App() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
-  const [pendingWelcomeInfo, setPendingWelcomeInfo] = useState<{title: string, content: string} | null>(null);
-  const [pendingWelcomeKey, setPendingWelcomeKey] = useState<string | null>(null);
+  const [welcomeModal, setWelcomeModal] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
   const [showEmojiRain, setShowEmojiRain] = useState(false);
@@ -6442,18 +6410,19 @@ export default function App() {
     });
   };
 
-  const welcomeMessage = (displayName: string) => ({
-    title: `Welcome, ${displayName}`,
+  const welcomeSeenKey = 'fandom_trivia_welcome_seen';
+  const welcomeMessage = () => ({
+    title: 'Welcome to Fandom Trivia',
     content: [
       'Here is the quickest way to use Fandom Trivia:',
       '',
-      '1. Pick a universe from the home page and open a quiz.',
-      '2. Choose Single, Bot, 1v1, or Team mode.',
-      '3. Answer questions, then tap Next to keep moving.',
-      '4. Save your score to appear on the global rankings.',
-      '5. Open the account menu to view history, badges, and sound settings.',
+      '1. Pick a universe from the home page or start with the Daily Mystery Challenge.',
+      '2. Answer the quiz questions and tap Next to keep moving.',
+      '3. Check the rankings after you finish.',
       '',
-      'Tip: 1v1 and Team mode use the room lobby so everyone can join the same match.'
+      'You can play as a guest, but you need to sign in to save scores, badges, and quiz history.',
+      '',
+      'Tip: the account menu is where you can manage your username, history, and sound settings.'
     ].join('\n')
   });
 
@@ -6532,6 +6501,17 @@ export default function App() {
     document.title = "Fandom Trivia | The Ultimate Fan Experience";
   }, []);
 
+  useEffect(() => {
+    try {
+      const hasSeenWelcome = localStorage.getItem(welcomeSeenKey) === 'true';
+      if (!hasSeenWelcome) {
+        setWelcomeModal(welcomeMessage());
+      }
+    } catch (error) {
+      console.error('Failed to read welcome state:', error);
+    }
+  }, []);
+
   // Load user profile from Supabase
   const loadUserProfile = async (supabaseUser: any) => {
     try {
@@ -6570,20 +6550,6 @@ export default function App() {
       };
 
       setUser(appUser);
-
-      const welcomeSeenKey = `fandom_trivia_welcome_seen_${appUser.id}`;
-      const hasSeenWelcome = localStorage.getItem(welcomeSeenKey) === 'true';
-      const onboarding = welcomeMessage(appUser.username || appUser.name || 'Fan');
-
-      if (!hasSeenWelcome) {
-        if (appUser.username) {
-          setModalInfo(onboarding);
-          localStorage.setItem(welcomeSeenKey, 'true');
-        } else {
-          setPendingWelcomeInfo(onboarding);
-          setPendingWelcomeKey(welcomeSeenKey);
-        }
-      }
 
       if (!appUser.username) {
         setShowUsernameModal(true);
@@ -6885,7 +6851,7 @@ export default function App() {
             <Route path="/search" element={<SearchModal />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
-            <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} user={user} />} />
+            <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7090,7 +7056,7 @@ export default function App() {
             <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
-            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} user={user} />} />
+            <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             
             {/* Legal */}
             <Route path="/privacy-policy" element={<PrivacyPolicyView key="privacy" />} />
@@ -7101,19 +7067,28 @@ export default function App() {
       </main>
 
       <AnimatePresence>
+        {welcomeModal && (
+          <InfoModal
+            title={welcomeModal.title}
+            content={welcomeModal.content}
+            onClose={() => {
+              try {
+                localStorage.setItem(welcomeSeenKey, 'true');
+              } catch (error) {
+                console.error('Failed to save welcome state:', error);
+              }
+              setWelcomeModal(null);
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {showUsernameModal && (
           <UsernameModal
             onComplete={(username) => {
               setUser(prev => prev ? { ...prev, username } : null);
               setShowUsernameModal(false);
-              if (pendingWelcomeInfo) {
-                setModalInfo(pendingWelcomeInfo);
-                if (pendingWelcomeKey) {
-                  localStorage.setItem(pendingWelcomeKey, 'true');
-                }
-                setPendingWelcomeInfo(null);
-                setPendingWelcomeKey(null);
-              }
             }}
           />
         )}
