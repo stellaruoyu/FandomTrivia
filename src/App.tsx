@@ -22,6 +22,7 @@ import {
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   HOPPERS_TRIVIA,
+  BAD_GUYS_1_TRIVIA, BAD_GUYS_2_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
@@ -150,6 +151,8 @@ const getQuizTitle = (quizId: string): string => {
     'dog-man-book13': 'Dog Man: Book 13',
     'dog-man-book14': 'Dog Man: Book 14',
     'dog-man-random': 'Supa Buddies Mixed Challenge',
+    'bad-guys-1': 'The Bad Guys',
+    'bad-guys-2': 'The Bad Guys 2',
     'avatar-1': 'Avatar (2009)',
     'avatar-2': 'Avatar: The Way of Water',
     'avatar-3': 'Avatar: Fire and Ash',
@@ -218,6 +221,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('panda') || q.includes('kfp')) return 'Kung Fu Panda';
   if (q.includes('toy-story') || q.includes('toy story')) return 'Toy Story';
   if (q.includes('shrek')) return 'Shrek';
+  if (q.includes('bad-guys') || q.includes('bad guys')) return 'The Bad Guys';
   if (q.includes('hoppers')) return 'Hoppers';
   if (q.includes('wicked')) return 'Wicked';
   return 'Other Challenges';
@@ -243,6 +247,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return '/images/pawpatrol.jpg';
   if (q.includes('toy-story') || q.includes('toy story')) return '/images/toystory.jpg';
   if (q.includes('shrek')) return '/images/shrek.jpg';
+  if (q.includes('bad-guys') || q.includes('bad guys')) return 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560';
   if (q.includes('hoppers')) return '/images/hoppers.webp';
   if (q.includes('wicked')) return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s';
   return ''; // Default to no image (SimpleAvatar will show initials)
@@ -313,6 +318,7 @@ const useQuizStats = () => {
       if (target === 'minecraft' && (univName.includes('minecraft') || id.includes('minecraft'))) return sum + val;
       if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
       if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
+      if (target === 'bad-guys' && (univName.includes('bad guys') || id.includes('bad-guys') || id.includes('bad guys'))) return sum + val;
       
       return sum;
     }, 0);
@@ -956,6 +962,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'toy-story': '/selector-toy-story',
       'shrek': '/selector-shrek',
       'dog-man': '/selector-dog-man',
+      'bad-guys': '/selector-bad-guys',
       'hoppers': '/selector-hoppers',
     };
 
@@ -1240,6 +1247,7 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'toy-story') navigate('/selector-toy-story', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'shrek') navigate('/selector-shrek', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'bad-guys') navigate('/selector-bad-guys', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
   };
@@ -1430,6 +1438,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
           <li><Link to="/selector-toy-story" className="hover:text-amber-500 transition-colors">Toy Story</Link></li>
           <li><Link to="/selector-shrek" className="hover:text-green-400 transition-colors">Shrek</Link></li>
+          <li><Link to="/selector-bad-guys" className="hover:text-orange-400 transition-colors">The Bad Guys</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
           <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
           <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
@@ -1692,6 +1701,13 @@ const StarWarsSelector = () => {
     </motion.div>
   );
 };
+
+const BAD_GUYS_GRADES = [
+  { threshold: 90, label: 'Mastermind Wolf', color: 'text-amber-400', character: { name: 'Mr. Wolf', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'You can spot every con, every twist, and every heist detail.' } },
+  { threshold: 70, label: 'Crimson Paw Insider', color: 'text-orange-300', character: { name: 'Diane Foxington', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'Strong work. You know the crew, the cons, and the production deep cuts.' } },
+  { threshold: 50, label: 'Golden Dolphin Runner', color: 'text-blue-400', character: { name: 'Mr. Snake', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'You have the basics down, but there are still a few heists to study.' } },
+  { threshold: 0, label: 'New Recruit', color: 'text-slate-400', character: { name: 'Mr. Piranha', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'Time to go good and learn the crew from the ground up.' } },
+];
 
 const HOPPERS_GRADES = [
   { threshold: 90, label: 'Pond Authority', color: 'text-amber-400', character: { name: 'Mabel', image: '/images/hoppers.webp', desc: 'You mastered the pond rules and the mind-casting lore.' } },
@@ -5465,6 +5481,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
                       if (universe.id === 'toy-story') navigate('/selector-toy-story');
                       if (universe.id === 'shrek') navigate('/selector-shrek');
+                      if (universe.id === 'bad-guys') navigate('/selector-bad-guys');
                       if (universe.id === 'dog-man') navigate('/selector-dog-man');
                       if (universe.id === 'hoppers') navigate('/selector-hoppers');
                       if (universe.id === 'wicked') navigate('/selector-wicked');
@@ -6247,6 +6264,60 @@ const ShrekSelector = () => {
   );
 };
 
+const BadGuysSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">Heist</span></h1>
+          <Helmet>
+            <title>The Bad Guys Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your The Bad Guys knowledge across both movies, from the Golden Dolphin award to the Bad Girls sequel." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-bad-guys" />
+            <meta property="og:title" content="The Bad Guys Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play The Bad Guys movie quizzes and prove you know every con, crew member, and sequel twist." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "The Bad Guys", item: "https://fandom-trivia.vercel.app/selector-bad-guys" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Pick a movie quiz and test your knowledge of the crew, the cons, and the heist details.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            { label: "Film 1", title: "The Bad Guys", desc: `${BAD_GUYS_1_TRIVIA.length} questions from the 2022 film`, icon: "🐺", view: 'trivia-bad-guys-1', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: "Film 2", title: "The Bad Guys 2", desc: `${BAD_GUYS_2_TRIVIA.length} questions from the sequel`, icon: "🦊", view: 'trivia-bad-guys-2', gradient: 'from-yellow-600/20 to-rose-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const DogManSelector = () => {
   const navigate = useNavigate();
   return (
@@ -6613,6 +6684,13 @@ export default function App() {
                   unlocked = true;
                 }
                 
+                if (badge.targetQuizExact) {
+                  const titleLower = item.quiz_id.toLowerCase().trim();
+                  if (titleLower === badge.targetQuizExact) {
+                    unlocked = true;
+                  }
+                }
+
                 if (badge.targetQuiz) {
                   const titleLower = item.quiz_id.toLowerCase();
                   if (titleLower.includes(badge.targetQuiz.replace('-', ' '))) {
@@ -6740,6 +6818,12 @@ export default function App() {
         unlocked = true;
       }
       
+      if (badge.targetQuizExact) {
+        const titleLower = quizId.toLowerCase().trim();
+        if (titleLower === badge.targetQuizExact) {
+          unlocked = true;
+        }
+      }
 
       // Universe completion badges
       if (badge.targetQuiz) {
@@ -6954,6 +7038,8 @@ export default function App() {
             <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-bad-guys-1" element={<MCQuizView key="trivia-bad-guys-1" questions={BAD_GUYS_1_TRIVIA} title="The Bad Guys" scoreLabel="The Bad Guys" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-bad-guys-2" element={<MCQuizView key="trivia-bad-guys-2" questions={BAD_GUYS_2_TRIVIA} title="The Bad Guys 2" scoreLabel="The Bad Guys 2" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-shrek-1" element={<MCQuizView key="trivia-shrek-1" questions={SHREK_1_TRIVIA} title="Shrek" scoreLabel="Shrek" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-shrek-2" element={<MCQuizView key="trivia-shrek-2" questions={SHREK_2_TRIVIA} title="Shrek 2" scoreLabel="Shrek 2" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7011,6 +7097,7 @@ export default function App() {
             <Route path="/selector-minecraft" element={<MinecraftSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
+            <Route path="/selector-bad-guys" element={<BadGuysSelector />} />
 
             {/* Kung Fu Panda Universe */}
             <Route path="/selector-kung-fu-panda" element={<KungFuPandaSelector />} />
