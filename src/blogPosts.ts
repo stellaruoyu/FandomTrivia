@@ -11,6 +11,146 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'the-bad-guys-2-quiz',
+    title: 'The Bad Guys 2 Quiz: Can You Actually Prove You Know Every Heist, Twist, and Crew Secret?',
+    metaDescription: 'Take the ultimate The Bad Guys 2 quiz and prove your sequel lore, Kitty Kat twists, Diane secrets, and crew knowledge.',
+    date: '2026-05-03',
+    author: 'Fandom Trivia Team',
+    image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560',
+    keywords: ['The Bad Guys 2 quiz', 'The Bad Guys 2 trivia', 'The Bad Guys quiz', 'Bad Guys personality test', 'Kitty Kat trivia', 'Diane Foxington fan theories', 'DreamWorks heist movie quiz', 'Mr Wolf knowledge test'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>The Bad Guys 2</strong> takes everything fans loved about the first movie and turns the pressure up immediately. The crew is trying to stay good, the heists get messier, the alliances get shakier, and the sequel throws new chaos at Mr. Wolf, Mr. Snake, Ms. Tarantula, Mr. Shark, and Mr. Piranha fast. If you think you were actually paying attention to every twist, this <strong>The Bad Guys 2 quiz</strong> is where you prove it.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-bad-guys-2" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate The Bad Guys 2 Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why The Bad Guys 2 Trivia Is Harder Than It Looks</h2>
+      <p>On the surface, fans remember the broad stuff. The gang is back. The sequel gets bigger. New criminals enter the picture. Mr. Wolf and Diane Foxington keep giving fans something to talk about. But a real <strong>The Bad Guys 2 trivia</strong> challenge is not about broad recognition. It is about whether you remember the details that separate real fans from people who only caught the trailer energy.</p>
+      <p class="mt-4">Do you remember which outside animation studio contributed to the film? Which setting from the early drafts got replaced by the Multinational Space Station? What specific footage is used to target Diane? Those are the kinds of questions that make a real <strong>DreamWorks heist movie quiz</strong> worth taking. If you want a serious fan challenge, <a href="/trivia-bad-guys-2" class="text-primary hover:text-primary/80 font-bold">test your knowledge now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-bad-guys-2" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-orange-300">Challenge:</span> Test your The Bad Guys 2 knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which The Bad Guys Character Are You Most Like?</h2>
+      <p>Every good fandom turns into a personality debate eventually, and this franchise is built for it. Before you <a href="/trivia-bad-guys-2" class="text-primary hover:text-primary/80 font-bold">take The Bad Guys 2 quiz</a>, ask yourself which energy actually fits you.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Mr. Wolf:</strong> smooth under pressure, strategic, and always trying to stay two steps ahead of the room.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Diane Foxington:</strong> composed, dangerous, and far more complicated than casual viewers realize.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Mr. Snake:</strong> skeptical, sharp, and usually the first one to sense that something is off.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Kitty Kat:</strong> confident, manipulative, and perfectly willing to weaponize everyone else's weak spots.</li>
+      </ul>
+
+      <p>That is why searches around a <strong>Bad Guys personality test</strong>, <strong>Kitty Kat trivia</strong>, and <strong>Diane Foxington fan theories</strong> make so much sense. Fans do not just want plot summaries. They want to measure which character they match, which loyalties matter, and who really controlled the sequel's biggest moments.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Sequel Lore?</h2>
+      <p>A high score on a real <strong>The Bad Guys quiz</strong> should mean more than remembering the crew lineup. It should mean you can track the sequel's production details, character milestones, draft changes, and plot reveals without falling apart halfway through.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Questions That Expose Casual Fans Fast</h3>
+      <p>Can you identify who voices Bulgarian Pigtail? Do you know what tournament replaced the rave-party concept from the earlier script? Do you remember the release timing for Australia after the August 1, 2025 U.S. premiere? These are not surface-level memory checks. They are the kind of specifics that turn a normal fan into someone who can actually claim they passed a real <strong>Mr Wolf knowledge test</strong>.</p>
+      <p class="mt-4">The same goes for performance and production trivia. One of the sequel's strongest fan hooks is that it gives you material to debate outside the plot. Voice cast recording sessions changed. Character details mirrored the actors in specific ways. The animation pipeline shifted. That means a strong <strong>The Bad Guys 2 trivia</strong> score shows you know the movie and the story behind the movie.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Details Fans Actually Argue About</h3>
+      <p>The best fandom quizzes always reward specifics. What does Kitty use against Diane? Which disguise does Mr. Shark take on during the wedding sequence? What draft-era location was swapped out before the final version? When fans talk about <strong>Diane Foxington fan theories</strong> or compare the sequel to the first movie, these are the details that keep the conversation alive.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you keep Mr. Wolf, Diane, Kitty Kat, Snake, Shark, and the new additions straight without guessing?</li>
+        <li><strong>Production knowledge:</strong> Do you actually remember the Sony Pictures Imageworks contribution, the shared recording sessions, and the actor-linked character details?</li>
+        <li><strong>Sequel-specific lore:</strong> Are you ready for questions about blackmail footage, the Lords of Lucha, and the film's alternate draft concepts?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the The Bad Guys 2 Quiz Worth Taking</h2>
+      <p>This is not a lazy sequel recap stuffed with obvious questions and easy points. It is a real challenge built for fans who think they caught every joke, every reveal, every production detail, and every character beat. Whether you are here for <strong>The Bad Guys 2 quiz</strong>, deeper <strong>The Bad Guys 2 trivia</strong>, or just a way to expose which friend in your group was bluffing, this is the score that matters.</p>
+      <p class="mt-4">If you have been acting like you know this sequel better than everyone else, now is the moment to back it up. The crew is waiting. Kitty is watching. And the quiz is ready.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-orange-500/20 via-amber-900/40 to-black border border-orange-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Join the Crew?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Take the ultimate <strong>The Bad Guys 2 quiz</strong>, test your sequel knowledge, and prove whether you actually caught every heist detail.</p>
+        <a href="/trivia-bad-guys-2" class="inline-block bg-gradient-to-r from-orange-300 to-yellow-400 hover:from-orange-200 hover:to-yellow-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(251,146,60,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(250,204,21,0.35)]">
+          Take the Ultimate The Bad Guys 2 Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans remember the crew. The best fans remember the twists, the production details, and the lore. Take the quiz and prove it.</p>
+    `
+  },
+  {
+    slug: 'wicked-quiz',
+    title: 'Wicked Quiz: Can You Defy Gravity and Prove You Know Oz Better Than Anyone Else?',
+    metaDescription: 'Take the ultimate Wicked quiz and test your knowledge of Elphaba, Glinda, Fiyero, Shiz, and the Emerald City.',
+    date: '2026-04-30',
+    author: 'Fandom Trivia Team',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s',
+    keywords: ['Wicked quiz', 'Wicked trivia', 'Wicked personality test', 'Elphaba trivia', 'Glinda trivia', 'Wicked fan theories', 'Emerald City knowledge test', 'Oz quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Wicked</strong> has everything fandoms love: iconic characters, unforgettable songs, big emotional turns, and enough Oz lore to keep fans arguing for years. Between Elphaba, Glinda, Fiyero, Madame Morrible, Boq, Nessarose, the silver shoes, and the Emerald City, there is a lot to remember. If you think you know Oz inside out, this <strong>Wicked quiz</strong> is your chance to prove it.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-wicked" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate Wicked Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why Wicked Trivia Is Harder Than It Looks</h2>
+      <p>On the surface, plenty of fans can answer the obvious stuff. Elphaba is the green one. Glinda is the bubbly one. Fiyero is the charming one. But a real <strong>Wicked trivia</strong> challenge is not about broad recognition. It is about the details that matter: Elphaba's surname, the role of Shiz University, what Madame Morrible does with weather, why the silver shoes matter, and how the story connects to the larger world of Oz.</p>
+      <p class="mt-4">That is exactly why a serious <strong>Emerald City knowledge test</strong> works so well. It rewards fans who remember the plot, the production details, and the character arcs, not just the biggest musical numbers. If you think you have the answers, this is where you prove it.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-wicked" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-300">Challenge:</span> Test your Wicked knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Wicked Character Are You Most Like?</h2>
+      <p>Every great fandom turns into a personality debate sooner or later. Before you <a href="/selector-wicked" class="text-primary hover:text-primary/80 font-bold">take the Wicked quiz</a>, ask yourself which Ozian energy fits you best.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Elphaba:</strong> principled, intense, and impossible to ignore when something is unjust.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Glinda:</strong> charismatic, polished, and far smarter than people expect at first glance.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Fiyero:</strong> laid-back on the surface, but more important to the story than he first appears.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Madame Morrible:</strong> strategic, controlling, and always working the room.</li>
+      </ul>
+
+      <p>That is why searches for a <strong>Wicked personality test</strong>, <strong>Elphaba trivia</strong>, and <strong>Glinda trivia</strong> keep growing. Fans do not just want a recap. They want to know which character they are like and how deeply they understand the story.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore?</h2>
+      <p>A strong score on a real <strong>Wicked quiz</strong> means you remember more than the soundtrack. You know the details that give the story weight: the school setting, the politics of Oz, the rise of Elphaba, the role of the Wizard, and the emotional logic behind the big transformations.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Character Questions That Expose Casual Fans</h3>
+      <p>Can you remember Elphaba's surname? Do you know why the silver shoes are so important? Can you explain what Madame Morrible controls, or what makes Boq's transformation such a tragic turning point? Those are the kinds of questions that separate true fans from people who just know the biggest songs.</p>
+      <p class="mt-4">The story gets even more interesting when you factor in the two-part film structure. Part 1 introduces the friendships, rivalries, and political tensions. Part 2 pushes those threads into consequences, sacrifice, and the darker side of Oz. That means a real <strong>Wicked trivia</strong> challenge has room for everything from casting facts to plot turns.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Details Fans Actually Remember</h3>
+      <p>The best fandom quizzes reward specificity. What color are the shoes? Which city does the story move through? Which characters are at the center of the emotional split? How does the Wizard fit into Elphaba's origin story? These are the details that make a <strong>Wicked fan theories</strong> conversation fun, because they give fans something real to debate.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you track Elphaba, Glinda, Fiyero, Boq, Nessarose, and Morrible without mixing up their roles?</li>
+        <li><strong>Lore memory:</strong> Do you actually remember the silver shoes, Shiz University, and the Emerald City politics?</li>
+        <li><strong>Fan theory territory:</strong> Are you ready to discuss the bigger meaning behind power, friendship, and how Oz frames good and wickedness?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the Wicked Quiz Worth Taking</h2>
+      <p>This is not a shallow roundup that only celebrates the songs. It is a real challenge for fans who want to prove they know the story, the characters, and the world of Oz. Whether you are here for <strong>Wicked trivia</strong>, a harder <strong>Oz quiz</strong>, or just a way to settle a friendly argument, this is the page that makes the score matter.</p>
+      <p class="mt-4">If you have been telling people you know Wicked better than they do, this is your moment. The Emerald City is waiting. Elphaba is watching. And the quiz is ready whenever you are.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-emerald-500/20 via-fuchsia-900/40 to-black border border-emerald-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Defy Gravity?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Take the ultimate <strong>Wicked quiz</strong>, test your Oz knowledge, and prove whether you are truly ready for the Emerald City.</p>
+        <a href="/selector-wicked" class="inline-block bg-gradient-to-r from-emerald-300 to-fuchsia-400 hover:from-emerald-200 hover:to-fuchsia-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(16,185,129,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(217,70,239,0.35)]">
+          Take the Ultimate Wicked Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans know the songs. The best fans know the lore, the characters, and the details that make Wicked unforgettable.</p>
+    `
+  },
+  {
     slug: 'how-to-train-your-dragon-quiz',
     title: 'How to Train Your Dragon Quiz: Can You Actually Conquer the Ultimate Berk Knowledge Test?',
     metaDescription: 'Think you know HTTYD? Take the ultimate How to Train Your Dragon quiz and prove your Berk, Toothless, Alpha, and Hidden World lore.',

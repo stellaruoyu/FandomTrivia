@@ -22,6 +22,7 @@ import {
   HARRY_POTTER_TRIVIA, HARRY_POTTER_COS_TRIVIA,
   HARRY_POTTER_POA_TRIVIA, HARRY_POTTER_GOF_TRIVIA, HARRY_POTTER_OOTP_TRIVIA, HARRY_POTTER_HBP_TRIVIA, HARRY_POTTER_DH_TRIVIA,
   HOPPERS_TRIVIA,
+  BAD_GUYS_1_TRIVIA, BAD_GUYS_2_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
   DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
@@ -51,6 +52,7 @@ import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
 import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
 import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA } from './avatarTrivia';
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
+import { WICKED_PART_1_TRIVIA, WICKED_PART_2_TRIVIA, WICKED_MIXED_TRIVIA } from './wickedTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -126,6 +128,9 @@ const getQuizTitle = (quizId: string): string => {
     'toy-story-3': 'Toy Story 3',
     'toy-story-4': 'Toy Story 4',
     'toy-story-random': 'The Ultimate Toy Box',
+    'wicked-part-1': 'Wicked: Part 1',
+    'wicked-for-good': 'Wicked: For Good',
+    'wicked-random': 'Wicked Mixed Challenge',
     'shrek-1': 'Shrek',
     'shrek-2': 'Shrek 2',
     'shrek-3': 'Shrek the Third',
@@ -146,6 +151,8 @@ const getQuizTitle = (quizId: string): string => {
     'dog-man-book13': 'Dog Man: Book 13',
     'dog-man-book14': 'Dog Man: Book 14',
     'dog-man-random': 'Supa Buddies Mixed Challenge',
+    'bad-guys-1': 'The Bad Guys',
+    'bad-guys-2': 'The Bad Guys 2',
     'avatar-1': 'Avatar (2009)',
     'avatar-2': 'Avatar: The Way of Water',
     'avatar-3': 'Avatar: Fire and Ash',
@@ -214,7 +221,9 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('panda') || q.includes('kfp')) return 'Kung Fu Panda';
   if (q.includes('toy-story') || q.includes('toy story')) return 'Toy Story';
   if (q.includes('shrek')) return 'Shrek';
+  if (q.includes('bad-guys') || q.includes('bad guys')) return 'The Bad Guys';
   if (q.includes('hoppers')) return 'Hoppers';
+  if (q.includes('wicked')) return 'Wicked';
   return 'Other Challenges';
 };
 
@@ -238,7 +247,9 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('pawpatrol') || q.includes('paw patrol')) return '/images/pawpatrol.jpg';
   if (q.includes('toy-story') || q.includes('toy story')) return '/images/toystory.jpg';
   if (q.includes('shrek')) return '/images/shrek.jpg';
+  if (q.includes('bad-guys') || q.includes('bad guys')) return 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560';
   if (q.includes('hoppers')) return '/images/hoppers.webp';
+  if (q.includes('wicked')) return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -307,6 +318,7 @@ const useQuizStats = () => {
       if (target === 'minecraft' && (univName.includes('minecraft') || id.includes('minecraft'))) return sum + val;
       if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
       if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
+      if (target === 'bad-guys' && (univName.includes('bad guys') || id.includes('bad-guys') || id.includes('bad guys'))) return sum + val;
       
       return sum;
     }, 0);
@@ -690,7 +702,7 @@ const UsernameModal = ({ onComplete }: { onComplete: (username: string) => void 
   );
 };
 
-const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg }: {
+interface NavbarProps {
   isDashboard: boolean,
   user: User | null,
   onLogin: () => void,
@@ -702,7 +714,10 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   soundEnabled: boolean,
   onToggleSound: () => void,
   onTriggerEasterEgg?: () => void
-}) => {
+}
+
+const Navbar = (props: NavbarProps) => {
+  const { isDashboard, user, onLogin, onLogout, onResetUsername, onShowHistory, onShowBadges, onShowInfo, soundEnabled, onToggleSound, onTriggerEasterEgg } = props;
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const clickCountRef = useRef(0);
@@ -870,25 +885,318 @@ const Navbar = ({ isDashboard, user, onLogin, onLogout, onResetUsername, onShowH
   );
 };
 
-const InfoModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
-    <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
-    >
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
-        <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{title}</h3>
-        <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
-          <X className="size-4" />
-        </button>
+const InfoModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => {
+  const lines = content.split('\n').map(line => line.trim()).filter((line, index, arr) => line.length > 0 || arr[index - 1]?.length !== 0);
+  const isWelcome = title.toLowerCase().includes('welcome') || title.toLowerCase().includes('how it works');
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
+      >
+        <div className={`flex items-center justify-between pb-4 border-b ${isWelcome ? 'border-primary/20' : 'border-white/10'}`}>
+          <div className="space-y-2">
+            {isWelcome && (
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-primary">Quick Start</p>
+            )}
+            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{title}</h3>
+          </div>
+          <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+          {lines.map((line, index) => {
+            if (!line) {
+              return <div key={`spacer-${index}`} className="h-2" />;
+            }
+
+            if (/^\d+\./.test(line)) {
+              const stepNumber = line.match(/^(\d+)\./)?.[1] || `${index + 1}`;
+              const stepText = line.replace(/^\d+\.\s*/, '');
+              const stepStyles = [
+                'from-orange-500/20 to-amber-500/10 border-orange-400/25',
+                'from-sky-500/20 to-cyan-500/10 border-sky-400/25',
+                'from-fuchsia-500/20 to-rose-500/10 border-fuchsia-400/25',
+              ];
+              return (
+                <div key={line + index} className={`rounded-2xl border bg-gradient-to-r p-4 ${stepStyles[(Number(stepNumber) - 1) % stepStyles.length]}`}>
+                  <div className="flex items-start gap-4">
+                    <div className="size-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-sm font-black text-white shrink-0">
+                      {stepNumber}
+                    </div>
+                    <p className="text-slate-200 text-sm leading-relaxed font-medium">{stepText}</p>
+                  </div>
+                </div>
+              );
+            }
+
+            if (line.startsWith('Tip:')) {
+              return (
+                <div key={line + index} className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4">
+                  <p className="text-emerald-100 text-sm leading-relaxed">
+                    <span className="font-black uppercase tracking-widest text-[10px] text-emerald-300 mr-2">Tip</span>
+                    {line.replace(/^Tip:\s*/, '')}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <p key={line + index} className="text-slate-300 text-sm leading-relaxed">
+                {line}
+              </p>
+            );
+          })}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+const SearchModal = ({ onClose }: { onClose?: () => void }) => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const close = onClose ?? (() => navigate(-1));
+  const recentSearchesKey = 'recentSearches';
+  const scrollYRef = useRef(0);
+
+  type SearchResultItem = {
+    type: 'quiz' | 'blog';
+    title: string;
+    subtitle: string;
+    href: string;
+    tags?: string[];
+    image?: string;
+  };
+
+  const [recentSearches, setRecentSearches] = useState<SearchResultItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(recentSearchesKey);
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed.filter(Boolean).slice(0, 6) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const saveRecentSearch = (item: SearchResultItem) => {
+    setRecentSearches((current) => {
+      const next = [item, ...current.filter((existing) => existing.href !== item.href)].slice(0, 6);
+      localStorage.setItem(recentSearchesKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const universeRouteMap: Record<string, string> = {
+      'twilight': '/selector-twilight',
+      'harry-potter': '/selector-harry-potter',
+      'star-wars': '/selector-star-wars',
+      'kpop': '/selector-kpop',
+      'three-body': '/selector-three-body',
+      'zootopia': '/selector-zootopia',
+      'despicable-me': '/selector-despicable-me',
+      'frozen': '/selector-frozen',
+      'moana': '/selector-moana',
+      'cat-in-the-hat': '/selector-cat-in-the-hat',
+      'how-to-train-your-dragon': '/selector-how-to-train-your-dragon',
+      'avatar': '/selector-avatar',
+      'minecraft': '/selector-minecraft',
+      'super-mario': '/selector-super-mario',
+      'pawpatrol': '/selector-paw-patrol',
+      'kung-fu-panda': '/selector-kung-fu-panda',
+      'toy-story': '/selector-toy-story',
+      'shrek': '/selector-shrek',
+      'dog-man': '/selector-dog-man',
+      'bad-guys': '/selector-bad-guys',
+      'hoppers': '/selector-hoppers',
+    };
+
+    const quizResults = UNIVERSES
+      .filter((universe) => {
+        if (!q) return true;
+        const haystack = [
+          universe.title,
+          universe.description,
+          ...(universe.tags || []),
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
+      })
+      .map((universe) => ({
+        type: 'quiz',
+        title: universe.title,
+        subtitle: universe.description,
+        href: universe.path || universeRouteMap[universe.id] || '/',
+        tags: universe.tags,
+        image: universe.image,
+      }));
+
+    const blogResults = BLOG_POSTS
+      .filter((post) => {
+        if (!q) return false;
+        const haystack = [post.title, post.metaDescription, ...(post.keywords || [])].join(' ').toLowerCase();
+        return haystack.includes(q);
+      })
+      .map((post) => ({
+        type: 'blog',
+        title: post.title,
+        subtitle: post.metaDescription,
+        href: `/blog/${post.slug}`,
+        tags: post.keywords.slice(0, 2),
+        image: post.image,
+      })) as SearchResultItem[];
+
+    return [...quizResults, ...blogResults].slice(0, 12);
+  }, [query]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [close]);
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previousPosition = document.body.style.position;
+    const previousTop = document.body.style.top;
+    const previousLeft = document.body.style.left;
+    const previousRight = document.body.style.right;
+    const previousWidth = document.body.style.width;
+    const previousOverscrollBehavior = document.documentElement.style.overscrollBehavior;
+
+    scrollYRef.current = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollYRef.current}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.documentElement.style.overscrollBehavior = 'none';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.position = previousPosition;
+      document.body.style.top = previousTop;
+      document.body.style.left = previousLeft;
+      document.body.style.right = previousRight;
+      document.body.style.width = previousWidth;
+      document.documentElement.style.overscrollBehavior = previousOverscrollBehavior;
+      window.scrollTo({ top: scrollYRef.current, left: 0, behavior: 'auto' });
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm p-4 sm:p-6 flex items-start justify-center overflow-y-auto overscroll-contain">
+      <div className="w-full max-w-3xl mt-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">Search Quizzes</p>
+            <h3 className="text-2xl font-black text-white tracking-tight">Find a quiz fast</h3>
+          </div>
+          <button onClick={close} className="size-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5">
+          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+            <Search className="size-5 text-slate-400" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search Avatar, Harry Potter, Twilight, blog guides..."
+              className="w-full bg-transparent outline-none text-white placeholder:text-slate-500 font-medium"
+              autoFocus
+            />
+          </div>
+
+          {recentSearches.length > 0 && query.trim() === '' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Recent Searches</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRecentSearches([]);
+                    localStorage.removeItem(recentSearchesKey);
+                  }}
+                  className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-500 hover:text-primary transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recentSearches.map((item) => (
+                  <button
+                    key={`recent-${item.href}`}
+                    type="button"
+                    onClick={() => {
+                      navigate(item.href, { replace: true });
+                      if (onClose) onClose();
+                      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10 hover:border-primary/30 transition-all"
+                  >
+                    <span className="max-w-[16rem] truncate">{item.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+            {results.length === 0 ? (
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
+                No quizzes matched that search.
+              </div>
+            ) : (
+              results.map((item) => (
+              <button
+                key={`${item.type}-${item.href}`}
+                onClick={() => {
+                  saveRecentSearch(item);
+                  navigate(item.href, { replace: true });
+                  if (onClose) onClose();
+                  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                }}
+                  className="w-full text-left rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/30 transition-all p-4 md:p-5 flex flex-col md:flex-row gap-4"
+                >
+                  <div className="w-full md:w-40 h-40 md:h-28 rounded-xl overflow-hidden border border-white/10 bg-black/30 shrink-0">
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} className="size-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="size-full bg-gradient-to-br from-primary/20 to-cyan-500/10" />
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        {item.type === 'quiz' ? 'Quiz' : 'Blog'}
+                      </span>
+                      {(item.tags || []).slice(0, 2).map((tag: string) => (
+                        <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{tag}</span>
+                      ))}
+                    </div>
+                    <h4 className="text-white font-black tracking-tight text-lg">{item.title}</h4>
+                    <p className="text-sm text-slate-400 line-clamp-2">{item.subtitle}</p>
+                  </div>
+                  <ArrowRight className="size-4 text-slate-500 shrink-0 mt-1 hidden md:block" />
+                </button>
+              ))
+            )}
+          </div>
+        </div>
       </div>
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2 text-slate-300 text-sm leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
-    </motion.div>
-  </div>
-);
+    </div>
+  );
+};
 
 const LegalPage = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const navigate = useNavigate();
@@ -990,7 +1298,9 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'toy-story') navigate('/selector-toy-story', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'shrek') navigate('/selector-shrek', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'bad-guys') navigate('/selector-bad-guys', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
   };
 
   return (
@@ -1179,8 +1489,10 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-kung-fu-panda" className="hover:text-amber-500 transition-colors">Kung Fu Panda</Link></li>
           <li><Link to="/selector-toy-story" className="hover:text-amber-500 transition-colors">Toy Story</Link></li>
           <li><Link to="/selector-shrek" className="hover:text-green-400 transition-colors">Shrek</Link></li>
+          <li><Link to="/selector-bad-guys" className="hover:text-orange-400 transition-colors">The Bad Guys</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
           <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
+          <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
         </ul>
       </div>
 
@@ -1198,7 +1510,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
             </>
           ) : (
             <>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', 'Select a universe, test your fan knowledge with our detailed trivia questions, earn points, and unlock exclusive badges to prove you are the ultimate fan!'); }} className="hover:text-primary transition-colors">How it works</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', ['Pick a fandom, take the quiz, climb the rankings, and collect badges that show exactly how dangerous your fan knowledge is.', '', '1. Choose a universe or jump into the Daily Mystery Challenge.', '2. Answer the questions, push forward, and try not to get exposed by the deep cuts.', '3. Finish strong, compare scores, and see who actually knows the lore.', '', 'Tip: sign in if you want your badges, history, and leaderboard progress to stay with you.'].join('\n')); }} className="hover:text-primary transition-colors">How it works</a></li>
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
@@ -1441,6 +1753,13 @@ const StarWarsSelector = () => {
   );
 };
 
+const BAD_GUYS_GRADES = [
+  { threshold: 90, label: 'Mastermind Wolf', color: 'text-amber-400', character: { name: 'Mr. Wolf', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'You can spot every con, every twist, and every heist detail.' } },
+  { threshold: 70, label: 'Crimson Paw Insider', color: 'text-orange-300', character: { name: 'Diane Foxington', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'Strong work. You know the crew, the cons, and the production deep cuts.' } },
+  { threshold: 50, label: 'Golden Dolphin Runner', color: 'text-blue-400', character: { name: 'Mr. Snake', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'You have the basics down, but there are still a few heists to study.' } },
+  { threshold: 0, label: 'New Recruit', color: 'text-slate-400', character: { name: 'Mr. Piranha', image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560', desc: 'Time to go good and learn the crew from the ground up.' } },
+];
+
 const HOPPERS_GRADES = [
   { threshold: 90, label: 'Pond Authority', color: 'text-amber-400', character: { name: 'Mabel', image: '/images/hoppers.webp', desc: 'You mastered the pond rules and the mind-casting lore.' } },
   { threshold: 70, label: 'Mind-Casting Insider', color: 'text-purple-400', character: { name: 'Dr. Sam', image: '/images/hoppers.webp', desc: 'Strong work. You know the science, the stakes, and the hidden details.' } },
@@ -1453,6 +1772,13 @@ const KPOP_GRADES = [
   { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
   { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
   { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
+];
+
+const WICKED_GRADES = [
+  { threshold: 90, label: 'Defied Gravity', color: 'text-emerald-400', character: { name: 'Elphaba', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'You know the politics, the magic, and the full arc of Oz.' } },
+  { threshold: 70, label: 'Emerald City Insider', color: 'text-lime-300', character: { name: 'Glinda', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'Strong work. You have a solid grasp of the film adaptations and their lore.' } },
+  { threshold: 50, label: 'Shiz Scholar', color: 'text-fuchsia-300', character: { name: 'Fiyero', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'You are getting there, but there is more Ozian history to learn.' } },
+  { threshold: 0, label: 'Munchkinland Newcomer', color: 'text-slate-400', character: { name: 'Nessarose', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'Time to study the spells, the songs, and the secrets of Wicked.' } },
 ];
 
 const HoppersSelector = ({ key }: { key?: string }) => {
@@ -1536,6 +1862,61 @@ const KPopSelector = ({ key }: { key?: string }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
           { label: "Film 1", title: "K-Pop: Demon Hunters", desc: `${KPOP_TRIVIA.length} questions`, icon: "🎤", view: 'trivia-kpop', gradient: 'from-pink-600/20 to-purple-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const WickedSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Defy Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-fuchsia-300">Gravity</span></h1>
+        <Helmet>
+          <title>Wicked Trivia & Oz Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your Wicked knowledge across both film parts. From Shiz to the Emerald City, prove you belong in Oz." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-wicked" />
+          <meta property="og:title" content="Wicked Trivia & Oz Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Enter Oz and take the Wicked quiz series." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "Wicked", item: "https://fandom-trivia.vercel.app/selector-wicked" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a part or try a random mix from across the full Wicked story.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: "Part 1", title: "Wicked: Part 1", desc: `${WICKED_PART_1_TRIVIA.length} questions`, icon: "🧹", view: 'trivia-wicked-part-1', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Part 2", title: "Wicked: For Good", desc: `${WICKED_PART_2_TRIVIA.length} questions`, icon: "💚", view: 'trivia-wicked-part-2', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both parts", icon: "🎲", view: 'trivia-wicked-random', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -2062,6 +2443,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [hasCompletedAllQuestions, setHasCompletedAllQuestions] = useState(false);
   const [matchEndReason, setMatchEndReason] = useState<'completed' | 'timer' | null>(null);
   const [timerNow, setTimerNow] = useState(() => Date.now());
+  const [repeatCycle, setRepeatCycle] = useState(0);
+  const [matchScore, setMatchScore] = useState(0);
+  const [matchAnsweredCount, setMatchAnsweredCount] = useState(0);
   const [sessionId] = useState(() => {
     const key = `fandom_trivia_session_${scoreLabel}`;
     let id = sessionStorage.getItem(key);
@@ -2085,6 +2469,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const completionTimeRef = useRef<number | null>(completionTime);
   const hasCompletedAllQuestionsRef = useRef(hasCompletedAllQuestions);
   const finishedRef = useRef(finished);
+  const matchScoreRef = useRef(matchScore);
+  const matchAnsweredCountRef = useRef(matchAnsweredCount);
+  const isRepeatMatch = isMultiplayerMode && matchEndMode === 'timer';
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -2124,6 +2511,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     hasCompletedAllQuestionsRef.current = hasCompletedAllQuestions;
     finishedRef.current = finished;
   }, [correctCount, answeredCount, completionTime, hasCompletedAllQuestions, finished]);
+
+  useEffect(() => {
+    matchScoreRef.current = matchScore;
+    matchAnsweredCountRef.current = matchAnsweredCount;
+  }, [matchScore, matchAnsweredCount]);
 
   useEffect(() => {
     if (sessionQuestions.length === 0) return;
@@ -2230,9 +2622,21 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setCompletionTime(finalDuration);
 
     if (onQuizComplete) {
-      onQuizComplete(scoreLabel, Math.round((correctCount / total) * 100), !!isDaily);
+      const finalScore = isRepeatMatch ? matchScoreRef.current : correctCountRef.current;
+      const finalAnswered = isRepeatMatch ? matchAnsweredCountRef.current : answeredCountRef.current;
+      const pct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
+      onQuizComplete(scoreLabel, pct, !!isDaily);
     }
   };
+
+  function resetCurrentRoundState(nextCurrentQ = 0) {
+    setCurrentQ(nextCurrentQ);
+    setSelected(null);
+    setScores({});
+    setUserAnswers({});
+    setBotAnswers({});
+    setBotResults({});
+  }
 
   const sendLobbyEvent = async (event: string, payload: Record<string, any>) => {
     if (!lobbyChannelRef.current) return;
@@ -2553,6 +2957,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
           [userId]: { ...(prev[userId] || {}), [questionIndex]: answer }
         }));
       })
+      .on('broadcast', { event: 'question_cycle' }, ({ payload }) => {
+        if (payload?.cycle !== undefined) {
+          setRepeatCycle(payload.cycle);
+        }
+        resetCurrentRoundState(payload?.currentQ ?? 0);
+      })
       .on('broadcast', { event: 'final_results' }, ({ payload }) => {
         const {
           userId,
@@ -2678,13 +3088,13 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       const currentId = user?.id || sessionId;
       void sendMatchEvent('score_update', {
         userId: currentId,
-        score: correctCount,
+        score: isRepeatMatch ? matchScore : correctCount,
         team: myTeamId,
-        answeredCount,
+        answeredCount: isRepeatMatch ? matchAnsweredCount : answeredCount,
         name: getDisplayName(user, 'Guest Fan')
       });
     }
-  }, [correctCount, answeredCount, gameState, matchRoomId, gameMode, myTeamId, user]);
+  }, [correctCount, answeredCount, matchScore, matchAnsweredCount, isRepeatMatch, gameState, matchRoomId, gameMode, myTeamId, user]);
 
   // Handle startTime initialization when game starts
   useEffect(() => {
@@ -3073,14 +3483,24 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       playCorrectSound();
+      if (isRepeatMatch) {
+        setMatchScore(prev => prev + 1);
+        setMatchAnsweredCount(prev => prev + 1);
+      }
     } else {
       const isCorrect = option.toLowerCase() === correctAnsString.toLowerCase();
       setScores(prev => ({ ...prev, [currentQ]: isCorrect ? 'correct' : 'incorrect' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       if (isCorrect) {
         playCorrectSound();
+        if (isRepeatMatch) {
+          setMatchScore(prev => prev + 1);
+        }
       } else {
         playIncorrectSound();
+      }
+      if (isRepeatMatch) {
+        setMatchAnsweredCount(prev => prev + 1);
       }
     }
 
@@ -3097,12 +3517,18 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const completedQuestions = Object.keys(finalAnswers).length;
     const reachedQuestionGoal = isMultiplayerMode && matchEndMode === 'question_goal' && completedQuestions >= Math.min(matchQuestionGoal, total);
     const reachedQuestionListEnd = currentQ >= total - 1;
-    const shouldLoopQuestions = isMultiplayerMode && matchEndMode === 'timer' && reachedQuestionListEnd && !finished;
+    const shouldLoopQuestions = isRepeatMatch && reachedQuestionListEnd && !finished;
     const shouldFinalizeCurrentPlayer = reachedQuestionGoal || (!isMultiplayerMode && reachedQuestionListEnd);
 
     if (shouldLoopQuestions) {
-      setCurrentQ(0);
-      setSelected(null);
+      resetCurrentRoundState(0);
+      setRepeatCycle(prev => prev + 1);
+      if (isHost && matchRoomId) {
+        void sendMatchEvent('question_cycle', {
+          currentQ: 0,
+          cycle: repeatCycle + 1
+        });
+      }
       return;
     }
 
@@ -3114,13 +3540,15 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
     const endTime = Date.now();
     const durationSeconds = startTime ? Math.floor((endTime - startTime) / 1000) : 0;
+    const sessionScore = isRepeatMatch ? matchScoreRef.current : correctCountRef.current;
+    const sessionAnswered = isRepeatMatch ? matchAnsweredCountRef.current : answeredCountRef.current;
     const resultPayload = {
       userId: currentId,
       allAnswers: finalAnswers,
       isFinished: true,
       completionTime: durationSeconds,
-      answeredCount: completedQuestions,
-      score: correctCount,
+      answeredCount: sessionAnswered,
+      score: sessionScore,
       team: myTeamId,
       name: getDisplayName(user, 'Guest Fan')
     };
@@ -3131,10 +3559,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       ...prev,
       [currentId]: {
         ...(prev[currentId] || {}),
-        score: correctCount,
+        score: sessionScore,
         team: myTeamId,
         name: getDisplayName(user, 'Guest Fan'),
-        answeredCount: completedQuestions,
+        answeredCount: sessionAnswered,
         completionTime: durationSeconds,
         isFinished: true
       }
@@ -3142,7 +3570,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setPlayerProgress(prev => ({
       ...prev,
       [currentId]: {
-        answeredCount: completedQuestions,
+        answeredCount: sessionAnswered,
         completionTime: durationSeconds,
         isFinished: true
       }
@@ -3208,6 +3636,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     setTimerNow(Date.now());
     setIsRealtimeReady(false);
     setFinalMatchResults([]);
+    setMatchScore(0);
+    setMatchAnsweredCount(0);
+    setRepeatCycle(0);
     matchEndedRef.current = false;
   };
 
@@ -3217,15 +3648,16 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
       return;
     }
     setSaving(true);
-    const pct = Math.round((correctCount / total) * 100);
+    const scoreToSave = isRepeatMatch ? matchScore : correctCount;
+    const answeredToSave = isRepeatMatch ? matchAnsweredCount : total;
     try {
       const { error } = await supabase
         .from('scores')
         .insert({
           user_id: user.id,
           quiz_id: scoreLabel,
-          score: correctCount,
-          total: total,
+          score: scoreToSave,
+          total: answeredToSave,
           completion_time: completionTime,
           is_daily_challenge: !!isDaily
         });
@@ -3294,8 +3726,31 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     return p.id !== currentId && pTeam === myTeamId;
   }) : null;
 
-  const derivedTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId) : correctCount;
-  const derivedOpponentTeamScore = gameMode === 'team' ? getTeamProgress(myTeamId === 'A' ? 'B' : 'A') : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+  const liveCorrectCount = isRepeatMatch ? matchScore : correctCount;
+  const liveAnsweredCount = isRepeatMatch ? matchAnsweredCount : answeredCount;
+  const derivedTeamScore = gameMode === 'team'
+    ? (isRepeatMatch
+      ? activeParticipants.reduce((sum, participant, index) => {
+          const participantTeam = playerScores[participant.id]?.team ?? (index % 2 === 0 ? 'A' : 'B');
+          const participantScore = participant.id === currentId
+            ? liveCorrectCount
+            : (playerScores[participant.id]?.score ?? calculateUserScore(participant.id));
+          return sum + (participantTeam === myTeamId ? participantScore : 0);
+        }, 0)
+      : getTeamProgress(myTeamId))
+    : liveCorrectCount;
+  const derivedOpponentTeamScore = gameMode === 'team'
+    ? (isRepeatMatch
+      ? activeParticipants.reduce((sum, participant, index) => {
+          const participantTeam = playerScores[participant.id]?.team ?? (index % 2 === 0 ? 'A' : 'B');
+          const participantScore = participant.id === currentId
+            ? liveCorrectCount
+            : (playerScores[participant.id]?.score ?? calculateUserScore(participant.id));
+          const opponentTeam = myTeamId === 'A' ? 'B' : 'A';
+          return sum + (participantTeam === opponentTeam ? participantScore : 0);
+        }, 0)
+      : getTeamProgress(myTeamId === 'A' ? 'B' : 'A'))
+    : (gameMode === 'bot' ? opponentScore : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
   const timeRemainingSec = matchTimerEndsAt
     ? Math.max(0, Math.ceil((matchTimerEndsAt - timerNow) / 1000))
     : null;
@@ -3306,7 +3761,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
         const syncedPlayer = playerScores[participant.id];
         const progress = isCurrentPlayer
           ? {
-              answeredCount,
+              answeredCount: liveAnsweredCount,
               completionTime,
               isFinished: hasCompletedAllQuestions || finished
             }
@@ -3315,7 +3770,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               completionTime: syncedPlayer?.completionTime ?? null,
               isFinished: syncedPlayer?.isFinished ?? false
             });
-        const score = isCurrentPlayer ? correctCount : (syncedPlayer?.score ?? calculateUserScore(participant.id));
+        const score = isCurrentPlayer ? liveCorrectCount : (syncedPlayer?.score ?? calculateUserScore(participant.id));
         const team = index % 2 === 0 ? 'A' : 'B';
 
         return {
@@ -3364,10 +3819,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const finalOpponentEntry = finalMatchResults.find(entry => !entry.isCurrentPlayer);
   const displayedOpponentScore = gameMode === 'bot'
     ? opponentScore
-    : (finalOpponentEntry ? finalOpponentEntry.score : (opponents[0] ? calculateUserScore(opponents[0].id) : 0));
+    : (finalOpponentEntry ? finalOpponentEntry.score : (opponents[0] ? (playerScores[opponents[0].id]?.score ?? calculateUserScore(opponents[0].id)) : 0));
 
   if (finished) {
-    const pct = Math.round((correctCount / total) * 100);
+    const scoreForDisplay = gameMode === 'team' ? derivedTeamScore : liveCorrectCount;
+    const pctBase = isRepeatMatch ? liveAnsweredCount : total;
+    const pct = pctBase > 0 ? Math.round((scoreForDisplay / pctBase) * 100) : 0;
     const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
@@ -3477,10 +3934,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-2">
               <div className="space-y-1">
                 <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                  {gameMode === 'team' ? derivedTeamScore : correctCount}/{total}
+                  {scoreForDisplay}/{pctBase}
                 </p>
                 <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
-                  {gameMode === 'team' ? 'Team Coordinated Score' : 'Your Score'} ({gameMode === 'team' ? Math.round((derivedTeamScore / total) * 100) : pct}%)
+                  {gameMode === 'team' ? 'Team Coordinated Score' : 'Your Score'} ({pct}%)
                 </p>
               </div>
               
@@ -3491,18 +3948,18 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <div className="space-y-1">
                     <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
                       {gameMode === 'team'
-                        ? `${derivedOpponentTeamScore}/${total}`
+                        ? `${derivedOpponentTeamScore}/${pctBase}`
                         : (gameMode !== 'bot' && !finalOpponentEntry && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
                           ? (opponents.length > 0 ? '0' : '...')
-                          : `${displayedOpponentScore}/${total}`}
+                          : `${displayedOpponentScore}/${pctBase}`}
                     </p>
                     <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
                       {gameMode === 'team' ? 'Rival Team Coordinated' : 'Rival Score'} 
                       {gameMode === 'team'
-                        ? ` (${Math.round((derivedOpponentTeamScore / total) * 100)}%)`
+                        ? ` (${pctBase > 0 ? Math.round((derivedOpponentTeamScore / pctBase) * 100) : 0}%)`
                         : (gameMode !== 'bot' && !finalOpponentEntry && (opponents[0] ? (Object.keys(playerAnswers[opponents[0].id] || {}).length === 0) : true))
                         ? (opponents.length > 0 ? '' : ' (Waiting...)')
-                        : ` (${Math.round((displayedOpponentScore / total) * 100)}%)`}
+                        : ` (${pctBase > 0 ? Math.round((displayedOpponentScore / pctBase) * 100) : 0}%)`}
                     </p>
                   </div>
                   <div className="hidden md:block w-px h-16 bg-white/10"></div>
@@ -3545,11 +4002,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             {gameMode === 'bot' && (
               <div className="w-full max-w-md mx-auto space-y-2">
                 <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                  <div className="h-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-500" style={{ width: `${(correctCount/total)*100}%` }} />
-                  <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${(opponentScore/total)*100}%` }} />
+                  <div className="h-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (scoreForDisplay/pctBase)*100 : 0}%` }} />
+                  <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (displayedOpponentScore/pctBase)*100 : 0}%` }} />
                 </div>
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-green-400">You ({correctCount})</span>
+                  <span className="text-green-400">You ({scoreForDisplay})</span>
                   <span className="text-red-400">Bot ({opponentScore})</span>
                 </div>
               </div>
@@ -3561,12 +4018,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
             <div className="w-full max-w-md mx-auto space-y-2">
               <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden flex">
-                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${gameMode === 'team' ? (derivedTeamScore/total)*100 : pct}%` }} />
-                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${100 - (gameMode === 'team' ? (derivedTeamScore/total)*100 : pct)}%` }} />
+                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? (scoreForDisplay/pctBase)*100 : 0}%` }} />
+                <div className="h-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style={{ width: `${pctBase > 0 ? 100 - ((scoreForDisplay/pctBase)*100) : 0}%` }} />
               </div>
               <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                <span className="text-green-400">{gameMode === 'team' ? derivedTeamScore : correctCount} Correct</span>
-                <span className="text-red-400">{total - (gameMode === 'team' ? derivedTeamScore : correctCount)} Incorrect</span>
+                  <span className="text-green-400">{scoreForDisplay} Correct</span>
+                  <span className="text-red-400">{Math.max(0, pctBase - scoreForDisplay)} Incorrect</span>
               </div>
             </div>
           </motion.div>
@@ -3580,7 +4037,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               <Star className="size-4" />
               {saving ? 'Saving...' : 'Save to Leaderboard'}
             </button>
-          ) : (
+          ) : null}
+          {scoreSaved && (
             <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
               <Check className="size-4" /> Score saved!
             </p>
@@ -3612,7 +4070,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-black text-white">{entry.score}/{total}</p>
+                        <p className="text-sm font-black text-white">{entry.score}/{pctBase}</p>
                         <p className="text-[10px] font-bold text-slate-400">{entry.answeredCount} answered</p>
                       </div>
                       <div className="text-right min-w-[72px]">
@@ -4965,7 +5423,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
           >
-            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
+            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, Wicked, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -4984,7 +5442,28 @@ const LandingView = ({ setUser, onUnlockBadge }: {
               View Rankings
             </button>
           </motion.div>
+
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto px-6 pb-10">
+<button
+          type="button"
+          onClick={() => navigate('/search')}
+          className="search-box-container w-full rounded-[1.5rem] border border-primary/30 bg-gradient-to-r from-primary/20 via-primary/10 to-cyan-500/10 px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-center gap-3 text-left shadow-2xl shadow-primary/10 hover:scale-[1.01] hover:border-primary/50 transition-all"
+        >
+          <div className="size-11 sm:size-12 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+            <Search className="size-5 sm:size-6 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-primary">Search Quizzes</p>
+            <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">Find any quiz or blog fast</h3>
+            <p className="mt-1.5 text-sm text-slate-300 max-w-2xl">
+              Search by fandom, title, or topic and jump straight to the quiz you want.
+            </p>
+          </div>
+          <ArrowRight className="size-5 sm:size-6 text-white/70 shrink-0" />
+        </button>
       </section>
 
       <DailyMysteryChallenge />
@@ -5053,8 +5532,10 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
                       if (universe.id === 'toy-story') navigate('/selector-toy-story');
                       if (universe.id === 'shrek') navigate('/selector-shrek');
+                      if (universe.id === 'bad-guys') navigate('/selector-bad-guys');
                       if (universe.id === 'dog-man') navigate('/selector-dog-man');
                       if (universe.id === 'hoppers') navigate('/selector-hoppers');
+                      if (universe.id === 'wicked') navigate('/selector-wicked');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
                   >
@@ -5834,6 +6315,60 @@ const ShrekSelector = () => {
   );
 };
 
+const BadGuysSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-3xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-300">Heist</span></h1>
+          <Helmet>
+            <title>The Bad Guys Trivia & Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your The Bad Guys knowledge across both movies, from the Golden Dolphin award to the Bad Girls sequel." />
+            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-bad-guys" />
+            <meta property="og:title" content="The Bad Guys Trivia & Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play The Bad Guys movie quizzes and prove you know every con, crew member, and sequel twist." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+                { name: "The Bad Guys", item: "https://fandom-trivia.vercel.app/selector-bad-guys" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Pick a movie quiz and test your knowledge of the crew, the cons, and the heist details.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            { label: "Film 1", title: "The Bad Guys", desc: `${BAD_GUYS_1_TRIVIA.length} questions from the 2022 film`, icon: "🐺", view: 'trivia-bad-guys-1', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: "Film 2", title: "The Bad Guys 2", desc: `${BAD_GUYS_2_TRIVIA.length} questions from the sequel`, icon: "🦊", view: 'trivia-bad-guys-2', gradient: 'from-yellow-600/20 to-rose-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          ].map(film => (
+            <motion.button
+              key={film.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{film.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const DogManSelector = () => {
   const navigate = useNavigate();
   return (
@@ -5979,6 +6514,7 @@ export default function App() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<{title: string, content: string} | null>(null);
+  const [welcomeModal, setWelcomeModal] = useState<{title: string, content: string} | null>(null);
   const [unlockedBadgeIds, setUnlockedBadgeIds] = useState<string[]>([]);
   const [badgeQueue, setBadgeQueue] = useState<Badge[]>([]);
   const [showEmojiRain, setShowEmojiRain] = useState(false);
@@ -5995,6 +6531,22 @@ export default function App() {
       return next;
     });
   };
+
+  const welcomeSeenKey = 'fandom_trivia_welcome_seen';
+  const welcomeMessage = () => ({
+    title: 'Welcome to Fandom Trivia',
+    content: [
+      'You are officially inside the fan arena. Here is the fastest way to jump into the action:',
+      '',
+      '1. Pick a universe that matches your obsession, or dive straight into the Daily Mystery Challenge.',
+      '2. Blast through the trivia, lock in your answers, and keep the streak alive with Next.',
+      '3. Hit the finish line, check your score, and see where you land on the rankings.',
+      '',
+      'Play as a guest if you want a quick run. Sign in if you want your scores, badges, history, and bragging rights to stick.',
+      '',
+      'Tip: open the account menu to tune your username, badge shelf, quiz history, and sound settings.'
+    ].join('\n')
+  });
 
   const twilightRandomQuestions = useMemo(() => 
     [...(TWILIGHT_BOOK_TRIVIA || []), ...(NEW_MOON_TRIVIA || []), ...(ECLIPSE_TRIVIA || []), ...(BREAKING_DAWN_TRIVIA || []), ...(MIDNIGHT_SUN_TRIVIA || []), ...(LIFE_AND_DEATH_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
@@ -6069,6 +6621,17 @@ export default function App() {
 
   useEffect(() => {
     document.title = "Fandom Trivia | The Ultimate Fan Experience";
+  }, []);
+
+  useEffect(() => {
+    try {
+      const hasSeenWelcome = localStorage.getItem(welcomeSeenKey) === 'true';
+      if (!hasSeenWelcome) {
+        setWelcomeModal(welcomeMessage());
+      }
+    } catch (error) {
+      console.error('Failed to read welcome state:', error);
+    }
   }, []);
 
   // Load user profile from Supabase
@@ -6172,6 +6735,13 @@ export default function App() {
                   unlocked = true;
                 }
                 
+                if (badge.targetQuizExact) {
+                  const titleLower = item.quiz_id.toLowerCase().trim();
+                  if (titleLower === badge.targetQuizExact) {
+                    unlocked = true;
+                  }
+                }
+
                 if (badge.targetQuiz) {
                   const titleLower = item.quiz_id.toLowerCase();
                   if (titleLower.includes(badge.targetQuiz.replace('-', ' '))) {
@@ -6299,6 +6869,12 @@ export default function App() {
         unlocked = true;
       }
       
+      if (badge.targetQuizExact) {
+        const titleLower = quizId.toLowerCase().trim();
+        if (titleLower === badge.targetQuizExact) {
+          unlocked = true;
+        }
+      }
 
       // Universe completion badges
       if (badge.targetQuiz) {
@@ -6345,20 +6921,20 @@ export default function App() {
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
       <Helmet>
         <title>Fandom Trivia</title>
-        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
+        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, Wicked, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fandom-trivia.vercel.app/" />
         <meta property="og:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
         <meta property="og:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://fandom-trivia.vercel.app/" />
         <meta property="twitter:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes and climb the ranks." />
+        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
         <meta property="twitter:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
       </Helmet>
 
@@ -6407,10 +6983,14 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView user={user} />} />
+            <Route path="/search" element={<SearchModal />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -6509,6 +7089,8 @@ export default function App() {
             <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-bad-guys-1" element={<MCQuizView key="trivia-bad-guys-1" questions={BAD_GUYS_1_TRIVIA} title="The Bad Guys" scoreLabel="The Bad Guys" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-bad-guys-2" element={<MCQuizView key="trivia-bad-guys-2" questions={BAD_GUYS_2_TRIVIA} title="The Bad Guys 2" scoreLabel="The Bad Guys 2" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-pawpatrol" element={<MCQuizView key="trivia-pawpatrol" questions={PAW_PATROL_TRIVIA} title="PAW Patrol: Mission Ready" scoreLabel="PAW Patrol: Mission Ready" grades={PAW_PATROL_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-shrek-1" element={<MCQuizView key="trivia-shrek-1" questions={SHREK_1_TRIVIA} title="Shrek" scoreLabel="Shrek" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-shrek-2" element={<MCQuizView key="trivia-shrek-2" questions={SHREK_2_TRIVIA} title="Shrek 2" scoreLabel="Shrek 2" grades={SHREK_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -6552,6 +7134,7 @@ export default function App() {
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
             <Route path="/selector-star-wars" element={<StarWarsSelector />} />
             <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
+            <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
             <Route path="/selector-paw-patrol" element={<PawPatrolSelector key="selector-paw-patrol" />} />
             <Route path="/selector-hoppers" element={<HoppersSelector key="selector-hoppers" />} />
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />
@@ -6565,6 +7148,7 @@ export default function App() {
             <Route path="/selector-minecraft" element={<MinecraftSelector />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
+            <Route path="/selector-bad-guys" element={<BadGuysSelector />} />
 
             {/* Kung Fu Panda Universe */}
             <Route path="/selector-kung-fu-panda" element={<KungFuPandaSelector />} />
@@ -6619,6 +7203,23 @@ export default function App() {
           </Routes>
         </AnimatePresence>
       </main>
+
+      <AnimatePresence>
+        {welcomeModal && (
+          <InfoModal
+            title={welcomeModal.title}
+            content={welcomeModal.content}
+            onClose={() => {
+              try {
+                localStorage.setItem(welcomeSeenKey, 'true');
+              } catch (error) {
+                console.error('Failed to save welcome state:', error);
+              }
+              setWelcomeModal(null);
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showUsernameModal && (

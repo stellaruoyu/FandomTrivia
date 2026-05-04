@@ -22,6 +22,7 @@ export interface Badge {
   color: string;
   // We'll evaluate conditions dynamically, so we can use a string identifying the requirement type
   targetQuiz?: string;
+  targetQuizExact?: string;
   targetScore?: number;
   isUniverseCompletion?: boolean; 
   imageUrl?: string;
@@ -156,6 +157,24 @@ export const BADGES: Badge[] = [
     targetQuiz: 'dog-man'
   },
   {
+    id: 'bad-guys-crew',
+    name: 'Golden Dolphin Crew',
+    description: 'Complete The Bad Guys quiz.',
+    icon: 'Zap',
+    color: 'text-orange-400',
+    targetQuizExact: 'the bad guys',
+    imageUrl: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560'
+  },
+  {
+    id: 'bad-guys-2-crew',
+    name: 'Bad Girls Target',
+    description: 'Complete The Bad Guys 2 quiz.',
+    icon: 'Sparkles',
+    color: 'text-yellow-300',
+    targetQuizExact: 'the bad guys 2',
+    imageUrl: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560'
+  },
+  {
     id: 'swamp-champion',
     name: 'Swamp Champion',
     description: 'Complete any Shrek trivia challenge.',
@@ -170,6 +189,14 @@ export const BADGES: Badge[] = [
     icon: 'Sparkles',
     color: 'text-orange-400',
     targetQuiz: 'httyd'
+  },
+  {
+    id: 'wicked-wanderer',
+    name: 'Wicked Wanderer',
+    description: 'Enter Oz and complete any Wicked trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-emerald-400',
+    targetQuiz: 'wicked'
   }
 ];
 
@@ -208,6 +235,17 @@ export const UNIVERSES = [
     path: '/selector-dog-man'
   },
   {
+    id: 'bad-guys',
+    title: 'The Bad Guys',
+    tags: ['Animation', 'DreamWorks', 'Heist'],
+    description: 'Go good with Mr. Wolf, Mr. Snake, and the crew across both movie quizzes, from the Golden Dolphin heist to the sequel\'s globe-trotting chaos.',
+    image: 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560',
+    seoAlt: 'Official The Bad Guys movie key art featuring Mr. Wolf, Mr. Snake, Mr. Shark, Mr. Piranha, and Ms. Tarantula',
+    buttonText: 'Join the Crew',
+    icon: 'Sparkles',
+    path: '/selector-bad-guys'
+  },
+  {
     id: 'hoppers',
     title: 'Hoppers',
     tags: ['Animation', 'Pixar', 'Sci-Fi'],
@@ -217,6 +255,17 @@ export const UNIVERSES = [
     buttonText: 'Enter the Pond',
     icon: 'Search',
     path: '/selector-hoppers'
+  },
+  {
+    id: 'wicked',
+    title: 'Wicked',
+    tags: ['Musical', 'Fantasy', 'Oz'],
+    description: 'Defy gravity and test your knowledge of Wicked across the film adaptations, from Shiz to the Emerald City.',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s',
+    seoAlt: 'Official Wicked movie logo from the film adaptation',
+    buttonText: 'Enter Oz',
+    icon: 'Sparkles',
+    path: '/selector-wicked'
   },
   {
     id: 'harry-potter',
@@ -6489,6 +6538,187 @@ export const HOPPERS_TRIVIA: MCTriviaQuestion[] = [
     options: ["True", "False"],
     answer: "True",
     evidence: "A113 appears as Dr. Sam's office number."
+  }
+];
+
+export const BAD_GUYS_1_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which director led the production of 'The Bad Guys' (2022) and cited 'Lupin III' as a major influence?",
+    options: ["Chris Renaud", "Pierre Perifel", "Kyle Balda", "Pierre Coffin"],
+    answer: "Pierre Perifel",
+    evidence: "The Bad Guys Trivia Quiz - TriviaCreator | 12 Trivia Questions and Answers"
+  },
+  {
+    id: 2,
+    question: "The opening 'oner' scene in the diner is a direct homage to which live-action heist film director?",
+    options: ["Steven Soderbergh", "Quentin Tarantino", "Guy Ritchie", "Martin Scorsese"],
+    answer: "Quentin Tarantino",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Inspiration for the Work"
+  },
+  {
+    id: 3,
+    question: "What is the secret identity of Governor Diane Foxington?",
+    options: ["The Blue Fox", "The Silver Shadow", "The Crimson Paw", "The Golden Dolphin"],
+    answer: "The Crimson Paw",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Staff-Created Fan Work"
+  },
+  {
+    id: 4,
+    question: "Which member of the gang is officially designated as the 'Master of Disguise'?",
+    options: ["Mr. Wolf", "Mr. Shark", "Mr. Snake", "Ms. Tarantula"],
+    answer: "Mr. Shark",
+    evidence: "The Bad Guys Trivia Quiz - TriviaCreator | 12 Trivia Questions and Answers"
+  },
+  {
+    id: 5,
+    question: "The philanthropist Professor Marmalade is which type of animal?",
+    options: ["Hamster", "Rat", "Guinea Pig", "Gerbil"],
+    answer: "Guinea Pig",
+    evidence: "The Bad Guys Trivia Quiz - TriviaCreator | 12 Trivia Questions and Answers"
+  },
+  {
+    id: 6,
+    question: "In the film's novelization, which was based on an earlier draft, the Love Crater Meteorite is described as glowing what color?",
+    options: ["Blue", "Green", "Pink", "Yellow"],
+    answer: "Pink",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Novelization First"
+  },
+  {
+    id: 7,
+    question: "Which celebrity voice actor influenced Mr. Wolf's physical animation through their specific dancing style?",
+    options: ["Marc Maron", "Anthony Ramos", "Sam Rockwell", "Craig Robinson"],
+    answer: "Sam Rockwell",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | The Cast Show Off"
+  },
+  {
+    id: 8,
+    question: "Mr. Piranha showcases his singing talent during the film by performing which song?",
+    options: ["Bad Guy", "Good Tonight", "The Heist", "Going Good"],
+    answer: "Good Tonight",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | The Cast Show Off"
+  },
+  {
+    id: 9,
+    question: "What is the primary object the Bad Guys attempt to steal at the beginning of the film?",
+    options: ["The Maraschino Ruby", "The Golden Dolphin Award", "The Love Crater Meteorite", "The Governor's Crest"],
+    answer: "The Golden Dolphin Award",
+    evidence: "The Bad Guys Trivia Quiz - TriviaCreator | 12 Trivia Questions and Answers"
+  },
+  {
+    id: 10,
+    question: "Although this is an American DreamWorks film, the original book series it is adapted from originates from which country?",
+    options: ["United Kingdom", "Canada", "Australia", "New Zealand"],
+    answer: "Australia",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Adapted in Another Country"
+  },
+  {
+    id: 11,
+    question: "True or False: The film was a co-production between studios in the United States and Japan.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | International Coproduction"
+  },
+  {
+    id: 12,
+    question: "True or False: Mr. Snake is the first member of the gang to enthusiastically support the idea of 'going good.'",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "the bad guys movie Quiz | MULTIPLE CHOICE QUESTION"
+  },
+  {
+    id: 13,
+    question: "True or False: The movie's original release date was September 17, 2021, before being delayed due to the pandemic.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Release Date Change"
+  },
+  {
+    id: 14,
+    question: "True or False: In the Japanese dub, the role of Professor Marmalade is voiced by a professional voice actor (Kappei Yamaguchi) rather than a celebrity.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Celebrity Voice Actor"
+  },
+  {
+    id: 15,
+    question: "True or False: Mr. Shark's Latin American Spanish voice is provided by the YouTuber and content creator known as Gonzok.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys (2022) Trivia - TV Tropes | Celebrity Voice Actor"
+  }
+];
+
+export const BAD_GUYS_2_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Which animation studio was responsible for contributing a portion of the animation in 'The Bad Guys 2' as part of the studio's new cost-cutting initiative?",
+    options: ["Illumination", "Sony Pictures Imageworks", "Pixar", "Blue Sky Studios"],
+    answer: "Sony Pictures Imageworks",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Channel Hop | Sony Pictures Imageworks contributed a portion of the film's animation."
+  },
+  {
+    id: 2,
+    question: "True or False: In the sequel, Snake has been studying Vinyasa yoga, mirroring Marc Maron's real-life practice.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Actor-Shared Background | Snake has been studying Vinyasa yoga in this film."
+  },
+  {
+    id: 3,
+    question: "During the wedding sequence, Mr. Shark is disguised as which character while performing on a musical keyboard?",
+    options: ["The Groom", "A Flower Girl", "The Priest", "A Security Guard"],
+    answer: "The Priest",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Enforced Method Acting"
+  },
+  {
+    id: 4,
+    question: "The character 'Bulgarian Pigtail' is voiced by which actress?",
+    options: ["Zazie Beetz", "Maria Bakalova", "Awkwafina", "Kelly Stables"],
+    answer: "Maria Bakalova",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Actor-Shared Background"
+  },
+  {
+    id: 5,
+    question: "According to early drafts, the Multinational Space Station replaced what setting in the final film?",
+    options: ["The Moon-X Rocket", "Marmalade's secret base", "A Crimson Paw hideout", "The Lords of Lucha Arena"],
+    answer: "Marmalade's secret base",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | What Could Have Been"
+  },
+  {
+    id: 6,
+    question: "True or False: Mr. Wolf and Diane Foxington share their first kiss by the end of the sequel.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Shipper on Set"
+  },
+  {
+    id: 7,
+    question: "While the U.S. premiere was on August 1, 2025, when was the theatrical release date for Australia?",
+    options: ["July 25, 2025", "August 2025", "September 2025", "December 2025"],
+    answer: "September 2025",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Late Export for You"
+  },
+  {
+    id: 8,
+    question: "In an earlier script draft, what tournament replaced the planned rave-party encounter with Snake and Doom?",
+    options: ["The Lords of Lucha", "The Crimson Heist", "The Golden Dolphin Challenge", "The Bad Girls Showdown"],
+    answer: "The Lords of Lucha",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | What Could Have Been"
+  },
+  {
+    id: 9,
+    question: "What does Kitty use to specifically target Diane Foxington in the final film?",
+    options: ["Stolen gold", "A secret ledger", "Blackmail footage of Diane as the Crimson Paw", "A recording of a failed heist"],
+    answer: "Blackmail footage of Diane as the Crimson Paw",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Missing Trailer Scene"
+  },
+  {
+    id: 10,
+    question: "True or False: The lead voice cast recorded together for the sequel instead of separately.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "The Bad Guys 2 Trivia - TV Tropes | Voices in One Room"
   }
 ];
 
