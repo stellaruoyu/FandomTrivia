@@ -885,25 +885,76 @@ const Navbar = (props: NavbarProps) => {
   );
 };
 
-const InfoModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
-    <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
-    >
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
-        <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{title}</h3>
-        <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
-          <X className="size-4" />
-        </button>
-      </div>
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2 text-slate-300 text-sm leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
-    </motion.div>
-  </div>
-);
+const InfoModal = ({ title, content, onClose }: { title: string, content: string, onClose: () => void }) => {
+  const lines = content.split('\n').map(line => line.trim()).filter((line, index, arr) => line.length > 0 || arr[index - 1]?.length !== 0);
+  const isWelcome = title.toLowerCase().includes('welcome') || title.toLowerCase().includes('how it works');
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-card-dark border border-white/10 p-8 rounded-3xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl space-y-6"
+      >
+        <div className={`flex items-center justify-between pb-4 border-b ${isWelcome ? 'border-primary/20' : 'border-white/10'}`}>
+          <div className="space-y-2">
+            {isWelcome && (
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-primary">Quick Start</p>
+            )}
+            <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{title}</h3>
+          </div>
+          <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
+            <X className="size-4" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+          {lines.map((line, index) => {
+            if (!line) {
+              return <div key={`spacer-${index}`} className="h-2" />;
+            }
+
+            if (/^\d+\./.test(line)) {
+              const stepNumber = line.match(/^(\d+)\./)?.[1] || `${index + 1}`;
+              const stepText = line.replace(/^\d+\.\s*/, '');
+              const stepStyles = [
+                'from-orange-500/20 to-amber-500/10 border-orange-400/25',
+                'from-sky-500/20 to-cyan-500/10 border-sky-400/25',
+                'from-fuchsia-500/20 to-rose-500/10 border-fuchsia-400/25',
+              ];
+              return (
+                <div key={line + index} className={`rounded-2xl border bg-gradient-to-r p-4 ${stepStyles[(Number(stepNumber) - 1) % stepStyles.length]}`}>
+                  <div className="flex items-start gap-4">
+                    <div className="size-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-sm font-black text-white shrink-0">
+                      {stepNumber}
+                    </div>
+                    <p className="text-slate-200 text-sm leading-relaxed font-medium">{stepText}</p>
+                  </div>
+                </div>
+              );
+            }
+
+            if (line.startsWith('Tip:')) {
+              return (
+                <div key={line + index} className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4">
+                  <p className="text-emerald-100 text-sm leading-relaxed">
+                    <span className="font-black uppercase tracking-widest text-[10px] text-emerald-300 mr-2">Tip</span>
+                    {line.replace(/^Tip:\s*/, '')}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <p key={line + index} className="text-slate-300 text-sm leading-relaxed">
+                {line}
+              </p>
+            );
+          })}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const navigate = useNavigate();
@@ -1459,7 +1510,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
             </>
           ) : (
             <>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', 'Select a universe, test your fan knowledge with our detailed trivia questions, earn points, and unlock exclusive badges to prove you are the ultimate fan!'); }} className="hover:text-primary transition-colors">How it works</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('How It Works', ['Pick a fandom, take the quiz, climb the rankings, and collect badges that show exactly how dangerous your fan knowledge is.', '', '1. Choose a universe or jump into the Daily Mystery Challenge.', '2. Answer the questions, push forward, and try not to get exposed by the deep cuts.', '3. Finish strong, compare scores, and see who actually knows the lore.', '', 'Tip: sign in if you want your badges, history, and leaderboard progress to stay with you.'].join('\n')); }} className="hover:text-primary transition-colors">How it works</a></li>
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
@@ -6485,15 +6536,15 @@ export default function App() {
   const welcomeMessage = () => ({
     title: 'Welcome to Fandom Trivia',
     content: [
-      'Here is the quickest way to use Fandom Trivia:',
+      'You are officially inside the fan arena. Here is the fastest way to jump into the action:',
       '',
-      '1. Pick a universe from the home page or start with the Daily Mystery Challenge.',
-      '2. Answer the quiz questions and tap Next to keep moving.',
-      '3. Check the rankings after you finish.',
+      '1. Pick a universe that matches your obsession, or dive straight into the Daily Mystery Challenge.',
+      '2. Blast through the trivia, lock in your answers, and keep the streak alive with Next.',
+      '3. Hit the finish line, check your score, and see where you land on the rankings.',
       '',
-      'You can play as a guest, but you need to sign in to save scores, badges, and quiz history.',
+      'Play as a guest if you want a quick run. Sign in if you want your scores, badges, history, and bragging rights to stick.',
       '',
-      'Tip: the account menu is where you can manage your username, history, and sound settings.'
+      'Tip: open the account menu to tune your username, badge shelf, quiz history, and sound settings.'
     ].join('\n')
   });
 
