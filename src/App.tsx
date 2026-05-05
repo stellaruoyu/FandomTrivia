@@ -1549,8 +1549,8 @@ const Footer = ({ isDashboard, onShowInfo }: {
       </div>
     </div>
     <div className={`max-w-${isDashboard ? '[1600px]' : '7xl'} mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs font-bold uppercase tracking-widest`}>
-      <p>© 2026 {isDashboard ? 'PROHUB ESPORTS INC. ALL RIGHTS RESERVED.' : 'FANDOM TRIVIA INC. ALL RIGHTS RESERVED.'}</p>
-      <p>CRAFTED WITH <span className="text-primary">♥</span> FOR FANS EVERYWHERE.</p>
+      <p>Â© 2026 {isDashboard ? 'PROHUB ESPORTS INC. ALL RIGHTS RESERVED.' : 'FANDOM TRIVIA INC. ALL RIGHTS RESERVED.'}</p>
+      <p>CRAFTED WITH <span className="text-primary">â™¥</span> FOR FANS EVERYWHERE.</p>
     </div>
   </footer>
   );
@@ -1581,13 +1581,13 @@ const TwilightBookSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Twilight Saga Trivia & Quizzes | Fandom Trivia</title>
           <meta name="description" content="Ultimate Twilight Saga trivia. Select from Twilight, New Moon, Eclipse, Breaking Dawn, and more. Prove your Cullen-level expertise." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-twilight" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-twilight" />
           <meta property="og:title" content="Twilight Saga Trivia & Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Test your knowledge of the Twilight Saga. Are you a true Cullen-level expert?" />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Twilight Saga", item: "https://fandom-trivia.vercel.app/selector-twilight" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Twilight Saga", item: "https://www.fandom-trivia.com/selector-twilight" }
             ])}
           </script>
         </Helmet>
@@ -1595,13 +1595,13 @@ const TwilightBookSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
-          { label: "Book 1", title: "Twilight", desc: `${TWILIGHT_BOOK_TRIVIA.length} questions`, icon: "🍎", view: 'trivia-twilight-book', gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Book 2", title: "New Moon", desc: `${NEW_MOON_TRIVIA.length} questions`, icon: "🌑", view: 'trivia-newmoon', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 3", title: "Eclipse", desc: `${ECLIPSE_TRIVIA.length} questions`, icon: "🌘", view: 'trivia-eclipse', gradient: 'from-indigo-600/20 to-violet-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Book 4", title: "Breaking Dawn", desc: `${BREAKING_DAWN_TRIVIA.length} questions`, icon: "🌅", view: 'trivia-breakingdawn', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-          { label: "Companion", title: "Midnight Sun", desc: `${MIDNIGHT_SUN_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-midnightsun', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-          { label: "Companion", title: "Life and Death", desc: `${LIFE_AND_DEATH_TRIVIA.length} questions`, icon: "🔄", view: 'trivia-lifeanddeath', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random from all books", icon: "🎲", view: 'trivia-twilight-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "Twilight", desc: `${TWILIGHT_BOOK_TRIVIA.length} questions`, icon: "ðŸŽ", view: 'trivia-twilight-book', gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 2", title: "New Moon", desc: `${NEW_MOON_TRIVIA.length} questions`, icon: "ðŸŒ‘", view: 'trivia-newmoon', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 3", title: "Eclipse", desc: `${ECLIPSE_TRIVIA.length} questions`, icon: "ðŸŒ˜", view: 'trivia-eclipse', gradient: 'from-indigo-600/20 to-violet-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Book 4", title: "Breaking Dawn", desc: `${BREAKING_DAWN_TRIVIA.length} questions`, icon: "ðŸŒ…", view: 'trivia-breakingdawn', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+          { label: "Companion", title: "Midnight Sun", desc: `${MIDNIGHT_SUN_TRIVIA.length} questions`, icon: "â˜€ï¸", view: 'trivia-midnightsun', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Companion", title: "Life and Death", desc: `${LIFE_AND_DEATH_TRIVIA.length} questions`, icon: "ðŸ”„", view: 'trivia-lifeanddeath', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random from all books", icon: "ðŸŽ²", view: 'trivia-twilight-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.title}
@@ -1642,13 +1642,13 @@ const HPBookSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your Harry Potter knowledge! From Sorcerer's Stone to Deathly Hallows. Earn your wizarding badges in the ultimate fandom challenge." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-harry-potter" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-harry-potter" />
           <meta property="og:title" content="Harry Potter Trivia & Wizarding Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Are you a true Potterhead? Test your magic knowledge in our ultimate Harry Potter quiz series." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Wizarding World", item: "https://fandom-trivia.vercel.app/selector-harry-potter" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Wizarding World", item: "https://www.fandom-trivia.com/selector-harry-potter" }
             ])}
           </script>
         </Helmet>
@@ -1656,14 +1656,14 @@ const HPBookSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
-          { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1–6", icon: "⚡", view: 'trivia-harry-potter', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1–6", icon: "🐍", view: 'trivia-harry-potter-cos', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Book 3", title: "Prisoner of Azkaban", desc: "20 random questions", icon: "🐺", view: 'trivia-harry-potter-poa', gradient: 'from-slate-600/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
-          { label: "Book 4", title: "Goblet of Fire", desc: "20 random questions", icon: "🏆", view: 'trivia-harry-potter-gof', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Book 5", title: "Order of the Phoenix", desc: "20 random questions", icon: "📜", view: 'trivia-harry-potter-ootp', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-          { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "🧪", view: 'trivia-harry-potter-hbp', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
-          { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "⏃", view: 'trivia-harry-potter-dh', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "🎲", view: 'trivia-harry-potter-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "Sorcerer's Stone", desc: "20 questions from Chapters 1â€“6", icon: "âš¡", view: 'trivia-harry-potter', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "Chamber of Secrets", desc: "20 questions from Chapters 1â€“6", icon: "ðŸ", view: 'trivia-harry-potter-cos', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Book 3", title: "Prisoner of Azkaban", desc: "20 random questions", icon: "ðŸº", view: 'trivia-harry-potter-poa', gradient: 'from-slate-600/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
+          { label: "Book 4", title: "Goblet of Fire", desc: "20 random questions", icon: "ðŸ†", view: 'trivia-harry-potter-gof', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Book 5", title: "Order of the Phoenix", desc: "20 random questions", icon: "ðŸ“œ", view: 'trivia-harry-potter-ootp', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Book 6", title: "Half-Blood Prince", desc: "20 random questions", icon: "ðŸ§ª", view: 'trivia-harry-potter-hbp', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+          { label: "Book 7", title: "Deathly Hallows", desc: "20 random questions", icon: "âƒ", view: 'trivia-harry-potter-dh', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 books", icon: "ðŸŽ²", view: 'trivia-harry-potter-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
@@ -1709,13 +1709,13 @@ const StarWarsSelector = () => {
           <Helmet>
             <title>Star Wars Trivia & Saga Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Star Wars knowledge across the Skywalker saga, from The Phantom Menace to The Rise of Skywalker, plus expanded and mixed challenges." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-star-wars" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-star-wars" />
             <meta property="og:title" content="Star Wars Trivia & Saga Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Enter the galaxy and play Star Wars quizzes spanning the prequels, originals, sequels, and saga-wide challenges." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Star Wars", item: "https://fandom-trivia.vercel.app/selector-star-wars" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Star Wars", item: "https://www.fandom-trivia.com/selector-star-wars" }
               ])}
             </script>
           </Helmet>
@@ -1723,17 +1723,17 @@ const StarWarsSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           {[
-            { label: 'Episode 1', title: 'The Phantom Menace', desc: `${STAR_WARS_EPISODE_I_TRIVIA.length} questions from Episode I`, icon: '👑', view: 'trivia-star-wars-episode-i', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-            { label: 'Episode 2', title: 'Attack of the Clones', desc: `${STAR_WARS_EPISODE_II_TRIVIA.length} questions from Episode II`, icon: '🧬', view: 'trivia-star-wars-episode-ii', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-            { label: 'Episode 3', title: 'Revenge of the Sith', desc: `${STAR_WARS_EPISODE_III_TRIVIA.length} questions from Episode III`, icon: '⚔️', view: 'trivia-star-wars-episode-iii', gradient: 'from-red-700/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-            { label: 'Episode 4', title: 'A New Hope', desc: `${STAR_WARS_EPISODE_IV_TRIVIA.length} questions from Episode IV`, icon: '🌠', view: 'trivia-star-wars-episode-iv', gradient: 'from-indigo-600/20 to-sky-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-            { label: 'Episode 6', title: 'Return of the Jedi', desc: `${STAR_WARS_EPISODE_VI_TRIVIA.length} questions from Episode VI`, icon: '🚀', view: 'trivia-star-wars-episode-vi', gradient: 'from-emerald-600/20 to-green-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-            { label: 'Episode 7', title: 'The Force Awakens', desc: `${STAR_WARS_EPISODE_VII_TRIVIA.length} questions from Episode VII`, icon: '💥', view: 'trivia-star-wars-episode-vii', gradient: 'from-violet-600/20 to-fuchsia-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
-            { label: 'Episode 8', title: 'The Last Jedi', desc: `${STAR_WARS_EPISODE_VIII_TRIVIA.length} questions from Episode VIII`, icon: '🔴', view: 'trivia-star-wars-episode-viii', gradient: 'from-orange-600/20 to-amber-500/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-            { label: 'Episode 9', title: 'The Rise of Skywalker', desc: `${STAR_WARS_EPISODE_IX_TRIVIA.length} questions from Episode IX`, icon: '👁️', view: 'trivia-star-wars-episode-ix', gradient: 'from-slate-700/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
-            { label: 'Bonus', title: 'AOTC Expanded', desc: `${STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA.length} expanded questions`, icon: '📘', view: 'trivia-star-wars-episode-ii-expanded', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
-            { label: 'Saga', title: 'Challenge', desc: `${STAR_WARS_SAGA_TRIVIA.length} questions across the saga`, icon: '✨', view: 'trivia-star-wars-saga', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
-            { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all Star Wars quizzes', icon: '🎲', view: 'trivia-star-wars-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: 'Episode 1', title: 'The Phantom Menace', desc: `${STAR_WARS_EPISODE_I_TRIVIA.length} questions from Episode I`, icon: 'ðŸ‘‘', view: 'trivia-star-wars-episode-i', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: 'Episode 2', title: 'Attack of the Clones', desc: `${STAR_WARS_EPISODE_II_TRIVIA.length} questions from Episode II`, icon: 'ðŸ§¬', view: 'trivia-star-wars-episode-ii', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: 'Episode 3', title: 'Revenge of the Sith', desc: `${STAR_WARS_EPISODE_III_TRIVIA.length} questions from Episode III`, icon: 'âš”ï¸', view: 'trivia-star-wars-episode-iii', gradient: 'from-red-700/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: 'Episode 4', title: 'A New Hope', desc: `${STAR_WARS_EPISODE_IV_TRIVIA.length} questions from Episode IV`, icon: 'ðŸŒ ', view: 'trivia-star-wars-episode-iv', gradient: 'from-indigo-600/20 to-sky-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: 'Episode 6', title: 'Return of the Jedi', desc: `${STAR_WARS_EPISODE_VI_TRIVIA.length} questions from Episode VI`, icon: 'ðŸš€', view: 'trivia-star-wars-episode-vi', gradient: 'from-emerald-600/20 to-green-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: 'Episode 7', title: 'The Force Awakens', desc: `${STAR_WARS_EPISODE_VII_TRIVIA.length} questions from Episode VII`, icon: 'ðŸ’¥', view: 'trivia-star-wars-episode-vii', gradient: 'from-violet-600/20 to-fuchsia-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+            { label: 'Episode 8', title: 'The Last Jedi', desc: `${STAR_WARS_EPISODE_VIII_TRIVIA.length} questions from Episode VIII`, icon: 'ðŸ”´', view: 'trivia-star-wars-episode-viii', gradient: 'from-orange-600/20 to-amber-500/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: 'Episode 9', title: 'The Rise of Skywalker', desc: `${STAR_WARS_EPISODE_IX_TRIVIA.length} questions from Episode IX`, icon: 'ðŸ‘ï¸', view: 'trivia-star-wars-episode-ix', gradient: 'from-slate-700/20 to-zinc-600/20', border: 'border-slate-500/30 hover:border-slate-400/50' },
+            { label: 'Bonus', title: 'AOTC Expanded', desc: `${STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA.length} expanded questions`, icon: 'ðŸ“˜', view: 'trivia-star-wars-episode-ii-expanded', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+            { label: 'Saga', title: 'Challenge', desc: `${STAR_WARS_SAGA_TRIVIA.length} questions across the saga`, icon: 'âœ¨', view: 'trivia-star-wars-saga', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+            { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all Star Wars quizzes', icon: 'ðŸŽ²', view: 'trivia-star-wars-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(quiz => (
             <motion.button
               key={quiz.label + quiz.title}
@@ -1800,13 +1800,13 @@ const HoppersSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Hoppers Trivia & Movie Quiz | Fandom Trivia</title>
           <meta name="description" content="Test your Hoppers knowledge with verified trivia on Mabel, the pond rules, mind-casting technology, and Pixar production details." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-hoppers" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-hoppers" />
           <meta property="og:title" content="Hoppers Trivia & Movie Quiz | Fandom Trivia" />
           <meta property="og:description" content="Enter the pond and test your Hoppers knowledge with our verified movie quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Hoppers", item: "https://fandom-trivia.vercel.app/selector-hoppers" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Hoppers", item: "https://www.fandom-trivia.com/selector-hoppers" }
             ])}
           </script>
         </Helmet>
@@ -1814,7 +1814,7 @@ const HoppersSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: "Film 1", title: "Hoppers (2026)", desc: `${HOPPERS_TRIVIA.length} verified questions`, icon: "🐸", view: 'trivia-hoppers', gradient: 'from-emerald-600/20 to-cyan-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Film 1", title: "Hoppers (2026)", desc: `${HOPPERS_TRIVIA.length} verified questions`, icon: "ðŸ¸", view: 'trivia-hoppers', gradient: 'from-emerald-600/20 to-cyan-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -1853,13 +1853,13 @@ const KPopSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>K-Pop Demon Hunters Trivia | Fandom Trivia</title>
           <meta name="description" content="Test your K-Pop: Demon Hunters knowledge in a single high-energy challenge packed with music, lore, and supernatural action." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-kpop" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-kpop" />
           <meta property="og:title" content="K-Pop Demon Hunters Trivia | Fandom Trivia" />
           <meta property="og:description" content="Enter the spotlight and take the K-Pop: Demon Hunters quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "K-Pop: Demon Hunters", item: "https://fandom-trivia.vercel.app/selector-kpop" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "K-Pop: Demon Hunters", item: "https://www.fandom-trivia.com/selector-kpop" }
             ])}
           </script>
         </Helmet>
@@ -1867,7 +1867,7 @@ const KPopSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: "Film 1", title: "K-Pop: Demon Hunters", desc: `${KPOP_TRIVIA.length} questions`, icon: "🎤", view: 'trivia-kpop', gradient: 'from-pink-600/20 to-purple-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+          { label: "Film 1", title: "K-Pop: Demon Hunters", desc: `${KPOP_TRIVIA.length} questions`, icon: "ðŸŽ¤", view: 'trivia-kpop', gradient: 'from-pink-600/20 to-purple-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -1906,13 +1906,13 @@ const WickedSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Wicked Trivia & Oz Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your Wicked knowledge across both film parts. From Shiz to the Emerald City, prove you belong in Oz." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-wicked" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-wicked" />
           <meta property="og:title" content="Wicked Trivia & Oz Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Enter Oz and take the Wicked quiz series." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Wicked", item: "https://fandom-trivia.vercel.app/selector-wicked" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Wicked", item: "https://www.fandom-trivia.com/selector-wicked" }
             ])}
           </script>
         </Helmet>
@@ -1920,9 +1920,9 @@ const WickedSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Part 1", title: "Wicked: Part 1", desc: `${WICKED_PART_1_TRIVIA.length} questions`, icon: "🧹", view: 'trivia-wicked-part-1', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Part 2", title: "Wicked: For Good", desc: `${WICKED_PART_2_TRIVIA.length} questions`, icon: "💚", view: 'trivia-wicked-part-2', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both parts", icon: "🎲", view: 'trivia-wicked-random', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+          { label: "Part 1", title: "Wicked: Part 1", desc: `${WICKED_PART_1_TRIVIA.length} questions`, icon: "ðŸ§¹", view: 'trivia-wicked-part-1', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Part 2", title: "Wicked: For Good", desc: `${WICKED_PART_2_TRIVIA.length} questions`, icon: "ðŸ’š", view: 'trivia-wicked-part-2', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both parts", icon: "ðŸŽ²", view: 'trivia-wicked-random', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -1961,13 +1961,13 @@ const PawPatrolSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>PAW Patrol Trivia | Fandom Trivia</title>
           <meta name="description" content="Join Ryder and the pups for a single rescue-ready PAW Patrol trivia challenge." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-paw-patrol" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-paw-patrol" />
           <meta property="og:title" content="PAW Patrol Trivia | Fandom Trivia" />
           <meta property="og:description" content="No job is too big, no pup is too small. Take the PAW Patrol quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "PAW Patrol", item: "https://fandom-trivia.vercel.app/selector-paw-patrol" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "PAW Patrol", item: "https://www.fandom-trivia.com/selector-paw-patrol" }
             ])}
           </script>
         </Helmet>
@@ -1975,7 +1975,7 @@ const PawPatrolSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: "Overall Quiz", title: "PAW Patrol: Mission Ready", desc: `${PAW_PATROL_TRIVIA.length} questions`, icon: "🐾", view: 'trivia-pawpatrol', gradient: 'from-blue-600/20 to-cyan-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Overall Quiz", title: "PAW Patrol: Mission Ready", desc: `${PAW_PATROL_TRIVIA.length} questions`, icon: "ðŸ¾", view: 'trivia-pawpatrol', gradient: 'from-blue-600/20 to-cyan-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -2023,13 +2023,13 @@ const ThreeBodyBookSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge of the Trisolaran crisis and the Dark Forest. From the Red Coast to Death's End in the ultimate Three-Body challenge." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-three-body" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-three-body" />
           <meta property="og:title" content="Three-Body Problem Trivia & Sci-Fi Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Can you survive the Trisolaran crisis? Test your Three-Body Problem knowledge." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Three-Body Universe", item: "https://fandom-trivia.vercel.app/selector-three-body" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Three-Body Universe", item: "https://www.fandom-trivia.com/selector-three-body" }
             ])}
           </script>
         </Helmet>
@@ -2037,10 +2037,10 @@ const ThreeBodyBookSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: "Book 1", title: "The Three-Body Problem", desc: `${THREE_BODY_PROBLEM_TRIVIA.length} questions`, icon: "☀️", view: 'trivia-three-body-problem', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: "Book 2", title: "The Dark Forest", desc: `${THE_DARK_FOREST_TRIVIA.length} questions`, icon: "🌲", view: 'trivia-the-dark-forest', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Book 3", title: "Death's End", desc: `${DEATHS_END_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-deaths-end', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 3 books", icon: "🎲", view: 'trivia-three-body-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Book 1", title: "The Three-Body Problem", desc: `${THREE_BODY_PROBLEM_TRIVIA.length} questions`, icon: "â˜€ï¸", view: 'trivia-three-body-problem', gradient: 'from-amber-600/20 to-red-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: "Book 2", title: "The Dark Forest", desc: `${THE_DARK_FOREST_TRIVIA.length} questions`, icon: "ðŸŒ²", view: 'trivia-the-dark-forest', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Book 3", title: "Death's End", desc: `${DEATHS_END_TRIVIA.length} questions`, icon: "ðŸŒŒ", view: 'trivia-deaths-end', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 3 books", icon: "ðŸŽ²", view: 'trivia-three-body-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(book => (
           <motion.button
             key={book.label}
@@ -2088,13 +2088,13 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>Zootopia Trivia & Mystery Quizzes | Fandom Trivia</title>
           <meta name="description" content="Solve cases from Zootopia and Zootopia 2. Test your knowledge of the city where anyone can be anything in our detective quizzes." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-zootopia" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-zootopia" />
           <meta property="og:title" content="Zootopia Trivia & Mystery Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Become a ZPD detective! Test your Zootopia knowledge in the ultimate fan quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Zootopia Universe", item: "https://fandom-trivia.vercel.app/selector-zootopia" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Zootopia Universe", item: "https://www.fandom-trivia.com/selector-zootopia" }
             ])}
           </script>
         </Helmet>
@@ -2102,9 +2102,9 @@ const ZootopiaSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Case 1", title: "Zootopia", desc: `${ZOOTOPIA_TRIVIA.length} questions`, icon: "🐰", view: 'trivia-zootopia', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Case 2", title: "Zootopia 2", desc: `${ZOOTOPIA_2_TRIVIA.length} questions`, icon: "🐍", view: 'trivia-zootopia-2', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-          { label: "Random", title: "Mixed Case File", desc: "15 random questions from both", icon: "🎲", view: 'trivia-zootopia-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Case 1", title: "Zootopia", desc: `${ZOOTOPIA_TRIVIA.length} questions`, icon: "ðŸ°", view: 'trivia-zootopia', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Case 2", title: "Zootopia 2", desc: `${ZOOTOPIA_2_TRIVIA.length} questions`, icon: "ðŸ", view: 'trivia-zootopia-2', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: "Random", title: "Mixed Case File", desc: "15 random questions from both", icon: "ðŸŽ²", view: 'trivia-zootopia-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(movie => (
           <motion.button
             key={movie.label}
@@ -2370,7 +2370,7 @@ const MCQuizView = (props: {
         </script>
         <script type="application/ld+json">
           {getBreadcrumbSchema([
-            { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+            { name: "Home", item: "https://www.fandom-trivia.com/" },
             { name: universeName, item: currentUrl.split('/').slice(0, -1).join('/') },
             { name: props.title, item: currentUrl }
           ])}
@@ -3485,7 +3485,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     }
 
     if (isUnknown) {
-      // No known answer — auto-mark correct (fun mode)
+      // No known answer â€” auto-mark correct (fun mode)
       setScores(prev => ({ ...prev, [currentQ]: 'correct' }));
       setUserAnswers(prev => ({ ...prev, [currentQ]: option }));
       playCorrectSound();
@@ -3817,11 +3817,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
   const teamAPictures = isTeamA
     ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
-    : (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
+    : (gameMode === 'bot' ? ['https://www.fandom-trivia.com/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
 
   const teamBPictures = !isTeamA
     ? [user?.picture, teammate?.picture].filter(Boolean) as string[]
-    : (gameMode === 'bot' ? ['https://fandom-trivia.vercel.app/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
+    : (gameMode === 'bot' ? ['https://www.fandom-trivia.com/bot.png'] : opponents.map(o => o.picture).filter(Boolean) as string[]);
   const finalOpponentEntry = finalMatchResults.find(entry => !entry.isCurrentPlayer);
   const displayedOpponentScore = gameMode === 'bot'
     ? opponentScore
@@ -3860,7 +3860,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                       ? 'bg-red-500/20 border-red-500/50 text-red-400 shadow-red-500/10' 
                       : 'bg-amber-500/20 border-amber-500/50 text-amber-400 shadow-amber-500/10'}`}
               >
-                {correctCount > opponentScore ? '🏆 You Won!' : correctCount < opponentScore ? '💀 Bot Won!' : '🤝 It\'s a Tie!'}
+                {correctCount > opponentScore ? 'ðŸ† You Won!' : correctCount < opponentScore ? 'ðŸ’€ Bot Won!' : 'ðŸ¤ It\'s a Tie!'}
               </motion.div>
             )}
 
@@ -3876,10 +3876,10 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                       : 'bg-amber-500/20 border-amber-500/50 text-amber-400 shadow-amber-500/10'}`}
               >
                 {derivedTeamScore > derivedOpponentTeamScore 
-                  ? (gameMode === 'team' ? '🏆 Your Team Won!' : '🏆 You Won!') 
+                  ? (gameMode === 'team' ? 'ðŸ† Your Team Won!' : 'ðŸ† You Won!') 
                   : derivedTeamScore < derivedOpponentTeamScore 
-                    ? (gameMode === 'team' ? '💀 Rival Team Won!' : '💀 Rival Won!') 
-                    : '🤝 It\'s a Tie!'}
+                    ? (gameMode === 'team' ? 'ðŸ’€ Rival Team Won!' : 'ðŸ’€ Rival Won!') 
+                    : 'ðŸ¤ It\'s a Tie!'}
               </motion.div>
             )}
             <div className="flex justify-center mb-6">
@@ -3910,7 +3910,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                   <div className="relative p-6 bg-white/5 rounded-full border-2 border-purple-500/30 shadow-2xl backdrop-blur-md">
                     <SimpleAvatar 
                       name={gameMode === 'bot' ? 'Bot' : (opponents[0]?.name || 'Opponent')} 
-                      picture={gameMode === 'bot' ? 'https://fandom-trivia.vercel.app/bot.png' : (opponents[0]?.picture || getQuizImage(scoreLabel))} 
+                      picture={gameMode === 'bot' ? 'https://www.fandom-trivia.com/bot.png' : (opponents[0]?.picture || getQuizImage(scoreLabel))} 
                       size={120} 
                     />
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl whitespace-nowrap">
@@ -4323,7 +4323,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               ) : (
                 <>
                   <span className="rounded-full border border-blue-400/20 bg-blue-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-blue-300">
-                    Timer • {formatTime(timeRemainingSec)}
+                    Timer â€¢ {formatTime(timeRemainingSec)}
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                     Shared countdown. Questions repeat until time expires.
@@ -4358,7 +4358,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 
             {isUnknown && !selected && (
               <div className="px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
-                ⚡ Fun mode — no confirmed answer. Pick your best guess!
+                âš¡ Fun mode â€” no confirmed answer. Pick your best guess!
               </div>
             )}
 
@@ -4402,7 +4402,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                 animate={{ opacity: 1, y: 0 }}
                 className="px-5 py-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-1"
               >
-                <p className="text-[10px] font-black uppercase tracking-widest text-primary">📖 Source Evidence</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary">ðŸ“– Source Evidence</p>
                 <p className="text-sm text-slate-300 leading-relaxed italic">{q.evidence}</p>
               </motion.div>
             )}
@@ -4554,7 +4554,7 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
 // --- Frozen Movie Selector ---
 
 const FROZEN_GRADES = [
-  { threshold: 90, label: 'Snow Queen', color: 'text-sky-300', character: { name: 'Elsa', image: '/images/frozen.jpg', desc: 'The cold never bothered you anyway! You are a master of Arendelle’s history.' } },
+  { threshold: 90, label: 'Snow Queen', color: 'text-sky-300', character: { name: 'Elsa', image: '/images/frozen.jpg', desc: 'The cold never bothered you anyway! You are a master of Arendelleâ€™s history.' } },
   { threshold: 70, label: 'Fearless Optimist', color: 'text-fuchsia-400', character: { name: 'Anna', image: '/images/frozen.jpg', desc: 'You have a heart of gold. Your knowledge of the sisterhood is impressive!' } },
   { threshold: 50, label: 'Warm Hug Expert', color: 'text-blue-200', character: { name: 'Olaf', image: '/images/frozen.jpg', desc: 'Some people are worth melting for. You know a fair bit, but keep exploring!' } },
   { threshold: 0, label: 'Ice Harvester', color: 'text-slate-400', character: { name: 'Sven', image: '/images/frozen.jpg', desc: 'Reindeer are better than people. You might need to spend more time in the castle!' } },
@@ -4574,13 +4574,13 @@ const FrozenSelector = () => {
         <Helmet>
           <title>Frozen Trivia & Arendelle Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on Frozen and Frozen 2. From Elsa's magic to Anna's adventures. Prove you're the ultimate Snow Master in our trivia challenge." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-frozen" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-frozen" />
           <meta property="og:title" content="Frozen Trivia & Arendelle Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Do you know everything about Elsa, Anna, and Olaf? Test your Frozen knowledge now!" />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Frozen Universe", item: "https://fandom-trivia.vercel.app/selector-frozen" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Frozen Universe", item: "https://www.fandom-trivia.com/selector-frozen" }
             ])}
           </script>
         </Helmet>
@@ -4588,9 +4588,9 @@ const FrozenSelector = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Chapter 1", title: "Frozen (2013)", desc: `${FROZEN_1_TRIVIA.length} questions`, icon: "❄️", view: 'trivia-frozen-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-          { label: "Chapter 2", title: "Frozen 2 (2019)", desc: `${FROZEN_2_TRIVIA.length} questions`, icon: "🍂", view: 'trivia-frozen-2', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "15 random questions from both films", icon: "🎲", view: 'trivia-frozen-random', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+          { label: "Chapter 1", title: "Frozen (2013)", desc: `${FROZEN_1_TRIVIA.length} questions`, icon: "â„ï¸", view: 'trivia-frozen-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+          { label: "Chapter 2", title: "Frozen 2 (2019)", desc: `${FROZEN_2_TRIVIA.length} questions`, icon: "ðŸ‚", view: 'trivia-frozen-2', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "15 random questions from both films", icon: "ðŸŽ²", view: 'trivia-frozen-random', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -4648,13 +4648,13 @@ const MoanaSelector = () => {
         <Helmet>
           <title>Moana Trivia & Ocean Voyages | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on Moana and Moana 2. From wayfinding and Maui to Motufetu and Nalo, prove you belong beyond the reef." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-moana" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-moana" />
           <meta property="og:title" content="Moana Trivia & Ocean Voyages | Fandom Trivia" />
           <meta property="og:description" content="Set sail with Moana, Maui, and the ocean in the ultimate Moana trivia challenge." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Moana Universe", item: "https://fandom-trivia.vercel.app/selector-moana" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Moana Universe", item: "https://www.fandom-trivia.com/selector-moana" }
             ])}
           </script>
         </Helmet>
@@ -4662,9 +4662,9 @@ const MoanaSelector = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: 'Voyage 1', title: 'Moana (2016)', desc: `${MOANA_1_TRIVIA.length} questions`, icon: '🌊', view: 'trivia-moana-1', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
-          { label: 'Voyage 2', title: 'Moana 2', desc: `${MOANA_2_TRIVIA.length} questions`, icon: '✨', view: 'trivia-moana-2', gradient: 'from-amber-500/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-          { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from both voyages', icon: '🎲', view: 'trivia-moana-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: 'Voyage 1', title: 'Moana (2016)', desc: `${MOANA_1_TRIVIA.length} questions`, icon: 'ðŸŒŠ', view: 'trivia-moana-1', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+          { label: 'Voyage 2', title: 'Moana 2', desc: `${MOANA_2_TRIVIA.length} questions`, icon: 'âœ¨', view: 'trivia-moana-2', gradient: 'from-amber-500/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from both voyages', icon: 'ðŸŽ²', view: 'trivia-moana-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -4726,13 +4726,13 @@ const GoatSelector = ({ key }: { key?: string }) => {
         <Helmet>
           <title>GOAT Trivia & Movie Quiz | Fandom Trivia</title>
           <meta name="description" content="Test your GOAT (2026) knowledge with trivia on Will Harris, Roarball, character species, release details, and production deep cuts." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-goat" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-goat" />
           <meta property="og:title" content="GOAT Trivia & Movie Quiz | Fandom Trivia" />
           <meta property="og:description" content="Enter the Roarball league and test your GOAT movie knowledge." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "GOAT", item: "https://fandom-trivia.vercel.app/selector-goat" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "GOAT", item: "https://www.fandom-trivia.com/selector-goat" }
             ])}
           </script>
         </Helmet>
@@ -4740,7 +4740,7 @@ const GoatSelector = ({ key }: { key?: string }) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {[
-          { label: 'Film 1', title: 'GOAT (2026)', desc: `${GOAT_TRIVIA.length} questions`, icon: '🐐', view: 'trivia-goat', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: 'Film 1', title: 'GOAT (2026)', desc: `${GOAT_TRIVIA.length} questions`, icon: 'ðŸ', view: 'trivia-goat', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -4793,13 +4793,13 @@ const CatInTheHatSelector = () => {
         <Helmet>
           <title>Cat in the Hat Trivia & Movie Quiz | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge of The Cat in the Hat (2003), from Anville and S.L.O.W. to the crate, Thing 1 and Thing 2, and the Mother of All Messes." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-cat-in-the-hat" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-cat-in-the-hat" />
           <meta property="og:title" content="Cat in the Hat Trivia & Movie Quiz | Fandom Trivia" />
           <meta property="og:description" content="Enter Anville and test your knowledge of The Cat in the Hat (2003) with 21 verified questions." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Cat in the Hat", item: "https://fandom-trivia.vercel.app/selector-cat-in-the-hat" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Cat in the Hat", item: "https://www.fandom-trivia.com/selector-cat-in-the-hat" }
             ])}
           </script>
         </Helmet>
@@ -4807,7 +4807,7 @@ const CatInTheHatSelector = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {[
-          { label: 'Movie 1', title: 'The Cat in the Hat', desc: `${CAT_IN_THE_HAT_TRIVIA.length} questions`, icon: '🎩', view: 'trivia-cat-in-the-hat', gradient: 'from-rose-600/20 to-red-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+          { label: 'Movie 1', title: 'The Cat in the Hat', desc: `${CAT_IN_THE_HAT_TRIVIA.length} questions`, icon: 'ðŸŽ©', view: 'trivia-cat-in-the-hat', gradient: 'from-rose-600/20 to-red-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
         ].map(movie => (
           <motion.button
             key={movie.title}
@@ -4846,13 +4846,13 @@ const HTTYDSelector = () => {
           <Helmet>
             <title>How to Train Your Dragon Trivia & Movie Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your How to Train Your Dragon knowledge across the full trilogy, from Berk and dragon training to Drago, the Hidden World, and Toothless." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-how-to-train-your-dragon" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-how-to-train-your-dragon" />
             <meta property="og:title" content="How to Train Your Dragon Trivia & Movie Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play How to Train Your Dragon quizzes across all three films and prove you belong in Berk." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "How to Train Your Dragon", item: "https://fandom-trivia.vercel.app/selector-how-to-train-your-dragon" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "How to Train Your Dragon", item: "https://www.fandom-trivia.com/selector-how-to-train-your-dragon" }
               ])}
             </script>
           </Helmet>
@@ -4860,10 +4860,10 @@ const HTTYDSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { label: 'Film 1', title: 'How to Train Your Dragon', desc: `${HTTYD_1_TRIVIA.length} questions`, icon: '🐉', view: 'trivia-httyd-1', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-            { label: 'Film 2', title: 'How to Train Your Dragon 2', desc: `${HTTYD_2_TRIVIA.length} questions`, icon: '❄️', view: 'trivia-httyd-2', gradient: 'from-indigo-600/20 to-sky-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-            { label: 'Film 3', title: 'The Hidden World', desc: `${HTTYD_3_TRIVIA.length} questions`, icon: '✨', view: 'trivia-httyd-3', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
-            { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all 3 films', icon: '🎲', view: 'trivia-httyd-random', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: 'Film 1', title: 'How to Train Your Dragon', desc: `${HTTYD_1_TRIVIA.length} questions`, icon: 'ðŸ‰', view: 'trivia-httyd-1', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: 'Film 2', title: 'How to Train Your Dragon 2', desc: `${HTTYD_2_TRIVIA.length} questions`, icon: 'â„ï¸', view: 'trivia-httyd-2', gradient: 'from-indigo-600/20 to-sky-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: 'Film 3', title: 'The Hidden World', desc: `${HTTYD_3_TRIVIA.length} questions`, icon: 'âœ¨', view: 'trivia-httyd-3', gradient: 'from-fuchsia-600/20 to-purple-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all 3 films', icon: 'ðŸŽ²', view: 'trivia-httyd-random', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -4946,13 +4946,13 @@ const AvatarSelector = () => {
           <Helmet>
             <title>Avatar Trivia & Pandora Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Avatar knowledge across the 2009 film, The Way of Water, and Fire and Ash. Enter Pandora and prove you are Na'vi-level ready." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-avatar" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-avatar" />
             <meta property="og:title" content="Avatar Trivia & Pandora Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play Avatar quizzes across the full saga and test your knowledge of Pandora, the Sullys, and the Ash People." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Avatar Universe", item: "https://fandom-trivia.vercel.app/selector-avatar" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Avatar Universe", item: "https://www.fandom-trivia.com/selector-avatar" }
               ])}
             </script>
           </Helmet>
@@ -4960,10 +4960,10 @@ const AvatarSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           {[
-            { label: 'Film 1', title: 'Avatar (2009)', desc: `${AVATAR_1_TRIVIA.length} questions`, icon: '🌿', view: 'trivia-avatar-1', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
-            { label: 'Film 2', title: 'The Way of Water', desc: `${AVATAR_2_TRIVIA.length} questions`, icon: '🌊', view: 'trivia-avatar-2', gradient: 'from-sky-600/20 to-indigo-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-            { label: 'Film 3', title: 'Fire and Ash', desc: `${AVATAR_3_TRIVIA.length} questions`, icon: '🔥', view: 'trivia-avatar-3', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-            { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from all 3 films', icon: '🎲', view: 'trivia-avatar-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: 'Film 1', title: 'Avatar (2009)', desc: `${AVATAR_1_TRIVIA.length} questions`, icon: 'ðŸŒ¿', view: 'trivia-avatar-1', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+            { label: 'Film 2', title: 'The Way of Water', desc: `${AVATAR_2_TRIVIA.length} questions`, icon: 'ðŸŒŠ', view: 'trivia-avatar-2', gradient: 'from-sky-600/20 to-indigo-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: 'Film 3', title: 'Fire and Ash', desc: `${AVATAR_3_TRIVIA.length} questions`, icon: 'ðŸ”¥', view: 'trivia-avatar-3', gradient: 'from-orange-600/20 to-red-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from all 3 films', icon: 'ðŸŽ²', view: 'trivia-avatar-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(film => (
             <motion.button
               key={film.view}
@@ -5012,13 +5012,13 @@ const MinecraftSelector = () => {
         <Helmet>
           <title>Minecraft Trivia & Movie Quiz | Fandom Trivia</title>
           <meta name="description" content="Test your A Minecraft Movie knowledge on Steve, Garrett, piglins, portals, villagers, and Overworld chaos." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-minecraft" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-minecraft" />
           <meta property="og:title" content="Minecraft Trivia & Movie Quiz | Fandom Trivia" />
           <meta property="og:description" content="Enter the Overworld and test your knowledge of A Minecraft Movie with 25 verified questions." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Minecraft Universe", item: "https://fandom-trivia.vercel.app/selector-minecraft" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Minecraft Universe", item: "https://www.fandom-trivia.com/selector-minecraft" }
             ])}
           </script>
         </Helmet>
@@ -5026,7 +5026,7 @@ const MinecraftSelector = () => {
       </div>
       <div className="grid grid-cols-1 gap-5">
         {[
-          { label: 'Movie Quiz', title: 'A Minecraft Movie (2025)', quizId: 'A Minecraft Movie (2025)', desc: `${MINECRAFT_TRIVIA.length} verified questions`, icon: '⛏️', view: 'trivia-minecraft', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: 'Movie Quiz', title: 'A Minecraft Movie (2025)', quizId: 'A Minecraft Movie (2025)', desc: `${MINECRAFT_TRIVIA.length} verified questions`, icon: 'â›ï¸', view: 'trivia-minecraft', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
         ].map(item => (
           <motion.button
             key={item.title}
@@ -5090,13 +5090,13 @@ const MarioSelector = () => {
         <Helmet>
           <title>Super Mario Galaxy Lore & Trivia | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on the Super Mario Bros. Movie (2023) and the 2007 masterpiece Super Mario Galaxy. Explore Rosalina's story and the Luma lore." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-super-mario" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-super-mario" />
           <meta property="og:title" content="Super Mario Galaxy Lore & Trivia | Fandom Trivia" />
           <meta property="og:description" content="Enter the Mushroom Kingdom and the Cosmos. Are you a true Mario expert? Test your game and movie knowledge now!" />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Super Mario Galaxy Universe", item: "https://fandom-trivia.vercel.app/selector-super-mario" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Super Mario Galaxy Universe", item: "https://www.fandom-trivia.com/selector-super-mario" }
             ])}
           </script>
         </Helmet>
@@ -5104,9 +5104,9 @@ const MarioSelector = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Movie (2023)", title: "The Super Mario Bros.", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "🏎️", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-          { label: "Game (2007)", title: "Super Mario Galaxy", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "🌌", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Mixed", title: "Star Child Challenge", desc: "15 random questions from movies & games", icon: "🎲", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          { label: "Movie (2023)", title: "The Super Mario Bros.", desc: `${MARIO_2023_TRIVIA.length} questions`, icon: "ðŸŽï¸", view: 'trivia-mario-2023', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+          { label: "Game (2007)", title: "Super Mario Galaxy", desc: `${MARIO_2026_TRIVIA.length} questions`, icon: "ðŸŒŒ", view: 'trivia-mario-2026', gradient: 'from-blue-600/20 to-purple-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Mixed", title: "Star Child Challenge", desc: "15 random questions from movies & games", icon: "ðŸŽ²", view: 'trivia-mario-random', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -5171,13 +5171,13 @@ const DespicableMeSelector = () => {
         <Helmet>
           <title>Despicable Me Trivia & Minion Quizzes | Fandom Trivia</title>
           <meta name="description" content="Test your knowledge on Despicable Me 1, 2, 3, and 4. From Gru's moon heist to the Anti-Villain League. Prove you're the ultimate Minion Master." />
-          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-despicable-me" />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-despicable-me" />
           <meta property="og:title" content="Despicable Me Trivia & Minion Quizzes | Fandom Trivia" />
           <meta property="og:description" content="Bello! Are you a true Minion expert? Test your Despicable Me knowledge in our ultimate quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
-              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-              { name: "Despicable Me Universe", item: "https://fandom-trivia.vercel.app/selector-despicable-me" }
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Despicable Me Universe", item: "https://www.fandom-trivia.com/selector-despicable-me" }
             ])}
           </script>
         </Helmet>
@@ -5185,11 +5185,11 @@ const DespicableMeSelector = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {[
-          { label: "Film 1", title: "Despicable Me", desc: `${DESPICABLE_ME_1_TRIVIA.length} questions`, icon: "🌙", view: 'trivia-despicableme-1', gradient: 'from-blue-600/20 to-indigo-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-          { label: "Film 2", title: "Despicable Me 2", desc: `${DESPICABLE_ME_2_TRIVIA.length} questions`, icon: "🧪", view: 'trivia-despicableme-2', gradient: 'from-purple-600/20 to-indigo-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
-          { label: "Film 3", title: "Despicable Me 3", desc: `${DESPICABLE_ME_3_TRIVIA.length} questions`, icon: "💎", view: 'trivia-despicableme-3', gradient: 'from-pink-600/20 to-rose-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
-          { label: "Film 4", title: "Despicable Me 4", desc: `${DESPICABLE_ME_4_TRIVIA.length} questions`, icon: "🪳", view: 'trivia-despicableme-4', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-despicableme-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Film 1", title: "Despicable Me", desc: `${DESPICABLE_ME_1_TRIVIA.length} questions`, icon: "ðŸŒ™", view: 'trivia-despicableme-1', gradient: 'from-blue-600/20 to-indigo-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+          { label: "Film 2", title: "Despicable Me 2", desc: `${DESPICABLE_ME_2_TRIVIA.length} questions`, icon: "ðŸ§ª", view: 'trivia-despicableme-2', gradient: 'from-purple-600/20 to-indigo-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+          { label: "Film 3", title: "Despicable Me 3", desc: `${DESPICABLE_ME_3_TRIVIA.length} questions`, icon: "ðŸ’Ž", view: 'trivia-despicableme-3', gradient: 'from-pink-600/20 to-rose-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
+          { label: "Film 4", title: "Despicable Me 4", desc: `${DESPICABLE_ME_4_TRIVIA.length} questions`, icon: "ðŸª³", view: 'trivia-despicableme-4', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "ðŸŽ²", view: 'trivia-despicableme-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -5419,7 +5419,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
     <Helmet>
       <title>Fandom Trivia | The Ultimate Fan Experience</title>
       <meta name="description" content="The world's leading community for fandom trivia. Test your knowledge in Harry Potter, Twilight, Frozen, K-Pop, and more. Join thousands of fans on the global leaderboard." />
-      <link rel="canonical" href="https://fandom-trivia.vercel.app/" />
+      <link rel="canonical" href="https://www.fandom-trivia.com/" />
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -5443,12 +5443,12 @@ const LandingView = ({ setUser, onUnlockBadge }: {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "url": "https://fandom-trivia.vercel.app/",
+          "url": "https://www.fandom-trivia.com/",
           "name": "Fandom Trivia",
           "description": "Premium multi-universe trivia platform for superfans.",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://fandom-trivia.vercel.app/search?q={search_term_string}",
+            "target": "https://www.fandom-trivia.com/search?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         })}
@@ -6218,7 +6218,7 @@ const RankingsView = ({ user }: { user: User | null }) => {
 
 // --- Easter Egg Component ---
 
-const EMOJIS = ['❄️', '🪄', '⚡', '🧛', '🍌', '🚀', '🐰'];
+const EMOJIS = ['â„ï¸', 'ðŸª„', 'âš¡', 'ðŸ§›', 'ðŸŒ', 'ðŸš€', 'ðŸ°'];
 
 const EmojiRain = ({ onComplete }: { onComplete: () => void }) => {
   const items = useMemo(() => {
@@ -6283,13 +6283,13 @@ const ToyStorySelector = () => {
           <Helmet>
             <title>Toy Story Trivia & Movie Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Toy Story knowledge across all four films. From Andy's room to Bonnie's adventures, see if you belong in the toy box." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-toy-story" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-toy-story" />
             <meta property="og:title" content="Toy Story Trivia & Movie Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play Toy Story quizzes across all four films and prove you know every toy in the box." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Toy Story", item: "https://fandom-trivia.vercel.app/selector-toy-story" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Toy Story", item: "https://www.fandom-trivia.com/selector-toy-story" }
               ])}
             </script>
           </Helmet>
@@ -6297,11 +6297,11 @@ const ToyStorySelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { label: "Film 1", title: "Toy Story", desc: "20 questions from the original adventure", icon: "🤠", view: 'trivia-toy-story-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-            { label: "Film 2", title: "Toy Story 2", desc: "20 questions on Woody, Jessie, and Al's Toy Barn", icon: "⭐", view: 'trivia-toy-story-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-            { label: "Film 3", title: "Toy Story 3", desc: "20 questions on Sunnyside and the great escape", icon: "🧸", view: 'trivia-toy-story-3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-            { label: "Film 4", title: "Toy Story 4", desc: "20 questions on Forky, Bo Peep, and the carnival", icon: "🪀", view: 'trivia-toy-story-4', gradient: 'from-purple-600/20 to-pink-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
-            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-toy-story-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: "Film 1", title: "Toy Story", desc: "20 questions from the original adventure", icon: "ðŸ¤ ", view: 'trivia-toy-story-1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+            { label: "Film 2", title: "Toy Story 2", desc: "20 questions on Woody, Jessie, and Al's Toy Barn", icon: "â­", view: 'trivia-toy-story-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Film 3", title: "Toy Story 3", desc: "20 questions on Sunnyside and the great escape", icon: "ðŸ§¸", view: 'trivia-toy-story-3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 4", title: "Toy Story 4", desc: "20 questions on Forky, Bo Peep, and the carnival", icon: "ðŸª€", view: 'trivia-toy-story-4', gradient: 'from-purple-600/20 to-pink-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "ðŸŽ²", view: 'trivia-toy-story-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -6340,13 +6340,13 @@ const ShrekSelector = () => {
           <Helmet>
             <title>Shrek Trivia & Movie Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Shrek knowledge across all four films. From the swamp to Far Far Away, prove you know every layer of the franchise." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-shrek" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-shrek" />
             <meta property="og:title" content="Shrek Trivia & Movie Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play Shrek quizzes across all four movies and prove you belong in the swamp." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Shrek", item: "https://fandom-trivia.vercel.app/selector-shrek" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Shrek", item: "https://www.fandom-trivia.com/selector-shrek" }
               ])}
             </script>
           </Helmet>
@@ -6354,11 +6354,11 @@ const ShrekSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { label: "Film 1", title: "Shrek", desc: `${SHREK_1_TRIVIA.length} questions`, icon: "🧅", view: 'trivia-shrek-1', gradient: 'from-green-600/20 to-lime-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
-            { label: "Film 2", title: "Shrek 2", desc: `${SHREK_2_TRIVIA.length} questions`, icon: "👢", view: 'trivia-shrek-2', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-            { label: "Film 3", title: "Shrek the Third", desc: `${SHREK_3_TRIVIA.length} questions`, icon: "👑", view: 'trivia-shrek-3', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-            { label: "Film 4", title: "Shrek Forever After", desc: `${SHREK_4_TRIVIA.length} questions`, icon: "🪄", view: 'trivia-shrek-4', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
-            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-shrek-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: "Film 1", title: "Shrek", desc: `${SHREK_1_TRIVIA.length} questions`, icon: "ðŸ§…", view: 'trivia-shrek-1', gradient: 'from-green-600/20 to-lime-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+            { label: "Film 2", title: "Shrek 2", desc: `${SHREK_2_TRIVIA.length} questions`, icon: "ðŸ‘¢", view: 'trivia-shrek-2', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 3", title: "Shrek the Third", desc: `${SHREK_3_TRIVIA.length} questions`, icon: "ðŸ‘‘", view: 'trivia-shrek-3', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: "Film 4", title: "Shrek Forever After", desc: `${SHREK_4_TRIVIA.length} questions`, icon: "ðŸª„", view: 'trivia-shrek-4', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "ðŸŽ²", view: 'trivia-shrek-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -6397,13 +6397,13 @@ const BadGuysSelector = () => {
           <Helmet>
             <title>The Bad Guys Trivia & Movie Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your The Bad Guys knowledge across both movies, from the Golden Dolphin award to the Bad Girls sequel." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-bad-guys" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-bad-guys" />
             <meta property="og:title" content="The Bad Guys Trivia & Movie Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play The Bad Guys movie quizzes and prove you know every con, crew member, and sequel twist." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "The Bad Guys", item: "https://fandom-trivia.vercel.app/selector-bad-guys" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "The Bad Guys", item: "https://www.fandom-trivia.com/selector-bad-guys" }
               ])}
             </script>
           </Helmet>
@@ -6411,8 +6411,8 @@ const BadGuysSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {[
-            { label: "Film 1", title: "The Bad Guys", desc: `${BAD_GUYS_1_TRIVIA.length} questions from the 2022 film`, icon: "🐺", view: 'trivia-bad-guys-1', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-            { label: "Film 2", title: "The Bad Guys 2", desc: `${BAD_GUYS_2_TRIVIA.length} questions from the sequel`, icon: "🦊", view: 'trivia-bad-guys-2', gradient: 'from-yellow-600/20 to-rose-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+            { label: "Film 1", title: "The Bad Guys", desc: `${BAD_GUYS_1_TRIVIA.length} questions from the 2022 film`, icon: "ðŸº", view: 'trivia-bad-guys-1', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: "Film 2", title: "The Bad Guys 2", desc: `${BAD_GUYS_2_TRIVIA.length} questions from the sequel`, icon: "ðŸ¦Š", view: 'trivia-bad-guys-2', gradient: 'from-yellow-600/20 to-rose-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -6451,13 +6451,13 @@ const DogManSelector = () => {
           <Helmet>
             <title>Dog Man Trivia & Book Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Dog Man knowledge across the full graphic novel series. From Petey to Big Jim, see how well you know the Supa Buddy universe." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-dog-man" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-dog-man" />
             <meta property="og:title" content="Dog Man Trivia & Book Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Play Dog Man quizzes across the graphic novel series and prove you're a true Supa Buddy expert." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Dog Man", item: "https://fandom-trivia.vercel.app/selector-dog-man" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Dog Man", item: "https://www.fandom-trivia.com/selector-dog-man" }
               ])}
             </script>
           </Helmet>
@@ -6465,21 +6465,21 @@ const DogManSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           {[
-            { label: "Book 1", title: "Dog Man", desc: "20 questions from the first book", icon: "🐶", view: 'trivia-dog-man-book1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
-            { label: "Book 2", title: "Unleashed", desc: "20 questions on Petey's return", icon: "🐱", view: 'trivia-dog-man-book2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-            { label: "Book 3", title: "A Tale of Two Kitties", desc: "20 questions on Li'l Petey's debut", icon: "🐾", view: 'trivia-dog-man-book3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-            { label: "Book 4", title: "Dog Man and Cat Kid", desc: "20 questions on a new partnership", icon: "📚", view: 'trivia-dog-man-book4', gradient: 'from-purple-600/20 to-fuchsia-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
-            { label: "Book 5", title: "Lord of the Fleas", desc: "20 questions on the tiny villains", icon: "🪲", view: 'trivia-dog-man-book5', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
-            { label: "Book 6", title: "Brawl of the Wild", desc: "20 questions on exile and redemption", icon: "🌲", view: 'trivia-dog-man-book6', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
-            { label: "Book 7", title: "For Whom the Ball Rolls", desc: "20 questions on fetch and friendship", icon: "🎾", view: 'trivia-dog-man-book7', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-            { label: "Book 8", title: "Fetch-22", desc: "20 questions on clones and chaos", icon: "🦴", view: 'trivia-dog-man-book8', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-            { label: "Book 9", title: "Grime and Punishment", desc: "20 questions on justice and dirt", icon: "🧼", view: 'trivia-dog-man-book9', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
-            { label: "Book 10", title: "Mothering Heights", desc: "20 questions on family twists", icon: "🏔️", view: 'trivia-dog-man-book10', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
-            { label: "Book 11", title: "Twenty Thousand Fleas Under the Sea", desc: "20 questions on the underwater mission", icon: "🌊", view: 'trivia-dog-man-book11', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
-            { label: "Book 12", title: "The Scarlet Shedder", desc: "20 questions on the crimson outbreak", icon: "🍅", view: 'trivia-dog-man-book12', gradient: 'from-red-700/20 to-rose-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
-            { label: "Book 13", title: "Big Jim Begins", desc: "20 questions on the origin story", icon: "💥", view: 'trivia-dog-man-book13', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
-            { label: "Book 14", title: "Big Jim Believes", desc: "20 questions on the latest chapter", icon: "⭐", view: 'trivia-dog-man-book14', gradient: 'from-yellow-600/20 to-amber-500/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
-            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 14 books", icon: "🎲", view: 'trivia-dog-man-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: "Book 1", title: "Dog Man", desc: "20 questions from the first book", icon: "ðŸ¶", view: 'trivia-dog-man-book1', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+            { label: "Book 2", title: "Unleashed", desc: "20 questions on Petey's return", icon: "ðŸ±", view: 'trivia-dog-man-book2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Book 3", title: "A Tale of Two Kitties", desc: "20 questions on Li'l Petey's debut", icon: "ðŸ¾", view: 'trivia-dog-man-book3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Book 4", title: "Dog Man and Cat Kid", desc: "20 questions on a new partnership", icon: "ðŸ“š", view: 'trivia-dog-man-book4', gradient: 'from-purple-600/20 to-fuchsia-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
+            { label: "Book 5", title: "Lord of the Fleas", desc: "20 questions on the tiny villains", icon: "ðŸª²", view: 'trivia-dog-man-book5', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+            { label: "Book 6", title: "Brawl of the Wild", desc: "20 questions on exile and redemption", icon: "ðŸŒ²", view: 'trivia-dog-man-book6', gradient: 'from-indigo-600/20 to-blue-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: "Book 7", title: "For Whom the Ball Rolls", desc: "20 questions on fetch and friendship", icon: "ðŸŽ¾", view: 'trivia-dog-man-book7', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: "Book 8", title: "Fetch-22", desc: "20 questions on clones and chaos", icon: "ðŸ¦´", view: 'trivia-dog-man-book8', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Book 9", title: "Grime and Punishment", desc: "20 questions on justice and dirt", icon: "ðŸ§¼", view: 'trivia-dog-man-book9', gradient: 'from-rose-600/20 to-pink-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Book 10", title: "Mothering Heights", desc: "20 questions on family twists", icon: "ðŸ”ï¸", view: 'trivia-dog-man-book10', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+            { label: "Book 11", title: "Twenty Thousand Fleas Under the Sea", desc: "20 questions on the underwater mission", icon: "ðŸŒŠ", view: 'trivia-dog-man-book11', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+            { label: "Book 12", title: "The Scarlet Shedder", desc: "20 questions on the crimson outbreak", icon: "ðŸ…", view: 'trivia-dog-man-book12', gradient: 'from-red-700/20 to-rose-600/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+            { label: "Book 13", title: "Big Jim Begins", desc: "20 questions on the origin story", icon: "ðŸ’¥", view: 'trivia-dog-man-book13', gradient: 'from-orange-600/20 to-amber-600/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+            { label: "Book 14", title: "Big Jim Believes", desc: "20 questions on the latest chapter", icon: "â­", view: 'trivia-dog-man-book14', gradient: 'from-yellow-600/20 to-amber-500/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 14 books", icon: "ðŸŽ²", view: 'trivia-dog-man-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(book => (
             <motion.button
               key={book.label}
@@ -6518,13 +6518,13 @@ const KungFuPandaSelector = () => {
           <Helmet>
             <title>Kung Fu Panda Trivia & Movie Quizzes | Fandom Trivia</title>
             <meta name="description" content="Test your Kung Fu Panda knowledge across all four films. From Po's first training session to the Chameleon's rise, prove you're the Dragon Warrior." />
-            <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-kung-fu-panda" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-kung-fu-panda" />
             <meta property="og:title" content="Kung Fu Panda Trivia & Movie Quizzes | Fandom Trivia" />
             <meta property="og:description" content="Master the Valley of Peace with Kung Fu Panda quizzes spanning all four films." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
-                { name: "Home", item: "https://fandom-trivia.vercel.app/" },
-                { name: "Kung Fu Panda", item: "https://fandom-trivia.vercel.app/selector-kung-fu-panda" }
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Kung Fu Panda", item: "https://www.fandom-trivia.com/selector-kung-fu-panda" }
               ])}
             </script>
           </Helmet>
@@ -6532,11 +6532,11 @@ const KungFuPandaSelector = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { label: "Film 1", title: "Kung Fu Panda", desc: "20 questions from Po's first adventure", icon: "🐼", view: 'trivia-kfp-1', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
-            { label: "Film 2", title: "Kung Fu Panda 2", desc: "20 questions on Lord Shen and inner peace", icon: "🦚", view: 'trivia-kfp-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
-            { label: "Film 3", title: "Kung Fu Panda 3", desc: "20 questions on Kai, chi, and panda village", icon: "🐂", view: 'trivia-kfp-3', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
-            { label: "Film 4", title: "Kung Fu Panda 4", desc: "20 questions on Zhen and the Chameleon", icon: "🦊", view: 'trivia-kfp-4', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
-            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "🎲", view: 'trivia-kfp-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: "Film 1", title: "Kung Fu Panda", desc: "20 questions from Po's first adventure", icon: "ðŸ¼", view: 'trivia-kfp-1', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Film 2", title: "Kung Fu Panda 2", desc: "20 questions on Lord Shen and inner peace", icon: "ðŸ¦š", view: 'trivia-kfp-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Film 3", title: "Kung Fu Panda 3", desc: "20 questions on Kai, chi, and panda village", icon: "ðŸ‚", view: 'trivia-kfp-3', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Film 4", title: "Kung Fu Panda 4", desc: "20 questions on Zhen and the Chameleon", icon: "ðŸ¦Š", view: 'trivia-kfp-4', gradient: 'from-sky-600/20 to-cyan-600/20', border: 'border-sky-500/30 hover:border-sky-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "ðŸŽ²", view: 'trivia-kfp-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -6994,17 +6994,17 @@ export default function App() {
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://fandom-trivia.vercel.app/" />
+        <meta property="og:url" content="https://www.fandom-trivia.com/" />
         <meta property="og:title" content="Fandom Trivia | The Ultimate Fan Experience" />
         <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
-        <meta property="og:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
+        <meta property="og:image" content="https://www.fandom-trivia.com/og-image.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://fandom-trivia.vercel.app/" />
+        <meta property="twitter:url" content="https://www.fandom-trivia.com/" />
         <meta property="twitter:title" content="Fandom Trivia | The Ultimate Fan Experience" />
         <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
-        <meta property="twitter:image" content="https://fandom-trivia.vercel.app/og-image.jpg" />
+        <meta property="twitter:image" content="https://www.fandom-trivia.com/og-image.jpg" />
       </Helmet>
 
       <Navbar
