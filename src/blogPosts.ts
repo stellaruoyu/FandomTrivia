@@ -11,6 +11,76 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'goat-quiz',
+    title: 'GOAT Quiz: Can You Actually Prove You Know Will Harris, Roarball, and Every 2026 Deep Cut?',
+    metaDescription: 'Take the ultimate GOAT quiz and prove your Will Harris, Roarball, Jett Fillmore, and GOAT 2026 trivia knowledge.',
+    date: '2026-05-04',
+    author: 'Fandom Trivia Team',
+    image: '/images/goat.jpg',
+    keywords: ['GOAT quiz', 'GOAT trivia', 'GOAT 2026 quiz', 'Will Harris quiz', 'Roarball trivia', 'Jett Fillmore trivia', 'GOAT personality test', 'GOAT fan theories'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>GOAT</strong> has exactly the kind of setup fans latch onto fast: an underdog hero, a sports world full of bigger personalities, a clean species-based character hook, and just enough release and production lore to turn normal fandom into obsession. If you think you actually paid attention to <strong>Will Harris</strong>, <strong>Roarball</strong>, <strong>Jett Fillmore</strong>, <strong>Archie Everhardt</strong>, and all the sneaky 2026 deep cuts around the movie, this <strong>GOAT quiz</strong> is where you prove it.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-goat" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Ultimate GOAT Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why GOAT Trivia Is Harder Than It Looks</h2>
+      <p>At first glance, a lot of fans will think a <strong>GOAT 2026 quiz</strong> sounds easy. You remember that Will Harris is the underdog. You remember that the movie centers on Roarball. You remember the sports-movie energy. But that is not enough. A real <strong>GOAT trivia</strong> challenge is not built around broad summary. It is built around the details that expose who was really watching.</p>
+      <p class="mt-4">Do you remember which species <strong>Florence "Flo" Everson</strong> is? Do you know the Polish title <strong>Wielka mała koza</strong>? Can you identify which real-world NBA star voices <strong>Lenny Williamson</strong> and also serves as a producer? Do you know why the film's <strong>February 13, 2026</strong> release date mattered? Those are the kinds of questions that turn a normal movie recap into a serious <strong>Roarball trivia</strong> test. If you want the real challenge, <a href="/selector-goat" class="text-primary hover:text-primary/80 font-bold">test your knowledge now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-goat" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-300">Challenge:</span> Test your GOAT knowledge
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which GOAT Character Are You Most Like?</h2>
+      <p>Every fandom turns into a personality debate eventually, and <strong>GOAT</strong> is built for it. Before you <a href="/selector-goat" class="text-primary hover:text-primary/80 font-bold">take the GOAT quiz</a>, ask yourself which energy actually fits you.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Will Harris:</strong> optimistic, relentless, and willing to keep pushing even when the league says you do not belong.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Jett Fillmore:</strong> elite, precise, and built to dominate under pressure with all-star intensity.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Archie Everhardt:</strong> physically imposing, direct, and impossible to ignore once the game gets serious.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Olivia Burke:</strong> talented, distracted, socially plugged-in, and always one second away from a phone-related meltdown.</li>
+      </ul>
+
+      <p>That is exactly why search interest around a <strong>GOAT personality test</strong>, <strong>Will Harris quiz</strong>, and <strong>Jett Fillmore trivia</strong> makes sense. Fans do not just want to remember the story. They want to measure which player mindset they match and whether they understand the species logic that shapes the whole world.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the GOAT Lore?</h2>
+      <p>A strong score on a real <strong>GOAT quiz</strong> should mean more than knowing Will is a goat. It should mean you can track the film's species hierarchy, production details, localization quirks, and release strategy without guessing your way through the hardest questions.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Deep-Cut Questions That Expose Casual Fans Fast</h3>
+      <p>Can you name the Malaysian voice actor for Archie? Do you know where the <strong>Under Armour</strong> logo appears on the rhino character? Do you remember which same-day trailer rival created the <strong>"Dueling Works"</strong> conversation on <strong>July 30, 2025</strong>? Can you explain the pun in the Vietnamese title and why it connects to the <strong>Year of the Goat</strong>? That is where a real <strong>GOAT 2026 quiz</strong> starts separating dedicated fans from people who only caught the poster.</p>
+      <p class="mt-4">The same goes for meta details. The film's novelization dropped on <strong>January 6, 2026</strong> before the theatrical run. <strong>Stephen Curry</strong> is tied to both the cast and the production side. <strong>Andre Iguodala</strong> shows up through the zebra referee Iggy. Those details are exactly why a proper <strong>GOAT trivia</strong> challenge feels more fun than a basic plot summary.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Fan Theory and Fandom Debate Angle</h3>
+      <p>The best quizzes also feed the kind of debates fandoms love. Why does the film lean so hard into species-based athletic identity? Does Jett's perfectionism make her the real standard of Roarball excellence? Is Will Harris only an underdog because of size, or because the league itself is structured against him? Those are the conversations that make <strong>GOAT fan theories</strong> and character arguments worth having.</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Character recall:</strong> Can you keep Will, Jett, Archie, Flo, Olivia, and Lenny straight without leaning on guesswork?</li>
+        <li><strong>Production knowledge:</strong> Do you actually remember the release date, the novelization timing, the international titles, and the NBA-linked casting details?</li>
+        <li><strong>Fandom depth:</strong> Are you ready for a <strong>GOAT quiz</strong> that rewards people who noticed both the story and the meta-context around it?</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Why This Is the GOAT Quiz Worth Taking</h2>
+      <p>This is not a soft, five-question movie recap. It is a real challenge built for fans who want to prove they know the world of Roarball, the cast of characters, the localized titles, the release strategy, and the species-based lore that gives the movie its identity. Whether you are here for <strong>GOAT trivia</strong>, a sharper <strong>Will Harris quiz</strong>, or just a way to expose which friend has been bluffing about knowing the movie, this is the score that matters.</p>
+      <p class="mt-4">If you have been acting like you know <strong>GOAT (2026)</strong> better than everyone else, now is the moment to back it up. Will Harris is ready. The league is waiting. And the quiz is live.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-amber-500/20 via-orange-900/40 to-black border border-amber-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Enter the Roarball League?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Take the ultimate <strong>GOAT quiz</strong>, test your Roarball memory, and prove whether you really caught the deep cuts that casual fans miss.</p>
+        <a href="/selector-goat" class="inline-block bg-gradient-to-r from-amber-300 to-orange-400 hover:from-amber-200 hover:to-orange-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(251,191,36,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(251,146,60,0.35)]">
+          Take the Ultimate GOAT Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Some fans remember the underdog setup. The best fans remember the species logic, the release details, and the Roarball lore. Take the quiz and prove it.</p>
+    `
+  },
+  {
     slug: 'the-bad-guys-2-quiz',
     title: 'The Bad Guys 2 Quiz: Can You Actually Prove You Know Every Heist, Twist, and Crew Secret?',
     metaDescription: 'Take the ultimate The Bad Guys 2 quiz and prove your sequel lore, Kitty Kat twists, Diane secrets, and crew knowledge.',

@@ -53,6 +53,7 @@ import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
 import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA } from './avatarTrivia';
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
 import { WICKED_PART_1_TRIVIA, WICKED_PART_2_TRIVIA, WICKED_MIXED_TRIVIA } from './wickedTrivia';
+import { GOAT_TRIVIA } from './goatTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -196,6 +197,7 @@ const getQuizTitle = (quizId: string): string => {
     'hoppers': 'Hoppers (2026)',
     'a-minecraft-movie-2025': 'A Minecraft Movie (2025)',
     'minecraft': 'A Minecraft Movie (2025)',
+    'goat': 'GOAT (2026)',
   };
 
   return map[normalizedId] || normalizedId;
@@ -211,6 +213,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return 'How to Train Your Dragon';
   if (q.includes('avatar')) return 'Avatar Universe';
   if (q.includes('minecraft')) return 'Minecraft Universe';
+  if (q.includes('goat')) return 'GOAT';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
   if (q.includes('zootopia')) return 'Zootopia Universe';
@@ -238,6 +241,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('httyd') || q.includes('train your dragon') || q.includes('hidden world')) return '/images/httyd.jpg';
   if (q.includes('avatar')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg';
   if (q.includes('minecraft')) return '/images/minecraft.jpg';
+  if (q.includes('goat')) return '/images/goat.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
@@ -1015,6 +1019,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'dog-man': '/selector-dog-man',
       'bad-guys': '/selector-bad-guys',
       'hoppers': '/selector-hoppers',
+      'goat': '/selector-goat',
     };
 
     const quizResults = UNIVERSES
@@ -1492,6 +1497,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-bad-guys" className="hover:text-orange-400 transition-colors">The Bad Guys</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
           <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
+          <li><Link to="/selector-goat" className="hover:text-amber-300 transition-colors">GOAT</Link></li>
           <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
         </ul>
       </div>
@@ -4700,6 +4706,66 @@ const MINECRAFT_GRADES = [
   { threshold: 0, label: 'Fresh Spawn', color: 'text-slate-400', character: { name: 'Dennis', image: '/images/minecraft.jpg', desc: 'You just spawned in. Grab some gear and try the Overworld again.' } },
 ];
 
+const GOAT_GRADES = [
+  { threshold: 90, label: 'Roarball Legend', color: 'text-amber-300', character: { name: 'Will Harris', image: '/images/goat.jpg', desc: 'Elite run. You know the players, production details, and Roarball deep cuts.' } },
+  { threshold: 70, label: 'All-Star Starter', color: 'text-orange-300', character: { name: 'Jett Fillmore', image: '/images/goat.jpg', desc: 'Strong work. You can hold your own with the best in the league.' } },
+  { threshold: 50, label: 'Bench Spark', color: 'text-blue-400', character: { name: 'Olivia Burke', image: '/images/goat.jpg', desc: 'You have the basics down, but there are still more GOAT details to study.' } },
+  { threshold: 0, label: 'Rookie Call-Up', color: 'text-slate-400', character: { name: 'Archie Everhardt', image: '/images/goat.jpg', desc: 'You made the roster. Time to get more reps in Roarball.' } },
+];
+
+const GoatSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Matchup</span></h1>
+        <Helmet>
+          <title>GOAT Trivia & Movie Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your GOAT (2026) knowledge with trivia on Will Harris, Roarball, character species, release details, and production deep cuts." />
+          <link rel="canonical" href="https://fandom-trivia.vercel.app/selector-goat" />
+          <meta property="og:title" content="GOAT Trivia & Movie Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Enter the Roarball league and test your GOAT movie knowledge." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://fandom-trivia.vercel.app/" },
+              { name: "GOAT", item: "https://fandom-trivia.vercel.app/selector-goat" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the movie quiz to test your knowledge of Will Harris, Roarball, and the film&apos;s production details.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: 'Film 1', title: 'GOAT (2026)', desc: `${GOAT_TRIVIA.length} questions`, icon: '🐐', view: 'trivia-goat', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 const CAT_IN_THE_HAT_GRADES = [
   { threshold: 90, label: 'Anville Chaos Master', color: 'text-rose-400', character: { name: 'The Cat', image: '/images/cat-in-the-hat.jpg', desc: 'You know the film\'s chaos, gadgets, and deep-cut details better than almost anyone.' } },
   { threshold: 70, label: 'S.L.O.W. Specialist', color: 'text-amber-300', character: { name: 'Sally', image: '/images/cat-in-the-hat.jpg', desc: 'Strong recall. You kept control even after the Mother of All Messes showed up.' } },
@@ -5514,6 +5580,10 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      if (universe.path) {
+                        navigate(universe.path);
+                        return;
+                      }
                       if (universe.id === 'twilight') navigate('/selector-twilight');
                       if (universe.id === 'kpop') navigate('/selector-kpop');
                       if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
@@ -5818,7 +5888,6 @@ const DashboardView = ({ user }: { user: User | null, key?: string }) => {
       <section className="max-w-[1600px] mx-auto px-6 mt-12 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { label: 'Global Users', value: '2.4M', color: 'text-white' },
             { label: 'Prize Paid', value: '$150K', color: 'text-primary' },
             { label: 'Active Lobbies', value: '1,402', color: 'text-accent' },
             { label: 'Avg MMR', value: '1,250', color: 'text-white' },
@@ -7088,6 +7157,7 @@ export default function App() {
             <Route path="/trivia-avatar-3" element={<MCQuizView key="trivia-avatar-3" questions={AVATAR_3_TRIVIA} title="Avatar: Fire and Ash" scoreLabel="Avatar: Fire and Ash" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-goat" element={<MCQuizView key="trivia-goat" questions={GOAT_TRIVIA} title="GOAT (2026)" scoreLabel="GOAT (2026)" grades={GOAT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-bad-guys-1" element={<MCQuizView key="trivia-bad-guys-1" questions={BAD_GUYS_1_TRIVIA} title="The Bad Guys" scoreLabel="The Bad Guys" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-bad-guys-2" element={<MCQuizView key="trivia-bad-guys-2" questions={BAD_GUYS_2_TRIVIA} title="The Bad Guys 2" scoreLabel="The Bad Guys 2" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7146,6 +7216,7 @@ export default function App() {
             <Route path="/selector-how-to-train-your-dragon" element={<HTTYDSelector />} />
             <Route path="/selector-avatar" element={<AvatarSelector />} />
             <Route path="/selector-minecraft" element={<MinecraftSelector />} />
+            <Route path="/selector-goat" element={<GoatSelector key="selector-goat" />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
             <Route path="/selector-bad-guys" element={<BadGuysSelector />} />

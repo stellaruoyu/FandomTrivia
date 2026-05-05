@@ -257,6 +257,17 @@ export const UNIVERSES = [
     path: '/selector-hoppers'
   },
   {
+    id: 'goat',
+    title: 'GOAT',
+    tags: ['Animation', 'Sports', 'Roarball'],
+    description: 'Smalls can ball. Test your knowledge of Will Harris, Roarball, and the underdog world of GOAT (2026).',
+    image: '/images/goat.jpg',
+    seoAlt: 'Official GOAT movie poster featuring Will Harris and the Roarball cast',
+    buttonText: 'Enter Roarball',
+    icon: 'Trophy',
+    path: '/selector-goat'
+  },
+  {
     id: 'wicked',
     title: 'Wicked',
     tags: ['Musical', 'Fantasy', 'Oz'],
