@@ -14,7 +14,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   title, 
   description, 
   image = '/og-image.jpg', 
-  url = 'https://fandom-trivia.vercel.app', 
+  url = 'https://www.fandom-trivia.com', 
   type = 'website',
   jsonLd
 }) => {

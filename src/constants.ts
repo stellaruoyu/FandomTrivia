@@ -60,6 +60,14 @@ export const BADGES: Badge[] = [
     targetQuiz: 'harry-potter'
   },
   {
+    id: 'camp-half-blood',
+    name: 'Camp Half-Blood Camper',
+    description: 'Complete any Percy Jackson universe quiz.',
+    icon: 'Sparkles',
+    color: 'text-cyan-300',
+    targetQuiz: 'percy-jackson'
+  },
+  {
     id: 'star-wars-ace',
     name: 'Galactic Ace',
     description: 'Complete any Star Wars trivia challenge.',
@@ -217,8 +225,8 @@ export const UNIVERSES = [
     title: 'Twilight',
     tags: ['Fantasy', 'Mystery'],
     description: 'The lines are drawn between the Cullen coven and the Quileute pack. Prove your loyalty and expertise in this hard Twilight Saga quiz. Take the test to show the world which side you truly belong on!',
-    image: '/images/Cullen Family.jpg',
-    seoAlt: 'The Cullen family from the Twilight Saga in a misty forest',
+    image: '/images/universes/twilight-card.png',
+    seoAlt: 'Moody Twilight-inspired forest scene with a lone silhouette and a wolf above a misty small town',
     buttonText: 'Enter Forks',
     icon: 'Droplets',
     path: '/selector-twilight'
@@ -257,6 +265,17 @@ export const UNIVERSES = [
     path: '/selector-hoppers'
   },
   {
+    id: 'goat',
+    title: 'GOAT',
+    tags: ['Animation', 'Sports', 'Roarball'],
+    description: 'Smalls can ball. Test your knowledge of Will Harris, Roarball, and the underdog world of GOAT (2026).',
+    image: '/images/goat.jpg',
+    seoAlt: 'Official GOAT movie poster featuring Will Harris and the Roarball cast',
+    buttonText: 'Enter Roarball',
+    icon: 'Trophy',
+    path: '/selector-goat'
+  },
+  {
     id: 'wicked',
     title: 'Wicked',
     tags: ['Musical', 'Fantasy', 'Oz'],
@@ -268,12 +287,23 @@ export const UNIVERSES = [
     path: '/selector-wicked'
   },
   {
+    id: 'percy-jackson',
+    title: 'Percy Jackson',
+    tags: ['Fantasy', 'Books', 'Greek Myth'],
+    description: 'Journey through the full Riordanverse shelf, from the original Percy Jackson books to Heroes of Olympus, Trials of Apollo, Kane Chronicles, Magnus Chase, Nico and Will, and the companion guides.',
+    image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg',
+    seoAlt: 'Official Percy Jackson and the Olympians poster featuring Percy standing in stormy ocean water beneath a glowing trident sky',
+    buttonText: 'Enter the Riordanverse',
+    icon: 'Sparkles',
+    path: '/selector-percy-jackson'
+  },
+  {
     id: 'harry-potter',
     title: 'Harry Potter',
     tags: ['Magic', 'Classic'],
     description: 'It is time to face your exams in the Great Hall. This hard trivia quiz separates the true magical scholars from the Trolls. Grab your wand and see if you have what it takes to pass!',
-    image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg',
-    seoAlt: 'Harry Potter, Hermione Granger and Ron Weasley at Hogwarts',
+    image: '/images/universes/harry-potter-card.png',
+    seoAlt: 'Wizarding-school inspired castle glowing at night with a student silhouette on a stone bridge',
     buttonText: 'Begin Spellcasting',
     icon: 'Wand2'
   },
@@ -304,7 +334,8 @@ export const UNIVERSES = [
     title: 'K-Pop: Demon Hunters',
     tags: ['Neon', 'Hot'],
     description: 'High-energy beats & supernatural hunts. Test your rhythm and hunter instincts.',
-    image: '/images/Soda Pop and How It\'s Done.jpg',
+    image: '/images/universes/kpop-demon-hunters-card.png',
+    seoAlt: 'Neon-lit demon-hunter pop trio in a supernatural cityscape with purple and blue energy',
     buttonText: 'Join the Hunt',
     icon: 'Zap',
     isSpecial: true
