@@ -290,10 +290,10 @@ export const UNIVERSES = [
     id: 'percy-jackson',
     title: 'Percy Jackson',
     tags: ['Fantasy', 'Books', 'Greek Myth'],
-    description: 'Journey from Camp Half-Blood to Olympus with quizzes covering all five original Percy Jackson and the Olympians books.',
+    description: 'Journey through the full Riordanverse shelf, from the original Percy Jackson books to Heroes of Olympus, Trials of Apollo, Kane Chronicles, Magnus Chase, Nico and Will, and the companion guides.',
     image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg',
     seoAlt: 'Official Percy Jackson and the Olympians poster featuring Percy standing in stormy ocean water beneath a glowing trident sky',
-    buttonText: 'Enter Camp Half-Blood',
+    buttonText: 'Enter the Riordanverse',
     icon: 'Sparkles',
     path: '/selector-percy-jackson'
   },
