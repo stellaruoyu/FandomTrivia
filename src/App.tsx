@@ -47,6 +47,13 @@ import {
   STAR_WARS_EPISODE_VI_TRIVIA,
   STAR_WARS_SAGA_TRIVIA,
 } from './starWarsTrivia';
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_OG_IMAGE,
+  SITE_TITLE,
+  SITE_URL,
+} from './siteMeta';
 import { MOANA_1_TRIVIA, MOANA_2_TRIVIA } from './moanaTrivia';
 import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
 import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
@@ -54,6 +61,14 @@ import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
 import { WICKED_PART_1_TRIVIA, WICKED_PART_2_TRIVIA, WICKED_MIXED_TRIVIA } from './wickedTrivia';
 import { GOAT_TRIVIA } from './goatTrivia';
+import {
+  PERCY_JACKSON_BATTLE_OF_THE_LABYRINTH_TRIVIA,
+  PERCY_JACKSON_LAST_OLYMPIAN_TRIVIA,
+  PERCY_JACKSON_LIGHTNING_THIEF_TRIVIA,
+  PERCY_JACKSON_MIXED_TRIVIA,
+  PERCY_JACKSON_SEA_OF_MONSTERS_TRIVIA,
+  PERCY_JACKSON_TITANS_CURSE_TRIVIA,
+} from './percyJacksonTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -94,6 +109,19 @@ const getQuizTitle = (quizId: string): string => {
   const map: Record<string, string> = {
     'twilight-book-1': 'Twilight: Book 1',
     'hp-sorcerers-stone': "HP: Sorcerer's Stone",
+    'percy-jackson-lightning-thief': 'Percy Jackson: The Lightning Thief',
+    'percy-jackson-the-lightning-thief': 'Percy Jackson: The Lightning Thief',
+    'percy-jackson-sea-of-monsters': 'Percy Jackson: The Sea of Monsters',
+    'percy-jackson-the-sea-of-monsters': 'Percy Jackson: The Sea of Monsters',
+    'percy-jackson-titans-curse': "Percy Jackson: The Titan's Curse",
+    'percy-jackson-the-titans-curse': "Percy Jackson: The Titan's Curse",
+    "percy-jackson-the-titan's-curse": "Percy Jackson: The Titan's Curse",
+    'percy-jackson-battle-of-the-labyrinth': 'Percy Jackson: The Battle of the Labyrinth',
+    'percy-jackson-the-battle-of-the-labyrinth': 'Percy Jackson: The Battle of the Labyrinth',
+    'percy-jackson-last-olympian': 'Percy Jackson: The Last Olympian',
+    'percy-jackson-the-last-olympian': 'Percy Jackson: The Last Olympian',
+    'percy-jackson-random': 'Percy Jackson Mixed Challenge',
+    'percy-jackson-mixed-challenge': 'Percy Jackson Mixed Challenge',
     'kpop-demon-hunters': 'K-Pop: Demon Hunters',
     'three-body-problem': 'The Three-Body Problem',
     'zootopia-1': 'Zootopia (Case 1)',
@@ -207,6 +235,7 @@ const getUniverseName = (quizId: string): string => {
   const q = quizId.toLowerCase();
   if (q.includes('twilight') || q.includes('moon') || q.includes('eclipse') || q.includes('breaking') || q.includes('midnight') || q.includes('life')) return 'Twilight Saga';
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return 'Wizarding World';
+  if (q.includes('percy') || q.includes('olympian') || q.includes('camp-half-blood')) return 'Percy Jackson';
   if (q.includes('star wars') || q.includes('star-wars')) return 'Star Wars Galaxy';
   if (q.includes('moana')) return 'Moana Universe';
   if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return 'Cat in the Hat';
@@ -235,6 +264,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('twilight')) return '/images/Cullen Family.jpg';
   if (q.includes('kung-fu-panda') || q.includes('kfp')) return '/images/kungfupanda.jpg';
   if (q.includes('hp-') || q.includes('harry') || q.includes('potter')) return '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg';
+  if (q.includes('percy') || q.includes('olympian')) return 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg';
   if (q.includes('star wars') || q.includes('star-wars')) return '/images/star-wars.jpg';
   if (q.includes('moana')) return '/images/moana.jpg';
   if (q.includes('cat in the hat') || q.includes('cat-in-the-hat')) return '/images/cat-in-the-hat.jpg';
@@ -309,6 +339,7 @@ const useQuizStats = () => {
       
       if (target === 'twilight' && (univName.includes('twilight') || id.includes('twilight'))) return sum + val;
       if (target === 'harry-potter' && (univName.includes('wizarding') || id.includes('hp-') || id.includes('potter') || id.includes('harry'))) return sum + val;
+      if (target === 'percy-jackson' && (univName.includes('percy jackson') || id.includes('percy-jackson') || id.includes('olympian'))) return sum + val;
       if (target === 'star-wars' && (univName.includes('star wars') || id.includes('star-wars') || id.includes('star wars'))) return sum + val;
       if (target === 'kpop' && (univName.includes('k-pop') || id.includes('kpop'))) return sum + val;
       if (target === 'three-body' && (univName.includes('three-body') || id.includes('three-body') || id.includes('forest') || id.includes('death'))) return sum + val;
@@ -1000,6 +1031,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
     const universeRouteMap: Record<string, string> = {
       'twilight': '/selector-twilight',
       'harry-potter': '/selector-harry-potter',
+      'percy-jackson': '/selector-percy-jackson',
       'star-wars': '/selector-star-wars',
       'kpop': '/selector-kpop',
       'three-body': '/selector-three-body',
@@ -1287,6 +1319,7 @@ const DailyMysteryChallenge = () => {
     if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'kpop') navigate('/selector-kpop', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'percy-jackson') navigate('/selector-percy-jackson', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'star-wars') navigate('/selector-star-wars', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'three-body') navigate('/selector-three-body', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'zootopia') navigate('/selector-zootopia', { state: { isDaily: true } });
@@ -1478,6 +1511,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
         </h5>
         <ul className="space-y-4 text-slate-400 font-semibold text-sm">
           <li><Link to="/selector-harry-potter" className="hover:text-amber-400 transition-colors">Harry Potter World</Link></li>
+          <li><Link to="/selector-percy-jackson" className="hover:text-cyan-300 transition-colors">Percy Jackson</Link></li>
           <li><Link to="/selector-star-wars" className="hover:text-amber-300 transition-colors">Star Wars Galaxy</Link></li>
           <li><Link to="/selector-twilight" className="hover:text-red-400 transition-colors">Twilight Saga</Link></li>
           <li><Link to="/selector-three-body" className="hover:text-indigo-400 transition-colors">Three-Body Problem</Link></li>
@@ -4713,6 +4747,13 @@ const GOAT_GRADES = [
   { threshold: 0, label: 'Rookie Call-Up', color: 'text-slate-400', character: { name: 'Archie Everhardt', image: '/images/goat.jpg', desc: 'You made the roster. Time to get more reps in Roarball.' } },
 ];
 
+const PERCY_JACKSON_GRADES = [
+  { threshold: 90, label: 'Olympian Strategist', color: 'text-amber-300', character: { name: 'Percy Jackson', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'You could navigate monsters, prophecies, and Olympus without breaking a sweat.' } },
+  { threshold: 70, label: 'Camp Half-Blood Hero', color: 'text-cyan-300', character: { name: 'Annabeth Chase', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'Strong work. You know the quests, cabins, and core twists across the original series.' } },
+  { threshold: 50, label: 'Questing Demigod', color: 'text-sky-400', character: { name: 'Grover Underwood', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'You have the basics down, but there are still more monsters and prophecies to study.' } },
+  { threshold: 0, label: 'New Camper', color: 'text-slate-400', character: { name: 'Chiron', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'Welcome to camp. Grab some blue food and get ready for another quest.' } },
+];
+
 const GoatSelector = ({ key }: { key?: string }) => {
   const navigate = useNavigate();
   return (
@@ -4754,6 +4795,64 @@ const GoatSelector = ({ key }: { key?: string }) => {
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
               <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
               <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const PercyJacksonSelector = () => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-4xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-amber-300">Quest</span></h1>
+        <Helmet>
+          <title>Percy Jackson Trivia & Book Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your Percy Jackson knowledge across all five original books, from The Lightning Thief to The Last Olympian." />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-percy-jackson" />
+          <meta property="og:title" content="Percy Jackson Trivia & Book Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Enter Camp Half-Blood and play Percy Jackson quizzes covering every original Olympians book." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Percy Jackson", item: "https://www.fandom-trivia.com/selector-percy-jackson" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Pick a book from the original series, or try a mixed challenge across all five quests.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { label: 'Book 1', title: 'The Lightning Thief', desc: `${PERCY_JACKSON_LIGHTNING_THIEF_TRIVIA.length} questions from Percy's first quest`, icon: '⚡', view: 'trivia-percy-jackson-lightning-thief', gradient: 'from-yellow-500/20 to-amber-500/20', border: 'border-yellow-400/30 hover:border-yellow-300/50' },
+          { label: 'Book 2', title: 'The Sea of Monsters', desc: `${PERCY_JACKSON_SEA_OF_MONSTERS_TRIVIA.length} questions from the Golden Fleece quest`, icon: '🌊', view: 'trivia-percy-jackson-sea-of-monsters', gradient: 'from-cyan-600/20 to-sky-600/20', border: 'border-cyan-400/30 hover:border-cyan-300/50' },
+          { label: 'Book 3', title: "The Titan's Curse", desc: `${PERCY_JACKSON_TITANS_CURSE_TRIVIA.length} questions on Hunters, Titans, and prophecy`, icon: '🏹', view: 'trivia-percy-jackson-titans-curse', gradient: 'from-violet-600/20 to-indigo-600/20', border: 'border-violet-400/30 hover:border-violet-300/50' },
+          { label: 'Book 4', title: 'The Battle of the Labyrinth', desc: `${PERCY_JACKSON_BATTLE_OF_THE_LABYRINTH_TRIVIA.length} questions through the maze`, icon: '🌀', view: 'trivia-percy-jackson-battle-of-the-labyrinth', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-400/30 hover:border-emerald-300/50' },
+          { label: 'Book 5', title: 'The Last Olympian', desc: `${PERCY_JACKSON_LAST_OLYMPIAN_TRIVIA.length} questions from the war for Manhattan`, icon: '🏛️', view: 'trivia-percy-jackson-last-olympian', gradient: 'from-rose-600/20 to-orange-600/20', border: 'border-rose-400/30 hover:border-rose-300/50' },
+          { label: 'Random', title: 'Mixed Challenge', desc: '20 random questions from all 5 books', icon: '🎲', view: 'trivia-percy-jackson-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-400/30 hover:border-fuchsia-300/50' },
+        ].map(book => (
+          <motion.button
+            key={book.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${book.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${book.gradient} border ${book.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{book.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{book.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{book.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{book.desc}</p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
               Start Quiz <ArrowRight className="size-3" />
@@ -5417,9 +5516,10 @@ const LandingView = ({ setUser, onUnlockBadge }: {
     exit={{ opacity: 0 }}
   >
     <Helmet>
-      <title>Fandom Trivia | The Ultimate Fan Experience</title>
-      <meta name="description" content="The world's leading community for fandom trivia. Test your knowledge in Harry Potter, Twilight, Frozen, K-Pop, and more. Join thousands of fans on the global leaderboard." />
-      <link rel="canonical" href="https://www.fandom-trivia.com/" />
+      <title>{SITE_TITLE}</title>
+      <meta name="description" content={SITE_DESCRIPTION} />
+      <meta name="keywords" content={SITE_KEYWORDS} />
+      <link rel="canonical" href={`${SITE_URL}/`} />
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -5443,12 +5543,12 @@ const LandingView = ({ setUser, onUnlockBadge }: {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "url": "https://www.fandom-trivia.com/",
+          "url": `${SITE_URL}/`,
           "name": "Fandom Trivia",
           "description": "Premium multi-universe trivia platform for superfans.",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://www.fandom-trivia.com/search?q={search_term_string}",
+            "target": `${SITE_URL}/search?q={search_term_string}`,
             "query-input": "required name=search_term_string"
           }
         })}
@@ -5473,7 +5573,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            Build v1.1.0
+            Build v{__APP_VERSION__}
           </motion.div>
           <motion.h1
             initial={{ y: 20, opacity: 0 }}
@@ -6689,7 +6789,7 @@ export default function App() {
   []);
 
   useEffect(() => {
-    document.title = "Fandom Trivia | The Ultimate Fan Experience";
+    document.title = SITE_TITLE;
   }, []);
 
   useEffect(() => {
@@ -6989,22 +7089,23 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0b0b] text-slate-100 selection:bg-primary selection:text-white">
       <Helmet>
-        <title>Fandom Trivia</title>
-        <meta name="description" content="Test your fan knowledge in Twilight, Harry Potter, Wicked, K-Pop, and more. Join the global leaderboard and prove you are the ultimate fan." />
+        <title>{SITE_TITLE}</title>
+        <meta name="description" content={SITE_DESCRIPTION} />
+        <meta name="keywords" content={SITE_KEYWORDS} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.fandom-trivia.com/" />
-        <meta property="og:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="og:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
-        <meta property="og:image" content="https://www.fandom-trivia.com/og-image.jpg" />
+        <meta property="og:url" content={`${SITE_URL}/`} />
+        <meta property="og:title" content={SITE_TITLE} />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
+        <meta property="og:image" content={SITE_OG_IMAGE} />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.fandom-trivia.com/" />
-        <meta property="twitter:title" content="Fandom Trivia | The Ultimate Fan Experience" />
-        <meta property="twitter:description" content="The ultimate destination for superfans. Play interactive quizzes across Twilight, Harry Potter, Wicked, K-Pop, and more." />
-        <meta property="twitter:image" content="https://www.fandom-trivia.com/og-image.jpg" />
+        <meta property="twitter:url" content={`${SITE_URL}/`} />
+        <meta property="twitter:title" content={SITE_TITLE} />
+        <meta property="twitter:description" content={SITE_DESCRIPTION} />
+        <meta property="twitter:image" content={SITE_OG_IMAGE} />
       </Helmet>
 
       <Navbar
@@ -7158,6 +7259,12 @@ export default function App() {
             <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-goat" element={<MCQuizView key="trivia-goat" questions={GOAT_TRIVIA} title="GOAT (2026)" scoreLabel="GOAT (2026)" grades={GOAT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-lightning-thief" element={<MCQuizView key="trivia-percy-jackson-lightning-thief" questions={PERCY_JACKSON_LIGHTNING_THIEF_TRIVIA} title="Percy Jackson: The Lightning Thief" scoreLabel="Percy Jackson: The Lightning Thief" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-sea-of-monsters" element={<MCQuizView key="trivia-percy-jackson-sea-of-monsters" questions={PERCY_JACKSON_SEA_OF_MONSTERS_TRIVIA} title="Percy Jackson: The Sea of Monsters" scoreLabel="Percy Jackson: The Sea of Monsters" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-titans-curse" element={<MCQuizView key="trivia-percy-jackson-titans-curse" questions={PERCY_JACKSON_TITANS_CURSE_TRIVIA} title="Percy Jackson: The Titan's Curse" scoreLabel="Percy Jackson: The Titan's Curse" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-battle-of-the-labyrinth" element={<MCQuizView key="trivia-percy-jackson-battle-of-the-labyrinth" questions={PERCY_JACKSON_BATTLE_OF_THE_LABYRINTH_TRIVIA} title="Percy Jackson: The Battle of the Labyrinth" scoreLabel="Percy Jackson: The Battle of the Labyrinth" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-last-olympian" element={<MCQuizView key="trivia-percy-jackson-last-olympian" questions={PERCY_JACKSON_LAST_OLYMPIAN_TRIVIA} title="Percy Jackson: The Last Olympian" scoreLabel="Percy Jackson: The Last Olympian" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-percy-jackson-random" element={<MCQuizView key="trivia-percy-jackson-random" questions={PERCY_JACKSON_MIXED_TRIVIA} title="Percy Jackson Mixed Challenge" scoreLabel="Percy Jackson Mixed Challenge" grades={PERCY_JACKSON_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-hoppers" element={<MCQuizView key="trivia-hoppers" questions={HOPPERS_TRIVIA} title="Hoppers (2026)" scoreLabel="Hoppers (2026)" grades={HOPPERS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-bad-guys-1" element={<MCQuizView key="trivia-bad-guys-1" questions={BAD_GUYS_1_TRIVIA} title="The Bad Guys" scoreLabel="The Bad Guys" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-bad-guys-2" element={<MCQuizView key="trivia-bad-guys-2" questions={BAD_GUYS_2_TRIVIA} title="The Bad Guys 2" scoreLabel="The Bad Guys 2" grades={BAD_GUYS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7202,6 +7309,7 @@ export default function App() {
             {/* Selectors */}
             <Route path="/selector-twilight" element={<TwilightBookSelector key="selector-twilight" />} />
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
+            <Route path="/selector-percy-jackson" element={<PercyJacksonSelector />} />
             <Route path="/selector-star-wars" element={<StarWarsSelector />} />
             <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
             <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />

@@ -4,6 +4,8 @@
   "version": "1.1.0",
   "type": "module",
   "scripts": {
+    "prepare:static": "tsx scripts/prepare-static-assets.ts",
+    "prebuild": "npm run prepare:static",
     "dev": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",
