@@ -4,6 +4,7 @@ export const NAV_LINKS = [
   { name: 'Home', href: '#' },
   { name: 'Leaderboards', href: '#' },
   { name: 'Categories', href: '#' },
+  { name: 'Changelog', href: '/changelog' },
   { name: 'News & Blog', href: '/blog' },
 ];
 
@@ -211,6 +212,17 @@ export const BADGES: Badge[] = [
 
 export const UNIVERSES = [
   {
+    id: 'disneyland',
+    title: 'Disneyland',
+    tags: ['Disney', 'Pixar', 'Animation'],
+    description: 'Step into one shared Disney hub with the Disney and Pixar quizzes already live in the app, from Arendelle and Motunui to Zootopia and Andy\'s room.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Castle_%2830584873777%29.jpg',
+    seoAlt: 'Sleeping Beauty Castle at Disneyland during sunset',
+    buttonText: 'Explore Disney',
+    icon: 'Sparkles',
+    path: '/selector-disneyland'
+  },
+  {
     id: 'toy-story',
     title: 'Toy Story',
     tags: ['Animation', 'Disney', 'PIXAR'],
@@ -225,8 +237,8 @@ export const UNIVERSES = [
     title: 'Twilight',
     tags: ['Fantasy', 'Mystery'],
     description: 'The lines are drawn between the Cullen coven and the Quileute pack. Prove your loyalty and expertise in this hard Twilight Saga quiz. Take the test to show the world which side you truly belong on!',
-    image: '/images/universes/twilight-card.png',
-    seoAlt: 'Moody Twilight-inspired forest scene with a lone silhouette and a wolf above a misty small town',
+    image: '/images/Cullen Family.jpg',
+    seoAlt: 'The Cullen family together in a Twilight promotional image',
     buttonText: 'Enter Forks',
     icon: 'Droplets',
     path: '/selector-twilight'
@@ -302,8 +314,8 @@ export const UNIVERSES = [
     title: 'Harry Potter',
     tags: ['Magic', 'Classic'],
     description: 'It is time to face your exams in the Great Hall. This hard trivia quiz separates the true magical scholars from the Trolls. Grab your wand and see if you have what it takes to pass!',
-    image: '/images/universes/harry-potter-card.png',
-    seoAlt: 'Wizarding-school inspired castle glowing at night with a student silhouette on a stone bridge',
+    image: '/images/Harry Potter, Hermione Granger, and Ron Weseley.jpg',
+    seoAlt: 'Harry Potter, Hermione Granger, and Ron Weasley together in a promotional image',
     buttonText: 'Begin Spellcasting',
     icon: 'Wand2'
   },
@@ -334,8 +346,8 @@ export const UNIVERSES = [
     title: 'K-Pop: Demon Hunters',
     tags: ['Neon', 'Hot'],
     description: 'High-energy beats & supernatural hunts. Test your rhythm and hunter instincts.',
-    image: '/images/universes/kpop-demon-hunters-card.png',
-    seoAlt: 'Neon-lit demon-hunter pop trio in a supernatural cityscape with purple and blue energy',
+    image: '/images/Soda Pop and How It\'s Done.jpg',
+    seoAlt: 'K-Pop Demon Hunters promotional image for Soda Pop and How It\'s Done',
     buttonText: 'Join the Hunt',
     icon: 'Zap',
     isSpecial: true

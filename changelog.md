@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - Comprehensive strategic documentation: `agent.md`, `changelog.md`, and `vision.md`, incorporating insights from `ROADMAP.md` and `TASK_BREAKDOWN.md`.
+- Disneyland hub that groups the app's existing Disney and Pixar quiz universes under `/selector-disneyland`.
+- Website changelog page at `/changelog` with direct links to newly added quizzes, universes, and release items.
 
 ## [2026-02-24] - Supabase Authentication Migration
 ### Changed

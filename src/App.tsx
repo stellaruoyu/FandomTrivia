@@ -70,6 +70,7 @@ import {
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
+import { CHANGELOG_ENTRIES } from './changelogEntries';
 
 declare global {
   interface Window {
@@ -1013,7 +1014,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const scrollYRef = useRef(0);
 
   type SearchResultItem = {
-    type: 'quiz' | 'blog';
+    type: 'quiz' | 'blog' | 'update';
     title: string;
     subtitle: string;
     href: string;
@@ -1043,6 +1044,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const universeRouteMap: Record<string, string> = {
+      'disneyland': '/selector-disneyland',
       'twilight': '/selector-twilight',
       'harry-potter': '/selector-harry-potter',
       'percy-jackson': '/selector-percy-jackson',
@@ -1102,7 +1104,18 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
         image: post.image,
       })) as SearchResultItem[];
 
-    return [...quizResults, ...blogResults].slice(0, 12);
+    const changelogResults = q && ['changelog', 'update', 'updates', 'release', 'release notes', 'feature update', 'change update'].some((term) => term.includes(q) || q.includes(term))
+      ? [{
+          type: 'update' as const,
+          title: 'Fandom Trivia Changelog',
+          subtitle: 'Track feature updates, change updates, and direct links to the newest quizzes, universes, and pages.',
+          href: '/changelog',
+          tags: ['Updates', 'Releases'],
+          image: '/images/goat.jpg',
+        }]
+      : [];
+
+    return [...quizResults, ...blogResults, ...changelogResults].slice(0, 12);
   }, [query]);
 
   useEffect(() => {
@@ -1205,7 +1218,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
           <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
             {results.length === 0 ? (
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-400">
-                No quizzes matched that search.
+                No quizzes, blog posts, or updates matched that search.
               </div>
             ) : (
               results.map((item) => (
@@ -1229,7 +1242,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                        {item.type === 'quiz' ? 'Quiz' : 'Blog'}
+                        {item.type === 'quiz' ? 'Quiz' : item.type === 'blog' ? 'Blog' : 'Update'}
                       </span>
                       {(item.tags || []).slice(0, 2).map((tag: string) => (
                         <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{tag}</span>
@@ -1330,7 +1343,8 @@ const DailyMysteryChallenge = () => {
   }, []);
 
   const handleStart = () => {
-    if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
+    if (dailyUniverse.id === 'disneyland') navigate('/selector-disneyland', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'kpop') navigate('/selector-kpop', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'percy-jackson') navigate('/selector-percy-jackson', { state: { isDaily: true } });
@@ -1530,6 +1544,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-twilight" className="hover:text-red-400 transition-colors">Twilight Saga</Link></li>
           <li><Link to="/selector-three-body" className="hover:text-indigo-400 transition-colors">Three-Body Problem</Link></li>
           <li><Link to="/selector-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
+          <li><Link to="/selector-disneyland" className="hover:text-amber-300 transition-colors">Disneyland</Link></li>
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
           <li><Link to="/selector-moana" className="hover:text-cyan-300 transition-colors">Moana Voyage</Link></li>
@@ -1568,6 +1583,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
               <li><Link to="/rankings" className="hover:text-primary transition-colors">Leaderboards</Link></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
+              <li><Link to="/changelog" className="hover:text-primary transition-colors">Changelog</Link></li>
               <li><Link to="/blog" className="hover:text-primary transition-colors">News & Blog</Link></li>
             </>
           )}
@@ -4599,6 +4615,114 @@ const FeedbackWidget = ({ user }: { user: User | null }) => {
   );
 };
 
+const DisneylandSelector = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const disneyDestinations = [
+    {
+      label: 'Princess Adventure',
+      title: 'Moana',
+      desc: 'Wayfinding, demigods, and both ocean voyages.',
+      route: '/selector-moana',
+      icon: "\u{1F30A}",
+      gradient: 'from-cyan-500/20 to-blue-600/20',
+      border: 'border-cyan-400/30 hover:border-cyan-300/60',
+    },
+    {
+      label: 'Ice Kingdom',
+      title: 'Frozen',
+      desc: 'Head to Arendelle for Elsa, Anna, and the elemental spirits.',
+      route: '/selector-frozen',
+      icon: "\u2744\uFE0F",
+      gradient: 'from-sky-500/20 to-indigo-600/20',
+      border: 'border-sky-400/30 hover:border-sky-300/60',
+    },
+    {
+      label: 'City Case Files',
+      title: 'Zootopia',
+      desc: 'Solve both city mysteries with Judy, Nick, and the ZPD.',
+      route: '/selector-zootopia',
+      icon: "\u{1F98A}",
+      gradient: 'from-emerald-500/20 to-lime-600/20',
+      border: 'border-emerald-400/30 hover:border-emerald-300/60',
+    },
+    {
+      label: 'Pixar Classic',
+      title: 'Toy Story',
+      desc: 'Jump into all four films and the mixed toy-box challenge.',
+      route: '/selector-toy-story',
+      icon: "\u{1F9F8}",
+      gradient: 'from-amber-500/20 to-orange-600/20',
+      border: 'border-amber-400/30 hover:border-amber-300/60',
+    },
+    {
+      label: 'Pixar Next Up',
+      title: 'Hoppers',
+      desc: 'Visit the pond and play the verified Pixar deep-cut quiz already live.',
+      route: '/selector-hoppers',
+      icon: "\u{1F438}",
+      gradient: 'from-emerald-500/20 to-teal-700/20',
+      border: 'border-teal-400/30 hover:border-teal-300/60',
+    },
+  ];
+
+  const routeState = location.state?.isDaily ? { state: { isDaily: true } } : undefined;
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-4">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-orange-300 to-cyan-300">Disneyland</span>
+          </h1>
+          <Helmet>
+            <title>Disneyland Trivia Hub | Disney & Pixar Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Explore the Disneyland hub and jump into the Disney and Pixar quizzes already live in Fandom Trivia, including Moana, Frozen, Zootopia, Toy Story, and Hoppers." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-disneyland" />
+            <meta property="og:title" content="Disneyland Trivia Hub | Disney & Pixar Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="One place for the Disney and Pixar quiz universes already available in Fandom Trivia." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Disneyland", item: "https://www.fandom-trivia.com/selector-disneyland" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="max-w-3xl mx-auto text-slate-300 font-medium">
+            This hub groups the Disney and Pixar movie quizzes already in the app, so fans can jump between ocean voyages, ice magic, animal mysteries, toy-box chaos, and Pixar&apos;s newest pond adventure without hunting through the full universe grid.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {disneyDestinations.map((destination) => (
+            <motion.button
+              key={destination.title}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(destination.route, routeState)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${destination.gradient} border ${destination.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{destination.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{destination.label}</p>
+                <h3 className="text-2xl font-black text-white tracking-tight">{destination.title}</h3>
+                <p className="text-sm text-slate-300 font-medium mt-2">{destination.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                Enter Hub <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 // --- Frozen Movie Selector ---
 
 const FROZEN_GRADES = [
@@ -5389,6 +5513,14 @@ const BlogListView = () => {
           Deep dives, trivia guides, and the latest from your favorite universes. 
           Expertly crafted for the ultimate superfan.
         </p>
+        <div className="flex items-center justify-center pt-4">
+          <button
+            onClick={() => navigate('/changelog')}
+            className="px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-black text-sm uppercase tracking-[0.2em] transition-all shadow-xl shadow-primary/20"
+          >
+            View Changelog
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -5436,6 +5568,102 @@ const BlogListView = () => {
               </button>
             </div>
           </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
+const ChangelogView = () => {
+  const navigate = useNavigate();
+  const entries = [...CHANGELOG_ENTRIES].sort((a, b) => b.date.localeCompare(a.date));
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="pt-32 pb-20 px-6 max-w-6xl mx-auto space-y-12"
+    >
+      <Helmet>
+        <title>Fandom Trivia Changelog | Feature & Release Updates</title>
+        <meta name="description" content="Follow the Fandom Trivia changelog for feature updates, change updates, and direct links to the newest quizzes, universes, and content drops." />
+        <link rel="canonical" href="https://www.fandom-trivia.com/changelog" />
+        <meta property="og:title" content="Fandom Trivia Changelog | Feature & Release Updates" />
+        <meta property="og:description" content="See what changed recently and jump straight to the newest Fandom Trivia launches." />
+      </Helmet>
+
+      <div className="text-center space-y-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.35em] text-primary">Release Notes</p>
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic leading-none">
+          Product <span className="text-primary text-outline-sm">Changelog</span>
+        </h1>
+        <p className="max-w-3xl mx-auto text-slate-400 font-medium">
+          Follow feature updates and change updates across the site, then jump straight into the newest quizzes, selectors, and launch pages from each release.
+        </p>
+      </div>
+
+      <div className="grid gap-8">
+        {entries.map((entry, index) => (
+          <motion.section
+            key={entry.id}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.07 }}
+            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-black shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(127,19,236,0.18),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.16),transparent_30%)]" />
+            <div className="relative p-8 md:p-10 space-y-8">
+              <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+                <div className="space-y-3 max-w-3xl">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-[0.25em] ${entry.type === 'feature' ? 'bg-emerald-500/10 text-emerald-300 border-emerald-400/20' : 'bg-cyan-500/10 text-cyan-300 border-cyan-400/20'}`}>
+                      {entry.type === 'feature' ? 'Feature Update' : 'Change Update'}
+                    </span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+                      {new Date(entry.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">{entry.title}</h2>
+                  <p className="text-slate-300 leading-relaxed font-medium">{entry.summary}</p>
+                </div>
+                <button
+                  onClick={() => navigate('/blog')}
+                  className="shrink-0 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-bold text-slate-200 transition-colors"
+                >
+                  Back to Blog
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8">
+                <div className="space-y-4">
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">What Shipped</p>
+                  <div className="grid gap-3">
+                    {entry.highlights.map((highlight) => (
+                      <div key={highlight} className="rounded-2xl border border-white/8 bg-white/5 px-5 py-4 text-slate-200 font-medium leading-relaxed">
+                        {highlight}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">Jump To New Stuff</p>
+                  <div className="grid gap-3">
+                    {entry.links.map((link) => (
+                      <button
+                        key={`${entry.id}-${link.href}`}
+                        onClick={() => navigate(link.href)}
+                        className="w-full text-left rounded-2xl border border-white/10 bg-white/5 hover:bg-primary hover:border-primary text-white px-5 py-4 transition-all shadow-lg hover:shadow-primary/20 flex items-center justify-between gap-4"
+                      >
+                        <span className="font-black tracking-tight">{link.label}</span>
+                        <ArrowRight className="size-4 shrink-0" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
         ))}
       </div>
     </motion.div>
@@ -6706,7 +6934,7 @@ export default function App() {
   }, []);
 
   useLayoutEffect(() => {
-    if (location.pathname.startsWith('/trivia-') || location.pathname.startsWith('/selector-') || location.pathname === '/blog' || location.pathname.startsWith('/blog/')) {
+    if (location.pathname.startsWith('/trivia-') || location.pathname.startsWith('/selector-') || location.pathname === '/blog' || location.pathname.startsWith('/blog/') || location.pathname === '/changelog') {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
   }, [location.pathname]);
@@ -7187,6 +7415,7 @@ export default function App() {
           <Routes location={location}>
             <Route path="/rankings" element={<RankingsView user={user} />} />
             <Route path="/search" element={<SearchModal />} />
+            <Route path="/changelog" element={<ChangelogView />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
@@ -7354,6 +7583,7 @@ export default function App() {
 
 
             {/* Selectors */}
+            <Route path="/selector-disneyland" element={<DisneylandSelector />} />
             <Route path="/selector-twilight" element={<TwilightBookSelector key="selector-twilight" />} />
             <Route path="/selector-harry-potter" element={<HPBookSelector key="selector-harry-potter" />} />
             <Route path="/selector-percy-jackson" element={<PercyJacksonSelector />} />
