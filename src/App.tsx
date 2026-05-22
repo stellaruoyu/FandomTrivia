@@ -13,6 +13,7 @@ import {
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
+  Copy, Facebook, Instagram, Mail,
   Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette, Trash2
 } from 'lucide-react';
 import {
@@ -540,28 +541,19 @@ const BadgesModal = ({ unlockedBadgeIds, onClose }: { unlockedBadgeIds: string[]
             <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">Your Badges</h3>
           </div>
           <div className="flex items-center gap-2">
-            <button 
-              onClick={async () => {
-                const badgeNames = BADGES.filter(b => unlockedBadgeIds.includes(b.id)).map(b => b.name).join(', ');
-                const text = unlockedBadgeIds.length > 0
-                  ? `I've unlocked ${unlockedBadgeIds.length} badges on FandomTrivia! (${badgeNames}) Can you beat my score?`
-                  : `I haven't unlocked any badges on FandomTrivia yet! Can you beat my score?`;
-                try {
-                  if (navigator.share) {
-                    await navigator.share({ title: 'My FandomTrivia Badges', text });
-                  } else if (navigator.clipboard) {
-                    await navigator.clipboard.writeText(text);
-                    alert('Copied to clipboard!');
-                  }
-                } catch (e) {
-                  console.error('Share failed', e);
-                }
-              }}
-              className="size-8 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-full flex items-center justify-center transition-all cursor-pointer text-slate-300"
-              title="Share Badges"
-            >
-              <Share2 className="size-4" />
-            </button>
+            <ShareMenu
+              buttonClassName="size-8 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-full flex items-center justify-center transition-all cursor-pointer text-slate-300"
+              buttonIconClassName="size-4"
+              buttonLabel="Share Badges"
+              title="My Fandom Trivia Badges"
+              text={(() => {
+                const badgeNames = BADGES.filter((badge) => unlockedBadgeIds.includes(badge.id)).map((badge) => badge.name).join(', ');
+                return unlockedBadgeIds.length > 0
+                  ? `I've unlocked ${unlockedBadgeIds.length} badges on Fandom Trivia! (${badgeNames}) Can you beat my score?`
+                  : `I haven't unlocked any badges on Fandom Trivia yet. Can you beat my score?`;
+              })()}
+              url={window.location.href}
+            />
             <button onClick={onClose} className="size-8 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors">
               <X className="size-4" />
             </button>
@@ -1002,6 +994,208 @@ const InfoModal = ({ title, content, onClose }: { title: string, content: string
           })}
         </div>
       </motion.div>
+    </div>
+  );
+};
+
+type ShareMenuProps = {
+  buttonClassName?: string;
+  buttonIconClassName?: string;
+  buttonLabel?: string;
+  title: string;
+  text: string;
+  url: string;
+};
+
+const ShareMenu = ({
+  buttonClassName = "size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all cursor-pointer",
+  buttonIconClassName = "size-5",
+  buttonLabel = "Share",
+  title,
+  text,
+  url,
+}: ShareMenuProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [feedback, setFeedback] = useState('');
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const showFeedback = (message: string) => {
+    setFeedback(message);
+    window.setTimeout(() => {
+      setFeedback((current) => current === message ? '' : current);
+    }, 2500);
+  };
+
+  const copyToClipboard = async (value: string, message: string) => {
+    if (!navigator.clipboard) {
+      showFeedback('Clipboard is not available in this browser.');
+      return false;
+    }
+
+    try {
+      await navigator.clipboard.writeText(value);
+      showFeedback(message);
+      return true;
+    } catch (error) {
+      console.error('Copy failed', error);
+      showFeedback('Could not copy the link.');
+      return false;
+    }
+  };
+
+  const openPopup = (shareUrl: string) => {
+    window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('mousedown', handlePointerDown);
+    return () => window.removeEventListener('mousedown', handlePointerDown);
+  }, [isOpen]);
+
+  const shareOptions = [
+    {
+      label: 'Copy Link',
+      hint: 'Copy the current page',
+      icon: Copy,
+      onClick: async () => {
+        await copyToClipboard(url, 'Link copied to clipboard.');
+        setIsOpen(false);
+      },
+    },
+    {
+      label: 'Facebook',
+      hint: 'Share to Facebook',
+      icon: Facebook,
+      onClick: () => openPopup(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`),
+    },
+    {
+      label: 'Instagram',
+      hint: 'Copies link, then opens Instagram',
+      icon: Instagram,
+      onClick: async () => {
+        await copyToClipboard(url, 'Link copied. Paste it into Instagram.');
+        window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
+        setIsOpen(false);
+      },
+    },
+    {
+      label: 'X',
+      hint: 'Share on X',
+      icon: MessageSquare,
+      onClick: () => openPopup(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`),
+    },
+    {
+      label: 'WhatsApp',
+      hint: 'Share in WhatsApp',
+      icon: Send,
+      onClick: () => openPopup(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`),
+    },
+    {
+      label: 'Reddit',
+      hint: 'Post to Reddit',
+      icon: Globe,
+      onClick: () => openPopup(`https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`),
+    },
+    {
+      label: 'LinkedIn',
+      hint: 'Share on LinkedIn',
+      icon: ExternalLink,
+      onClick: () => openPopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`),
+    },
+    {
+      label: 'Email',
+      hint: 'Send by email',
+      icon: Mail,
+      onClick: () => {
+        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${text}\n\n${url}`)}`;
+        setIsOpen(false);
+      },
+    },
+    {
+      label: 'More',
+      hint: 'Use the device share sheet',
+      icon: Share2,
+      onClick: async () => {
+        try {
+          if (navigator.share) {
+            await navigator.share({ title, text, url });
+            setIsOpen(false);
+            return;
+          }
+        } catch (error) {
+          console.error('Share failed', error);
+        }
+
+        await copyToClipboard(url, 'Link copied to clipboard.');
+        setIsOpen(false);
+      },
+    },
+  ];
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        className={buttonClassName}
+        aria-label={buttonLabel}
+        title={buttonLabel}
+      >
+        <Share2 className={buttonIconClassName} />
+      </button>
+
+      {feedback && (
+        <div className="absolute bottom-full right-0 mb-2 w-52 rounded-xl border border-primary/20 bg-card-dark/95 px-3 py-2 text-[11px] font-bold text-primary shadow-2xl backdrop-blur-sm">
+          {feedback}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 top-full z-[120] mt-3 w-80 rounded-3xl border border-white/10 bg-card-dark/95 p-3 shadow-2xl backdrop-blur-md"
+          >
+            <div className="mb-3 px-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Share</p>
+              <p className="mt-1 text-sm font-bold text-white">Send this page anywhere</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {shareOptions.map((option) => {
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={option.label}
+                    type="button"
+                    onClick={option.onClick}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition-all hover:border-primary/30 hover:bg-white/10"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="flex size-8 items-center justify-center rounded-xl bg-black/20 text-primary">
+                        <Icon className="size-4" />
+                      </div>
+                      <span className="text-sm font-black text-white">{option.label}</span>
+                    </div>
+                    <p className="mt-2 text-[11px] font-medium leading-snug text-slate-400">{option.hint}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -1501,26 +1695,11 @@ const Footer = ({ isDashboard, onShowInfo }: {
           The premier destination for fandom enthusiasts. Competitive trivia for the stories you love most.
         </p>
         <div className="flex items-center gap-4">
-          <button 
-            type="button"
-            onClick={async () => {
-              try {
-                if (navigator.share) {
-                  await navigator.share({ title: 'FandomTrivia', url: window.location.href });
-                } else if (navigator.clipboard) {
-                  await navigator.clipboard.writeText(window.location.href);
-                  alert('Copied link to clipboard!');
-                } else {
-                  alert('Sharing is not supported on this browser.');
-                }
-              } catch (e) {
-                console.error("Share failed", e);
-              }
-            }} 
-            className="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all cursor-pointer"
-          >
-            <Share2 className="size-5" />
-          </button>
+          <ShareMenu
+            title="Fandom Trivia"
+            text="Play fandom quizzes, compare scores, and challenge your friends on Fandom Trivia."
+            url={window.location.href}
+          />
           <div className="relative size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all overflow-hidden cursor-pointer group">
             <Globe className="size-5 group-hover:scale-110 transition-transform" />
             <div className="absolute inset-0 opacity-0 overflow-hidden flex items-center justify-center" id="google_translate_element"></div>
