@@ -67,9 +67,12 @@ import {
   PERCY_JACKSON_MIXED_TRIVIA,
   PERCY_JACKSON_QUIZ_MAP,
 } from './percyJacksonTrivia';
+import { USA_SONGS_TRIVIA } from './usaSongsTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
+
+const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
 
 declare global {
   interface Window {
@@ -149,6 +152,8 @@ const getQuizTitle = (quizId: string): string => {
     'mario-2023': 'The Super Mario Bros. Movie (2023)',
     'mario-2026': 'The Super Mario Galaxy Movie (2026)',
     'pawpatrol': 'PAW Patrol: Mission Ready',
+    'usa-songs': 'USA Songs Challenge',
+    'usa-songs-challenge': 'USA Songs Challenge',
     'kfp-1': 'Kung Fu Panda',
     'kfp-2': 'Kung Fu Panda 2',
     'kfp-3': 'Kung Fu Panda 3',
@@ -257,6 +262,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('avatar')) return 'Avatar Universe';
   if (q.includes('minecraft')) return 'Minecraft Universe';
   if (q.includes('goat')) return 'GOAT';
+  if (q.includes('usa-songs') || q.includes('usa songs')) return 'USA Songs';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
   if (q.includes('zootopia')) return 'Zootopia Universe';
@@ -286,6 +292,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('avatar')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg';
   if (q.includes('minecraft')) return '/images/minecraft.jpg';
   if (q.includes('goat')) return '/images/goat.jpg';
+  if (q.includes('usa-songs') || q.includes('usa songs')) return USA_SONGS_CARD_IMAGE;
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
@@ -365,6 +372,7 @@ const useQuizStats = () => {
       if (target === 'how-to-train-your-dragon' && (univName.includes('how to train your dragon') || id.includes('httyd') || id.includes('train-your-dragon') || id.includes('train your dragon') || id.includes('hidden-world') || id.includes('hidden world'))) return sum + val;
       if (target === 'avatar' && (univName.includes('avatar') || id.includes('avatar'))) return sum + val;
       if (target === 'minecraft' && (univName.includes('minecraft') || id.includes('minecraft'))) return sum + val;
+      if (target === 'usa-songs' && (univName.includes('usa songs') || id.includes('usa-songs') || id.includes('usa songs'))) return sum + val;
       if (target === 'super-mario' && (univName.includes('super-mario') || id.includes('mario'))) return sum + val;
       if (target === 'pawpatrol' && (univName.includes('rescue') || id.includes('pawpatrol'))) return sum + val;
       if (target === 'bad-guys' && (univName.includes('bad guys') || id.includes('bad-guys') || id.includes('bad guys'))) return sum + val;
@@ -1332,6 +1340,7 @@ const DailyMysteryChallenge = () => {
   const handleStart = () => {
     if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'kpop') navigate('/selector-kpop', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'usa-songs') navigate('/selector-usa-songs', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'percy-jackson') navigate('/selector-percy-jackson', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'star-wars') navigate('/selector-star-wars', { state: { isDaily: true } });
@@ -1530,6 +1539,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-twilight" className="hover:text-red-400 transition-colors">Twilight Saga</Link></li>
           <li><Link to="/selector-three-body" className="hover:text-indigo-400 transition-colors">Three-Body Problem</Link></li>
           <li><Link to="/selector-kpop" className="hover:text-purple-400 transition-colors">K-Pop: Demon Hunters</Link></li>
+          <li><Link to="/selector-usa-songs" className="hover:text-rose-300 transition-colors">USA Songs</Link></li>
           <li><Link to="/selector-zootopia" className="hover:text-green-400 transition-colors">Zootopia Case Files</Link></li>
           <li><Link to="/selector-frozen" className="hover:text-sky-400 transition-colors">Frozen Arendelle</Link></li>
           <li><Link to="/selector-moana" className="hover:text-cyan-300 transition-colors">Moana Voyage</Link></li>
@@ -1835,6 +1845,13 @@ const WICKED_GRADES = [
   { threshold: 0, label: 'Munchkinland Newcomer', color: 'text-slate-400', character: { name: 'Nessarose', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s', desc: 'Time to study the spells, the songs, and the secrets of Wicked.' } },
 ];
 
+const USA_SONGS_GRADES = [
+  { threshold: 90, label: 'Chart Legend', color: 'text-amber-300', character: { name: 'Hitmaker', image: USA_SONGS_CARD_IMAGE, desc: 'You know the artists, the eras, and the hooks like a living jukebox.' } },
+  { threshold: 70, label: 'Radio Insider', color: 'text-rose-300', character: { name: 'Playlist Curator', image: USA_SONGS_CARD_IMAGE, desc: 'Strong recall. You can track major songs across decades with confidence.' } },
+  { threshold: 50, label: 'Weekend Listener', color: 'text-blue-400', character: { name: 'Road Trip DJ', image: USA_SONGS_CARD_IMAGE, desc: 'You know a lot of the hits, but there are still more classics to learn.' } },
+  { threshold: 0, label: 'Fresh Ears', color: 'text-slate-400', character: { name: 'New Listener', image: USA_SONGS_CARD_IMAGE, desc: 'Time to build that playlist and start learning the biggest songs.' } },
+];
+
 const HoppersSelector = ({ key }: { key?: string }) => {
   const navigate = useNavigate();
   return (
@@ -1971,6 +1988,59 @@ const WickedSelector = ({ key }: { key?: string }) => {
           { label: "Part 1", title: "Wicked: Part 1", desc: `${WICKED_PART_1_TRIVIA.length} questions`, icon: "\u{1F9F9}", view: 'trivia-wicked-part-1', gradient: 'from-emerald-600/20 to-lime-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
           { label: "Part 2", title: "Wicked: For Good", desc: `${WICKED_PART_2_TRIVIA.length} questions`, icon: "\u{1F49A}", view: 'trivia-wicked-part-2', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           { label: "Random", title: "Mixed Challenge", desc: "20 random questions from both parts", icon: "\u{1F3B2}", view: 'trivia-wicked-random', gradient: 'from-violet-600/20 to-purple-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const USASongsSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-300 to-amber-200">Challenge</span></h1>
+        <Helmet>
+          <title>USA Songs Trivia | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge of major U.S. hit songs, artists, and chart-era anthems in a dedicated music trivia challenge." />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-usa-songs" />
+          <meta property="og:title" content="USA Songs Trivia | Fandom Trivia" />
+          <meta property="og:description" content="Play a music trivia challenge built around famous U.S. songs, artists, and singalong hits." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "USA Songs", item: "https://www.fandom-trivia.com/selector-usa-songs" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the quiz to test your memory for hit songs, artists, and iconic hooks from U.S. pop culture.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {[
+          { label: "Challenge 1", title: "USA Songs Challenge", desc: `${USA_SONGS_TRIVIA.length} questions`, icon: "\u{1F3B5}", view: 'trivia-usa-songs', gradient: 'from-rose-600/20 to-amber-600/20', border: 'border-rose-400/30 hover:border-rose-300/50' },
         ].map(item => (
           <motion.button
             key={item.label}
@@ -5719,6 +5789,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       }
                       if (universe.id === 'twilight') navigate('/selector-twilight');
                       if (universe.id === 'kpop') navigate('/selector-kpop');
+                      if (universe.id === 'usa-songs') navigate('/selector-usa-songs');
                       if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
                       if (universe.id === 'star-wars') navigate('/selector-star-wars');
                       if (universe.id === 'three-body') navigate('/selector-three-body');
@@ -7194,6 +7265,11 @@ export default function App() {
             <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-usa-songs" element={<MCQuizView key="trivia-usa-songs" questions={USA_SONGS_TRIVIA} title="USA Songs Challenge" scoreLabel="USA Songs Challenge" grades={USA_SONGS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-usa-songs" element={<MCQuizView key="trivia-usa-songs" questions={USA_SONGS_TRIVIA} title="USA Songs Challenge" scoreLabel="USA Songs Challenge" grades={USA_SONGS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7360,6 +7436,9 @@ export default function App() {
             <Route path="/selector-star-wars" element={<StarWarsSelector />} />
             <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
             <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
+            <Route path="/selector-usa-songs" element={<USASongsSelector key="selector-usa-songs" />} />
+            <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
+            <Route path="/selector-usa-songs" element={<USASongsSelector key="selector-usa-songs" />} />
             <Route path="/selector-paw-patrol" element={<PawPatrolSelector key="selector-paw-patrol" />} />
             <Route path="/selector-hoppers" element={<HoppersSelector key="selector-hoppers" />} />
             <Route path="/selector-three-body" element={<ThreeBodyBookSelector key="selector-three-body" />} />

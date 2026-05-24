@@ -20,6 +20,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Comprehensive strategic documentation: `agent.md`, `changelog.md`, and `vision.md`, incorporating insights from `ROADMAP.md` and `TASK_BREAKDOWN.md`.
 
+## [2026-05-24] - USA Songs Quiz Formatting & Link Fix
+### Changed
+- **Music Quiz Formatting**: Updated the USA Songs selector so it reads more like the other quiz selector pages.
+- **Subpath-Safe Assets**: Switched the USA Songs card image usage to the app base path so the music quiz still loads correctly from repo-style deployments.
+- **Working `/fandom-trivia/` Links**: Added configurable base-path routing support so the music quiz and related links continue to work when hosted under `/fandom-trivia/`.
+
 ## [2026-02-24] - Supabase Authentication Migration
 ### Changed
 - **Auth Overhaul**: Replaced the custom Express/SQLite/session-based authentication system with **Supabase Auth** (Google OAuth).

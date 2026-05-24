@@ -4,6 +4,15 @@ import fs from 'fs';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 
+const normalizeBasePath = (value?: string): string => {
+  if (!value || value === '/') {
+    return '/';
+  }
+
+  const withLeadingSlash = value.startsWith('/') ? value : `/${value}`;
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`;
+};
+
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   const packageJson = JSON.parse(
@@ -11,6 +20,7 @@ export default defineConfig(({mode}) => {
   ) as {version: string};
 
   return {
+    base: normalizeBasePath(env.VITE_APP_BASE_PATH),
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),

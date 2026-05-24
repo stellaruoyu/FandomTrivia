@@ -1,5 +1,7 @@
 import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake, Sparkles, Lightbulb } from 'lucide-react';
 
+const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
+
 export const NAV_LINKS = [
   { name: 'Home', href: '#' },
   { name: 'Leaderboards', href: '#' },
@@ -339,6 +341,17 @@ export const UNIVERSES = [
     buttonText: 'Join the Hunt',
     icon: 'Zap',
     isSpecial: true
+  },
+  {
+    id: 'usa-songs',
+    title: 'USA Songs',
+    tags: ['Music', 'Pop Culture', 'Hits'],
+    description: 'From arena anthems to chart-topping singalongs, test your knowledge of U.S. hit songs, major artists, and recognizable hooks across generations.',
+    image: USA_SONGS_CARD_IMAGE,
+    seoAlt: 'Stylized USA Songs trivia card featuring a microphone and music-themed design in red and amber tones',
+    buttonText: 'Enter the Playlist',
+    icon: 'Sparkles',
+    path: '/selector-usa-songs'
   },
   {
     id: 'three-body',
