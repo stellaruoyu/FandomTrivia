@@ -2094,11 +2094,11 @@ const KPopSelector = ({ key }: { key?: string }) => {
         </button>
         <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-200">Challenge</span></h1>
         <Helmet>
-          <title>K-Pop Demon Hunters Trivia | Fandom Trivia</title>
-          <meta name="description" content="Test your K-Pop: Demon Hunters knowledge in a single high-energy challenge packed with music, lore, and supernatural action." />
+          <title>Music Trivia | K-Pop Demon Hunters Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your K-Pop: Demon Hunters knowledge in a high-energy music fandom challenge packed with songs, lore, and supernatural action." />
           <link rel="canonical" href="https://www.fandom-trivia.com/selector-kpop" />
-          <meta property="og:title" content="K-Pop Demon Hunters Trivia | Fandom Trivia" />
-          <meta property="og:description" content="Enter the spotlight and take the K-Pop: Demon Hunters quiz." />
+          <meta property="og:title" content="Music Trivia | K-Pop Demon Hunters Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Enter the spotlight and take the K-Pop: Demon Hunters music quiz." />
           <script type="application/ld+json">
             {getBreadcrumbSchema([
               { name: "Home", item: "https://www.fandom-trivia.com/" },
@@ -6070,6 +6070,70 @@ const LandingView = ({ setUser, onUnlockBadge }: {
           </div>
           <ArrowRight className="size-5 sm:size-6 text-white/70 shrink-0" />
         </button>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 pb-14">
+        <div className="relative overflow-hidden rounded-[2rem] border border-fuchsia-400/20 bg-[radial-gradient(circle_at_top_left,_rgba(236,72,153,0.24),_transparent_35%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(49,46,129,0.88),rgba(88,28,135,0.92))] shadow-[0_30px_120px_rgba(168,85,247,0.18)]">
+          <div className="absolute inset-y-0 right-0 w-full md:w-1/2 bg-gradient-to-l from-black/10 via-black/0 to-black/30" />
+          <div className="relative grid gap-8 px-6 py-8 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-10">
+            <div className="space-y-5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-fuchsia-300/20 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.28em] text-fuchsia-200">
+                <Volume2 className="size-3.5" />
+                New Quiz Type
+              </div>
+              <div className="space-y-3">
+                <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+                  Music Fandom Kentei
+                </h2>
+                <p className="max-w-2xl text-base font-medium leading-relaxed text-fuchsia-50/85 md:text-lg">
+                  A music-first branch of Fandom Trivia inspired by the certification-style flow of music quiz sites. Jump into fast song, lore, and artist knowledge checks, then warm up with our K-Pop: Demon Hunters challenge.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 text-sm text-fuchsia-100/85">
+                <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 font-bold">Song Recall</span>
+                <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 font-bold">Character + Artist Lore</span>
+                <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 font-bold">Speed Challenge Energy</span>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="https://music.fandom-trivia.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 font-black text-slate-950 transition-transform hover:scale-[1.02]"
+                >
+                  Explore Music Beta
+                  <ExternalLink className="size-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => navigate('/selector-kpop')}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 px-6 py-3 font-black text-white transition-colors hover:bg-white/15"
+                >
+                  Try K-Pop Challenge
+                  <ArrowRight className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            <div className="relative min-h-[280px] overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/20">
+              <img
+                src="/images/universes/kpop-demon-hunters-card.png"
+                alt="Neon promotional art for the K-Pop Demon Hunters music trivia challenge"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5">
+                <p className="text-[10px] font-black uppercase tracking-[0.28em] text-fuchsia-200/80">
+                  Featured Launch Image
+                </p>
+                <h3 className="mt-2 text-2xl font-black text-white">K-Pop: Demon Hunters</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-200">
+                  Lead title for the new music lane: bright, recognizable, and already aligned with the site&apos;s strongest music-adjacent fandom.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <DailyMysteryChallenge />
