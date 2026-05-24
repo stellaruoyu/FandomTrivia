@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star,
-  ChevronLeft, ChevronRight, Share2, Globe, MessageSquare,
+  ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, Facebook, Copy,
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
@@ -2509,6 +2509,7 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   isDaily?: boolean,
   key?: any
 }) => {
+  const location = useLocation();
   const [gameState, setGameState] = useState<'mode_selection' | 'lobby' | 'playing'>('mode_selection');
   const [gameMode, setGameMode] = useState<'single' | 'bot' | 'versus' | 'team' | null>(null);
   const [matchRoomId, setMatchRoomId] = useState<string | null>(null);
@@ -2570,6 +2571,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const [repeatCycle, setRepeatCycle] = useState(0);
   const [matchScore, setMatchScore] = useState(0);
   const [matchAnsweredCount, setMatchAnsweredCount] = useState(0);
+  const [showShareOptions, setShowShareOptions] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
+  const [copyFeedback, setCopyFeedback] = useState('');
   const [sessionId] = useState(() => {
     const key = `fandom_trivia_session_${scoreLabel}`;
     let id = sessionStorage.getItem(key);
@@ -2645,6 +2649,12 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     if (sessionQuestions.length === 0) return;
     setMatchQuestionGoal(prev => Math.min(Math.max(1, prev), sessionQuestions.length));
   }, [sessionQuestions.length]);
+
+  useEffect(() => {
+    if (!copyFeedback) return;
+    const timeoutId = window.setTimeout(() => setCopyFeedback(''), 1800);
+    return () => window.clearTimeout(timeoutId);
+  }, [copyFeedback]);
 
   useEffect(() => {
     const maxPreGameGoal = showSpecificQuestions ? Math.max(1, hostSelectedIndices.length) : Math.max(1, hostQuestionCount);
@@ -3953,6 +3963,38 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
     const character = gradeEntry.character;
+    const shareUrl = `${SITE_URL}${location.pathname}`;
+    const defaultShareMessage = `Hey! I just played on FandomTrivia's ${title} quiz and scored ${scoreForDisplay}/${pctBase}! Come check it out here: ${shareUrl}`;
+
+    const openShareWindow = (url: string) => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleSharePlatform = (platform: 'facebook' | 'x' | 'reddit') => {
+      const reviewedMessage = shareMessage.trim() || defaultShareMessage;
+
+      if (platform === 'facebook') {
+        openShareWindow(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(reviewedMessage)}`);
+        return;
+      }
+
+      if (platform === 'x') {
+        openShareWindow(`https://twitter.com/intent/tweet?text=${encodeURIComponent(reviewedMessage)}`);
+        return;
+      }
+
+      openShareWindow(`https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(reviewedMessage)}`);
+    };
+
+    const handleCopyShareMessage = async () => {
+      try {
+        await navigator.clipboard.writeText(shareMessage.trim() || defaultShareMessage);
+        setCopyFeedback('Copied!');
+      } catch (error) {
+        console.error('Failed to copy share message:', error);
+        setCopyFeedback('Copy failed');
+      }
+    };
 
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
@@ -4099,7 +4141,79 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
                 </div>
                 <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Total Time Spent</p>
               </div>
+
+              <div className="w-full max-w-xs space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-xl backdrop-blur-md">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-300">Do you like it?</p>
+                  <p className="text-sm font-bold text-slate-200">Recommend this to your friends and family!</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShareMessage(prev => prev || defaultShareMessage);
+                    setShowShareOptions(prev => !prev);
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-500/15 px-4 py-3 text-sm font-black uppercase tracking-widest text-rose-200 transition-all hover:bg-rose-500/25"
+                >
+                  <Share2 className="size-4" />
+                  Share Score
+                </button>
+              </div>
             </div>
+
+            {showShareOptions && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mx-auto w-full max-w-2xl space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-left shadow-xl backdrop-blur-md"
+              >
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-300">Share Your Result</p>
+                  <p className="text-sm font-medium text-slate-300">Review the message before posting it on social media.</p>
+                </div>
+
+                <textarea
+                  value={shareMessage}
+                  onChange={(e) => setShareMessage(e.target.value)}
+                  className="h-32 w-full resize-none rounded-2xl border border-white/10 bg-black/20 p-4 text-sm font-medium leading-relaxed text-white outline-none transition-colors focus:border-rose-400/50"
+                />
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('facebook')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600/20 px-4 py-3 text-sm font-black uppercase tracking-widest text-blue-200 transition-all hover:bg-blue-600/30"
+                  >
+                    <Facebook className="size-4" />
+                    Facebook
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('x')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-slate-200/10 px-4 py-3 text-sm font-black uppercase tracking-widest text-slate-100 transition-all hover:bg-slate-200/20"
+                  >
+                    <Share2 className="size-4" />
+                    X
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('reddit')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-orange-500/20 px-4 py-3 text-sm font-black uppercase tracking-widest text-orange-200 transition-all hover:bg-orange-500/30"
+                  >
+                    <MessageSquare className="size-4" />
+                    Reddit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyShareMessage}
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm font-black uppercase tracking-widest text-emerald-200 transition-all hover:bg-emerald-500/25"
+                  >
+                    <Copy className="size-4" />
+                    {copyFeedback || 'Copy'}
+                  </button>
+                </div>
+              </motion.div>
+            )}
 
             {/* Rewards Section */}
             {(sessionUnlocks.length > 0) && (
