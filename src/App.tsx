@@ -73,6 +73,32 @@ import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
+const HANGMAN_MAX_WRONG_GUESSES = 6;
+const HANGMAN_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const HANGMAN_WORD_BANK = [
+  { answer: 'OPENAI', hint: 'A leading AI company' },
+  { answer: 'FANDOM TRIVIA', hint: 'The site you are playing on' },
+  { answer: 'STAR WARS', hint: 'A galaxy far, far away' },
+  { answer: 'WICKED', hint: 'An Oz story about Elphaba and Glinda' },
+  { answer: 'DOG MAN', hint: 'A heroic Dav Pilkey character' },
+  { answer: 'MINECRAFT', hint: 'A blocky world-building game' },
+  { answer: 'TWILIGHT', hint: 'Forks, vampires, and werewolves' },
+  { answer: 'TOY STORY', hint: 'Pixar toys come to life here' },
+];
+
+const sanitizeHangmanAnswer = (value: string): string => (
+  value
+    .toUpperCase()
+    .replace(/[^A-Z\s'-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+);
+
+const getHangmanUniqueLetters = (value: string): string[] => (
+  Array.from(new Set(value.replace(/[^A-Z]/g, '').split('').filter(Boolean)))
+);
+
+const getRandomHangmanRound = () => HANGMAN_WORD_BANK[Math.floor(Math.random() * HANGMAN_WORD_BANK.length)];
 
 declare global {
   interface Window {
@@ -2063,6 +2089,368 @@ const USASongsSelector = ({ key }: { key?: string }) => {
       </div>
     </div>
   </motion.div>
+  );
+};
+
+const HangmanSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-violet-300">Hangman Mode</span></h1>
+          <Helmet>
+            <title>Hangman Game | Fandom Trivia</title>
+            <meta name="description" content="Play Hangman on Fandom Trivia in AI bot mode or local 1v1 pass-and-play mode." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-hangman" />
+            <meta property="og:title" content="Hangman Game | Fandom Trivia" />
+            <meta property="og:description" content="Choose AI bot mode or 1v1 mode and start a classic Hangman round." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Hangman", item: "https://www.fandom-trivia.com/selector-hangman" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Pick AI Bot Mode for a solo round or 1v1 Mode for pass-and-play where one person sets the word and the other guesses.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            { id: 'ai', label: 'Solo', title: 'AI Bot Mode', desc: 'The computer chooses the word and you try to solve it before the hangman is complete.', icon: Lightbulb, gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-400/30 hover:border-cyan-300/50' },
+            { id: 'versus', label: 'Pass-and-Play', title: '1v1 Mode', desc: 'One player enters the word, then hands the screen to the guesser for a classic head-to-head round.', icon: Users, gradient: 'from-violet-600/20 to-fuchsia-600/20', border: 'border-violet-400/30 hover:border-violet-300/50' },
+          ].map(item => {
+            const Icon = item.icon;
+            return (
+              <motion.button
+                key={item.id}
+                whileHover={{ scale: 1.03, y: -4 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate(item.id === 'ai' ? '/hangman-ai' : '/hangman-1v1')}
+                className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+              >
+                <Icon className="size-10 text-white" />
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+                  <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+                  <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  Start Game <ArrowRight className="size-3" />
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
+  const navigate = useNavigate();
+  const [phase, setPhase] = useState<'intro' | 'setup' | 'handoff' | 'playing' | 'finished'>(mode === 'ai' ? 'intro' : 'setup');
+  const [targetWord, setTargetWord] = useState('');
+  const [hint, setHint] = useState('');
+  const [customWord, setCustomWord] = useState('');
+  const [customHint, setCustomHint] = useState('');
+  const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
+  const [setupError, setSetupError] = useState('');
+
+  const uniqueLetters = useMemo(() => getHangmanUniqueLetters(targetWord), [targetWord]);
+  const wrongLetters = guessedLetters.filter((letter) => !uniqueLetters.includes(letter));
+  const isWon = uniqueLetters.length > 0 && uniqueLetters.every((letter) => guessedLetters.includes(letter));
+  const isLost = wrongLetters.length >= HANGMAN_MAX_WRONG_GUESSES;
+  const shouldRevealAnswer = phase === 'finished' && isLost;
+  const maskedWord = targetWord.split('').map((char) => {
+    if (/[A-Z]/.test(char)) {
+      return guessedLetters.includes(char) || shouldRevealAnswer ? char : '_';
+    }
+    return char;
+  });
+
+  const startAiRound = () => {
+    const round = getRandomHangmanRound();
+    setTargetWord(round.answer);
+    setHint(round.hint);
+    setGuessedLetters([]);
+    setSetupError('');
+    setPhase('playing');
+  };
+
+  const resetVersusRound = () => {
+    setCustomWord('');
+    setCustomHint('');
+    setTargetWord('');
+    setHint('');
+    setGuessedLetters([]);
+    setSetupError('');
+    setPhase('setup');
+  };
+
+  const submitVersusWord = () => {
+    const sanitizedWord = sanitizeHangmanAnswer(customWord);
+    if (sanitizedWord.replace(/[^A-Z]/g, '').length < 2) {
+      setSetupError('Enter a word or phrase with at least 2 letters.');
+      return;
+    }
+
+    setTargetWord(sanitizedWord);
+    setHint(customHint.trim());
+    setGuessedLetters([]);
+    setSetupError('');
+    setPhase('handoff');
+  };
+
+  const handleGuess = (letter: string) => {
+    if (phase !== 'playing' || isWon || isLost || guessedLetters.includes(letter)) return;
+    setGuessedLetters((prev) => [...prev, letter]);
+  };
+
+  useEffect(() => {
+    if (phase !== 'playing') return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toUpperCase();
+      if (/^[A-Z]$/.test(key)) {
+        event.preventDefault();
+        handleGuess(key);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [phase, guessedLetters, isWon, isLost]);
+
+  useEffect(() => {
+    if (phase === 'playing' && (isWon || isLost)) {
+      setPhase('finished');
+    }
+  }, [phase, isWon, isLost]);
+
+  const wrongGuessCount = wrongLetters.length;
+  const guessesRemaining = HANGMAN_MAX_WRONG_GUESSES - wrongGuessCount;
+  const hangmanParts = [
+    wrongGuessCount >= 1,
+    wrongGuessCount >= 2,
+    wrongGuessCount >= 3,
+    wrongGuessCount >= 4,
+    wrongGuessCount >= 5,
+    wrongGuessCount >= 6,
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-8">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-3">
+            <button onClick={() => navigate('/selector-hangman')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold">
+              <ArrowLeft className="size-4" /> Back to Hangman Modes
+            </button>
+            <div className="space-y-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">{mode === 'ai' ? 'AI Bot Mode' : '1v1 Mode'}</p>
+              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Hangman</h1>
+              <p className="text-slate-400 font-medium max-w-2xl">
+                {mode === 'ai'
+                  ? 'Guess the word chosen by the AI before all six mistakes are used up.'
+                  : 'One player chooses the word, then hands the screen over for the guessing round.'}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => (mode === 'ai' ? startAiRound() : resetVersusRound())}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-black uppercase tracking-widest text-white transition-colors hover:bg-white/10"
+          >
+            <RotateCcw className="size-4" />
+            {mode === 'ai' ? 'New AI Word' : 'New 1v1 Round'}
+          </button>
+        </div>
+
+        {phase === 'intro' && (
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-600/15 to-blue-600/10 p-8 shadow-2xl">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">Solo Round</p>
+              <h2 className="text-3xl font-black text-white tracking-tight">Ready to guess?</h2>
+              <p className="text-slate-300 font-medium">Start a new AI round and guess letters from the on-screen keyboard or your physical keyboard.</p>
+              <button
+                type="button"
+                onClick={startAiRound}
+                className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-cyan-300"
+              >
+                <PlayCircle className="size-4" />
+                Start AI Game
+              </button>
+            </div>
+          </div>
+        )}
+
+        {phase === 'setup' && (
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
+            <div className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">Word Setter</p>
+                <h2 className="text-2xl font-black text-white tracking-tight">Enter the secret word or phrase</h2>
+                <p className="text-sm text-slate-400 font-medium">Use letters, spaces, apostrophes, or hyphens. Keep the screen hidden from the guesser.</p>
+              </div>
+              <label className="block space-y-2">
+                <span className="text-xs font-black uppercase tracking-widest text-slate-400">Secret Word</span>
+                <input
+                  type="password"
+                  value={customWord}
+                  onChange={(e) => setCustomWord(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-violet-400/50"
+                  placeholder="Enter a word or phrase"
+                />
+              </label>
+              <label className="block space-y-2">
+                <span className="text-xs font-black uppercase tracking-widest text-slate-400">Hint (Optional)</span>
+                <input
+                  type="text"
+                  value={customHint}
+                  onChange={(e) => setCustomHint(e.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-violet-400/50"
+                  placeholder="Give the guesser a clue"
+                />
+              </label>
+              {setupError && <p className="text-sm font-bold text-rose-300">{setupError}</p>}
+              <button
+                type="button"
+                onClick={submitVersusWord}
+                className="inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-violet-300"
+              >
+                <Lock className="size-4" />
+                Ready for Guesser
+              </button>
+            </div>
+            <div className="space-y-4 rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/15 to-fuchsia-600/10 p-6 shadow-2xl">
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">How It Works</p>
+              <div className="space-y-3 text-sm text-slate-300 font-medium">
+                <p>1. Player one types the secret word or phrase.</p>
+                <p>2. Tap <span className="font-black text-white">Ready for Guesser</span> to hide the setup screen.</p>
+                <p>3. Hand the device over so player two can start guessing letters.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {phase === 'handoff' && (
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/15 to-slate-900 p-8 text-center shadow-2xl">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">Pass The Screen</p>
+            <h2 className="mt-3 text-3xl font-black text-white tracking-tight">The word is locked in.</h2>
+            <p className="mt-3 text-slate-300 font-medium max-w-2xl mx-auto">Hand the device to the guesser, then start the round when they are ready.</p>
+            <button
+              type="button"
+              onClick={() => setPhase('playing')}
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-violet-300"
+            >
+              <PlayCircle className="size-4" />
+              Start Guessing
+            </button>
+          </div>
+        )}
+
+        {(phase === 'playing' || phase === 'finished') && (
+          <div className="grid grid-cols-1 xl:grid-cols-[0.9fr_1.1fr] gap-6">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
+              <div className="mx-auto flex h-[360px] max-w-sm items-center justify-center rounded-3xl border border-white/10 bg-black/20">
+                <svg viewBox="0 0 260 320" className="h-full w-full max-w-[280px] text-white">
+                  <path d="M50 290h160" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                  <path d="M90 290V36h110" stroke="currentColor" strokeWidth="8" strokeLinecap="round" fill="none" />
+                  <path d="M198 36v34" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                  {hangmanParts[0] && <circle cx="198" cy="94" r="24" stroke="currentColor" strokeWidth="7" fill="none" />}
+                  {hangmanParts[1] && <path d="M198 118v70" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[2] && <path d="M198 144l-36 28" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[3] && <path d="M198 144l36 28" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[4] && <path d="M198 188l-32 46" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[5] && <path d="M198 188l32 46" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                </svg>
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Wrong Guesses</p>
+                  <p className="mt-2 text-2xl font-black text-rose-300">{wrongGuessCount} / {HANGMAN_MAX_WRONG_GUESSES}</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Guesses Left</p>
+                  <p className="mt-2 text-2xl font-black text-emerald-300">{guessesRemaining}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  {maskedWord.map((char, index) => (
+                    <span
+                      key={`${char}-${index}`}
+                      className={/[A-Z]/.test(char)
+                        ? 'inline-flex h-12 min-w-10 items-center justify-center rounded-xl border border-white/10 bg-black/20 px-3 text-2xl font-black text-white'
+                        : 'inline-flex h-12 min-w-6 items-center justify-center px-1 text-2xl font-black text-slate-500'}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </div>
+
+                {hint && (
+                  <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-cyan-300">Hint</p>
+                    <p className="mt-2 text-sm font-medium text-slate-200">{hint}</p>
+                  </div>
+                )}
+
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Missed Letters</p>
+                  <p className="mt-2 text-sm font-bold tracking-[0.3em] text-rose-300">{wrongLetters.length > 0 ? wrongLetters.join(' ') : 'None yet'}</p>
+                </div>
+
+                {phase === 'finished' && (
+                  <div className={`rounded-2xl border p-4 ${isWon ? 'border-emerald-400/20 bg-emerald-500/10' : 'border-rose-400/20 bg-rose-500/10'}`}>
+                    <p className={`text-[10px] font-black uppercase tracking-widest ${isWon ? 'text-emerald-300' : 'text-rose-300'}`}>
+                      {isWon ? 'Round Won' : 'Round Lost'}
+                    </p>
+                    <p className="mt-2 text-lg font-black text-white">
+                      {isWon ? 'You guessed the word.' : 'The hangman is complete.'}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-slate-200">Answer: <span className="font-black">{targetWord}</span></p>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-7 sm:grid-cols-9 gap-2">
+                {HANGMAN_ALPHABET.map((letter) => {
+                  const isUsed = guessedLetters.includes(letter);
+                  const isCorrect = isUsed && uniqueLetters.includes(letter);
+                  const isWrong = isUsed && !uniqueLetters.includes(letter);
+
+                  return (
+                    <button
+                      key={letter}
+                      type="button"
+                      disabled={isUsed || phase !== 'playing'}
+                      onClick={() => handleGuess(letter)}
+                      className={`rounded-xl px-0 py-3 text-sm font-black uppercase tracking-widest transition-colors ${
+                        isCorrect
+                          ? 'bg-emerald-500/20 text-emerald-200'
+                          : isWrong
+                            ? 'bg-rose-500/20 text-rose-200'
+                            : 'border border-white/10 bg-white/5 text-white hover:bg-white/10'
+                      } ${isUsed || phase !== 'playing' ? 'cursor-not-allowed opacity-70' : ''}`}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
   );
 };
 
@@ -7375,6 +7763,8 @@ export default function App() {
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
+            <Route path="/hangman-ai" element={<HangmanView mode="ai" />} />
+            <Route path="/hangman-1v1" element={<HangmanView mode="versus" />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -7551,6 +7941,7 @@ export default function App() {
             <Route path="/selector-kpop" element={<KPopSelector key="selector-kpop" />} />
             <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
             <Route path="/selector-usa-songs" element={<USASongsSelector key="selector-usa-songs" />} />
+            <Route path="/selector-hangman" element={<HangmanSelector key="selector-hangman" />} />
             <Route path="/selector-wicked" element={<WickedSelector key="selector-wicked" />} />
             <Route path="/selector-usa-songs" element={<USASongsSelector key="selector-usa-songs" />} />
             <Route path="/selector-paw-patrol" element={<PawPatrolSelector key="selector-paw-patrol" />} />

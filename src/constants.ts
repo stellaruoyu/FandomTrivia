@@ -1,6 +1,30 @@
 import { Trophy, Users, Zap, Search, PlayCircle, ArrowRight, Star, ChevronLeft, ChevronRight, Share2, Globe, MessageSquare, ExternalLink, Snowflake, Sparkles, Lightbulb } from 'lucide-react';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
+const HANGMAN_CARD_IMAGE = `data:image/svg+xml;utf8,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600">
+    <defs>
+      <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1e1b4b" />
+        <stop offset="50%" stop-color="#0f172a" />
+        <stop offset="100%" stop-color="#111827" />
+      </linearGradient>
+      <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#22d3ee" />
+        <stop offset="100%" stop-color="#a78bfa" />
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="1600" fill="url(#bg)" />
+    <circle cx="920" cy="280" r="180" fill="#22d3ee" opacity="0.12" />
+    <circle cx="220" cy="1320" r="220" fill="#a78bfa" opacity="0.12" />
+    <path d="M260 1250V430h320" stroke="url(#accent)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <path d="M580 430v120" stroke="url(#accent)" stroke-width="28" stroke-linecap="round" />
+    <circle cx="580" cy="640" r="88" stroke="#f8fafc" stroke-width="24" fill="none" />
+    <path d="M580 728v236M580 820l-132 98M580 820l132 98M580 964l-118 156M580 964l118 156" stroke="#f8fafc" stroke-width="24" stroke-linecap="round" />
+    <text x="120" y="210" fill="#f8fafc" font-family="Arial, sans-serif" font-size="92" font-weight="700">Hangman</text>
+    <text x="120" y="1480" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="52" letter-spacing="10">AI BOT OR 1V1</text>
+  </svg>
+`)}`;
 
 export const NAV_LINKS = [
   { name: 'Home', href: '#' },
@@ -352,6 +376,17 @@ export const UNIVERSES = [
     buttonText: 'Enter the Playlist',
     icon: 'Sparkles',
     path: '/selector-usa-songs'
+  },
+  {
+    id: 'hangman',
+    title: 'Hangman',
+    tags: ['Word Game', 'Party', 'Classic'],
+    description: 'Pick between AI bot mode or a 1v1 pass-and-play showdown where one player sets the word and the other tries to save the stick figure.',
+    image: HANGMAN_CARD_IMAGE,
+    seoAlt: 'Stylized Hangman card with a neon gallows illustration on a dark gradient background',
+    buttonText: 'Start Hangman',
+    icon: 'Search',
+    path: '/selector-hangman'
   },
   {
     id: 'three-body',
