@@ -212,17 +212,6 @@ export const BADGES: Badge[] = [
 
 export const UNIVERSES = [
   {
-    id: 'disneyland',
-    title: 'Disneyland',
-    tags: ['Disney', 'Pixar', 'Animation'],
-    description: 'Step into one shared Disney hub with the Disney and Pixar quizzes already live in the app, from Arendelle and Motunui to Zootopia and Andy\'s room.',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Castle_%2830584873777%29.jpg',
-    seoAlt: 'Sleeping Beauty Castle at Disneyland during sunset',
-    buttonText: 'Explore Disney',
-    icon: 'Sparkles',
-    path: '/selector-disneyland'
-  },
-  {
     id: 'toy-story',
     title: 'Toy Story',
     tags: ['Animation', 'Disney', 'PIXAR'],

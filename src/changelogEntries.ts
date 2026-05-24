@@ -15,23 +15,6 @@ export type ChangelogEntry = {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
-    id: 'disneyland-hub',
-    date: '2026-05-20',
-    title: 'Disneyland Hub Added',
-    summary: 'A new Disneyland section now groups the Disney and Pixar quiz universes already live in the app.',
-    type: 'feature',
-    highlights: [
-      'Added a dedicated Disneyland universe card on the homepage.',
-      'Created a new selector page that links fans directly into Disney and Pixar quiz sections.',
-      'Grouped Moana, Frozen, Zootopia, Toy Story, and Hoppers under one hub.'
-    ],
-    links: [
-      { label: 'Open Disneyland', href: '/selector-disneyland' },
-      { label: 'Play Moana', href: '/selector-moana' },
-      { label: 'Play Frozen', href: '/selector-frozen' }
-    ]
-  },
-  {
     id: 'goat-launch',
     date: '2026-05-04',
     title: 'GOAT Universe Launched',

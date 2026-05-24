@@ -33,7 +33,6 @@ const sitemapEntries: SitemapEntry[] = [
   {path: '/privacy-policy', priority: '0.3', changefreq: 'monthly'},
   {path: '/terms-of-service', priority: '0.3', changefreq: 'monthly'},
   {path: '/cookie-policy', priority: '0.3', changefreq: 'monthly'},
-  {path: '/selector-disneyland', priority: '0.7'},
   {path: '/selector-twilight', priority: '0.7'},
   {path: '/selector-harry-potter', priority: '0.7'},
   {path: '/selector-star-wars', priority: '0.7'},
