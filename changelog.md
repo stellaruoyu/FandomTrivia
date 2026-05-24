@@ -21,6 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Comprehensive strategic documentation: `agent.md`, `changelog.md`, and `vision.md`, incorporating insights from `ROADMAP.md` and `TASK_BREAKDOWN.md`.
 
 ## [2026-05-24] - USA Songs Quiz Formatting & Link Fix
+### Added
+- **Trivia Score Sharing**: Added a share button on quiz completion so players can review a prewritten score message and post it to Facebook, X, or Reddit, or copy it to the clipboard.
+
 ### Changed
 - **Music Quiz Formatting**: Updated the USA Songs selector so it reads more like the other quiz selector pages.
 - **Subpath-Safe Assets**: Switched the USA Songs card image usage to the app base path so the music quiz still loads correctly from repo-style deployments.
