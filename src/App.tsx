@@ -2184,6 +2184,10 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
 
   const lobbyPlayersRef = useRef<{ id: string; name: string; isHost: boolean; picture?: string }[]>([]);
   const roomChannelRef = useRef<any>(null);
+  const isHostRef = useRef(isHost);
+  useEffect(() => {
+    isHostRef.current = isHost;
+  }, [isHost]);
 
   const [sessionId] = useState(() => {
     const key = `fandom_trivia_session_hangman`;
@@ -2350,6 +2354,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     setGuessedLetters(nextGuessed);
 
     if (mode === 'versus' && roomChannelRef.current) {
+      console.log('Hangman Realtime: sending guess_update broadcast', { guessedLetters: nextGuessed });
       roomChannelRef.current.send({
         type: 'broadcast',
         event: 'guess_update',
@@ -2406,11 +2411,25 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
   useEffect(() => {
     if (phase === 'playing' && (isWon || isLost)) {
       setPhase('finished');
+      const elapsed = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
       if (startTime) {
-        setCompletionTime(Math.round((Date.now() - startTime) / 1000));
+        setCompletionTime(elapsed);
+      }
+      if (mode === 'versus' && !isHost && roomChannelRef.current) {
+        console.log('Hangman Realtime: sending game_finished broadcast', { guessedLetters, elapsed });
+        roomChannelRef.current.send({
+          type: 'broadcast',
+          event: 'game_finished',
+          payload: { 
+            guessedLetters, 
+            isWon, 
+            isLost,
+            completionTime: elapsed
+          }
+        });
       }
     }
-  }, [phase, isWon, isLost, startTime]);
+  }, [phase, isWon, isLost, startTime, mode, isHost, guessedLetters]);
 
   // Realtime Connection Effect
   useEffect(() => {
@@ -2422,7 +2441,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     roomChannelRef.current = channel;
 
     const handleBeforeUnload = () => {
-      if (isHost) {
+      if (isHostRef.current) {
         channel.send({
           type: 'broadcast',
           event: 'host_closing',
@@ -2477,7 +2496,8 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
         setLobbyLogs((l) => [...l, { id: Math.random().toString(36), text: `The host is closing the tab...`, type: 'info' }]);
       })
       .on('broadcast', { event: 'game_start' }, ({ payload }) => {
-        if (!isHost) {
+        console.log('Hangman Realtime: game_start broadcast received', payload);
+        if (!isHostRef.current) {
           setTargetWord(payload.targetWord);
           setHint(payload.hint);
           setGuessedLetters([]);
@@ -2491,12 +2511,22 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
         }
       })
       .on('broadcast', { event: 'guess_update' }, ({ payload }) => {
-        if (isHost) {
+        console.log('Hangman Realtime: guess_update broadcast received', payload);
+        if (isHostRef.current) {
           setGuessedLetters(payload.guessedLetters);
         }
       })
+      .on('broadcast', { event: 'game_finished' }, ({ payload }) => {
+        console.log('Hangman Realtime: game_finished broadcast received', payload);
+        if (isHostRef.current) {
+          setGuessedLetters(payload.guessedLetters);
+          setCompletionTime(payload.completionTime);
+          setPhase('finished');
+        }
+      })
       .on('broadcast', { event: 'new_round' }, () => {
-        if (!isHost) {
+        console.log('Hangman Realtime: new_round broadcast received');
+        if (!isHostRef.current) {
           setTargetWord('');
           setHint('');
           setGuessedLetters([]);
@@ -2513,7 +2543,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
         if (status === 'SUBSCRIBED') {
           await channel.track({
             name: user?.username || user?.name || 'Guest Fan',
-            isHost: isHost,
+            isHost: isHostRef.current,
             picture: user?.picture
           });
         }
@@ -2526,7 +2556,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
       }
       channel.untrack().then(() => supabase.removeChannel(channel));
     };
-  }, [roomCode, isHost, user, sessionId]);
+  }, [roomCode, user, sessionId]);
 
   const wrongGuessCount = wrongLetters.length;
   const guessesRemaining = HANGMAN_MAX_WRONG_GUESSES - wrongGuessCount;
