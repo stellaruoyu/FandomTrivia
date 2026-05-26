@@ -149,6 +149,8 @@ const getQuizTitle = (quizId: string): string => {
   }
 
   const map: Record<string, string> = {
+    'hangman-ai': 'Hangman (Solo)',
+    'hangman-1v1': 'Hangman (1v1 Versus)',
     'twilight-book-1': 'Twilight: Book 1',
     'hp-sorcerers-stone': "HP: Sorcerer's Stone",
     'percy-jackson-random': 'Percy Jackson Mixed Challenge',
@@ -2172,6 +2174,14 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
   const [hostLeft, setHostLeft] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState('');
 
+  // Game End & Leaderboard States
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [scoreSaved, setScoreSaved] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
+
   const lobbyPlayersRef = useRef<{ id: string; name: string; isHost: boolean; picture?: string }[]>([]);
   const roomChannelRef = useRef<any>(null);
 
@@ -2204,6 +2214,12 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     setGuessedLetters([]);
     setSetupError('');
     setPhase('playing');
+    setStartTime(Date.now());
+    setCompletionTime(null);
+    setScoreSaved(false);
+    setSaving(false);
+    setShowShareOptions(false);
+    setShareMessage('');
   };
 
   const createRoom = async () => {
@@ -2279,6 +2295,12 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     setGuessedLetters([]);
     setSetupError('');
     setPhase('playing');
+    setStartTime(Date.now());
+    setCompletionTime(null);
+    setScoreSaved(false);
+    setSaving(false);
+    setShowShareOptions(false);
+    setShareMessage('');
 
     await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
 
@@ -2302,6 +2324,12 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     setGuessedLetters([]);
     setSetupError('');
     setPhase('lobby_waiting');
+    setStartTime(null);
+    setCompletionTime(null);
+    setScoreSaved(false);
+    setSaving(false);
+    setShowShareOptions(false);
+    setShareMessage('');
 
     await supabase.from('rooms').update({ status: 'waiting' }).eq('code', roomCode);
 
@@ -2330,6 +2358,36 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     }
   };
 
+  const handleSaveScore = async () => {
+    if (!user) {
+      alert("You must be logged in to save your score.");
+      return;
+    }
+    setSaving(true);
+    const scoreToSave = isWon ? 1 : 0;
+    const totalToSave = 1;
+    const scoreLabel = mode === 'ai' ? 'hangman-ai' : 'hangman-1v1';
+    try {
+      const { error } = await supabase
+        .from('scores')
+        .insert({
+          user_id: user.id,
+          quiz_id: scoreLabel,
+          score: scoreToSave,
+          total: totalToSave,
+          completion_time: completionTime,
+          is_daily_challenge: false
+        });
+      if (error) throw error;
+      setScoreSaved(true);
+    } catch (err: any) {
+      console.error(err);
+      alert('Failed to save score: ' + err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   useEffect(() => {
     if (phase !== 'playing') return;
 
@@ -2348,8 +2406,11 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
   useEffect(() => {
     if (phase === 'playing' && (isWon || isLost)) {
       setPhase('finished');
+      if (startTime) {
+        setCompletionTime(Math.round((Date.now() - startTime) / 1000));
+      }
     }
-  }, [phase, isWon, isLost]);
+  }, [phase, isWon, isLost, startTime]);
 
   // Realtime Connection Effect
   useEffect(() => {
@@ -2421,6 +2482,12 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
           setHint(payload.hint);
           setGuessedLetters([]);
           setPhase('playing');
+          setStartTime(Date.now());
+          setCompletionTime(null);
+          setScoreSaved(false);
+          setSaving(false);
+          setShowShareOptions(false);
+          setShareMessage('');
         }
       })
       .on('broadcast', { event: 'guess_update' }, ({ payload }) => {
@@ -2434,6 +2501,12 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
           setHint('');
           setGuessedLetters([]);
           setPhase('lobby_waiting');
+          setStartTime(null);
+          setCompletionTime(null);
+          setScoreSaved(false);
+          setSaving(false);
+          setShowShareOptions(false);
+          setShareMessage('');
         }
       })
       .subscribe(async (status) => {
@@ -2465,6 +2538,327 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
     wrongGuessCount >= 5,
     wrongGuessCount >= 6,
   ];
+
+  if (phase === 'finished') {
+    const isGuesser = mode === 'ai' || (mode === 'versus' && !isHost);
+    const scoreForDisplay = isWon ? 1 : 0;
+    const pctBase = 1;
+    const pct = isWon ? 100 : 0;
+    const shareUrl = `${SITE_URL}/selector-hangman`;
+    const defaultShareMessage = mode === 'ai' 
+      ? `Hey! I just solved the Hangman word "${targetWord}" in Solo AI Mode with only ${wrongGuessCount} wrong guesses in ${formatTime(completionTime)}! Try it here: ${shareUrl}`
+      : `Hey! I just played 1v1 Hangman on FandomTrivia and ${isWon ? `solved the word "${targetWord}"` : `failed to guess "${targetWord}"`} in ${formatTime(completionTime)}! Join the fun: ${shareUrl}`;
+
+    const openShareWindow = (url: string) => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleSharePlatform = (platform: 'facebook' | 'x' | 'reddit') => {
+      const reviewedMessage = shareMessage.trim() || defaultShareMessage;
+
+      if (platform === 'facebook') {
+        openShareWindow(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(reviewedMessage)}`);
+        return;
+      }
+
+      if (platform === 'x') {
+        openShareWindow(`https://twitter.com/intent/tweet?text=${encodeURIComponent(reviewedMessage)}`);
+        return;
+      }
+
+      openShareWindow(`https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(reviewedMessage)}`);
+    };
+
+    const handleCopyShareMessage = async () => {
+      try {
+        await navigator.clipboard.writeText(shareMessage.trim() || defaultShareMessage);
+        setCopyFeedback('Copied!');
+      } catch (error) {
+        console.error('Failed to copy share message:', error);
+        setCopyFeedback('Copy failed');
+      }
+    };
+
+    // Determine the opponent avatar and name
+    let opponentName = 'AI Bot';
+    let opponentPicture = 'https://www.fandom-trivia.com/bot.png';
+    let myName = getDisplayName(user, 'You');
+    let myPicture = user?.picture;
+
+    if (mode === 'versus') {
+      const hostPlayer = lobbyPlayers.find(p => p.isHost);
+      const guestPlayer = lobbyPlayers.find(p => !p.isHost);
+      if (isHost) {
+        // Host view: Host (Me) vs Guest (Guesser)
+        myName = hostPlayer ? hostPlayer.name : 'Host';
+        myPicture = hostPlayer?.picture;
+        opponentName = guestPlayer ? guestPlayer.name : 'Guesser';
+        opponentPicture = guestPlayer?.picture || '';
+      } else {
+        // Guest view: Guest (Me) vs Host (Setter)
+        myName = guestPlayer ? guestPlayer.name : 'Guesser';
+        myPicture = guestPlayer?.picture;
+        opponentName = hostPlayer ? hostPlayer.name : 'Host';
+        opponentPicture = hostPlayer?.picture || '';
+      }
+    }
+
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative pt-28 pb-20 px-6 overflow-hidden">
+        <Helmet>
+          <title>Hangman Complete | Fandom Trivia</title>
+          <meta name="description" content="You've completed the Hangman challenge! See your score and details on Fandom Trivia." />
+        </Helmet>
+        <ParticleCanvas mode="celebration" colors={['rgba(6,182,212,', 'rgba(139,92,246,', 'rgba(255,255,255,', 'rgba(100,150,200,']} />
+        
+        <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
+            
+            {/* Status Banner */}
+            <motion.div 
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className={`inline-block px-6 py-2 rounded-full border-2 font-black text-xs uppercase tracking-[0.2em] mb-4 shadow-xl backdrop-blur-md
+                ${isWon 
+                  ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-emerald-500/10' 
+                  : 'bg-red-500/20 border-red-500/50 text-red-400 shadow-red-500/10'}`}
+            >
+              {isGuesser 
+                ? (isWon ? '🏆 You Won!' : '💀 You Lost!') 
+                : (isWon ? '🏆 Guesser Won!' : '💀 Guesser Lost!')}
+            </motion.div>
+
+            {/* Duel Avatars */}
+            <div className="flex justify-center mb-6">
+              <div className="flex items-center -space-x-8 md:-space-x-12">
+                {/* My Avatar */}
+                <div className="relative group hover:scale-105 transition-transform">
+                  <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+                  <div className="relative p-6 bg-white/5 rounded-full border-2 border-primary/30 shadow-2xl backdrop-blur-md">
+                    <SimpleAvatar 
+                      name={myName} 
+                      picture={myPicture} 
+                      size={120} 
+                    />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl whitespace-nowrap">
+                      {isHost ? 'Host (You)' : 'Guesser (You)'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* VS Decorator */}
+                <div className="relative z-10 size-12 rounded-full bg-slate-900 border-2 border-white/20 flex items-center justify-center shadow-2xl">
+                  <span className="text-white font-black text-xs uppercase italic drop-shadow-lg">VS</span>
+                </div>
+
+                {/* Opponent Avatar */}
+                <div className="relative group hover:scale-105 transition-transform">
+                  <div className="absolute inset-0 bg-purple-500/20 blur-2xl rounded-full"></div>
+                  <div className="relative p-6 bg-white/5 rounded-full border-2 border-purple-500/30 shadow-2xl backdrop-blur-md">
+                    <SimpleAvatar 
+                      name={opponentName} 
+                      picture={opponentPicture} 
+                      size={120} 
+                    />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-purple-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl whitespace-nowrap">
+                      {mode === 'ai' ? 'AI Bot' : (isHost ? 'Guesser' : 'Host/Setter')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+              {mode === 'ai' ? 'Hangman Complete!' : 'Round Complete!'}
+            </h2>
+
+            {/* Stats section */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-2">
+              <div className="space-y-1">
+                <p className={`text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r ${isWon ? 'from-emerald-400 to-green-300' : 'from-red-400 to-rose-300'}`}>
+                  {scoreForDisplay}/{pctBase}
+                </p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
+                  {isHost ? 'Guesser Score' : 'Your Score'} ({pct}%)
+                </p>
+              </div>
+              
+              <div className="hidden md:block w-px h-16 bg-white/10"></div>
+              
+              <div className="space-y-1">
+                <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">
+                  {wrongGuessCount}/6
+                </p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">
+                  Wrong Guesses
+                </p>
+              </div>
+
+              <div className="hidden md:block w-px h-16 bg-white/10"></div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-center gap-3 text-blue-400">
+                  <Clock className="size-8" />
+                  <p className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
+                    {formatTime(completionTime)}
+                  </p>
+                </div>
+                <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Total Time Spent</p>
+              </div>
+
+              {isGuesser && (
+                <div className="w-full max-w-xs space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 text-left shadow-xl backdrop-blur-md">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-rose-300">Do you like it?</p>
+                    <p className="text-sm font-bold text-slate-200">Recommend this to your friends!</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShareMessage(prev => prev || defaultShareMessage);
+                      setShowShareOptions(prev => !prev);
+                    }}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-500/15 px-4 py-3 text-sm font-black uppercase tracking-widest text-rose-200 transition-all hover:bg-rose-500/25 cursor-pointer"
+                  >
+                    <Share2 className="size-4" />
+                    Share Score
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Social Share Options */}
+            {showShareOptions && isGuesser && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mx-auto w-full max-w-2xl space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-left shadow-xl backdrop-blur-md"
+              >
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-300">Share Your Result</p>
+                  <p className="text-sm font-medium text-slate-300">Review the message before posting.</p>
+                </div>
+
+                <textarea
+                  value={shareMessage}
+                  onChange={(e) => setShareMessage(e.target.value)}
+                  className="h-32 w-full resize-none rounded-2xl border border-white/10 bg-black/20 p-4 text-sm font-medium leading-relaxed text-white outline-none transition-colors focus:border-cyan-400/50"
+                />
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('facebook')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600/20 px-4 py-3 text-sm font-black uppercase tracking-widest text-blue-200 transition-all hover:bg-blue-600/30 cursor-pointer"
+                  >
+                    <Facebook className="size-4" />
+                    Facebook
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('x')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-slate-200/10 px-4 py-3 text-sm font-black uppercase tracking-widest text-slate-100 transition-all hover:bg-slate-200/20 cursor-pointer"
+                  >
+                    <Share2 className="size-4" />
+                    X
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSharePlatform('reddit')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-orange-500/20 px-4 py-3 text-sm font-black uppercase tracking-widest text-orange-200 transition-all hover:bg-orange-500/30 cursor-pointer"
+                  >
+                    <MessageSquare className="size-4" />
+                    Reddit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyShareMessage}
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm font-black uppercase tracking-widest text-emerald-200 transition-all hover:bg-emerald-500/25 cursor-pointer"
+                  >
+                    <Copy className="size-4" />
+                    {copyFeedback || 'Copy'}
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Match Recap Breakdown */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl backdrop-blur-md max-w-md mx-auto text-left space-y-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-cyan-400 mb-1">Secret Word</p>
+                <h3 className="text-3xl font-black uppercase tracking-wide text-white">{targetWord}</h3>
+              </div>
+              {hint && (
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Hint</p>
+                  <p className="text-slate-300 text-sm font-medium leading-relaxed">{hint}</p>
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Missed Letters</p>
+                  <p className="text-rose-400 font-bold text-sm tracking-widest">
+                    {wrongLetters.length > 0 ? wrongLetters.join(' ') : 'None'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Guesses</p>
+                  <p className="text-slate-300 font-bold text-sm">
+                    {guessedLetters.length}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Save to Leaderboard Section (Guesser only) */}
+            {isGuesser && (
+              <div className="pt-2">
+                {!scoreSaved ? (
+                  <button
+                    onClick={handleSaveScore}
+                    disabled={saving}
+                    className="mx-auto flex items-center justify-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-amber-500/20 transition-all disabled:opacity-50 cursor-pointer"
+                  >
+                    <Star className="size-4" />
+                    {saving ? 'Saving...' : 'Save to Leaderboard'}
+                  </button>
+                ) : (
+                  <p className="text-green-400 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+                    <Check className="size-4" /> Score saved!
+                  </p>
+                )}
+              </div>
+            )}
+          </motion.div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t border-white/10">
+            {mode === 'ai' ? (
+              <button onClick={startAiRound} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30 cursor-pointer">
+                <RotateCcw className="size-4" /> Play Again
+              </button>
+            ) : isHost ? (
+              <button onClick={resetVersusRoomRound} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30 cursor-pointer">
+                <RotateCcw className="size-4" /> Set New Word
+              </button>
+            ) : (
+              <div className="text-center w-full sm:w-auto">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider animate-pulse mb-3">
+                  Waiting for host to start a new round...
+                </p>
+              </div>
+            )}
+            <button onClick={() => navigate('/selector-hangman')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer">
+              <ArrowLeft className="size-4" /> Back to Modes
+            </button>
+            <button onClick={() => navigate('/')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer">
+              Home
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
