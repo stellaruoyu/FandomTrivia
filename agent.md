@@ -32,6 +32,7 @@ When making changes, prefer these files first:
 4. If you introduce indexable routes, update `scripts/prepare-static-assets.ts`.
 5. If you change `src/siteMeta.ts`, regenerate static outputs through the normal build flow.
 6. Do not describe or depend on Gemini features unless you first verify live usage in code. `GEMINI_API_KEY` still appears in config, but there is no active Gemini-driven app flow in the current codebase.
+7. Do not change, remove, or edit images, trivia art, blog images, the changelog, or any other file unless the user explicitly asks for it, except when the edit is required to complete a new feature the user asked for.
 
 ## Adding A New Universe Or Quiz
 

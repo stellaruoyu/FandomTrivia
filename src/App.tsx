@@ -2150,15 +2150,40 @@ const HangmanSelector = ({ key }: { key?: string }) => {
   );
 };
 
-const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
+const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null }) => {
   const navigate = useNavigate();
-  const [phase, setPhase] = useState<'intro' | 'setup' | 'handoff' | 'playing' | 'finished'>(mode === 'ai' ? 'intro' : 'setup');
+  const [phase, setPhase] = useState<'intro' | 'lobby' | 'lobby_waiting' | 'playing' | 'finished'>(
+    mode === 'ai' ? 'intro' : 'lobby'
+  );
   const [targetWord, setTargetWord] = useState('');
   const [hint, setHint] = useState('');
   const [customWord, setCustomWord] = useState('');
   const [customHint, setCustomHint] = useState('');
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
   const [setupError, setSetupError] = useState('');
+
+  // Multiplayer Room States
+  const [roomCode, setRoomCode] = useState('');
+  const [joinCodeInput, setJoinCodeInput] = useState('');
+  const [isHost, setIsHost] = useState(false);
+  const [lobbyError, setLobbyError] = useState('');
+  const [lobbyPlayers, setLobbyPlayers] = useState<{ id: string; name: string; isHost: boolean; picture?: string }[]>([]);
+  const [lobbyLogs, setLobbyLogs] = useState<{ id: string; text: string; type: 'join' | 'leave' | 'info' }[]>([]);
+  const [hostLeft, setHostLeft] = useState(false);
+  const [copyFeedback, setCopyFeedback] = useState('');
+
+  const lobbyPlayersRef = useRef<{ id: string; name: string; isHost: boolean; picture?: string }[]>([]);
+  const roomChannelRef = useRef<any>(null);
+
+  const [sessionId] = useState(() => {
+    const key = `fandom_trivia_session_hangman`;
+    let id = sessionStorage.getItem(key);
+    if (!id) {
+      id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      sessionStorage.setItem(key, id);
+    }
+    return id;
+  });
 
   const uniqueLetters = useMemo(() => getHangmanUniqueLetters(targetWord), [targetWord]);
   const wrongLetters = guessedLetters.filter((letter) => !uniqueLetters.includes(letter));
@@ -2181,17 +2206,68 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
     setPhase('playing');
   };
 
-  const resetVersusRound = () => {
-    setCustomWord('');
-    setCustomHint('');
-    setTargetWord('');
-    setHint('');
-    setGuessedLetters([]);
-    setSetupError('');
-    setPhase('setup');
+  const createRoom = async () => {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const { error } = await supabase.from('rooms').insert({
+      code,
+      host_id: user?.id || null,
+      status: 'waiting',
+      quiz_id: 'hangman-1v1'
+    });
+    if (error) {
+      setLobbyError('Failed to create room.');
+      return;
+    }
+    setIsHost(true);
+    setRoomCode(code);
+    setLobbyError('');
+    setPhase('lobby_waiting');
   };
 
-  const submitVersusWord = () => {
+  const joinRoom = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = joinCodeInput.toUpperCase();
+    const { data, error } = await supabase.from('rooms').select('*').eq('code', code).single();
+    if (error || !data) {
+      console.error('Room lookup failed:', error);
+      setLobbyError('Room not found.');
+      return;
+    }
+    if (data.status !== 'waiting') {
+      setLobbyError('Game has already started!');
+      return;
+    }
+    if (data.quiz_id !== 'hangman-1v1') {
+      setLobbyError('This room is for a different game!');
+      return;
+    }
+    setIsHost(false);
+    setRoomCode(code);
+    setLobbyError('');
+    setPhase('lobby_waiting');
+  };
+
+  const copyRoomCode = () => {
+    navigator.clipboard.writeText(roomCode);
+    setCopyFeedback('Copied!');
+  };
+
+  useEffect(() => {
+    if (!copyFeedback) return;
+    const t = setTimeout(() => setCopyFeedback(''), 1800);
+    return () => clearTimeout(t);
+  }, [copyFeedback]);
+
+  const leaveRoom = () => {
+    setRoomCode('');
+    setPhase('lobby');
+    setJoinCodeInput('');
+    setLobbyLogs([]);
+    setLobbyPlayers([]);
+    setHostLeft(false);
+  };
+
+  const startVersusRoomGame = async () => {
     const sanitizedWord = sanitizeHangmanAnswer(customWord);
     if (sanitizedWord.replace(/[^A-Z]/g, '').length < 2) {
       setSetupError('Enter a word or phrase with at least 2 letters.');
@@ -2202,12 +2278,56 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
     setHint(customHint.trim());
     setGuessedLetters([]);
     setSetupError('');
-    setPhase('handoff');
+    setPhase('playing');
+
+    await supabase.from('rooms').update({ status: 'playing' }).eq('code', roomCode);
+
+    if (roomChannelRef.current) {
+      await roomChannelRef.current.send({
+        type: 'broadcast',
+        event: 'game_start',
+        payload: {
+          targetWord: sanitizedWord,
+          hint: customHint.trim()
+        }
+      });
+    }
+  };
+
+  const resetVersusRoomRound = async () => {
+    setCustomWord('');
+    setCustomHint('');
+    setTargetWord('');
+    setHint('');
+    setGuessedLetters([]);
+    setSetupError('');
+    setPhase('lobby_waiting');
+
+    await supabase.from('rooms').update({ status: 'waiting' }).eq('code', roomCode);
+
+    if (roomChannelRef.current) {
+      await roomChannelRef.current.send({
+        type: 'broadcast',
+        event: 'new_round',
+        payload: {}
+      });
+    }
   };
 
   const handleGuess = (letter: string) => {
     if (phase !== 'playing' || isWon || isLost || guessedLetters.includes(letter)) return;
-    setGuessedLetters((prev) => [...prev, letter]);
+    if (mode === 'versus' && isHost) return;
+
+    const nextGuessed = [...guessedLetters, letter];
+    setGuessedLetters(nextGuessed);
+
+    if (mode === 'versus' && roomChannelRef.current) {
+      roomChannelRef.current.send({
+        type: 'broadcast',
+        event: 'guess_update',
+        payload: { guessedLetters: nextGuessed }
+      });
+    }
   };
 
   useEffect(() => {
@@ -2231,6 +2351,110 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
     }
   }, [phase, isWon, isLost]);
 
+  // Realtime Connection Effect
+  useEffect(() => {
+    if (!roomCode) return;
+
+    const channel = supabase.channel(`room:${roomCode}`, {
+      config: { presence: { key: user?.id || sessionId } }
+    });
+    roomChannelRef.current = channel;
+
+    const handleBeforeUnload = () => {
+      if (isHost) {
+        channel.send({
+          type: 'broadcast',
+          event: 'host_closing',
+          payload: { name: user?.username || user?.name || 'Host' }
+        });
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        const active: { id: string; name: string; isHost: boolean; picture?: string }[] = [];
+        for (const [key, presences] of Object.entries(state)) {
+          const pData = presences[0] as any;
+          if (pData) {
+            active.push({ id: key, name: pData.name, isHost: pData.isHost, picture: pData.picture });
+          }
+        }
+
+        const prev = lobbyPlayersRef.current;
+        const currentId = user?.id || sessionId;
+
+        active.forEach((p) => {
+          if (!prev.find((px) => px.id === p.id)) {
+            if (p.id !== currentId) {
+              setLobbyLogs((logs) => [...logs, { id: Math.random().toString(36), text: `${p.name} joined the room`, type: 'join' }]);
+            }
+          }
+        });
+
+        prev.forEach((p) => {
+          if (!active.find((ax) => ax.id === p.id)) {
+            if (p.id !== currentId) {
+              setLobbyLogs((l) => [...l, { id: Math.random().toString(36), text: `${p.name} left the room`, type: 'leave' }]);
+            }
+          }
+        });
+
+        const hostExists = active.some((ax) => ax.isHost);
+        if (!hostExists && active.length > 0) {
+          setHostLeft(true);
+        } else {
+          setHostLeft(false);
+        }
+
+        lobbyPlayersRef.current = active;
+        setLobbyPlayers(active);
+      })
+      .on('broadcast', { event: 'host_closing' }, () => {
+        setHostLeft(true);
+        setLobbyLogs((l) => [...l, { id: Math.random().toString(36), text: `The host is closing the tab...`, type: 'info' }]);
+      })
+      .on('broadcast', { event: 'game_start' }, ({ payload }) => {
+        if (!isHost) {
+          setTargetWord(payload.targetWord);
+          setHint(payload.hint);
+          setGuessedLetters([]);
+          setPhase('playing');
+        }
+      })
+      .on('broadcast', { event: 'guess_update' }, ({ payload }) => {
+        if (isHost) {
+          setGuessedLetters(payload.guessedLetters);
+        }
+      })
+      .on('broadcast', { event: 'new_round' }, () => {
+        if (!isHost) {
+          setTargetWord('');
+          setHint('');
+          setGuessedLetters([]);
+          setPhase('lobby_waiting');
+        }
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await channel.track({
+            name: user?.username || user?.name || 'Guest Fan',
+            isHost: isHost,
+            picture: user?.picture
+          });
+        }
+      });
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (roomChannelRef.current === channel) {
+        roomChannelRef.current = null;
+      }
+      channel.untrack().then(() => supabase.removeChannel(channel));
+    };
+  }, [roomCode, isHost, user, sessionId]);
+
   const wrongGuessCount = wrongLetters.length;
   const guessesRemaining = HANGMAN_MAX_WRONG_GUESSES - wrongGuessCount;
   const hangmanParts = [
@@ -2247,39 +2471,42 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-3">
-            <button onClick={() => navigate('/selector-hangman')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold">
+            <button onClick={() => navigate('/selector-hangman')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold cursor-pointer">
               <ArrowLeft className="size-4" /> Back to Hangman Modes
             </button>
-            <div className="space-y-2">
+            <div className="space-y-2 text-left">
               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">{mode === 'ai' ? 'AI Bot Mode' : '1v1 Mode'}</p>
               <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Hangman</h1>
               <p className="text-slate-400 font-medium max-w-2xl">
                 {mode === 'ai'
                   ? 'Guess the word chosen by the AI before all six mistakes are used up.'
-                  : 'One player chooses the word, then hands the screen over for the guessing round.'}
+                  : 'Create a private room, share the code, set a secret word, and watch your opponent guess it in real-time!'}
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => (mode === 'ai' ? startAiRound() : resetVersusRound())}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-black uppercase tracking-widest text-white transition-colors hover:bg-white/10"
-          >
-            <RotateCcw className="size-4" />
-            {mode === 'ai' ? 'New AI Word' : 'New 1v1 Round'}
-          </button>
+          {mode === 'ai' && (
+            <button
+              type="button"
+              onClick={startAiRound}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-black uppercase tracking-widest text-white transition-colors hover:bg-white/10 cursor-pointer"
+            >
+              <RotateCcw className="size-4" />
+              New AI Word
+            </button>
+          )}
         </div>
 
-        {phase === 'intro' && (
+        {/* AI Intro Phase */}
+        {phase === 'intro' && mode === 'ai' && (
           <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-600/15 to-blue-600/10 p-8 shadow-2xl">
-            <div className="max-w-2xl space-y-4">
+            <div className="max-w-2xl space-y-4 text-left">
               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">Solo Round</p>
               <h2 className="text-3xl font-black text-white tracking-tight">Ready to guess?</h2>
               <p className="text-slate-300 font-medium">Start a new AI round and guess letters from the on-screen keyboard or your physical keyboard.</p>
               <button
                 type="button"
                 onClick={startAiRound}
-                className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-cyan-300"
+                className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-cyan-300 cursor-pointer"
               >
                 <PlayCircle className="size-4" />
                 Start AI Game
@@ -2288,73 +2515,269 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
           </div>
         )}
 
-        {phase === 'setup' && (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
-            <div className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
-              <div className="space-y-1">
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">Word Setter</p>
-                <h2 className="text-2xl font-black text-white tracking-tight">Enter the secret word or phrase</h2>
-                <p className="text-sm text-slate-400 font-medium">Use letters, spaces, apostrophes, or hyphens. Keep the screen hidden from the guesser.</p>
-              </div>
-              <label className="block space-y-2">
-                <span className="text-xs font-black uppercase tracking-widest text-slate-400">Secret Word</span>
-                <input
-                  type="password"
-                  value={customWord}
-                  onChange={(e) => setCustomWord(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-violet-400/50"
-                  placeholder="Enter a word or phrase"
-                />
-              </label>
-              <label className="block space-y-2">
-                <span className="text-xs font-black uppercase tracking-widest text-slate-400">Hint (Optional)</span>
-                <input
-                  type="text"
-                  value={customHint}
-                  onChange={(e) => setCustomHint(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-violet-400/50"
-                  placeholder="Give the guesser a clue"
-                />
-              </label>
-              {setupError && <p className="text-sm font-bold text-rose-300">{setupError}</p>}
-              <button
-                type="button"
-                onClick={submitVersusWord}
-                className="inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-violet-300"
-              >
-                <Lock className="size-4" />
-                Ready for Guesser
+        {/* Multiplayer Lobby Mode (Versus only) */}
+        {phase === 'lobby' && mode === 'versus' && (
+          <div className="min-h-[50vh] flex flex-col items-center justify-center text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full p-10 bg-card-dark border border-white/10 rounded-3xl shadow-2xl space-y-8">
+              <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">Private Hangman Match</h2>
+              <p className="text-slate-400 font-medium">Create a new room or join an existing one using a 6-character code.</p>
+
+              <button onClick={createRoom} className="w-full bg-primary hover:bg-primary/80 text-white font-black py-4 rounded-xl shadow-lg border border-primary/50 uppercase tracking-widest transition-all cursor-pointer">
+                Create New Room
               </button>
+              
+              <div className="relative flex items-center py-2">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="flex-shrink-0 mx-4 text-slate-500 font-bold text-xs uppercase tracking-widest">OR</span>
+                <div className="flex-grow border-t border-white/10"></div>
+              </div>
+
+              <form onSubmit={joinRoom} className="space-y-4">
+                <input 
+                  type="text" 
+                  placeholder="ENTER 6-CHAR CODE" 
+                  maxLength={6}
+                  value={joinCodeInput}
+                  onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
+                  className="w-full bg-white/5 border border-white/20 text-white placeholder-slate-500 px-6 py-4 rounded-xl text-center font-black text-2xl tracking-[0.5em] uppercase focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                />
+                <button disabled={joinCodeInput.length !== 6} type="submit" className="w-full bg-white/10 hover:bg-white/20 text-white font-black py-4 rounded-xl border border-white/20 uppercase tracking-widest transition-all disabled:opacity-50 cursor-pointer">
+                  Join Room
+                </button>
+              </form>
+
+              {lobbyError && (
+                <p className="text-red-400 font-bold text-sm bg-red-500/10 p-3 rounded-xl border border-red-500/20">{lobbyError}</p>
+              )}
+            </motion.div>
+          </div>
+        )}
+
+        {/* Multiplayer Lobby Waiting Phase (Versus only) */}
+        {phase === 'lobby_waiting' && mode === 'versus' && (
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
+            {/* Left Column: Player lists & Settings */}
+            <div className="space-y-6 rounded-3xl border border-white/10 bg-card-dark p-6 shadow-2xl backdrop-blur-md text-left">
+              <div className="text-center space-y-4">
+                <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest">Room Code</h2>
+                <div className="inline-flex items-center gap-3 bg-black/40 border border-white/10 px-6 py-3 rounded-2xl">
+                  <p className="text-4xl font-black text-primary tracking-[0.2em]">{roomCode}</p>
+                  <button onClick={copyRoomCode} className="p-2 hover:bg-white/5 rounded-lg text-slate-400 hover:text-white transition-all cursor-pointer">
+                    {copyFeedback ? <Check className="size-5 text-emerald-400" /> : <Copy className="size-5" />}
+                  </button>
+                </div>
+                {copyFeedback && <p className="text-[10px] text-emerald-400 font-black uppercase tracking-widest text-center">{copyFeedback}</p>}
+              </div>
+
+              {/* Player list */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-slate-400">
+                  <span>Players ({lobbyPlayers.length}/2)</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {lobbyPlayers.map(p => (
+                    <div key={p.id} className="flex items-center justify-between bg-white/5 border border-white/10 p-3 rounded-xl">
+                      <span className="font-bold text-white text-sm truncate mr-2">
+                        {p.name} {p.id === (user?.id || sessionId) && <span className="text-primary">(You)</span>}
+                      </span>
+                      {p.isHost && (
+                        <span className="text-[8px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Host</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Lobby Feed logs */}
+              <div className="bg-black/20 border border-white/5 rounded-2xl p-4 text-left space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+                {lobbyLogs.length === 0 ? (
+                  <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest text-center py-2">Waiting for opponent to join...</p>
+                ) : (
+                  lobbyLogs.map(log => (
+                    <div key={log.id} className="flex items-center gap-2">
+                      <div className={`size-1.5 rounded-full ${log.type === 'join' ? 'bg-green-500' : log.type === 'leave' ? 'bg-red-500' : 'bg-primary'}`} />
+                      <p className={`text-[10px] font-bold ${log.type === 'join' ? 'text-green-400' : log.type === 'leave' ? 'text-red-400' : 'text-slate-400'} uppercase tracking-tight`}>
+                        {log.text}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Host Left warning */}
+              {hostLeft && (
+                <p className="text-red-400 font-bold text-xs uppercase tracking-tight text-center bg-red-500/10 p-3 rounded-xl border border-red-500/20">
+                  The Host has disconnected!
+                </p>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <button onClick={leaveRoom} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-black py-3 rounded-xl border border-white/10 uppercase tracking-widest transition-all cursor-pointer">
+                  Leave Room
+                </button>
+              </div>
             </div>
-            <div className="space-y-4 rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/15 to-fuchsia-600/10 p-6 shadow-2xl">
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">How It Works</p>
-              <div className="space-y-3 text-sm text-slate-300 font-medium">
-                <p>1. Player one types the secret word or phrase.</p>
-                <p>2. Tap <span className="font-black text-white">Ready for Guesser</span> to hide the setup screen.</p>
-                <p>3. Hand the device over so player two can start guessing letters.</p>
+
+            {/* Right Column: Host Setup vs Guest waiting UI */}
+            <div className="space-y-4 rounded-3xl border border-white/10 bg-gradient-to-br from-primary/10 to-accent/5 p-6 shadow-2xl flex flex-col justify-between text-left">
+              {isHost ? (
+                <div className="space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">Word Setter (Host)</p>
+                      <h2 className="text-2xl font-black text-white tracking-tight">Set Secret Phrase</h2>
+                      <p className="text-xs text-slate-400 font-medium">Keep the phrase hidden from the guesser.</p>
+                    </div>
+                    <label className="block space-y-2">
+                      <span className="text-xs font-black uppercase tracking-widest text-slate-400">Secret Word / Phrase</span>
+                      <input
+                        type="password"
+                        value={customWord}
+                        onChange={(e) => setCustomWord(e.target.value)}
+                        className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                        placeholder="Enter secret word"
+                      />
+                    </label>
+                    <label className="block space-y-2">
+                      <span className="text-xs font-black uppercase tracking-widest text-slate-400">Hint (Optional)</span>
+                      <input
+                        type="text"
+                        value={customHint}
+                        onChange={(e) => setCustomHint(e.target.value)}
+                        className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                        placeholder="Give a clue"
+                      />
+                    </label>
+                    {setupError && <p className="text-sm font-bold text-rose-300">{setupError}</p>}
+                  </div>
+                  
+                  <button
+                    type="button"
+                    onClick={startVersusRoomGame}
+                    disabled={lobbyPlayers.length < 2}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-4 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors shadow-lg cursor-pointer"
+                  >
+                    <Lock className="size-4" />
+                    Start Game
+                  </button>
+                  {lobbyPlayers.length < 2 && (
+                    <p className="text-blue-400 font-bold text-xs uppercase tracking-tight text-center animate-pulse mt-2">
+                      Waiting for opponent to join room...
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 py-12">
+                  <div className="size-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">Guesser (Guest)</p>
+                  <h3 className="text-xl font-black text-white">Waiting for Host...</h3>
+                  <p className="text-sm text-slate-400 font-medium max-w-xs">
+                    The host is choosing the secret word and hint. Get ready to guess!
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Spectator View for Host in Versus Mode */}
+        {(phase === 'playing' || phase === 'finished') && mode === 'versus' && isHost && (
+          <div className="grid grid-cols-1 xl:grid-cols-[0.9fr_1.1fr] gap-6 animate-in fade-in duration-300">
+            {/* Hangman Gallows drawing (Same SVG) */}
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
+              <div className="mx-auto flex h-[360px] max-w-sm items-center justify-center rounded-3xl border border-white/10 bg-black/20">
+                <svg viewBox="0 0 260 320" className="h-full w-full max-w-[280px] text-white">
+                  <path d="M50 290h160" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                  <path d="M90 290V36h110" stroke="currentColor" strokeWidth="8" strokeLinecap="round" fill="none" />
+                  <path d="M198 36v34" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                  {hangmanParts[0] && <circle cx="198" cy="94" r="24" stroke="currentColor" strokeWidth="7" fill="none" />}
+                  {hangmanParts[1] && <path d="M198 118v70" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[2] && <path d="M198 144l-36 28" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[3] && <path d="M198 144l36 28" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[4] && <path d="M198 188l-32 46" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                  {hangmanParts[5] && <path d="M198 188l32 46" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />}
+                </svg>
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-3 text-left">
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Guesser Errors</p>
+                  <p className="mt-2 text-2xl font-black text-rose-300">{wrongGuessCount} / {HANGMAN_MAX_WRONG_GUESSES}</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Guesses Left</p>
+                  <p className="mt-2 text-2xl font-black text-emerald-300">{guessesRemaining}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Word Progress & Game state (Spectator) */}
+            <div className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md text-left">
+              <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">Live Spectating</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  {maskedWord.map((char, index) => (
+                    <span
+                      key={`${char}-${index}`}
+                      className={/[A-Z]/.test(char)
+                        ? 'inline-flex h-12 min-w-10 items-center justify-center rounded-xl border border-white/10 bg-black/20 px-3 text-2xl font-black text-white'
+                        : 'inline-flex h-12 min-w-6 items-center justify-center px-1 text-2xl font-black text-slate-500'}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </div>
+
+                {hint && (
+                  <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-cyan-300">Hint Provided</p>
+                    <p className="mt-2 text-sm font-medium text-slate-200">{hint}</p>
+                  </div>
+                )}
+
+                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Guesser's Missed Letters</p>
+                  <p className="mt-2 text-sm font-bold tracking-[0.3em] text-rose-300">
+                    {wrongLetters.length > 0 ? wrongLetters.join(' ') : 'None yet'}
+                  </p>
+                </div>
+
+                {phase === 'playing' && (
+                  <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-2xl animate-pulse">
+                    <div className="size-3 bg-cyan-400 rounded-full animate-ping"></div>
+                    <p className="text-sm font-bold text-slate-300">
+                      Opponent is actively guessing...
+                    </p>
+                  </div>
+                )}
+
+                {phase === 'finished' && (
+                  <div className={`rounded-2xl border p-4 ${isWon ? 'border-emerald-400/20 bg-emerald-500/10' : 'border-rose-400/20 bg-rose-500/10'}`}>
+                    <p className={`text-[10px] font-black uppercase tracking-widest ${isWon ? 'text-emerald-300' : 'text-rose-300'}`}>
+                      {isWon ? 'Round Won' : 'Round Lost'}
+                    </p>
+                    <p className="mt-2 text-lg font-black text-white">
+                      {isWon ? 'Guesser solved your word!' : 'Guesser ran out of guesses.'}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-slate-200">Answer: <span className="font-black">{targetWord}</span></p>
+                    
+                    <button
+                      type="button"
+                      onClick={resetVersusRoomRound}
+                      className="mt-4 w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black py-3 rounded-xl uppercase tracking-widest transition-all cursor-pointer text-center text-sm inline-flex items-center justify-center gap-2"
+                    >
+                      <RotateCcw className="size-4" /> Set New Word
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         )}
 
-        {phase === 'handoff' && (
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/15 to-slate-900 p-8 text-center shadow-2xl">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-violet-300">Pass The Screen</p>
-            <h2 className="mt-3 text-3xl font-black text-white tracking-tight">The word is locked in.</h2>
-            <p className="mt-3 text-slate-300 font-medium max-w-2xl mx-auto">Hand the device to the guesser, then start the round when they are ready.</p>
-            <button
-              type="button"
-              onClick={() => setPhase('playing')}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 text-sm font-black uppercase tracking-widest text-slate-950 transition-colors hover:bg-violet-300"
-            >
-              <PlayCircle className="size-4" />
-              Start Guessing
-            </button>
-          </div>
-        )}
-
-        {(phase === 'playing' || phase === 'finished') && (
-          <div className="grid grid-cols-1 xl:grid-cols-[0.9fr_1.1fr] gap-6">
+        {/* Guesser View (AI Round OR Versus Round Guest) */}
+        {(phase === 'playing' || phase === 'finished') && !(mode === 'versus' && isHost) && (
+          <div className="grid grid-cols-1 xl:grid-cols-[0.9fr_1.1fr] gap-6 text-left">
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md">
               <div className="mx-auto flex h-[360px] max-w-sm items-center justify-center rounded-3xl border border-white/10 bg-black/20">
                 <svg viewBox="0 0 260 320" className="h-full w-full max-w-[280px] text-white">
@@ -2417,6 +2840,12 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
                       {isWon ? 'You guessed the word.' : 'The hangman is complete.'}
                     </p>
                     <p className="mt-2 text-sm font-medium text-slate-200">Answer: <span className="font-black">{targetWord}</span></p>
+                    
+                    {mode === 'versus' && (
+                      <p className="mt-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center animate-pulse">
+                        Waiting for host to start a new round...
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -2433,11 +2862,11 @@ const HangmanView = ({ mode }: { mode: 'ai' | 'versus' }) => {
                       type="button"
                       disabled={isUsed || phase !== 'playing'}
                       onClick={() => handleGuess(letter)}
-                      className={`rounded-xl px-0 py-3 text-sm font-black uppercase tracking-widest transition-colors ${
+                      className={`rounded-xl px-0 py-3 text-sm font-black uppercase tracking-widest transition-colors cursor-pointer ${
                         isCorrect
-                          ? 'bg-emerald-500/20 text-emerald-200'
+                          ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/30'
                           : isWrong
-                            ? 'bg-rose-500/20 text-rose-200'
+                            ? 'bg-rose-500/20 text-rose-200 border border-rose-500/30'
                             : 'border border-white/10 bg-white/5 text-white hover:bg-white/10'
                       } ${isUsed || phase !== 'playing' ? 'cursor-not-allowed opacity-70' : ''}`}
                     >
@@ -7763,8 +8192,8 @@ export default function App() {
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
-            <Route path="/hangman-ai" element={<HangmanView mode="ai" />} />
-            <Route path="/hangman-1v1" element={<HangmanView mode="versus" />} />
+            <Route path="/hangman-ai" element={<HangmanView mode="ai" user={user} />} />
+            <Route path="/hangman-1v1" element={<HangmanView mode="versus" user={user} />} />
             <Route path="/trivia-kpop" element={<MCQuizView key="trivia-kpop" questions={KPOP_TRIVIA} title="K-Pop: Demon Hunters" scoreLabel="K-Pop: Demon Hunters" grades={KPOP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
