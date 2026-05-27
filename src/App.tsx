@@ -72,6 +72,7 @@ import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
 import { CHANGELOG_ENTRIES } from './changelogData';
+import { LION_KING_TRIVIA, ALADDIN_TRIVIA, BEAUTY_BEAST_TRIVIA, LITTLE_MERMAID_TRIVIA, TANGLED_TRIVIA, MULAN_TRIVIA } from './disneyTrivia';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
 const HANGMAN_MAX_WRONG_GUESSES = 6;
@@ -262,6 +263,12 @@ const getQuizTitle = (quizId: string): string => {
     'a-minecraft-movie-2025': 'A Minecraft Movie (2025)',
     'minecraft': 'A Minecraft Movie (2025)',
     'goat': 'GOAT (2026)',
+    'lion-king': 'The Lion King',
+    'aladdin': 'Aladdin',
+    'beauty-and-the-beast': 'Beauty and the Beast',
+    'the-little-mermaid': 'The Little Mermaid',
+    'tangled': 'Tangled',
+    'mulan': 'Mulan',
   };
 
   return map[normalizedId] || normalizedId;
@@ -1080,6 +1087,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const universeRouteMap: Record<string, string> = {
+      'disneyland': '/selector-disneyland',
       'twilight': '/selector-twilight',
       'harry-potter': '/selector-harry-potter',
       'percy-jackson': '/selector-percy-jackson',
@@ -1584,6 +1592,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-bad-guys" className="hover:text-orange-400 transition-colors">The Bad Guys</Link></li>
           <li><Link to="/selector-dog-man" className="hover:text-amber-400 transition-colors">Dog Man</Link></li>
           <li><Link to="/selector-hoppers" className="hover:text-emerald-400 transition-colors">Hoppers</Link></li>
+          <li><Link to="/selector-disneyland" className="hover:text-amber-300 transition-colors">Disneyland</Link></li>
           <li><Link to="/selector-goat" className="hover:text-amber-300 transition-colors">GOAT</Link></li>
           <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
         </ul>
@@ -6164,6 +6173,96 @@ const MoanaSelector = () => {
   );
 };
 
+const DISNEYLAND_GRADES = [
+  { threshold: 90, label: 'Ultimate Mouseketeer', color: 'text-amber-400', character: { name: 'Mickey Mouse', image: '/images/disneyland.png', desc: 'Gosh! You know your Disney lore inside and out. You are officially certified royalty!' } },
+  { threshold: 70, label: 'Magic Kingdom Guide', color: 'text-cyan-300', character: { name: 'Genie', image: '/images/disneyland.png', desc: 'Phenomenal cosmic power! You answered most of the questions right and know your stuff.' } },
+  { threshold: 50, label: 'Wish Upon A Star', color: 'text-rose-300', character: { name: 'Jiminy Cricket', image: '/images/disneyland.png', desc: 'Always let your conscience be your guide. Good effort, but you still have a few movies to rewatch.' } },
+  { threshold: 0, label: 'Lost in the Woods', color: 'text-slate-400', character: { name: 'Olaf', image: '/images/disneyland.png', desc: 'Oh, look at that. You might need to watch the classics again to unlock the magic!' } },
+];
+
+const DisneylandSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  
+  const disneylandFilms = [
+    // New Quizzes
+    { label: 'Classic 1', title: 'The Lion King', desc: '10 questions on Pride Rock & Simba\'s journey', icon: '🦁', view: 'trivia-lion-king', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50', isExternal: false },
+    { label: 'Classic 2', title: 'Aladdin', desc: '10 questions on the magic lamp & Agrabah', icon: '🧞', view: 'trivia-aladdin', gradient: 'from-purple-600/20 to-indigo-600/20', border: 'border-purple-500/30 hover:border-purple-400/50', isExternal: false },
+    { label: 'Classic 3', title: 'Beauty and the Beast', desc: '10 questions on the enchanted castle & Belle', icon: '🌹', view: 'trivia-beauty-and-the-beast', gradient: 'from-rose-600/20 to-red-600/20', border: 'border-rose-500/30 hover:border-rose-400/50', isExternal: false },
+    { label: 'Classic 4', title: 'The Little Mermaid', desc: '10 questions on Ariel & life under the sea', icon: '🧜‍♀️', view: 'trivia-the-little-mermaid', gradient: 'from-teal-600/20 to-cyan-600/20', border: 'border-teal-500/30 hover:border-teal-400/50', isExternal: false },
+    { label: 'Modern 1', title: 'Tangled', desc: '10 questions on Rapunzel\'s tower & Pascal', icon: '☀️', view: 'trivia-tangled', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50', isExternal: false },
+    { label: 'Classic 5', title: 'Mulan', desc: '10 questions on Ping, Mushu & saving China', icon: '🌸', view: 'trivia-mulan', gradient: 'from-red-600/20 to-pink-600/20', border: 'border-red-500/30 hover:border-red-400/50', isExternal: false },
+    // Existing Quizzes
+    { label: 'Pixar Classic', title: 'Toy Story Series', desc: 'Trivia across all four milestone films', icon: '🤠', view: 'selector-toy-story', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50', isExternal: true },
+    { label: 'Modern Classic', title: 'Frozen Universe', desc: 'Trivia on Elsa, Anna, and Arendelle', icon: '❄️', view: 'selector-frozen', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50', isExternal: true },
+    { label: 'Modern Classic', title: 'Moana Voyage', desc: 'Trivia on Maui, wayfinding, and Motunui', icon: '⛵', view: 'selector-moana', gradient: 'from-cyan-600/20 to-teal-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50', isExternal: true },
+    { label: 'Modern Classic', title: 'Zootopia Case Files', desc: 'Trivia on Judy, Nick, and the city crimes', icon: '🦊', view: 'selector-zootopia', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50', isExternal: true },
+    { label: 'Pixar Future', title: 'Hoppers Pond', desc: 'Trivia on Pixar\'s mind-casting animal world', icon: '🦦', view: 'selector-hoppers', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50', isExternal: true },
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-300 to-indigo-400">Disneyland</span>
+          </h1>
+          <Helmet>
+            <title>Disneyland Trivia & Disney Movie Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your Disney knowledge across classic and modern animated movies. Play quizzes for The Lion King, Aladdin, Tangled, Frozen, Moana, and Toy Story." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-disneyland" />
+            <meta property="og:title" content="Disneyland Trivia & Disney Movie Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play the ultimate Disney movie quizzes. Challenge yourself on Lion King, Aladdin, Tangled, and more." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Disneyland", item: "https://www.fandom-trivia.com/selector-disneyland" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a classic Disney movie to test your knowledge, or explore our existing dedicated Disney/Pixar universes.</p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {disneylandFilms.map(film => (
+            <motion.button
+              key={film.title}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${film.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+            >
+              <div className="space-y-4">
+                <div className="text-4xl">{film.icon}</div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                  <h3 className="text-xl font-black text-white tracking-tight">{film.title}</h3>
+                  <p className="text-sm text-slate-400 font-medium mt-1 leading-relaxed">{film.desc}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                  {film.isExternal ? 'Explore Universe' : 'Start Quiz'} <ArrowRight className="size-3" />
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                  <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                  </div>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const MINECRAFT_GRADES = [
   { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
   { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
@@ -8954,6 +9053,13 @@ export default function App() {
             <Route path="/selector-despicable-me" element={<DespicableMeSelector />} />
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             <Route path="/selector-moana" element={<MoanaSelector />} />
+            <Route path="/selector-disneyland" element={<DisneylandSelector />} />
+            <Route path="/trivia-lion-king" element={<MCQuizView key="trivia-lion-king" questions={LION_KING_TRIVIA} title="The Lion King" scoreLabel="The Lion King" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-aladdin" element={<MCQuizView key="trivia-aladdin" questions={ALADDIN_TRIVIA} title="Aladdin" scoreLabel="Aladdin" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-beauty-and-the-beast" element={<MCQuizView key="trivia-beauty-and-the-beast" questions={BEAUTY_BEAST_TRIVIA} title="Beauty and the Beast" scoreLabel="Beauty and the Beast" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-the-little-mermaid" element={<MCQuizView key="trivia-the-little-mermaid" questions={LITTLE_MERMAID_TRIVIA} title="The Little Mermaid" scoreLabel="The Little Mermaid" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-tangled" element={<MCQuizView key="trivia-tangled" questions={TANGLED_TRIVIA} title="Tangled" scoreLabel="Tangled" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-mulan" element={<MCQuizView key="trivia-mulan" questions={MULAN_TRIVIA} title="Mulan" scoreLabel="Mulan" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/selector-cat-in-the-hat" element={<CatInTheHatSelector />} />
             <Route path="/selector-how-to-train-your-dragon" element={<HTTYDSelector />} />
             <Route path="/selector-avatar" element={<AvatarSelector />} />

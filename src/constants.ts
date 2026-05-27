@@ -238,6 +238,17 @@ export const BADGES: Badge[] = [
 
 export const UNIVERSES = [
   {
+    id: 'disneyland',
+    title: 'Disneyland',
+    tags: ['Disney', 'Movies', 'Magic'],
+    description: 'Welcome to the happiest place on Earth! Explore classic and modern Disney animated milestones, from The Lion King and Tangled to Frozen and Moana.',
+    image: '/images/disneyland.png',
+    seoAlt: 'Magic Kingdom castle glowing with purple and gold firework lights at night',
+    buttonText: 'Enter the Magic',
+    icon: 'Sparkles',
+    path: '/selector-disneyland'
+  },
+  {
     id: 'toy-story',
     title: 'Toy Story',
     tags: ['Animation', 'Disney', 'PIXAR'],
