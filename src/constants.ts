@@ -238,6 +238,17 @@ export const BADGES: Badge[] = [
 
 export const UNIVERSES = [
   {
+    id: 'anime',
+    title: 'Anime Fandoms',
+    tags: ['Anime', 'Manga', 'Japanese'],
+    description: 'Enter the world of Japanese animation! Challenge your knowledge on the ultimate action, mystery, and dark fantasy shonen sagas, from Naruto and One Piece to Demon Slayer and Jujutsu Kaisen.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg',
+    seoAlt: 'Official manga cover of Demon Slayer: Kimetsu no Yaiba showing Tanjiro and Nezuko Kamado',
+    buttonText: 'Enter the Anime Realm',
+    icon: 'Sparkles',
+    path: '/selector-anime'
+  },
+  {
     id: 'disneyland',
     title: 'Disneyland',
     tags: ['Disney', 'Movies', 'Magic'],
@@ -313,6 +324,72 @@ export const UNIVERSES = [
     buttonText: 'Join the Army',
     icon: 'Sparkles',
     path: '/trivia-mulan'
+  },
+  {
+    id: 'attack-on-titan',
+    title: 'Attack on Titan',
+    tags: ['Anime', 'Dark Fantasy', 'Action'],
+    description: 'Dedicate your heart! Test your knowledge on the Survey Corps, Eren\'s Titan powers, the Yeagerists, and the battle for humanity\'s survival.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg',
+    seoAlt: 'Official manga volume 1 cover of Attack on Titan featuring the Colossal Titan breaching the Wall',
+    buttonText: 'Join the Survey Corps',
+    icon: 'Sparkles',
+    path: '/trivia-attack-on-titan'
+  },
+  {
+    id: 'demon-slayer',
+    title: 'Demon Slayer',
+    tags: ['Anime', 'Action', 'Supernatural'],
+    description: 'Unleash your Breathing style! Prove your knowledge on Tanjiro\'s journey, the Nine Hashira, Muzan\'s Twelve Kizuki, and the Demon Slayer Corps.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg',
+    seoAlt: 'Official volume 1 cover of Demon Slayer featuring Tanjiro Kamado protecting Nezuko Kamado',
+    buttonText: 'Join the Slayer Corps',
+    icon: 'Sparkles',
+    path: '/trivia-demon-slayer'
+  },
+  {
+    id: 'jujutsu-kaisen',
+    title: 'Jujutsu Kaisen',
+    tags: ['Anime', 'Dark Fantasy', 'Supernatural'],
+    description: 'Harness your cursed energy! Challenge yourself on Yuji\'s fingers swallowed, Gojo\'s Infinity, Megumi\'s shadows, and Domain Expansions.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg',
+    seoAlt: 'Official Jujutsu Kaisen volume 1 cover featuring Yuji Itadori',
+    buttonText: 'Exorcise Curses',
+    icon: 'Sparkles',
+    path: '/trivia-jujutsu-kaisen'
+  },
+  {
+    id: 'one-piece',
+    title: 'One Piece',
+    tags: ['Anime', 'Adventure', 'Pirates'],
+    description: 'Set sail for the Grand Line! Test your memory on Luffy\'s Gear transformations, Zoro\'s swords, and the long journey to find the One Piece.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg',
+    seoAlt: 'Official One Piece volume 61 cover showing the Straw Hat crew reunited after the two-year timeskip',
+    buttonText: 'Set Sail',
+    icon: 'Sparkles',
+    path: '/trivia-one-piece'
+  },
+  {
+    id: 'naruto',
+    title: 'Naruto',
+    tags: ['Anime', 'Classic', 'Ninja'],
+    description: 'Believe it! Test your knowledge on Konoha ninjas, the Akatsuki threat, Sasuke\'s Sharingan, and Naruto\'s quest to become Hokage.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg',
+    seoAlt: 'Official Naruto volume 1 cover featuring Naruto Uzumaki eating ramen',
+    buttonText: 'Enter Konoha',
+    icon: 'Sparkles',
+    path: '/trivia-naruto'
+  },
+  {
+    id: 'death-note',
+    title: 'Death Note',
+    tags: ['Anime', 'Mystery', 'Psychological'],
+    description: 'Outsmart the Shinigami! Test your memory on Light\'s schemes as Kira, L\'s investigations, Ryuk\'s rules, and the battle of wits.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg',
+    seoAlt: 'Official Death Note volume 1 cover showing Ryuk and Light Yagami with the death note',
+    buttonText: 'Write the Name',
+    icon: 'Sparkles',
+    path: '/trivia-death-note'
   },
   {
     id: 'toy-story',

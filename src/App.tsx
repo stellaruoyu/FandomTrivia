@@ -73,6 +73,7 @@ import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
 import { CHANGELOG_ENTRIES } from './changelogData';
 import { LION_KING_TRIVIA, ALADDIN_TRIVIA, BEAUTY_BEAST_TRIVIA, LITTLE_MERMAID_TRIVIA, TANGLED_TRIVIA, MULAN_TRIVIA } from './disneyTrivia';
+import { ATTACK_ON_TITAN_TRIVIA, DEMON_SLAYER_TRIVIA, JUJUTSU_KAISEN_TRIVIA, ONE_PIECE_TRIVIA, NARUTO_TRIVIA, DEATH_NOTE_TRIVIA } from './animeTrivia';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
 const HANGMAN_MAX_WRONG_GUESSES = 6;
@@ -269,6 +270,12 @@ const getQuizTitle = (quizId: string): string => {
     'the-little-mermaid': 'The Little Mermaid',
     'tangled': 'Tangled',
     'mulan': 'Mulan',
+    'attack-on-titan': 'Attack on Titan',
+    'demon-slayer': 'Demon Slayer',
+    'jujutsu-kaisen': 'Jujutsu Kaisen',
+    'one-piece': 'One Piece',
+    'naruto': 'Naruto',
+    'death-note': 'Death Note',
   };
 
   return map[normalizedId] || normalizedId;
@@ -312,6 +319,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('bad-guys') || q.includes('bad guys')) return 'The Bad Guys';
   if (q.includes('hoppers')) return 'Hoppers';
   if (q.includes('wicked')) return 'Wicked';
+  if (q.includes('titan') || q.includes('slayer') || q.includes('jujutsu') || q.includes('piece') || q.includes('naruto') || q.includes('death-note')) return 'Anime Fandoms';
   return 'Other Challenges';
 };
 
@@ -341,6 +349,12 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('bad-guys') || q.includes('bad guys')) return 'https://images.contentstack.io/v3/assets/blt13adb7e2033fcee5/bltd7a584a58cf9b652/692fa4d545d0fc14b52c050b/TheBadGuys_keyart_desktop_2000x3000.jpg?width=2560';
   if (q.includes('hoppers')) return '/images/hoppers.webp';
   if (q.includes('wicked')) return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bALaZt-r4xxipyvw9orZqeT1udk-bZQTIQ&s';
+  if (q.includes('attack-on-titan')) return 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg';
+  if (q.includes('demon-slayer')) return 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg';
+  if (q.includes('jujutsu-kaisen')) return 'https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg';
+  if (q.includes('one-piece')) return 'https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg';
+  if (q.includes('naruto')) return 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg';
+  if (q.includes('death-note')) return 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg';
   return ''; // Default to no image (SimpleAvatar will show initials)
 };
 
@@ -1117,6 +1131,13 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'bad-guys': '/selector-bad-guys',
       'hoppers': '/selector-hoppers',
       'goat': '/selector-goat',
+      'anime': '/selector-anime',
+      'attack-on-titan': '/trivia-attack-on-titan',
+      'demon-slayer': '/trivia-demon-slayer',
+      'jujutsu-kaisen': '/trivia-jujutsu-kaisen',
+      'one-piece': '/trivia-one-piece',
+      'naruto': '/trivia-naruto',
+      'death-note': '/trivia-death-note',
     };
 
     const quizResults = UNIVERSES
@@ -1601,6 +1622,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
           <li><Link to="/selector-disneyland" className="hover:text-amber-300 transition-colors">Disneyland</Link></li>
           <li><Link to="/selector-goat" className="hover:text-amber-300 transition-colors">GOAT</Link></li>
           <li><Link to="/selector-wicked" className="hover:text-emerald-300 transition-colors">Wicked</Link></li>
+          <li><Link to="/selector-anime" className="hover:text-purple-400 transition-colors">Anime Fandoms</Link></li>
         </ul>
       </div>
 
@@ -6269,6 +6291,92 @@ const DisneylandSelector = () => {
   );
 };
 
+const ANIME_GRADES = [
+  { threshold: 90, label: 'Special Grade Sorcerer', color: 'text-purple-400', character: { name: 'Satoru Gojo', image: 'https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg', desc: 'Don\'t worry, I\'m the strongest. Your knowledge is absolutely flawless and legendary!' } },
+  { threshold: 70, label: 'Survey Corps Captain', color: 'text-emerald-400', character: { name: 'Levi Ackerman', image: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg', desc: 'Not bad. You made the right choices and proved your strength on this battlefield.' } },
+  { threshold: 50, label: 'Demon Slayer Rookie', color: 'text-amber-400', character: { name: 'Tanjiro Kamado', image: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg', desc: 'Keep moving forward! With hard work and breathing practice, you can get a perfect score next time.' } },
+  { threshold: 0, label: 'Apples Lover Ryuk', color: 'text-slate-400', character: { name: 'Ryuk', image: 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg', desc: 'Humans are so interesting! You might want to rewatch the episodes before writing in the notebook again.' } },
+];
+
+const AnimeSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  
+  const animeShows = [
+    { label: 'Dark Fantasy', title: 'Attack on Titan', desc: '10 questions on titans, walls, and the Survey Corps', icon: '⚔️', view: 'trivia-attack-on-titan', gradient: 'from-amber-700/20 to-stone-800/20', border: 'border-amber-600/30 hover:border-amber-500/50' },
+    { label: 'Action Shonen', title: 'Demon Slayer', desc: '10 questions on breathing styles and Tanjiro\'s fight', icon: '🏮', view: 'trivia-demon-slayer', gradient: 'from-rose-600/20 to-red-900/20', border: 'border-rose-500/30 hover:border-rose-400/50' },
+    { label: 'Dark Fantasy', title: 'Jujutsu Kaisen', desc: '10 questions on Gojo, Sukuna, and cursed energy', icon: '👁️', view: 'trivia-jujutsu-kaisen', gradient: 'from-indigo-600/20 to-purple-900/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+    { label: 'Adventure', title: 'One Piece', desc: '10 questions on Luffy, Devil Fruits, and the Grand Line', icon: '🏴‍☠️', view: 'trivia-one-piece', gradient: 'from-blue-600/20 to-cyan-900/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+    { label: 'Classic Shonen', title: 'Naruto', desc: '10 questions on shinobi ranks, Kurama, and Konoha', icon: '🍥', view: 'trivia-naruto', gradient: 'from-orange-600/20 to-amber-900/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+    { label: 'Mystery', title: 'Death Note', desc: '10 questions on Light, L, Ryuk, and the rules of death', icon: '📓', view: 'trivia-death-note', gradient: 'from-stone-700/20 to-neutral-900/30', border: 'border-neutral-500/30 hover:border-neutral-400/50' },
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+            Welcome to the <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-rose-300 to-amber-200">Anime Fandoms</span>
+          </h1>
+          <Helmet>
+            <title>Anime Trivia & Manga Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your anime knowledge across classic and modern series. Play quizzes for Attack on Titan, Demon Slayer, Jujutsu Kaisen, One Piece, Naruto, and Death Note." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-anime" />
+            <meta property="og:title" content="Anime Trivia & Manga Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play the ultimate anime movie and series quizzes. Challenge yourself on Attack on Titan, Demon Slayer, Naruto, and more." />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.fandom-trivia.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Anime", "item": "https://www.fandom-trivia.com/selector-anime" }
+                ]
+              })}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a legendary anime series to test your knowledge and claim your rank.</p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {animeShows.map(show => (
+            <motion.button
+              key={show.title}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${show.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${show.gradient} border ${show.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+            >
+              <div className="space-y-4">
+                <div className="text-4xl">{show.icon}</div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-rose-400 bg-rose-950/40 px-2.5 py-1 rounded-full border border-rose-900/30">
+                    {show.label}
+                  </span>
+                  <h3 className="text-xl font-black text-white group-hover:text-rose-300 transition-colors pt-2">{show.title}</h3>
+                  <p className="text-sm text-slate-400 leading-snug">{show.desc}</p>
+                </div>
+              </div>
+              
+              <div className="pt-4 flex items-center justify-between border-t border-white/5 w-full mt-4">
+                <span className="text-[11px] text-slate-500 font-bold">
+                  {formatCount(getQuizCount(show.view))}
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-black text-white group-hover:text-rose-300 transition-colors">
+                  Play Quiz <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const MINECRAFT_GRADES = [
   { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
   { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
@@ -9060,6 +9168,13 @@ export default function App() {
             <Route path="/selector-frozen" element={<FrozenSelector />} />
             <Route path="/selector-moana" element={<MoanaSelector />} />
             <Route path="/selector-disneyland" element={<DisneylandSelector />} />
+            <Route path="/selector-anime" element={<AnimeSelector key="selector-anime" />} />
+            <Route path="/trivia-attack-on-titan" element={<MCQuizView key="trivia-attack-on-titan" questions={ATTACK_ON_TITAN_TRIVIA} title="Attack on Titan" scoreLabel="Attack on Titan" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-demon-slayer" element={<MCQuizView key="trivia-demon-slayer" questions={DEMON_SLAYER_TRIVIA} title="Demon Slayer" scoreLabel="Demon Slayer" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-jujutsu-kaisen" element={<MCQuizView key="trivia-jujutsu-kaisen" questions={JUJUTSU_KAISEN_TRIVIA} title="Jujutsu Kaisen" scoreLabel="Jujutsu Kaisen" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-one-piece" element={<MCQuizView key="trivia-one-piece" questions={ONE_PIECE_TRIVIA} title="One Piece" scoreLabel="One Piece" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-naruto" element={<MCQuizView key="trivia-naruto" questions={NARUTO_TRIVIA} title="Naruto" scoreLabel="Naruto" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-death-note" element={<MCQuizView key="trivia-death-note" questions={DEATH_NOTE_TRIVIA} title="Death Note" scoreLabel="Death Note" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-lion-king" element={<MCQuizView key="trivia-lion-king" questions={LION_KING_TRIVIA} title="The Lion King" scoreLabel="The Lion King" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-aladdin" element={<MCQuizView key="trivia-aladdin" questions={ALADDIN_TRIVIA} title="Aladdin" scoreLabel="Aladdin" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-beauty-and-the-beast" element={<MCQuizView key="trivia-beauty-and-the-beast" questions={BEAUTY_BEAST_TRIVIA} title="Beauty and the Beast" scoreLabel="Beauty and the Beast" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

@@ -11,6 +11,246 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'attack-on-titan-quiz',
+    title: 'Attack on Titan Quiz: Can You Survive the Ultimate Scout Regiment Knowledge Test?',
+    metaDescription: 'Take the ultimate Attack on Titan quiz! Test your knowledge of the Survey Corps, Eren\'s Titan powers, and the dark secrets behind the Walls of Paradis.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg',
+    keywords: ['Attack on Titan quiz', 'Attack on Titan trivia', 'survey corps knowledge test', 'eren yeager Titan powers', 'rumbling fan theories', 'scout regiment quiz', 'titan shifters test'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Are you ready to dedicate your heart to the survival of humanity? Ever since the Colossal Titan breached Wall Maria in Hajime Isayama's dark fantasy masterpiece, fans have been obsessed with the mystery, betrayal, and relentless action of Paradis Island. But do you actually have what it takes to join the Scout Regiment, or are you just a civilian hiding behind the walls? Prove your devotion and test your knowledge with the ultimate <strong>Attack on Titan quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Attack on Titan Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know the Scout Regiment and the Titan Shifters?</h2>
+      <p>The story of Attack on Titan is renowned for its complex lore, political intrigue, and mind-bending plot twists. To pass a hardcore <strong>Attack on Titan trivia</strong> challenge, you need to remember more than just Eren Yeager's name. You need to understand the intricate history of Ymir Fritz, the specific functions of the military branches, and the tragic pasts of characters like Reiner, Bertholdt, and Annie. Do you know who commanded the Survey Corps before Erwin Smith led them into the jaws of the Beast Titan? If you can answer that, you might stand a chance.</p>
+      <p class="mt-4">From the secrets hidden in Grisha Yeager's basement to the terrifying activation of the Rumbling, the series constantly challenges its audience. Re-examine the timeline: do you recall the exact details of the Titan spinal fluid serum, or how Eren's Titan powers first manifested? If you think you're ready to join the ranks of Captain Levi's elite squad, <a href="/trivia-attack-on-titan" class="text-primary hover:text-primary/80 font-bold">try the scout regiment quiz now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-attack-on-titan" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-400">Direct Link:</span> Jump Straight to the Attack on Titan Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">The Nine Titans and Eldian History</h2>
+      <p>True fans know that the war between Eldia and Marley spans centuries, driven by the power of the Nine Titans. Let's see if you can recall the critical facts about these massive beasts in our <strong>titan shifters test</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Attack Titan:</strong> A symbol of freedom across generations, always fighting for the Eldian cause.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Colossal Titan:</strong> The god of destruction, inherited by Armin after the fateful battle in Shiganshina.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The War Hammer Titan:</strong> Capable of creating structural weapons from its own hardened flesh.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Founding Titan:</strong> The coordinate that connects all Paths and controls the Wall Titans.</li>
+      </ul>
+
+      <p>Whether you're analyzing the moral gray areas of Eren's final plan or debating <strong>rumbling fan theories</strong> with your friends, Fandom Trivia is the best place to prove your expertise. Set your sights on the leaderboard and show the world that you're a true Eldian scholar!</p>
+    `
+  },
+  {
+    slug: 'demon-slayer-trivia',
+    title: 'Demon Slayer Trivia: Prove Your Rank in the Demon Slayer Corps!',
+    metaDescription: 'Prove your rank in the Demon Slayer Corps with the ultimate Demon Slayer trivia! Test your knowledge on breathing styles, Muzan\'s Twelve Kizuki, and more.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg',
+    keywords: ['Demon Slayer trivia', 'Demon Slayer quiz', 'breathing style test', 'nine Hashira knowledge', 'Twelve Kizuki trivia', 'slayer corps test', 'tanjiro kamado sun breathing'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Draw your Nichirin blade and prepare to face the night! Koyoharu Gotouge's sensational shonen epic has captured the hearts of millions with its breathtaking animation, emotional stakes, and unforgettable characters. But as Tanjiro Kamado climbs the ranks of the slayers, do you have the focus and memory to stand alongside the Hashira? Challenge your memory now with the ultimate <strong>Demon Slayer trivia</strong> challenge.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Demon Slayer Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know the Breathing Styles and the Twelve Kizuki?</h2>
+      <p>Becoming a master of the sword requires intense training under Sakonji Urokodaki. Similarly, passing a hardcore <strong>Demon Slayer quiz</strong> requires deep familiarity with the show's intricate lore. Do you know which breathing style was practiced by Tanjiro first, or the name of the legendary original style from which all others were born? Can you name the primary flower that repels demons from villages, or the master who serves as the leader of the entire Slayer Corps?</p>
+      <p class="mt-4">From Nezuko's unique Blood Demon Art to the tragic sacrifices in the Mugen Train arc, every detail matters. The battlefield is ruthless, and Muzan Kibutsuji's upper ranks are waiting. If you believe your reflexes are sharp and your mind is ready, <a href="/trivia-demon-slayer" class="text-primary hover:text-primary/80 font-bold">take our slayer corps test now</a> to claim your rank.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-demon-slayer" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Demon Slayer Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Test Your Hashira Knowledge</h2>
+      <p>The Nine Hashira are the pillars of humanity\'s defense, each mastering a unique elemental breath. Let\'s see if you can identify their specialties in this quick <strong>nine Hashira knowledge</strong> check:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Giyu Tomioka:</strong> The quiet Water Hashira who first spared Nezuko\'s life.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Kyojuro Rengoku:</strong> The passionate Flame Hashira whose spirit never faltered.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Shinobu Kocho:</strong> The Insect Hashira who compensates for physical strength with deadly wisteria poisons.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Tengen Uzui:</strong> The flashy Sound Hashira who retired after the battle in the Entertainment District.</li>
+      </ul>
+
+      <p>Don't let your training go to waste. Climb the leaderboard, prove your mastery of <strong>tanjiro kamado sun breathing</strong>, and show the fandom that you have what it takes to defeat the Twelve Kizuki!</p>
+    `
+  },
+  {
+    slug: 'jujutsu-kaisen-quiz',
+    title: 'Jujutsu Kaisen Quiz: Are You Strong Enough to Be a Special Grade Sorcerer?',
+    metaDescription: 'Are you a Special Grade Sorcerer? Take the ultimate Jujutsu Kaisen quiz and test your knowledge on Satoru Gojo\'s Infinity, Sukuna, and cursed techniques.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg',
+    keywords: ['Jujutsu Kaisen quiz', 'Jujutsu Kaisen trivia', 'special grade sorcerer test', 'satoru gojo infinity quiz', 'sukuna fingers trivia', 'domain expansion knowledge', 'tokyo jujutsu high test'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Are you ready to channel your cursed energy? Gege Akutami's dark fantasy breakout hit Jujutsu Kaisen has taken the anime world by storm with its intense combat system, complex sorcery, and iconic cast. But as Yuji Itadori battles the King of Curses, how much do you actually know about Tokyo Jujutsu High? Grab your talismans and prove your sorcery skills with the ultimate <strong>Jujutsu Kaisen quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Jujutsu Kaisen Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know Gojo's Barrier and Sukuna's Fingers?</h2>
+      <p>In a world where negative human emotions manifest as deadly curses, only Jujutsu Sorcerers stand between humanity and annihilation. To pass our <strong>Jujutsu Kaisen trivia</strong> challenge, you'll need to demonstrate master-level recall of cursed techniques and domain expansions. Do you know the exact name of Yuji's double-impact punch, or the details of Megumi Fushiguro's inherited shadow summonings? Can you identify the principal who created Panda, or Gojo's infinite space-defying barrier?</p>
+      <p class="mt-4">From the rules of the Culling Game to the tragic fate of characters in the Shibuya Incident, every arc is packed with intricate details. If you think you're ready to face special grade curses alongside Megumi and Nobara, <a href="/trivia-jujutsu-kaisen" class="text-primary hover:text-primary/80 font-bold">take the special grade sorcerer test now</a> and see if you can stand beside Satoru Gojo.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-jujutsu-kaisen" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Jujutsu Kaisen Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Mastering Cursed Techniques and Domains</h2>
+      <p>A true Jujutsu expert knows that the pinnacle of sorcery is Domain Expansion. Let\'s see if you have the <strong>domain expansion knowledge</strong> to recognize these signature moves:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Unlimited Void:</strong> Satoru Gojo\'s domain that floods the target\'s brain with infinite information, paralyzing them.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Malevolent Shrine:</strong> Ryomen Sukuna\'s domain that slashes everything within range without a closed barrier.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Chimera Shadow Garden:</strong> Megumi\'s incomplete domain that fills the area with shadows and shadow-clones.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Self-Embodiment of Perfection:</strong> Mahito\'s domain that allows him to reshape souls instantly.</li>
+      </ul>
+
+      <p>Whether you're studying Gojo's Hollow Purple or counting the swallowed <strong>sukuna fingers trivia</strong>, Fandom Trivia is the ultimate testing ground. Challenge your friends, climb the sorcerer ranks, and prove you're not just another weak curse!</p>
+    `
+  },
+  {
+    slug: 'one-piece-trivia',
+    title: 'One Piece Trivia: Set Sail and Prove Your Pirate Captain Knowledge!',
+    metaDescription: 'Set sail for the Grand Line with the ultimate One Piece trivia! Prove your knowledge on Luffy\'s Gear transformations, Devil Fruits, and the Straw Hat crew.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg',
+    keywords: ['One Piece trivia', 'One Piece quiz', 'straw hat crew trivia', 'devil fruit knowledge test', 'luffy gear 5 quiz', 'grand line challenge', 'laugh tale secret test'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Raise the Jolly Roger and gather your crew! For over two decades, Eiichiro Oda's legendary pirate saga One Piece has taken us on a grand adventure across the seas, from the East Blue to the battlefields of Wano and Egghead. But do you actually know the names of the islands and the secrets of the Void Century, or are you just a rookie sailor? Put your memories to the test with our ultimate <strong>One Piece trivia</strong> challenge.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the One Piece Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know the Straw Hat Crew and Devil Fruits?</h2>
+      <p>The journey to find Gol D. Roger's legendary treasure is packed with thousands of characters, complex factions, and mysterious powers. A true <strong>One Piece quiz</strong> requires more than just knowing Monkey D. Luffy loves meat. You need to remember the order in which the Straw Hats joined the crew, the names of Zoro's swords, and the tragic histories of the Going Merry. Do you know the real name of the Gum-Gum Fruit that Luffy ate, or the final island where the One Piece resides?</p>
+      <p class="mt-4">From the ancient weapons Poseidon, Uranus, and Pluton to the secrets of Haki, the depth of this world is staggering. Only the most dedicated fans can navigate the grand line without getting lost. If you think you're ready to stand on the deck of the Thousand Sunny, <a href="/trivia-one-piece" class="text-primary hover:text-primary/80 font-bold">take our grand line challenge now</a> and prove you are worthy of a bounty!</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-one-piece" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the One Piece Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Straw Hat Pirate Crew Roles</h2>
+      <p>Luffy's crew is comprised of elite specialists, each contributing their skills to navigate the Grand Line. Let's see if you can identify their roles in this quick <strong>straw hat crew trivia</strong> check:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Roronoa Zoro:</strong> The combatant and first mate who uses the Three Sword Style.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Nico Robin:</strong> The archaeologist who seeks to read the Poneglyphs and uncover the Void Century.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Tony Tony Chopper:</strong> The reindeer doctor who ate the Human-Human Fruit.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Sanji:</strong> The master cook who fights exclusively with his legs.</li>
+      </ul>
+
+      <p>Whether you're detailing Luffy's Gear 5 transformation or analyzing the secrets of Mary Geoise in a <strong>laugh tale secret test</strong>, Fandom Trivia is the place to settle the score. Conquer the leaderboard and show the world that you're the true Pirate King!</p>
+    `
+  },
+  {
+    slug: 'naruto-quiz',
+    title: 'Naruto Quiz: Test Your Shinobi Skills and Rise from Genin to Hokage!',
+    metaDescription: 'Believe it! Take the ultimate Naruto quiz and test your shinobi knowledge on the Hidden Leaf Village, Kakashi, the Akatsuki, and the Uchiha clan.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg',
+    keywords: ['Naruto quiz', 'Naruto trivia', 'hidden leaf village test', 'shinobi ranking quiz', 'akatsuki members trivia', 'nine tailed beast test', 'sasuke sharingan knowledge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Sharpen your kunai and mold your chakra! Masashi Kishimoto's iconic Naruto franchise has defined a generation of anime fans with its themes of friendship, perseverance, and ninja combat. But do you actually have the tactical mind of a Jonin, or are you still a rookie student in the academy? Prove your ninja way and test your memory with the ultimate <strong>Naruto quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Naruto Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know Konoha, the Akatsuki, and the Uchiha Clan?</h2>
+      <p>From the legendary Valley of the End to the grand battlegrounds of the Fourth Shinobi World War, the Naruto universe is filled with incredible lore. To pass our <strong>Naruto trivia</strong> challenge, you must remember the details of the Hidden Leaf Village, the jutsu taught by the legendary Sannin, and the dark history of the Uchiha. Do you know which Hokage was Naruto's father, or the name of the Nine-Tailed Fox sealed inside him?</p>
+      <p class="mt-4">From Kakashi's Sharingan secrets to the tragic motives of Akatsuki leader Pain, the narrative is packed with deep emotional twists. Only a true ninja scholar can navigate these ninja files without getting trapped in Genjutsu. If you think you're ready to write your name on the Hokage monument, <a href="/trivia-naruto" class="text-primary hover:text-primary/80 font-bold">take our shinobi ranking quiz now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-naruto" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Naruto Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">The Legendary Shinobi Clans and Dōjutsu</h2>
+      <p>A true ninja knows that eyes are the ultimate weapon in the Naruto universe. Let\'s see if you can identify these legendary eye techniques in our <strong>sasuke sharingan knowledge</strong> check:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Sharingan:</strong> The mirror wheel eye of the Uchiha clan, capable of copying jutsu and casting illusions.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Byakugan:</strong> The white eye of the Hyuga clan, granting near 360-degree vision and chakra point targeting.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Rinnegan:</strong> The Samsara eye, the most exalted of the three Great Dōjutsu, used by Pain and Madara.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Mangekyō Sharingan:</strong> An advanced form of Sharingan unlocked through deep trauma, granting abilities like Amaterasu.</li>
+      </ul>
+
+      <p>Whether you're mastering the Rasengan or researching <strong>akatsuki members trivia</strong>, Fandom Trivia is the best place to test your shinobi skills. Take the challenge, claim your rank, and show the village you have what it takes to be the next Hokage!</p>
+    `
+  },
+  {
+    slug: 'death-note-trivia',
+    title: 'Death Note Trivia: Can You Outsmart Kira and L in the Ultimate Battle of Wits?',
+    metaDescription: 'Can you outsmart Kira? Test your intellect with the ultimate Death Note trivia! Answer questions about Ryuk, L, Light Yagami, and the notebook rules.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg',
+    keywords: ['Death Note trivia', 'Death Note quiz', 'light yagami kira test', 'shinigami ryuk trivia', 'l lawliet case files', 'death note rules test', 'near mello successor quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Are you ready to test your intellect against the world's greatest minds? Tsugumi Ohba and Takeshi Obata's legendary psychological thriller Death Note has captivated audiences with its tense cat-and-mouse game between Light Yagami and L Lawliet. But do you actually have the analytical mind to solve L's case files, or will your name be written in the notebook? Put your intellect to the test with our ultimate <strong>Death Note trivia</strong> challenge.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-anime" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Death Note Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Know the Notebook Rules and Shinigami?</h2>
+      <p>The rules governing the Death Note are complex, precise, and filled with loopholes exploited by Light Yagami. To pass our <strong>Death Note quiz</strong>, you must know the notebook rules inside and out. Do you know how many seconds the writer has to specify the cause of death, or the favorite food that Ryuk demands in exchange for his help? Can you identify L's official successors raised at Wammy's House, or the name of the Shinigami who protects Misa Amane?</p>
+      <p class="mt-4">From the "13-day rule" lie to Light's final showdown in the Yellowbox Warehouse, the show is a masterclass in psychological tension. If you believe your logic is sound and your memory is flawless, <a href="/trivia-death-note" class="text-primary hover:text-primary/80 font-bold">take our death note rules test now</a> and see if you can outsmart L.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-death-note" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Death Note Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">The Rules of the Death Note</h2>
+      <p>A true investigator must master the rules written inside the cover of the notebook. Let\'s see if you have the <strong>shinigami ryuk trivia</strong> down with these basic notebook principles:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Written Name:</strong> The human whose name is written in this note shall die.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Face Rule:</strong> This note will not take effect unless the writer has the person\'s face in their mind when writing their name.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The 40 Seconds:</strong> If the cause of death is written within 40 seconds of writing the person\'s name, it will happen.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Shinigami Eyes:</strong> A human can trade half of their remaining lifespan for eyes that see any person\'s name and lifespan.</li>
+      </ul>
+
+      <p>Whether you're analyzing Light's plans or detailing L's final case in our <strong>l lawliet case files</strong>, Fandom Trivia is the best place to prove your genius. Settle the score on the leaderboard and prove your intellectual supremacy!</p>
+    `
+  },
+  {
     slug: 'usa-songs-trivia',
     title: 'USA Songs Trivia: Can You Name the Greatest Chart-Topping Hits in American History?',
     metaDescription: 'Take the ultimate USA songs trivia quiz. Challenge your knowledge of Billboard chart-toppers from Whitney Houston and Taylor Swift to Olivia Rodrigo!',
