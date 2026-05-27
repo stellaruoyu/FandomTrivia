@@ -11,6 +11,77 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'usa-songs-trivia',
+    title: 'USA Songs Trivia: Can You Name the Greatest Chart-Topping Hits in American History?',
+    metaDescription: 'Take the ultimate USA songs trivia quiz. Challenge your knowledge of Billboard chart-toppers from Whitney Houston and Taylor Swift to Olivia Rodrigo!',
+    date: '2026-05-26',
+    author: 'Fandom Trivia Team',
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    keywords: ['usa songs trivia', 'usa hit songs quiz', 'american music trivia', 'billboard hot 100 quiz', 'pop music trivia', 'music personality test', 'song lyrics challenge', 'guess the song trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Think about that one track that instantly takes you back to a summer road trip, a late-night highway drive, or a packed stadium singing along in perfect harmony. From the legendary grooves of Michael Jackson to the raw, heartbreak-fueled vocals of Olivia Rodrigo, American popular music is the soundtrack to our lives. But do you actually know the charts, or do you just hum along to the radio? If you think you're a true chart master, it's time to put your memory to the test with our ultimate <strong>USA songs trivia</strong> challenge.</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-usa-songs" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the USA Songs Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">How Well Do You Actually Know the Lore of the American Charts?</h2>
+      <p>Every chart-topping hit has a story, a signature hook, or a record-breaking run that secures its place in pop culture history. A real <strong>USA hit songs quiz</strong> isn’t just about identifying the voice on the track; it’s about testing your deep memory of the biggest cultural moments in music. Do you know which duo originally shook up the early 2000s with "Bye Bye Bye"? Can you recall which song starts with that iconic lyric, <em>"Just a small-town girl"</em>? These are the questions that separate casual listeners from absolute music encyclopedias.</p>
+      <p class="mt-4">From classic arena anthems to viral modern sensations, American music has continuously evolved. Navigating these changes requires a sharp ear and a deep appreciation for artists across genres. If you're ready to show off your music knowledge, <a href="/selector-usa-songs" class="text-primary hover:text-primary/80 font-bold">take our USA songs challenge now</a> and prove you can name the legendary hits that defined the American charts.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-usa-songs" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the USA Songs Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">From Classic Anthems to Modern Pop Phenoms</h2>
+      <p>Our <strong>American music trivia</strong> challenge spans multiple decades of chart history, testing your recall on everything from 80s dance-pop to 2020s country-pop crossovers.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Giants of Music History</h3>
+      <p>Think back to the superstars who defined the sound of the 80s and 90s. Whitney Houston’s soaring vocals on "I Wanna Dance with Somebody" and Michael Jackson’s legendary bassline in "Billie Jean" didn't just top the charts—they became global phenomena. Bruce Springsteen's "Born in the U.S.A." captured a national mood, while Queen's "We Will Rock You" became the ultimate stadium chant. Remembering these legendary tracks is the foundation of any good <strong>pop music trivia</strong> collection.</p>
+
+      <h3 class="text-2xl font-bold mt-8 mb-4">The Modern Chart-Toppers</h3>
+      <p>But the challenge doesn't stop in the last century. Our quiz pushes you to recall modern Billboard Hot 100 record-breakers as well. Can you pinpoint which artist launched to superstardom with "Drivers License" and followed it up with "Good 4 U"? Do you remember who dominated the airwaves with "Umbrella", or who teamed up with Mark Ronson for the ultimate retro-funk anthem "Uptown Funk"? Whether it's Taylor Swift's "Shake It Off" or Beyoncé's 2024 country crossover "Texas Hold 'Em", you'll need to know both the classics and the new favorites to get a perfect score.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Which Music Era Matches Your Personality?</h2>
+      <p>Every music fan has a go-to decade, and your performance on this <strong>song lyrics challenge</strong> says a lot about your listening style. Take a moment to think about your musical personality:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Retro Romantic:</strong> You thrive on 80s synthesizers, hair metal power ballads, and the vocal acrobatics of the golden age of MTV.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Y2K Teen:</strong> You know every boy band dance routine, every pop-punk hook, and the exact year hip-hop took over the mainstream.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Streaming Enthusiast:</strong> You are fully up-to-date on TikTok music trends, indie-pop breakouts, and modern bedroom-pop sensations.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The All-Rounder:</strong> You appreciate everything from Lil Nas X's genre-bending country-rap to Katy Perry's explosive pop anthems.</li>
+      </ul>
+
+      <p>Whether you consider yourself a music historian or just a casual fan, tracking these legendary tracks is a fantastic way to test your memory. We encourage you to try our <strong>guess the song trivia</strong> and share your results on the leaderboard to see how your music taste compares to fans across the nation.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Tips to Ace Our USA Songs Challenge</h2>
+      <p>To secure a "Chart Legend" ranking at the end of the quiz, keep these three strategic tips in mind:</p>
+
+      <ul class="list-disc list-inside space-y-4 text-slate-300 my-8 bg-black/20 p-6 rounded-2xl">
+        <li><strong>Focus on the Collaborations:</strong> Pay close attention to joint tracks. Knowing who sang *with* Mark Ronson or who collaborated on major rap-country crossovers can save you from tricky options.</li>
+        <li><strong>Study Key Lyrics:</strong> Many questions are built around signature opening lines. If you can hum the intro, you can easily guess the title.</li>
+        <li><strong>Watch Out for Double Entries:</strong> Certain powerhouse artists (like Beyoncé and Olivia Rodrigo) have multiple hits featured in our quiz. Make sure you don't confuse their tracks!</li>
+      </ul>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Start Your USA Music Challenge Today!</h2>
+      <p>The stage is set, the speakers are fired up, and the Billboard Hot 100 history books are open. Whether you are testing your own memory or hosting a friendly trivia night to challenge your friends, Fandom Trivia is the place to do it. Play the ultimate quiz, save your high scores, and climb to the top of the global chart rankings.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-rose-600/20 via-amber-900/40 to-black border border-rose-400/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Ready to Claim Your Title?</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">Take the ultimate <strong>USA songs trivia</strong> quiz now and prove you are a certified chart legend.</p>
+        <a href="/selector-usa-songs" class="inline-block bg-gradient-to-r from-rose-400 to-amber-400 hover:from-rose-300 hover:to-amber-300 text-slate-950 px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(244,63,94,0.30)] hover:scale-105 hover:shadow-[0_0_60px_rgba(245,158,11,0.35)]">
+          Take the Ultimate Quiz Now
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">Do you have the chart-topping knowledge to beat the clock? Prove your speed, claim your badge, and share your score.</p>
+    `
+  },
+  {
     slug: 'hangman-trivia',
     title: 'The Ultimate Hangman Trivia: Can You Solve the AI\'s Secret Phrases Before the Gallows Completes?',
     metaDescription: 'Play classic Hangman online at Fandom Trivia. Deduce the secret word in Solo AI mode or challenge a friend in 1v1 versus mode. Play the ultimate quiz now!',
