@@ -31,6 +31,7 @@ export const NAV_LINKS = [
   { name: 'Leaderboards', href: '#' },
   { name: 'Categories', href: '#' },
   { name: 'News & Blog', href: '/blog' },
+  { name: 'Changelog', href: '/changelog' },
 ];
 
 export const DASHBOARD_NAV_LINKS = [

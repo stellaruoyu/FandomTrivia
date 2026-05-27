@@ -71,6 +71,7 @@ import { USA_SONGS_TRIVIA } from './usaSongsTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
+import { CHANGELOG_ENTRIES } from './changelogData';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
 const HANGMAN_MAX_WRONG_GUESSES = 6;
@@ -1607,6 +1608,7 @@ const Footer = ({ isDashboard, onShowInfo }: {
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); setTimeout(() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="hover:text-primary transition-colors">Categories</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); onShowInfo('Rewards', 'Complete quizzes to earn exclusive badges and level up your profile! Competitive seasons will be starting soon.'); }} className="hover:text-primary transition-colors">Rewards</a></li>
               <li><Link to="/blog" className="hover:text-primary transition-colors">News & Blog</Link></li>
+              <li><Link to="/changelog" className="hover:text-primary transition-colors">Changelog</Link></li>
             </>
           )}
         </ul>
@@ -6951,6 +6953,163 @@ const BlogView = () => {
   );
 };
 
+const ChangelogView = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState<string>('all');
+
+  const filteredEntries = useMemo(() => {
+    return CHANGELOG_ENTRIES.map(entry => {
+      const filteredItems = entry.items.filter(item => {
+        const matchesType = filterType === 'all' || item.type === filterType;
+        const matchesSearch = item.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (entry.version && entry.version.toLowerCase().includes(searchQuery.toLowerCase()));
+        return matchesType && matchesSearch;
+      });
+      return { ...entry, items: filteredItems };
+    }).filter(entry => entry.items.length > 0);
+  }, [searchQuery, filterType]);
+
+  const getTagStyle = (type: string) => {
+    switch (type) {
+      case 'added':
+        return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25';
+      case 'changed':
+        return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25';
+      case 'fixed':
+        return 'bg-rose-500/10 text-rose-400 border-rose-500/25';
+      case 'improved':
+        return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25';
+      default:
+        return 'bg-slate-500/10 text-slate-400 border-slate-500/25';
+    }
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      className="pt-32 pb-20 px-6 max-w-4xl mx-auto space-y-12"
+    >
+      <Helmet>
+        <title>Changelog & Release Notes | Fandom Trivia</title>
+        <meta name="description" content="Stay up to date with the latest features, improvements, bug fixes, and trivia universe releases on Fandom Trivia." />
+      </Helmet>
+
+      <div className="text-center space-y-4 mb-16">
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic leading-none">
+          Change<span className="text-primary text-outline-sm">log</span>
+        </h1>
+        <p className="text-slate-400 font-medium max-w-xl mx-auto">
+          Track the evolution of Fandom Trivia. Stay updated on features, fixes, and content drops.
+        </p>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-slate-900/40 p-4 rounded-2xl border border-white/5 backdrop-blur-md">
+        {/* Search */}
+        <div className="relative w-full md:w-72">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-500" />
+          <input
+            type="text"
+            placeholder="Search updates..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-black/30 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 transition-colors"
+          />
+        </div>
+
+        {/* Filter chips */}
+        <div className="flex flex-wrap gap-2 w-full md:w-auto">
+          {['all', 'added', 'changed', 'improved', 'fixed'].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilterType(type)}
+              className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-all cursor-pointer ${
+                filterType === type
+                  ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+                  : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {filteredEntries.length === 0 ? (
+        <div className="text-center py-20 bg-slate-950/20 rounded-3xl border border-white/5">
+          <p className="text-slate-500 font-bold uppercase tracking-wider">No updates matching your filters</p>
+        </div>
+      ) : (
+        <div className="relative border-l border-white/10 pl-6 md:pl-8 ml-4 md:ml-6 space-y-16 py-4">
+          {filteredEntries.map((entry, idx) => (
+            <motion.div
+              key={entry.version || entry.date}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="relative group"
+            >
+              {/* Timeline marker */}
+              <div className="absolute -left-[35px] md:-left-[43px] top-1.5 size-4 rounded-full bg-slate-950 border-2 border-primary group-hover:bg-primary shadow-[0_0_10px_rgba(244,63,94,0.30)] group-hover:shadow-[0_0_15px_rgba(244,63,94,0.60)] transition-all duration-300" />
+
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-baseline gap-3">
+                  {entry.version && (
+                    <span className="bg-primary/10 border border-primary/25 text-primary text-[10px] font-black uppercase px-2.5 py-1 rounded-full tracking-widest shadow-sm shadow-primary/5">
+                      v{entry.version}
+                    </span>
+                  )}
+                  <span className="text-xs font-black uppercase tracking-widest text-slate-500">
+                    {new Date(entry.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </span>
+                </div>
+
+                <h2 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tight uppercase italic group-hover:text-primary transition-colors">
+                  {entry.title}
+                </h2>
+
+                <ul className="space-y-6 pt-2">
+                  {entry.items.map((item, i) => (
+                    <li key={i} className="flex flex-col md:flex-row md:items-start gap-3 bg-white/[0.02] border border-white/5 hover:border-white/10 rounded-2xl p-5 transition-all">
+                      <span className={`self-start px-2.5 py-1 rounded-lg border text-[9px] font-black uppercase tracking-wider shrink-0 ${getTagStyle(item.type)}`}>
+                        {item.type}
+                      </span>
+                      <div className="space-y-3 flex-1">
+                        <p className="text-slate-300 text-sm font-medium leading-relaxed">
+                          {item.text}
+                        </p>
+                        {item.linkUrl && (
+                          <div>
+                            <button
+                              onClick={() => {
+                                if (item.linkUrl.startsWith('/')) {
+                                  navigate(item.linkUrl);
+                                } else {
+                                  window.open(item.linkUrl, '_blank');
+                                }
+                              }}
+                              className="inline-flex items-center gap-1.5 bg-white/5 hover:bg-primary/20 text-xs font-black text-slate-300 hover:text-white px-4 py-2 rounded-xl border border-white/10 hover:border-primary/30 transition-all cursor-pointer group/link uppercase tracking-wider"
+                            >
+                              {item.linkText || 'View Feature'}
+                              <ExternalLink className="size-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform text-slate-400 group-hover/link:text-white" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
 const LandingView = ({ setUser, onUnlockBadge }: { 
   setUser: React.Dispatch<React.SetStateAction<User | null>>, 
   onUnlockBadge: (id: string, scorePct: number, isDaily?: boolean, imageUrl?: string) => void,
@@ -8605,6 +8764,7 @@ export default function App() {
             <Route path="/search" element={<SearchModal />} />
             <Route path="/blog" element={<BlogListView />} />
             <Route path="/blog/:slug" element={<BlogView />} />
+            <Route path="/changelog" element={<ChangelogView />} />
             <Route path="/" element={<LandingView setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             <Route path="/hangman-ai" element={<HangmanView mode="ai" user={user} />} />
             <Route path="/hangman-1v1" element={<HangmanView mode="versus" user={user} />} />
