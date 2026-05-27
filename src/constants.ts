@@ -249,6 +249,72 @@ export const UNIVERSES = [
     path: '/selector-disneyland'
   },
   {
+    id: 'lion-king',
+    title: 'The Lion King',
+    tags: ['Disney', 'Animation', 'Classic'],
+    description: 'Return to Pride Rock. Test your knowledge on Simba\'s journey, Hakuna Matata, and the iconic characters of the Savannah.',
+    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'A majestic male lion standing in the wild savannah',
+    buttonText: 'Enter Pride Rock',
+    icon: 'Sparkles',
+    path: '/trivia-lion-king'
+  },
+  {
+    id: 'aladdin',
+    title: 'Aladdin',
+    tags: ['Disney', 'Adventure', 'Magic'],
+    description: 'Enter Agrabah and test your memory of the Genie, Princess Jasmine, and the magical carpet ride.',
+    image: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'Beautifully lit domes of an Arabic palace at night under a clear sky',
+    buttonText: 'Enter Agrabah',
+    icon: 'Sparkles',
+    path: '/trivia-aladdin'
+  },
+  {
+    id: 'beauty-and-the-beast',
+    title: 'Beauty and the Beast',
+    tags: ['Disney', 'Musical', 'Fairy Tale'],
+    description: 'Be our guest. Test your knowledge on the enchanted castle, Belle, the Beast, and the magical objects.',
+    image: 'https://images.unsplash.com/photo-1494972308805-463bc619b34e?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'A single red rose in dark mood lighting',
+    buttonText: 'Enter the Castle',
+    icon: 'Sparkles',
+    path: '/trivia-beauty-and-the-beast'
+  },
+  {
+    id: 'the-little-mermaid',
+    title: 'The Little Mermaid',
+    tags: ['Disney', 'Musical', 'Ocean'],
+    description: 'Dive under the sea and test your knowledge of Ariel, Ursula, and the characters of Atlantica.',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'Sunlight filtering through deep blue ocean water over a coral reef',
+    buttonText: 'Dive Under the Sea',
+    icon: 'Sparkles',
+    path: '/trivia-the-little-mermaid'
+  },
+  {
+    id: 'tangled',
+    title: 'Tangled',
+    tags: ['Disney', 'Adventure', 'Princess'],
+    description: 'Unleash the magic of the floating lanterns and test your knowledge on Rapunzel, Flynn Rider, and Mother Gothel.',
+    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'Dozens of golden paper lanterns floating into the night sky',
+    buttonText: 'See the Lanterns',
+    icon: 'Sparkles',
+    path: '/trivia-tangled'
+  },
+  {
+    id: 'mulan',
+    title: 'Mulan',
+    tags: ['Disney', 'Classic', 'Action'],
+    description: 'Bring honor to us all. Test your knowledge on Mulan, Mushu, Li Shang, and the battle for China.',
+    image: 'https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=800&q=80',
+    seoAlt: 'Pink cherry blossom petals in front of a traditional pagoda at sunset',
+    buttonText: 'Join the Army',
+    icon: 'Sparkles',
+    path: '/trivia-mulan'
+  },
+  {
     id: 'toy-story',
     title: 'Toy Story',
     tags: ['Animation', 'Disney', 'PIXAR'],

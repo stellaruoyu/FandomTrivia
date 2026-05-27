@@ -1088,6 +1088,12 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
     const q = query.trim().toLowerCase();
     const universeRouteMap: Record<string, string> = {
       'disneyland': '/selector-disneyland',
+      'lion-king': '/trivia-lion-king',
+      'aladdin': '/trivia-aladdin',
+      'beauty-and-the-beast': '/trivia-beauty-and-the-beast',
+      'the-little-mermaid': '/trivia-the-little-mermaid',
+      'tangled': '/trivia-tangled',
+      'mulan': '/trivia-mulan',
       'twilight': '/selector-twilight',
       'harry-potter': '/selector-harry-potter',
       'percy-jackson': '/selector-percy-jackson',
