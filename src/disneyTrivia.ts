@@ -297,15 +297,15 @@ export const TANGLED_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: 'Exactly how long is Rapunzel\'s magical golden hair?',
-    options: ['70 feet', '50 feet', '100 feet', '30 feet'],
-    answer: '70 feet'
+    question: 'In the 2012 wedding sequel short "Tangled Ever After", which two characters lose the wedding rings?',
+    options: ['Pascal and Maximus', 'Flynn and Rapunzel', 'Hook Hand and Shorty', 'The King and Queen'],
+    answer: 'Pascal and Maximus'
   },
   {
     id: 9,
-    question: 'What is the name of Mother Gothel\'s solo song warning Rapunzel about outside dangers?',
-    options: ['Mother Knows Best', 'Stay in the Tower', 'The World is Cruel', 'Listen to Me'],
-    answer: 'Mother Knows Best'
+    question: 'In the animated series "Rapunzel\'s Tangled Adventure", who is Rapunzel\'s loyal lady-in-waiting (and daughter of Mother Gothel)?',
+    options: ['Cassandra', 'Varian', 'Adira', 'Catalina'],
+    answer: 'Cassandra'
   },
   {
     id: 10,
