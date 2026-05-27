@@ -14,6 +14,43 @@ export interface ChangelogEntry {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    version: '1.5.0',
+    date: '2026-05-26',
+    title: 'Disneyland Classics, Anime Expansion, and SEO Blogs',
+    items: [
+      {
+        type: 'added',
+        text: 'Added a new Disneyland category featuring 6 new classic Disney movie quizzes: The Lion King, Aladdin, Beauty and the Beast, The Little Mermaid, Tangled, and Mulan.',
+        linkText: 'Explore Disneyland',
+        linkUrl: '/selector-disneyland'
+      },
+      {
+        type: 'added',
+        text: 'Added a new Anime Fandoms category featuring 6 hot anime quizzes: Attack on Titan, Demon Slayer, Jujutsu Kaisen, One Piece, Naruto, and Death Note.',
+        linkText: 'Explore Anime',
+        linkUrl: '/selector-anime'
+      },
+      {
+        type: 'added',
+        text: 'Added 14 new highly detailed, SEO-optimized blog posts for all classic Disney, Anime, and latest Disney/Pixar sequels (Frozen 2 and Zootopia 2).',
+        linkText: 'Read Blogs',
+        linkUrl: '/blog'
+      },
+      {
+        type: 'improved',
+        text: 'Exposed all 12 individual Disneyland and Anime quizzes as standalone cards on the homepage with custom themed styling, page routes, and search integrations.',
+      },
+      {
+        type: 'improved',
+        text: 'Replaced Disney and Anime placeholder card artwork with official theatrical posters and covers.',
+      },
+      {
+        type: 'improved',
+        text: 'Expanded the Tangled trivia dataset to fully cover franchise sequels and spin-off series.',
+      }
+    ]
+  },
+  {
     version: '1.4.0',
     date: '2026-05-26',
     title: 'Hangman 1v1 Sync Fix, Score Screens, and New Blog Posts',
