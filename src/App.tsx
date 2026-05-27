@@ -2871,13 +2871,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
               <button onClick={resetVersusRoomRound} className="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl shadow-primary/30 cursor-pointer">
                 <RotateCcw className="size-4" /> Set New Word
               </button>
-            ) : (
-              <div className="text-center w-full sm:w-auto">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider animate-pulse mb-3">
-                  Waiting for host to start a new round...
-                </p>
-              </div>
-            )}
+            ) : null}
             <button onClick={() => navigate('/selector-hangman')} className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer">
               <ArrowLeft className="size-4" /> Back to Modes
             </button>
@@ -3265,11 +3259,7 @@ const HangmanView = ({ mode, user }: { mode: 'ai' | 'versus'; user: User | null 
                     </p>
                     <p className="mt-2 text-sm font-medium text-slate-200">Answer: <span className="font-black">{targetWord}</span></p>
                     
-                    {mode === 'versus' && (
-                      <p className="mt-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-center animate-pulse">
-                        Waiting for host to start a new round...
-                      </p>
-                    )}
+                    {mode === 'versus' && null}
                   </div>
                 )}
               </div>
