@@ -1853,5 +1853,45 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Don't fall behind the beat! Prove your knowledge of the fandom, show your support for the hunters, and climb the scoreboard in our <strong>demon hunters trivia</strong> challenge!</p>
     `
+  },
+  {
+    slug: 'toy-story-trivia',
+    title: 'Toy Story Trivia: The Ultimate Quiz for Every Pixar Fan',
+    metaDescription: 'Are you the ultimate Space Ranger? Take our Toy Story trivia quiz and test your knowledge on Woody, Buzz Lightyear, Forky, and all four Pixar movie milestones.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: '/images/toystory.jpg',
+    keywords: ['toy story trivia', 'toy story quiz', 'toy story questions', 'toy story trivia questions', 'toy story questions and answers', 'toy story 4 quiz', 'toy story 3 quiz', 'toy story trivia questions and answers'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">To infinity and beyond! Ever since Woody and Buzz Lightyear first squared off in Andy's room back in 1995, Pixar's flagship franchise has defined generations of animated film history. But how well do you actually remember the details across all four cinematic milestones? Our ultimate <strong>toy story trivia</strong> challenge is here to test your memory on the playroom gang, Andy's growing up, Bonnie's new toys, and the emotional departures. Grab your favorite toys and let's find out if you are a real Space Ranger or just a toy in a box with our <strong>toy story quiz</strong>!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-toy-story" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Toy Story Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Test Your Knowledge Across Four Movie Milestones</h2>
+      <p>From the rescue at Sid's house in the original film to the emotional antique mall escape in <strong>toy story 4 quiz</strong>, the franchise is packed with memorable characters and plot twists. To pass our <strong>toy story trivia questions and answers</strong>, you need to remember the secondary characters, the specific voice cameos, and the easter eggs. Do you know the name of the vintage pull-string doll who serves as the antagonist in the fourth film? Can you recall the name of Andy's malicious neighbor who mutates toys in the first film? These details are what separate the casual viewers from the real collectors.</p>
+      <p class="mt-4">If you are confident in your memories of Woody's roundup and Sunnyside Daycare, <a href="/trivia-toy-story-random" class="text-primary hover:text-primary/80 font-bold">take our toy story questions and answers challenge now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-toy-story-random" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-400">Direct Link:</span> Jump Straight to the Mixed Toy Story Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Toy Story Trivia Questions</h2>
+      <p>Here are some classic questions to test your memory before entering the full scoreboard challenge:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Toy Story 2:</strong> What is the name of the greedy toy collector who steals Woody? <br /><span class="text-primary font-bold">Answer: Al McWhiggin (owner of Al's Toy Barn)</span></li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Toy Story 3:</strong> What is the name of the strawberry-scented bear who rules Sunnyside Daycare? <br /><span class="text-primary font-bold">Answer: Lots-o'-Huggin' Bear (Lotso)</span></li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Toy Story 4:</strong> What name does Bonnie give to the toy she makes from a spork? <br /><span class="text-primary font-bold">Answer: Forky</span></li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>First Film:</strong> What is written on the bottom of Woody's right boot? <br /><span class="text-primary font-bold">Answer: ANDY (with a reversed 'N')</span></li>
+      </ul>
+
+      <p>Whether you want to challenge yourself on the classic trilogy or test your memory on the latest sequel, we have quizzes for every era. Prove your knowledge, climb the leaderboard, and show the world that you've got a friend in us!</p>
+    `
   }
 ];
