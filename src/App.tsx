@@ -7376,61 +7376,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
     </Helmet>
     <div className="pt-20">
 
-      {/* Hero */}
-      <section className="relative w-full py-20 px-6 overflow-hidden">
-        <ParticleCanvas mode="ambient" className="opacity-60" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/40 rounded-full blur-[120px]"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px]"></div>
-        </div>
-        <div className="max-w-5xl mx-auto text-center space-y-8">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Build v{__APP_VERSION__}
-          </motion.div>
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white leading-[1.1]"
-          >
-            The Ultimate <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Fandom Trivia</span>
-          </motion.h1>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-lg text-slate-400 leading-relaxed font-medium"
-          >
-            Test your knowledge across the multiverse. Prove you're the ultimate fan in Twilight, Harry Potter, Avatar, Wicked, K-Pop: Demon Hunters, The 3 Body Problem, Super Mario, Frozen, Despicable Me, and Zootopia.
-          </motion.p>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <button
-              onClick={() => document.getElementById('universes')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
-            >
-              <PlayCircle className="size-6" />
-              Start Quiz Now
-            </button>
-            <button onClick={() => navigate('/rankings')} className="w-full sm:w-auto bg-white/5 border border-white/10 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-              View Rankings
-            </button>
-          </motion.div>
 
-        </div>
-      </section>
 
       <section className="max-w-5xl mx-auto px-6 pb-10">
 <button
