@@ -259,8 +259,161 @@ export const UNIVERSES = [
     icon: 'Sparkles',
     path: '/selector-disneyland'
   },
-
-
+  {
+    id: 'lion-king',
+    hideOnHomepage: true,
+    title: 'The Lion King',
+    tags: ['Disney', 'Animation', 'Classic'],
+    description: 'Return to Pride Rock. Test your knowledge on Simba\'s journey, Hakuna Matata, and the iconic characters of the Savannah.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg',
+    seoAlt: 'Official movie poster for The Lion King showing the animal kingdom gathered at Pride Rock',
+    buttonText: 'Enter Pride Rock',
+    icon: 'Sparkles',
+    path: '/trivia-lion-king'
+  },
+  {
+    id: 'aladdin',
+    hideOnHomepage: true,
+    title: 'Aladdin',
+    tags: ['Disney', 'Adventure', 'Magic'],
+    description: 'Enter Agrabah and test your memory of the Genie, Princess Jasmine, and the magical carpet ride.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/b/bd/Aladdin_%281992_Disney_film%29_poster.jpg',
+    seoAlt: 'Official movie poster for Aladdin featuring Aladdin, Jasmine, the Genie, and Jafar over Agrabah',
+    buttonText: 'Enter Agrabah',
+    icon: 'Sparkles',
+    path: '/trivia-aladdin'
+  },
+  {
+    id: 'beauty-and-the-beast',
+    hideOnHomepage: true,
+    title: 'Beauty and the Beast',
+    tags: ['Disney', 'Musical', 'Fairy Tale'],
+    description: 'Be our guest. Test your knowledge on the enchanted castle, Belle, the Beast, and the magical objects.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/5/5e/Beauty_and_the_Beast_%281991_film%29_poster.jpg',
+    seoAlt: 'Official movie poster for Beauty and the Beast featuring Belle and the Beast dancing in the ballroom',
+    buttonText: 'Enter the Castle',
+    icon: 'Sparkles',
+    path: '/trivia-beauty-and-the-beast'
+  },
+  {
+    id: 'the-little-mermaid',
+    hideOnHomepage: true,
+    title: 'The Little Mermaid',
+    tags: ['Disney', 'Musical', 'Ocean'],
+    description: 'Dive under the sea and test your knowledge of Ariel, Ursula, and the characters of Atlantica.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/c/c0/The_Little_Mermaid_%28Official_1989_Film_Poster%29.png',
+    seoAlt: 'Official movie poster for The Little Mermaid featuring Ariel sitting on a rock with Flounder and Sebastian, looking up towards the light',
+    buttonText: 'Dive Under the Sea',
+    icon: 'Sparkles',
+    path: '/trivia-the-little-mermaid'
+  },
+  {
+    id: 'tangled',
+    hideOnHomepage: true,
+    title: 'Tangled',
+    tags: ['Disney', 'Adventure', 'Princess'],
+    description: 'Unleash the magic of the floating lanterns and test your knowledge on Rapunzel, Flynn Rider, and Mother Gothel.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/a/a8/Tangled_poster.jpg',
+    seoAlt: 'Official movie poster for Tangled featuring Rapunzel with her long golden hair wrapped around Flynn Rider',
+    buttonText: 'See the Lanterns',
+    icon: 'Sparkles',
+    path: '/trivia-tangled'
+  },
+  {
+    id: 'mulan',
+    hideOnHomepage: true,
+    title: 'Mulan',
+    tags: ['Disney', 'Classic', 'Action'],
+    description: 'Bring honor to us all. Test your knowledge on Mulan, Mushu, Li Shang, and the battle for China.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/a/a3/Movie_poster_mulan.JPG',
+    seoAlt: 'Official movie poster for Mulan showing her reflection in a sword, split between her true self and her soldier persona',
+    buttonText: 'Join the Army',
+    icon: 'Sparkles',
+    path: '/trivia-mulan'
+  },
+  {
+    id: 'attack-on-titan',
+    hideOnHomepage: true,
+    title: 'Attack on Titan',
+    tags: ['Anime', 'Dark Fantasy', 'Action'],
+    description: 'Dedicate your heart! Test your knowledge on the Survey Corps, Eren\'s Titan powers, the Yeagerists, and the battle for humanity\'s survival.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg',
+    seoAlt: 'Official manga volume 1 cover of Attack on Titan featuring the Colossal Titan breaching the Wall',
+    buttonText: 'Join the Survey Corps',
+    icon: 'Sparkles',
+    path: '/trivia-attack-on-titan'
+  },
+  {
+    id: 'demon-slayer',
+    hideOnHomepage: true,
+    title: 'Demon Slayer',
+    tags: ['Anime', 'Action', 'Supernatural'],
+    description: 'Unleash your Breathing style! Prove your knowledge on Tanjiro\'s journey, the Nine Hashira, Muzan\'s Twelve Kizuki, and the Demon Slayer Corps.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg',
+    seoAlt: 'Official volume 1 cover of Demon Slayer featuring Tanjiro Kamado protecting Nezuko Kamado',
+    buttonText: 'Join the Slayer Corps',
+    icon: 'Sparkles',
+    path: '/trivia-demon-slayer'
+  },
+  {
+    id: 'jujutsu-kaisen',
+    hideOnHomepage: true,
+    title: 'Jujutsu Kaisen',
+    tags: ['Anime', 'Dark Fantasy', 'Supernatural'],
+    description: 'Harness your cursed energy! Challenge yourself on Yuji\'s fingers swallowed, Gojo\'s Infinity, Megumi\'s shadows, and Domain Expansions.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/4/46/Jujutsu_kaisen.jpg',
+    seoAlt: 'Official Jujutsu Kaisen volume 1 cover featuring Yuji Itadori',
+    buttonText: 'Exorcise Curses',
+    icon: 'Sparkles',
+    path: '/trivia-jujutsu-kaisen'
+  },
+  {
+    id: 'one-piece',
+    hideOnHomepage: true,
+    title: 'One Piece',
+    tags: ['Anime', 'Adventure', 'Pirates'],
+    description: 'Set sail for the Grand Line! Test your memory on Luffy\'s Gear transformations, Zoro\'s swords, and the long journey to find the One Piece.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg',
+    seoAlt: 'Official One Piece volume 61 cover showing the Straw Hat crew reunited after the two-year timeskip',
+    buttonText: 'Set Sail',
+    icon: 'Sparkles',
+    path: '/trivia-one-piece'
+  },
+  {
+    id: 'naruto',
+    hideOnHomepage: true,
+    title: 'Naruto',
+    tags: ['Anime', 'Classic', 'Ninja'],
+    description: 'Believe it! Test your knowledge on Konoha ninjas, the Akatsuki threat, Sasuke\'s Sharingan, and Naruto\'s quest to become Hokage.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg',
+    seoAlt: 'Official Naruto volume 1 cover featuring Naruto Uzumaki eating ramen',
+    buttonText: 'Enter Konoha',
+    icon: 'Sparkles',
+    path: '/trivia-naruto'
+  },
+  {
+    id: 'death-note',
+    hideOnHomepage: true,
+    title: 'Death Note',
+    tags: ['Anime', 'Mystery', 'Psychological'],
+    description: 'Outsmart the Shinigami! Test your memory on Light\'s schemes as Kira, L\'s investigations, Ryuk\'s rules, and the battle of wits.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg',
+    seoAlt: 'Official Death Note volume 1 cover showing Ryuk and Light Yagami with the death note',
+    buttonText: 'Write the Name',
+    icon: 'Sparkles',
+    path: '/trivia-death-note'
+  },
+  {
+    id: 'toy-story',
+    hideOnHomepage: true,
+    title: 'Toy Story',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: 'To infinity and beyond. Play the ultimate Toy Story franchise trivia across all four cinematic milestones, from the playroom to the antique mall.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles'
+  },
   {
     id: 'twilight',
     title: 'Twilight',
@@ -294,7 +447,18 @@ export const UNIVERSES = [
     icon: 'Sparkles',
     path: '/selector-bad-guys'
   },
-
+  {
+    id: 'hoppers',
+    hideOnHomepage: true,
+    title: 'Hoppers',
+    tags: ['Animation', 'Pixar', 'Sci-Fi'],
+    description: 'Mind-casting, pond rules, and Pixar deep cuts. Test your knowledge of Hoppers with verified trivia from the film\'s early lore and production details.',
+    image: '/images/hoppers.webp',
+    seoAlt: 'Hoppers animals poster featuring the film\'s animal cast',
+    buttonText: 'Enter the Pond',
+    icon: 'Search',
+    path: '/selector-hoppers'
+  },
   {
     id: 'goat',
     title: 'GOAT',
@@ -403,7 +567,17 @@ export const UNIVERSES = [
     buttonText: 'Enter the Dark Forest',
     icon: 'Search'
   },
-
+  {
+    id: 'zootopia',
+    hideOnHomepage: true,
+    title: 'Zootopia',
+    tags: ['Animation', 'Mystery'],
+    description: 'Anyone can be anything. Uncover conspiracies and explore the urban jungle.',
+    image: '/images/zootopia.jpg',
+    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
+    buttonText: 'Enter the Urban Jungle',
+    icon: 'Search'
+  },
   {
     id: 'despicable-me',
     title: 'Despicable Me',
@@ -414,8 +588,29 @@ export const UNIVERSES = [
     buttonText: 'Join the Minions',
     icon: 'Zap'
   },
-
-
+  {
+    id: 'frozen',
+    hideOnHomepage: true,
+    title: 'Frozen',
+    tags: ['Animation', 'Musical', 'Disney'],
+    description: 'Journey to Arendelle and the Enchanted Forest. Test your knowledge on Elsa, Anna, and the elemental spirits.',
+    image: '/images/frozen.jpg',
+    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
+    buttonText: 'Join the Sisters',
+    icon: 'Snowflake'
+  },
+  {
+    id: 'moana',
+    hideOnHomepage: true,
+    title: 'Moana',
+    tags: ['Disney', 'Adventure', 'Ocean'],
+    description: 'Sail beyond the reef and test your knowledge on Moana, Maui, wayfinding, Te Fiti, and the newest ocean voyage.',
+    image: '/images/moana.jpg',
+    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
+    buttonText: 'Set Sail',
+    icon: 'Sparkles',
+    path: '/selector-moana'
+  },
   {
     id: 'minecraft',
     title: 'Minecraft',

@@ -1398,7 +1398,8 @@ const DailyMysteryChallenge = () => {
   const dailyUniverse = useMemo(() => {
     const today = new Date();
     const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-    return UNIVERSES[dayOfYear % UNIVERSES.length];
+    const list = UNIVERSES.filter(u => !u.hideOnHomepage);
+    return list[dayOfYear % list.length];
   }, []);
 
   const handleStart = () => {
@@ -7411,7 +7412,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
 
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {UNIVERSES.map((universe, i) => (
+          {UNIVERSES.filter(universe => !universe.hideOnHomepage).map((universe, i) => (
             <motion.div
               key={universe.id}
               initial={{ opacity: 0, scale: 0.95 }}
