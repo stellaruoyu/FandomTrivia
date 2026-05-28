@@ -1813,5 +1813,45 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Don't let your game night fall flat. Browse our homepage categories, grab your scorecards, and let the games begin!</p>
     `
+  },
+  {
+    slug: 'kpop-trivia',
+    title: 'K-Pop Trivia: Test Your Music Knowledge in the Ultimate Fandom Quiz',
+    metaDescription: 'Are you a true K-Pop fan? Take our ultimate K-Pop trivia quiz and test your knowledge on K-Pop music, groups, and the supernatural Demon Hunters challenge.',
+    date: '2026-05-27',
+    author: 'Fandom Trivia Team',
+    image: '/images/Soda Pop and How It\'s Done.jpg',
+    keywords: ['kpop trivia', 'kpop trivia quiz', 'kpop music quiz', 'k-pop test', 'demon hunters trivia', 'kpop fandom challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Are you ready to test your rhythm and prove your devotion? From global chart-toppers to high-energy choreography, Korean pop music has taken the world by storm. But our <strong>K-Pop trivia quiz</strong> is not just any music test—it is a specialized challenge based on the high-octane <strong>K-Pop: Demon Hunters</strong> universe, combining pop music knowledge with supernatural hunter instincts. Grab your lightsticks, warm up your vocal cords, and let's find out if you are a rookie trainee or a Special Grade Idol with the ultimate <strong>kpop trivia</strong> challenge!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-kpop" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the K-Pop Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Unleashing the Beats in K-Pop: Demon Hunters</h2>
+      <p>In our custom universe, K-Pop meets supernatural action. To dominate our <strong>kpop fandom challenge</strong>, you need to know more than just track lists; you need to understand the lore of the pop-trio demon hunters. Do you know which members lead the hunt, what weapons they disguise as musical instruments, and how their chart-topping hits double as defensive barriers? This unique crossover requires a quick mind and a deep knowledge of the K-Pop universe.</p>
+      <p class="mt-4">If you are ready to face the challenge and claim your spot on the leaderboard, <a href="/trivia-kpop" class="text-primary hover:text-primary/80 font-bold">take our k-pop test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-kpop" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the K-Pop Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Test Your K-Pop Music Knowledge</h2>
+      <p>True stans know that K-Pop is about group dynamics, concept eras, and absolute perfection. Let's see if you can answer these general questions in our <strong>kpop music quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Leaders:</strong> Do you know the leader and main vocalist of each major generation group?</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Debut Tracks:</strong> Can you name the debut tracks that launched today's biggest groups?</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Concept Eras:</strong> Can you match the concept visuals to the corresponding album release?</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Fandom Colors:</strong> Do you know the official fandom lightstick colors of the top groups?</li>
+      </ul>
+
+      <p>Don't fall behind the beat! Prove your knowledge of the fandom, show your support for the hunters, and climb the scoreboard in our <strong>demon hunters trivia</strong> challenge!</p>
+    `
   }
 ];
