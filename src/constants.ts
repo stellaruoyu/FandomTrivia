@@ -260,16 +260,7 @@ export const UNIVERSES = [
     path: '/selector-disneyland'
   },
 
-  {
-    id: 'toy-story',
-    title: 'Toy Story',
-    tags: ['Animation', 'Disney', 'PIXAR'],
-    description: 'To infinity and beyond. Play the ultimate Toy Story franchise trivia across all four cinematic milestones, from the playroom to the antique mall.',
-    image: '/images/toystory.jpg',
-    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
-    buttonText: 'Start the Quiz',
-    icon: 'Sparkles'
-  },
+
   {
     id: 'twilight',
     title: 'Twilight',
@@ -303,17 +294,7 @@ export const UNIVERSES = [
     icon: 'Sparkles',
     path: '/selector-bad-guys'
   },
-  {
-    id: 'hoppers',
-    title: 'Hoppers',
-    tags: ['Animation', 'Pixar', 'Sci-Fi'],
-    description: 'Mind-casting, pond rules, and Pixar deep cuts. Test your knowledge of Hoppers with verified trivia from the film\'s early lore and production details.',
-    image: '/images/hoppers.webp',
-    seoAlt: 'Hoppers animals poster featuring the film\'s animal cast',
-    buttonText: 'Enter the Pond',
-    icon: 'Search',
-    path: '/selector-hoppers'
-  },
+
   {
     id: 'goat',
     title: 'GOAT',
@@ -422,16 +403,7 @@ export const UNIVERSES = [
     buttonText: 'Enter the Dark Forest',
     icon: 'Search'
   },
-  {
-    id: 'zootopia',
-    title: 'Zootopia',
-    tags: ['Animation', 'Mystery'],
-    description: 'Anyone can be anything. Uncover conspiracies and explore the urban jungle.',
-    image: '/images/zootopia.jpg',
-    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
-    buttonText: 'Enter the Urban Jungle',
-    icon: 'Search'
-  },
+
   {
     id: 'despicable-me',
     title: 'Despicable Me',
@@ -442,27 +414,8 @@ export const UNIVERSES = [
     buttonText: 'Join the Minions',
     icon: 'Zap'
   },
-  {
-    id: 'frozen',
-    title: 'Frozen',
-    tags: ['Animation', 'Musical', 'Disney'],
-    description: 'Journey to Arendelle and the Enchanted Forest. Test your knowledge on Elsa, Anna, and the elemental spirits.',
-    image: '/images/frozen.jpg',
-    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
-    buttonText: 'Join the Sisters',
-    icon: 'Snowflake'
-  },
-  {
-    id: 'moana',
-    title: 'Moana',
-    tags: ['Disney', 'Adventure', 'Ocean'],
-    description: 'Sail beyond the reef and test your knowledge on Moana, Maui, wayfinding, Te Fiti, and the newest ocean voyage.',
-    image: '/images/moana.jpg',
-    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
-    buttonText: 'Set Sail',
-    icon: 'Sparkles',
-    path: '/selector-moana'
-  },
+
+
   {
     id: 'minecraft',
     title: 'Minecraft',
