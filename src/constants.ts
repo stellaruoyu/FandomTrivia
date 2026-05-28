@@ -412,7 +412,68 @@ export const UNIVERSES = [
     image: '/images/toystory.jpg',
     seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
     buttonText: 'Start the Quiz',
-    icon: 'Sparkles'
+    icon: 'Sparkles',
+    path: '/selector-toy-story'
+  },
+  {
+    id: 'toy-story-1',
+    hideOnHomepage: true,
+    title: 'Toy Story (Original)',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '20 questions from the original 1995 Toy Story adventure.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-1'
+  },
+  {
+    id: 'toy-story-2',
+    hideOnHomepage: true,
+    title: 'Toy Story 2',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '20 questions on Woody, Jessie, and Al\'s Toy Barn.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-2'
+  },
+  {
+    id: 'toy-story-3',
+    hideOnHomepage: true,
+    title: 'Toy Story 3',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '20 questions on Sunnyside and the great escape.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-3'
+  },
+  {
+    id: 'toy-story-4',
+    hideOnHomepage: true,
+    title: 'Toy Story 4',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '20 questions on Forky, Bo Peep, and the carnival.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-4'
+  },
+  {
+    id: 'toy-story-random',
+    hideOnHomepage: true,
+    title: 'Toy Story Mixed Challenge',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '20 random questions from all four Toy Story films.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-random'
   },
   {
     id: 'twilight',
@@ -458,6 +519,18 @@ export const UNIVERSES = [
     buttonText: 'Enter the Pond',
     icon: 'Search',
     path: '/selector-hoppers'
+  },
+  {
+    id: 'hoppers-1',
+    hideOnHomepage: true,
+    title: 'Hoppers (2026)',
+    tags: ['Animation', 'Pixar', 'Sci-Fi'],
+    description: 'Test your knowledge of Mabel, pond rules, and Pixar\'s mind-casting animal world.',
+    image: '/images/hoppers.webp',
+    seoAlt: 'Hoppers animals poster featuring the film\'s animal cast',
+    buttonText: 'Start the Quiz',
+    icon: 'Search',
+    path: '/trivia-hoppers'
   },
   {
     id: 'goat',
@@ -576,7 +649,44 @@ export const UNIVERSES = [
     image: '/images/zootopia.jpg',
     seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
     buttonText: 'Enter the Urban Jungle',
-    icon: 'Search'
+    icon: 'Search',
+    path: '/selector-zootopia'
+  },
+  {
+    id: 'zootopia-1',
+    hideOnHomepage: true,
+    title: 'Zootopia (Original)',
+    tags: ['Animation', 'Mystery'],
+    description: 'Uncover conspiracies and explore the urban jungle with Judy Hopps and Nick Wilde.',
+    image: '/images/zootopia.jpg',
+    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
+    buttonText: 'Start the Quiz',
+    icon: 'Search',
+    path: '/trivia-zootopia'
+  },
+  {
+    id: 'zootopia-2',
+    hideOnHomepage: true,
+    title: 'Zootopia 2',
+    tags: ['Animation', 'Mystery'],
+    description: 'Solve all the latest Zootopia 2 mysteries with Judy, Nick, and Gary De\'Snake.',
+    image: '/images/zootopia.jpg',
+    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
+    buttonText: 'Start the Quiz',
+    icon: 'Search',
+    path: '/trivia-zootopia-2'
+  },
+  {
+    id: 'zootopia-random',
+    hideOnHomepage: true,
+    title: 'Zootopia Mixed Case File',
+    tags: ['Animation', 'Mystery'],
+    description: '15 random questions from both Zootopia movies.',
+    image: '/images/zootopia.jpg',
+    seoAlt: 'Judy Hopps and Nick Wilde in Zootopia city',
+    buttonText: 'Start the Quiz',
+    icon: 'Search',
+    path: '/trivia-zootopia-random'
   },
   {
     id: 'despicable-me',
@@ -597,7 +707,44 @@ export const UNIVERSES = [
     image: '/images/frozen.jpg',
     seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
     buttonText: 'Join the Sisters',
-    icon: 'Snowflake'
+    icon: 'Snowflake',
+    path: '/selector-frozen'
+  },
+  {
+    id: 'frozen-1',
+    hideOnHomepage: true,
+    title: 'Frozen (Original)',
+    tags: ['Animation', 'Musical', 'Disney'],
+    description: 'Test your knowledge on Elsa, Anna, Olaf, and the original Frozen film.',
+    image: '/images/frozen.jpg',
+    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
+    buttonText: 'Start the Quiz',
+    icon: 'Snowflake',
+    path: '/trivia-frozen-1'
+  },
+  {
+    id: 'frozen-2',
+    hideOnHomepage: true,
+    title: 'Frozen 2',
+    tags: ['Animation', 'Musical', 'Disney'],
+    description: 'Test your knowledge on Elsa\'s magical destiny, Ahtohallan, and Frozen 2.',
+    image: '/images/frozen.jpg',
+    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
+    buttonText: 'Start the Quiz',
+    icon: 'Snowflake',
+    path: '/trivia-frozen-2'
+  },
+  {
+    id: 'frozen-random',
+    hideOnHomepage: true,
+    title: 'Frozen Mixed Challenge',
+    tags: ['Animation', 'Musical', 'Disney'],
+    description: '15 random questions from both Frozen movies.',
+    image: '/images/frozen.jpg',
+    seoAlt: 'Elsa, Anna and Olaf in the kingdom of Arendelle',
+    buttonText: 'Start the Quiz',
+    icon: 'Snowflake',
+    path: '/trivia-frozen-random'
   },
   {
     id: 'moana',
@@ -610,6 +757,42 @@ export const UNIVERSES = [
     buttonText: 'Set Sail',
     icon: 'Sparkles',
     path: '/selector-moana'
+  },
+  {
+    id: 'moana-1',
+    hideOnHomepage: true,
+    title: 'Moana (Original)',
+    tags: ['Disney', 'Adventure', 'Ocean'],
+    description: 'Sail beyond the reef with Moana and Maui in the original 2016 adventure.',
+    image: '/images/moana.jpg',
+    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-moana-1'
+  },
+  {
+    id: 'moana-2',
+    hideOnHomepage: true,
+    title: 'Moana 2',
+    tags: ['Disney', 'Adventure', 'Ocean'],
+    description: 'Test your knowledge on Moana\'s newest ocean voyage and the characters of Moana 2.',
+    image: '/images/moana.jpg',
+    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-moana-2'
+  },
+  {
+    id: 'moana-random',
+    hideOnHomepage: true,
+    title: 'Moana Mixed Challenge',
+    tags: ['Disney', 'Adventure', 'Ocean'],
+    description: '15 random questions from both Moana voyages.',
+    image: '/images/moana.jpg',
+    seoAlt: 'Moana and Maui standing together in the ocean on a theatrical poster',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-moana-random'
   },
   {
     id: 'minecraft',
