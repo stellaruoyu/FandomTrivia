@@ -3895,6 +3895,21 @@ const MCQuizContent = ({ questions = [], title, scoreLabel, grades, user, onQuiz
   const matchAnsweredCountRef = useRef(matchAnsweredCount);
   const isRepeatMatch = isMultiplayerMode && matchEndMode === 'timer';
 
+  const rawQ = sessionQuestions[currentQ];
+  const q = useMemo(() => {
+    if (!rawQ) return null;
+    if (lang === 'zh' && rawQ.questionCn) {
+      return {
+        ...rawQ,
+        question: rawQ.questionCn,
+        options: rawQ.optionsCn || rawQ.options,
+        answer: rawQ.answerCn || rawQ.answer,
+        evidence: rawQ.evidenceCn || rawQ.evidence
+      };
+    }
+    return rawQ;
+  }, [rawQ, lang]);
+
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, []);
@@ -4882,20 +4897,6 @@ const MCQuizContent = ({ questions = [], title, scoreLabel, grades, user, onQuiz
     );
   }
 
-  const rawQ = sessionQuestions[currentQ];
-  const q = useMemo(() => {
-    if (!rawQ) return null;
-    if (lang === 'zh' && rawQ.questionCn) {
-      return {
-        ...rawQ,
-        question: rawQ.questionCn,
-        options: rawQ.optionsCn || rawQ.options,
-        answer: rawQ.answerCn || rawQ.answer,
-        evidence: rawQ.evidenceCn || rawQ.evidence
-      };
-    }
-    return rawQ;
-  }, [rawQ, lang]);
   const total = sessionQuestions.length;
 
   if (!q || !q.options) {
