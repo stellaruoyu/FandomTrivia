@@ -14,6 +14,31 @@ export interface ChangelogEntry {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    version: '1.6.0',
+    date: '2026-05-28',
+    title: 'Rabbit Idioms Trivia & React Crash Fix',
+    items: [
+      {
+        type: 'added',
+        text: 'Added a new rabbit-themed idiom trivia challenge with 15 bilingual questions.',
+        linkText: 'Play Rabbit Idioms',
+        linkUrl: '/selector-rabbit'
+      },
+      {
+        type: 'added',
+        text: 'Implemented a bilingual toggle button (English/中文) to switch language preferences on the fly.',
+      },
+      {
+        type: 'added',
+        text: 'Added the "Rabbit Sage" badge, unlocked upon completing the Rabbit Idioms challenge.',
+      },
+      {
+        type: 'fixed',
+        text: 'Resolved a React Hook Violation (Error #310) in MCQuizContent that crashed the game to a black screen after selecting a mode.',
+      }
+    ]
+  },
+  {
     version: '1.5.0',
     date: '2026-05-26',
     title: 'Disneyland Classics, Anime Expansion, and SEO Blogs',

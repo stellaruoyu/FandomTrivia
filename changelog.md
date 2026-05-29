@@ -4,6 +4,15 @@ All notable changes to Fandom Trivia will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2026-05-28] - Rabbit Idioms Trivia & React Crash Fix
+### Added
+- **Rabbit Idioms Quiz**: Added a new rabbit-themed idiom trivia challenge with 15 bilingual questions.
+- **Bilingual Toggle**: Implemented a header toggle button to switch between English and Chinese translations for the quiz questions, options, evidence, and results.
+- **Rabbit Sage Badge**: Added a new unlockable thematic badge for completing the Rabbit Idioms challenge.
+
+### Fixed
+- **React Crash/Black Screen**: Resolved a React Hook Violation (Error #310) in `MCQuizContent` by moving the translated question hooks above conditional early returns.
+
 ## [2026-03-17] - Speed Leaderboards & UI Refinements
 ### Added
 - **Speed Leaderboards**: New leaderboard section for tracking and ranking quiz completion times.
