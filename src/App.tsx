@@ -3787,6 +3787,8 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   key?: any
 }) => {
   const location = useLocation();
+  const [lang, setLang] = useState<'en' | 'zh'>('en');
+  const hasTranslations = useMemo(() => questions.some(q => q.hasOwnProperty('questionCn')), [questions]);
   const [gameState, setGameState] = useState<'mode_selection' | 'lobby' | 'playing'>('mode_selection');
   const [gameMode, setGameMode] = useState<'single' | 'bot' | 'versus' | 'team' | null>(null);
   const [matchRoomId, setMatchRoomId] = useState<string | null>(null);
@@ -3862,6 +3864,19 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   });
 
   const correctCount = Object.values(scores).filter(s => s === 'correct').length;
+  const toggleLanguage = () => {
+    const nextLang = lang === 'en' ? 'zh' : 'en';
+    const rawQ = sessionQuestions[currentQ];
+    if (selected && rawQ) {
+      const prevOptions = lang === 'zh' ? (rawQ.optionsCn || rawQ.options) : rawQ.options;
+      const nextOptions = nextLang === 'zh' ? (rawQ.optionsCn || rawQ.options) : rawQ.options;
+      const idx = prevOptions.indexOf(selected);
+      if (idx !== -1) {
+        setSelected(nextOptions[idx]);
+      }
+    }
+    setLang(nextLang);
+  };
   const answeredCount = Object.keys(scores).length;
   const isMultiplayerMode = gameMode === 'versus' || gameMode === 'team';
   const matchParticipantsRef = useRef<any[]>([]);
@@ -4865,7 +4880,20 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
     );
   }
 
-  const q = sessionQuestions[currentQ];
+  const rawQ = sessionQuestions[currentQ];
+  const q = useMemo(() => {
+    if (!rawQ) return null;
+    if (lang === 'zh' && rawQ.questionCn) {
+      return {
+        ...rawQ,
+        question: rawQ.questionCn,
+        options: rawQ.optionsCn || rawQ.options,
+        answer: rawQ.answerCn || rawQ.answer,
+        evidence: rawQ.evidenceCn || rawQ.evidence
+      };
+    }
+    return rawQ;
+  }, [rawQ, lang]);
   const total = sessionQuestions.length;
 
   if (!q || !q.options) {
@@ -5285,6 +5313,17 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               : ['rgba(255,215,0,', 'rgba(255,180,50,', 'rgba(168,140,255,', 'rgba(255,255,255,', 'rgba(255,100,100,']
         } />
         <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
+          {hasTranslations && (
+            <div className="flex justify-end">
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 text-xs font-black uppercase tracking-widest text-slate-300 hover:text-white transition-all animate-fade-in"
+              >
+                <Globe className="size-4 text-primary animate-pulse" />
+                {lang === 'en' ? '中文' : 'English'}
+              </button>
+            </div>
+          )}
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="space-y-6">
             {gameMode === 'bot' && (
               <motion.div 
@@ -5627,7 +5666,14 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
             </div>
 
             <div className="grid gap-4 text-left max-w-xl mx-auto">
-              {sessionQuestions.map((question, idx) => {
+              {sessionQuestions.map((rawQuestion, idx) => {
+                const question = lang === 'zh' && rawQuestion.questionCn ? {
+                  ...rawQuestion,
+                  question: rawQuestion.questionCn,
+                  options: rawQuestion.optionsCn || rawQuestion.options,
+                  answer: rawQuestion.answerCn || rawQuestion.answer,
+                  evidence: rawQuestion.evidenceCn || rawQuestion.evidence
+                } : rawQuestion;
                 const userRes = scores[idx];
                 const botRes = botResults[idx];
                 const userChoice = userAnswers[idx];
@@ -5810,9 +5856,20 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
               <p className="text-xs text-slate-500 font-bold">Question {currentQ + 1} of {total}</p>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-xs font-black text-white">{answeredCount}/{total}</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase">Answered</p>
+          <div className="flex items-center gap-6">
+            {hasTranslations && (
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 text-xs font-black uppercase tracking-widest text-slate-300 hover:text-white transition-all animate-fade-in"
+              >
+                <Globe className="size-4 text-primary animate-pulse" />
+                {lang === 'en' ? '中文' : 'English'}
+              </button>
+            )}
+            <div className="text-right">
+              <p className="text-xs font-black text-white">{answeredCount}/{total}</p>
+              <p className="text-[10px] text-slate-500 font-bold uppercase">Answered</p>
+            </div>
           </div>
         </div>
 

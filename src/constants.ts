@@ -1141,6 +1141,10 @@ export interface MCTriviaQuestion {
   options: string[];
   answer: string;
   evidence?: string;
+  questionCn?: string;
+  optionsCn?: string[];
+  answerCn?: string;
+  evidenceCn?: string;
 }
 
 // --- K-Pop: Demon Hunters Trivia ---
