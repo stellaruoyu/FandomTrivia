@@ -3776,8 +3776,8 @@ const MCQuizView = (props: {
   );
 };
 
-const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
-  questions: MCTriviaQuestion[],
+const MCQuizContent = ({ questions = [], title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
+  questions?: MCTriviaQuestion[],
   title: string,
   scoreLabel: string,
   grades: { threshold: number; label: string; color: string; character?: { name: string; image: string; desc: string } }[],
@@ -3788,7 +3788,9 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
 }) => {
   const location = useLocation();
   const [lang, setLang] = useState<'en' | 'zh'>('en');
-  const hasTranslations = useMemo(() => questions.some(q => q.hasOwnProperty('questionCn')), [questions]);
+  const hasTranslations = useMemo(() => {
+    return Array.isArray(questions) && questions.some(q => q && (q.hasOwnProperty('questionCn') || 'questionCn' in q));
+  }, [questions]);
   const [gameState, setGameState] = useState<'mode_selection' | 'lobby' | 'playing'>('mode_selection');
   const [gameMode, setGameMode] = useState<'single' | 'bot' | 'versus' | 'team' | null>(null);
   const [matchRoomId, setMatchRoomId] = useState<string | null>(null);
@@ -3802,11 +3804,11 @@ const MCQuizContent = ({ questions, title, scoreLabel, grades, user, onQuizCompl
   const lobbyPlayersRef = useRef<{id: string, name: string, isHost: boolean}[]>([]);
   const lobbyChannelRef = useRef<any>(null);
   const gameChannelRef = useRef<any>(null);
-  const [hostQuestionCount, setHostQuestionCount] = useState(questions.length);
+  const [hostQuestionCount, setHostQuestionCount] = useState(questions ? questions.length : 0);
   const [showSpecificQuestions, setShowSpecificQuestions] = useState(false);
-  const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions.map((_, i) => i));
+  const [hostSelectedIndices, setHostSelectedIndices] = useState<number[]>(questions ? questions.map((_, i) => i) : []);
   const [matchEndMode, setMatchEndMode] = useState<'question_goal' | 'timer'>('question_goal');
-  const [matchQuestionGoal, setMatchQuestionGoal] = useState(questions.length);
+  const [matchQuestionGoal, setMatchQuestionGoal] = useState(questions ? questions.length : 0);
   const [matchTimeLimitSec, setMatchTimeLimitSec] = useState(180);
   const [matchTimerEndsAt, setMatchTimerEndsAt] = useState<number | null>(null);
   const hostLeftTimeoutRef = useRef<NodeJS.Timeout | null>(null);
