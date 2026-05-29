@@ -232,6 +232,14 @@ export const BADGES: Badge[] = [
     icon: 'Sparkles',
     color: 'text-emerald-400',
     targetQuiz: 'wicked'
+  },
+  {
+    id: 'rabbit-sage',
+    name: 'Rabbit Sage',
+    description: 'Jump down the rabbit hole and complete the Rabbit Idioms challenge.',
+    icon: 'BookOpen',
+    color: 'text-teal-400',
+    targetQuiz: 'rabbit'
   }
 ];
 
@@ -542,6 +550,17 @@ export const UNIVERSES = [
     buttonText: 'Enter Roarball',
     icon: 'Trophy',
     path: '/selector-goat'
+  },
+  {
+    id: 'rabbit',
+    title: 'Rabbit Idioms',
+    tags: ['Idioms', 'Language', 'Culture'],
+    description: 'Jump down the rabbit hole! Test your knowledge on rabbit-themed idioms, proverbs, and slang in Chinese and English.',
+    image: '/images/rabbit.png',
+    seoAlt: 'Stylized vector illustration of a magical rabbit with glowing elements',
+    buttonText: 'Start the Challenge',
+    icon: 'BookOpen',
+    path: '/selector-rabbit'
   },
   {
     id: 'wicked',

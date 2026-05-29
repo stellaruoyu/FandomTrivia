@@ -61,6 +61,7 @@ import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA
 import { MINECRAFT_TRIVIA } from './minecraftTrivia';
 import { WICKED_PART_1_TRIVIA, WICKED_PART_2_TRIVIA, WICKED_MIXED_TRIVIA } from './wickedTrivia';
 import { GOAT_TRIVIA } from './goatTrivia';
+import { RABBIT_TRIVIA } from './rabbitTrivia';
 import {
   PERCY_JACKSON_BOOKS,
   PERCY_JACKSON_GROUP_ORDER,
@@ -154,6 +155,7 @@ const getQuizTitle = (quizId: string): string => {
   const map: Record<string, string> = {
     'hangman-ai': 'Hangman (Solo)',
     'hangman-1v1': 'Hangman (1v1 Versus)',
+    'rabbit': 'Rabbit Idioms',
     'twilight-book-1': 'Twilight: Book 1',
     'hp-sorcerers-stone': "HP: Sorcerer's Stone",
     'percy-jackson-random': 'Percy Jackson Mixed Challenge',
@@ -305,6 +307,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('avatar')) return 'Avatar Universe';
   if (q.includes('minecraft')) return 'Minecraft Universe';
   if (q.includes('goat')) return 'GOAT';
+  if (q.includes('rabbit')) return 'Rabbit Idioms';
   if (q.includes('usa-songs') || q.includes('usa songs')) return 'USA Songs';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
@@ -336,6 +339,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('avatar')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Portrait_of_Neytiri.jpg';
   if (q.includes('minecraft')) return '/images/minecraft.jpg';
   if (q.includes('goat')) return '/images/goat.jpg';
+  if (q.includes('rabbit')) return '/images/rabbit.png';
   if (q.includes('usa-songs') || q.includes('usa songs')) return USA_SONGS_CARD_IMAGE;
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
@@ -1131,6 +1135,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'bad-guys': '/selector-bad-guys',
       'hoppers': '/selector-hoppers',
       'goat': '/selector-goat',
+      'rabbit': '/selector-rabbit',
       'anime': '/selector-anime',
       'attack-on-titan': '/trivia-attack-on-titan',
       'demon-slayer': '/trivia-demon-slayer',
@@ -1427,6 +1432,7 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'bad-guys') navigate('/selector-bad-guys', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'rabbit') navigate('/selector-rabbit', { state: { isDaily: true } });
   };
 
   return (
@@ -6392,6 +6398,14 @@ const GOAT_GRADES = [
   { threshold: 0, label: 'Rookie Call-Up', color: 'text-slate-400', character: { name: 'Archie Everhardt', image: '/images/goat.jpg', desc: 'You made the roster. Time to get more reps in Roarball.' } },
 ];
 
+const RABBIT_GRADES = [
+  { threshold: 90, label: 'Jade Rabbit / 玉兔神使', color: 'text-teal-300', character: { name: 'Jade Rabbit', image: '/images/rabbit.png', desc: 'Divine precision. You know your idioms inside out, swift as a fleeing rabbit.' } },
+  { threshold: 75, label: 'Crafty burrower / 狡兔专家', color: 'text-emerald-300', character: { name: 'Burrower', image: '/images/rabbit.png', desc: 'Strategic mastery. You have prepared three burrows of knowledge.' } },
+  { threshold: 50, label: 'Alice’s Guide / 梦游领路人', color: 'text-blue-400', character: { name: 'White Rabbit', image: '/images/rabbit.png', desc: 'You did not get lost in the rabbit hole. Solid performance.' } },
+  { threshold: 25, label: 'March Hare / 三月狂兔', color: 'text-amber-500', character: { name: 'March Hare', image: '/images/rabbit.png', desc: 'A bit erratic. Time to review the definitions and calm your thoughts.' } },
+  { threshold: 0, label: 'Stump Watcher / 守株待兔者', color: 'text-slate-400', character: { name: 'Farmer', image: '/images/rabbit.png', desc: 'You are still waiting by the tree stump for luck. Practice makes perfect!' } },
+];
+
 const PERCY_JACKSON_GRADES = [
   { threshold: 90, label: 'Olympian Strategist', color: 'text-amber-300', character: { name: 'Percy Jackson', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'You could navigate monsters, prophecies, and Olympus without breaking a sweat.' } },
   { threshold: 70, label: 'Camp Half-Blood Hero', color: 'text-cyan-300', character: { name: 'Annabeth Chase', image: 'https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2023/07/percy-jackson-poster-scaled.jpeg', desc: 'Strong work. You know the quests, cabins, and core twists across the original series.' } },
@@ -6434,6 +6448,59 @@ const GoatSelector = ({ key }: { key?: string }) => {
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate(`/${item.view}`)}
             className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group`}
+          >
+            <div className="text-4xl">{item.icon}</div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <h3 className="text-xl font-black text-white tracking-tight">{item.title}</h3>
+              <p className="text-sm text-slate-400 font-medium mt-1">{item.desc}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              Start Quiz <ArrowRight className="size-3" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
+const RabbitSelector = ({ key }: { key?: string }) => {
+  const navigate = useNavigate();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-400">Path</span></h1>
+        <Helmet>
+          <title>Rabbit Idioms Trivia & Language Quiz | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge of rabbit-themed idioms, proverbs, and slang in Chinese and English. Jump down the rabbit hole and check your score." />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-rabbit" />
+          <meta property="og:title" content="Rabbit Idioms Trivia & Language Quiz | Fandom Trivia" />
+          <meta property="og:description" content="Jump down the rabbit hole and test your rabbit-themed idiom knowledge." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "Rabbit Idioms", item: "https://www.fandom-trivia.com/selector-rabbit" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select the idiom quiz to test your bilingual vocabulary of rabbit/bunny-related idioms and proverbs.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center max-w-md mx-auto">
+        {[
+          { label: 'Vocabulary 1', title: 'Rabbit Idioms (CN/EN)', desc: `${RABBIT_TRIVIA.length} questions`, icon: "\u{1F407}", view: 'trivia-rabbit', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+        ].map(item => (
+          <motion.button
+            key={item.label}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${item.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${item.gradient} border ${item.border} transition-all duration-300 space-y-4 group col-span-2`}
           >
             <div className="text-4xl">{item.icon}</div>
             <div>
@@ -9035,6 +9102,7 @@ export default function App() {
             <Route path="/trivia-avatar-random" element={<MCQuizView key="trivia-avatar-random" questions={avatarRandomQuestions} title="Avatar Mixed Challenge" scoreLabel="Avatar Mixed Challenge" grades={AVATAR_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-minecraft" element={<MCQuizView key="trivia-minecraft" questions={MINECRAFT_TRIVIA} title="A Minecraft Movie (2025)" scoreLabel="A Minecraft Movie (2025)" grades={MINECRAFT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-goat" element={<MCQuizView key="trivia-goat" questions={GOAT_TRIVIA} title="GOAT (2026)" scoreLabel="GOAT (2026)" grades={GOAT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-rabbit" element={<MCQuizView key="trivia-rabbit" questions={RABBIT_TRIVIA} title="Rabbit Idioms" scoreLabel="Rabbit Idioms" grades={RABBIT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             {PERCY_JACKSON_BOOKS.filter((book) => book.id !== 'percy-jackson-random').map((book) => (
               <React.Fragment key={book.view}>
                 <Route
@@ -9133,6 +9201,7 @@ export default function App() {
             <Route path="/selector-avatar" element={<AvatarSelector />} />
             <Route path="/selector-minecraft" element={<MinecraftSelector />} />
             <Route path="/selector-goat" element={<GoatSelector key="selector-goat" />} />
+            <Route path="/selector-rabbit" element={<RabbitSelector key="selector-rabbit" />} />
             <Route path="/selector-super-mario" element={<MarioSelector />} />
             <Route path="/selector-shrek" element={<ShrekSelector />} />
             <Route path="/selector-bad-guys" element={<BadGuysSelector />} />
