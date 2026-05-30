@@ -14,19 +14,40 @@ export interface ChangelogEntry {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    version: '1.7.1',
+    date: '2026-05-30',
+    title: 'Snow White & Cinderella Disneyland Relocation',
+    items: [
+      {
+        type: 'changed',
+        text: 'Relocated the Snow White and Cinderella quizzes from Classic Tales to the Disneyland category to match their Disney animated film status.',
+        linkText: 'Explore Disneyland',
+        linkUrl: '/selector-disneyland'
+      },
+      {
+        type: 'changed',
+        text: 'Adjusted grading thresholds and scoring scale for Snow White and Cinderella quizzes to align with DISNEYLAND_GRADES.',
+      },
+      {
+        type: 'changed',
+        text: 'Added the "Disney" tag to Snow White and Cinderella metadata, and updated the Classic Tales selector, descriptions, and random challenge mix to exclude them.',
+      }
+    ]
+  },
+  {
     version: '1.7.0',
     date: '2026-05-29',
     title: 'Classic Tales Quizzes & Blogs',
     items: [
       {
         type: 'added',
-        text: 'Added a new Classic Tales category featuring 7 new fairy tale and legend quizzes: The Wizard of Oz, The Ugly Duckling, Little Red Riding Hood, Snow White, Cinderella, Robin Hood, and Alice in Wonderland.',
+        text: 'Added a new Classic Tales category featuring 5 new fairy tale and legend quizzes: The Wizard of Oz, The Ugly Duckling, Little Red Riding Hood, Robin Hood, and Alice in Wonderland.',
         linkText: 'Explore Classic Tales',
         linkUrl: '/selector-classic-tales'
       },
       {
         type: 'added',
-        text: 'Added 7 new highly engaging, SEO-optimized blog posts for each classic tale to drive search engine traffic.',
+        text: 'Added 7 new highly engaging, SEO-optimized blog posts for classic tales (including Snow White and Cinderella) to drive search engine traffic.',
         linkText: 'Read Blogs',
         linkUrl: '/blog'
       },
@@ -36,7 +57,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       },
       {
         type: 'added',
-        text: 'Added a combined Classic Tales Mixed Challenge that compiles 20 random questions across all seven fairy tales.',
+        text: 'Added a combined Classic Tales Mixed Challenge that compiles 20 random questions across the 5 fairy tales.',
       }
     ]
   },
