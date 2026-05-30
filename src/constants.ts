@@ -240,6 +240,14 @@ export const BADGES: Badge[] = [
     icon: 'BookOpen',
     color: 'text-teal-400',
     targetQuiz: 'rabbit'
+  },
+  {
+    id: 'fable-explorer',
+    name: 'Fable Explorer',
+    description: 'Complete any Classic Tales trivia challenge.',
+    icon: 'BookOpen',
+    color: 'text-yellow-400',
+    targetQuiz: 'classic-tales'
   }
 ];
 
@@ -885,6 +893,101 @@ export const UNIVERSES = [
     seoAlt: 'Po, the Furious Five, and other characters from Kung Fu Panda in a dynamic pose',
     buttonText: 'Join the Dragon Warrior',
     icon: 'Trophy'
+  },
+  {
+    id: 'classic-tales',
+    title: 'Classic Tales',
+    tags: ['Fairy Tale', 'Fable', 'Literature'],
+    description: 'Step into the pages of timeless stories! Challenge your knowledge on the wizard of oz, the ugly duckling, little red riding hood, snow white, cinderella, robin hood, and alice in wonderland.',
+    image: '/images/wizard-of-oz.png',
+    seoAlt: 'Magical illustration depicting classic fairy tales and legends',
+    buttonText: 'Read the Stories',
+    icon: 'Sparkles',
+    path: '/selector-classic-tales'
+  },
+  {
+    id: 'wizard-of-oz',
+    hideOnHomepage: true,
+    title: 'The Wizard of Oz',
+    tags: ['Classic', 'Fairy Tale', 'Adventure'],
+    description: 'Follow the Yellow Brick Road! Test your knowledge on Dorothy, the Scarecrow, the Tin Man, and the Cowardly Lion.',
+    image: '/images/wizard-of-oz.png',
+    seoAlt: 'Official magical theme poster showing the Emerald City and characters of the Wizard of Oz',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-wizard-of-oz'
+  },
+  {
+    id: 'ugly-duckling',
+    hideOnHomepage: true,
+    title: 'The Ugly Duckling',
+    tags: ['Classic', 'Fairy Tale', 'Fable'],
+    description: 'Fly with the swans! Test your knowledge on Hans Christian Andersen\'s beloved fable of self-discovery and transformation.',
+    image: '/images/ugly-duckling.png',
+    seoAlt: 'Magical illustration of the ugly duckling transforming into a beautiful swan',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-ugly-duckling'
+  },
+  {
+    id: 'little-red-riding-hood',
+    hideOnHomepage: true,
+    title: 'Little Red Riding Hood',
+    tags: ['Classic', 'Fairy Tale', 'Forest'],
+    description: 'Watch out for the Big Bad Wolf! Test your knowledge on the path through the woods, Granny\'s house, and the huntsman\'s rescue.',
+    image: '/images/little-red-riding-hood.png',
+    seoAlt: 'Magical illustration of Little Red Riding Hood walking down the forest path with a basket',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-little-red-riding-hood'
+  },
+  {
+    id: 'snow-white',
+    hideOnHomepage: true,
+    title: 'Snow White',
+    tags: ['Classic', 'Fairy Tale', 'Magic'],
+    description: 'Who is the fairest of them all? Test your knowledge on the poison apple, the magic mirror, and the seven dwarfs.',
+    image: '/images/snow-white.png',
+    seoAlt: 'Magical illustration of Snow White with her woodland friends near the cottage',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-snow-white'
+  },
+  {
+    id: 'cinderella',
+    hideOnHomepage: true,
+    title: 'Cinderella',
+    tags: ['Classic', 'Fairy Tale', 'Magic'],
+    description: 'Don\'t miss the midnight chime! Test your knowledge on the glass slippers, the pumpkin carriage, and the royal ball.',
+    image: '/images/cinderella.png',
+    seoAlt: 'Magical illustration of Cinderella in her beautiful blue gown running from the castle',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-cinderella'
+  },
+  {
+    id: 'robin-hood',
+    hideOnHomepage: true,
+    title: 'Robin Hood',
+    tags: ['Classic', 'Legend', 'Adventure'],
+    description: 'Rob from the rich, give to the poor! Test your knowledge on Sherwood Forest, Maid Marian, and the Merry Men.',
+    image: '/images/robin-hood.png',
+    seoAlt: 'Magical illustration of Robin Hood with his bow and arrow in Sherwood Forest',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-robin-hood'
+  },
+  {
+    id: 'alice-in-wonderland',
+    hideOnHomepage: true,
+    title: 'Alice in Wonderland',
+    tags: ['Classic', 'Fairy Tale', 'Nonsense'],
+    description: 'Down the rabbit hole! Test your knowledge on the Mad Hatter\'s tea party, the Cheshire Cat, and the Queen of Hearts.',
+    image: '/images/alice-in-wonderland.png',
+    seoAlt: 'Magical illustration of Alice falling through the rabbit hole surrounded by whimsical items',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-alice-in-wonderland'
   }
 ];
 

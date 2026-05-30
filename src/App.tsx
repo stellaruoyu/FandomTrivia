@@ -75,6 +75,16 @@ import { BLOG_POSTS } from './blogPosts';
 import { CHANGELOG_ENTRIES } from './changelogData';
 import { LION_KING_TRIVIA, ALADDIN_TRIVIA, BEAUTY_BEAST_TRIVIA, LITTLE_MERMAID_TRIVIA, TANGLED_TRIVIA, MULAN_TRIVIA } from './disneyTrivia';
 import { ATTACK_ON_TITAN_TRIVIA, DEMON_SLAYER_TRIVIA, JUJUTSU_KAISEN_TRIVIA, ONE_PIECE_TRIVIA, NARUTO_TRIVIA, DEATH_NOTE_TRIVIA } from './animeTrivia';
+import {
+  WIZARD_OF_OZ_TRIVIA,
+  UGLY_DUCKLING_TRIVIA,
+  LITTLE_RED_RIDING_HOOD_TRIVIA,
+  SNOW_WHITE_TRIVIA,
+  CINDERELLA_TRIVIA,
+  ROBIN_HOOD_TRIVIA,
+  ALICE_IN_WONDERLAND_TRIVIA,
+  CLASSIC_TALES_GRADES
+} from './classicTalesTrivia';
 
 const USA_SONGS_CARD_IMAGE = `${import.meta.env.BASE_URL}images/universes/usa-songs-card.svg`;
 const HANGMAN_MAX_WRONG_GUESSES = 6;
@@ -222,6 +232,14 @@ const getQuizTitle = (quizId: string): string => {
     'dog-man-random': 'Supa Buddies Mixed Challenge',
     'bad-guys-1': 'The Bad Guys',
     'bad-guys-2': 'The Bad Guys 2',
+    'wizard-of-oz': 'The Wizard of Oz',
+    'ugly-duckling': 'The Ugly Duckling',
+    'little-red-riding-hood': 'Little Red Riding Hood',
+    'snow-white': 'Snow White',
+    'cinderella': 'Cinderella',
+    'robin-hood': 'Robin Hood',
+    'alice-in-wonderland': 'Alice in Wonderland',
+    'classic-tales-random': 'Classic Tales Mixed Challenge',
     'avatar-1': 'Avatar (2009)',
     'avatar-2': 'Avatar: The Way of Water',
     'avatar-3': 'Avatar: Fire and Ash',
@@ -1134,6 +1152,14 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'dog-man': '/selector-dog-man',
       'bad-guys': '/selector-bad-guys',
       'hoppers': '/selector-hoppers',
+      'classic-tales': '/selector-classic-tales',
+      'wizard-of-oz': '/trivia-wizard-of-oz',
+      'ugly-duckling': '/trivia-ugly-duckling',
+      'little-red-riding-hood': '/trivia-little-red-riding-hood',
+      'snow-white': '/trivia-snow-white',
+      'cinderella': '/trivia-cinderella',
+      'robin-hood': '/trivia-robin-hood',
+      'alice-in-wonderland': '/trivia-alice-in-wonderland',
       'goat': '/selector-goat',
       'rabbit': '/selector-rabbit',
       'anime': '/selector-anime',
@@ -1433,6 +1459,7 @@ const DailyMysteryChallenge = () => {
     else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
     else if (dailyUniverse.id === 'rabbit') navigate('/selector-rabbit', { state: { isDaily: true } });
+    else if (dailyUniverse.id === 'classic-tales') navigate('/selector-classic-tales', { state: { isDaily: true } });
   };
 
   return (
@@ -8500,6 +8527,66 @@ const DogManSelector = () => {
   );
 };
 
+const ClassicTalesSelector = () => {
+  const navigate = useNavigate();
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">Classic Tale</span></h1>
+          <Helmet>
+            <title>Classic Tales Trivia & Fairy Tale Quizzes | Fandom Trivia</title>
+            <meta name="description" content="Test your fairy tale knowledge on The Wizard of Oz, Cinderella, Snow White, Little Red Riding Hood, Robin Hood, Alice in Wonderland, and The Ugly Duckling." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-classic-tales" />
+            <meta property="og:title" content="Classic Tales Trivia & Fairy Tale Quizzes | Fandom Trivia" />
+            <meta property="og:description" content="Play classic fairy tale quizzes and prove your knowledge on timeless stories." />
+            <script type="application/ld+json">
+              {getBreadcrumbSchema([
+                { name: "Home", item: "https://www.fandom-trivia.com/" },
+                { name: "Classic Tales", item: "https://www.fandom-trivia.com/selector-classic-tales" }
+              ])}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a classic story to test your knowledge, or try a random mix from the full collection.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {[
+            { label: "Story 1", title: "The Wizard of Oz", desc: `${(WIZARD_OF_OZ_TRIVIA || []).length} questions on Dorothy & Oz`, icon: "\u{1F460}", view: 'trivia-wizard-of-oz', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+            { label: "Story 2", title: "The Ugly Duckling", desc: `${(UGLY_DUCKLING_TRIVIA || []).length} questions on transformation`, icon: "\u{1F9A2}", view: 'trivia-ugly-duckling', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
+            { label: "Story 3", title: "Little Red Riding Hood", desc: `${(LITTLE_RED_RIDING_HOOD_TRIVIA || []).length} questions on the forest path`, icon: "\u{1F9E5}", view: 'trivia-little-red-riding-hood', gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
+            { label: "Story 4", title: "Snow White", desc: `${(SNOW_WHITE_TRIVIA || []).length} questions on the magic mirror`, icon: "\u{1F34E}", view: 'trivia-snow-white', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Story 5", title: "Cinderella", desc: `${(CINDERELLA_TRIVIA || []).length} questions on the glass slipper`, icon: "\u{1F3F0}", view: 'trivia-cinderella', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50' },
+            { label: "Story 6", title: "Robin Hood", desc: `${(ROBIN_HOOD_TRIVIA || []).length} questions on Sherwood Forest`, icon: "\u{1F3F9}", view: 'trivia-robin-hood', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+            { label: "Story 7", title: "Alice in Wonderland", desc: `${(ALICE_IN_WONDERLAND_TRIVIA || []).length} questions on the rabbit hole`, icon: "\u{1F0A1}", view: 'trivia-alice-in-wonderland', gradient: 'from-violet-600/20 to-fuchsia-600/20', border: 'border-violet-500/30 hover:border-violet-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 7 stories", icon: "\u{1F3B2}", view: 'trivia-classic-tales-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          ].map(story => (
+            <motion.button
+              key={story.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${story.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${story.gradient} border ${story.border} transition-all duration-300 space-y-4 group`}
+            >
+              <div className="text-4xl">{story.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{story.label}</p>
+                <h3 className="text-xl font-black text-white tracking-tight">{story.title}</h3>
+                <p className="text-sm text-slate-400 font-medium mt-1">{story.desc}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Start Quiz <ArrowRight className="size-3" />
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const KungFuPandaSelector = () => {
   const navigate = useNavigate();
   return (
@@ -8681,6 +8768,10 @@ export default function App() {
 
   const dogManRandomQuestions = useMemo(() => 
     [...(DOG_MAN_TRIVIA_BOOK1 || []), ...(DOG_MAN_TRIVIA_BOOK2 || []), ...(DOG_MAN_TRIVIA_BOOK3 || []), ...(DOG_MAN_TRIVIA_BOOK4 || []), ...(DOG_MAN_TRIVIA_BOOK5 || []), ...(DOG_MAN_TRIVIA_BOOK6 || []), ...(DOG_MAN_TRIVIA_BOOK7 || []), ...(DOG_MAN_TRIVIA_BOOK8 || []), ...(DOG_MAN_TRIVIA_BOOK9 || []), ...(DOG_MAN_TRIVIA_BOOK10 || []), ...(DOG_MAN_TRIVIA_BOOK11 || []), ...(DOG_MAN_TRIVIA_BOOK12 || []), ...(DOG_MAN_TRIVIA_BOOK13 || []), ...(DOG_MAN_TRIVIA_BOOK14 || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+  []);
+
+  const classicTalesRandomQuestions = useMemo(() => 
+    [...(WIZARD_OF_OZ_TRIVIA || []), ...(UGLY_DUCKLING_TRIVIA || []), ...(LITTLE_RED_RIDING_HOOD_TRIVIA || []), ...(SNOW_WHITE_TRIVIA || []), ...(CINDERELLA_TRIVIA || []), ...(ROBIN_HOOD_TRIVIA || []), ...(ALICE_IN_WONDERLAND_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   useEffect(() => {
@@ -8964,6 +9055,17 @@ export default function App() {
         } else if (badge.targetQuiz === 'toy-story' && titleLower.includes('toy story')) {
           unlocked = true;
         } else if (badge.targetQuiz === 'dog-man' && titleLower.includes('dog man')) {
+          unlocked = true;
+        } else if (badge.targetQuiz === 'classic-tales' && (
+          titleLower.includes('wizard of oz') || 
+          titleLower.includes('ugly duckling') || 
+          titleLower.includes('little red riding hood') || 
+          titleLower.includes('snow white') || 
+          titleLower.includes('cinderella') || 
+          titleLower.includes('robin hood') || 
+          titleLower.includes('alice in wonderland') ||
+          titleLower.includes('classic tales')
+        )) {
           unlocked = true;
         }
       }
@@ -9309,6 +9411,17 @@ export default function App() {
             <Route path="/trivia-frozen-1" element={<MCQuizView key="trivia-frozen-1" questions={FROZEN_1_TRIVIA} title="Frozen (2013)" scoreLabel="Frozen" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-2" element={<MCQuizView key="trivia-frozen-2" questions={FROZEN_2_TRIVIA} title="Frozen 2" scoreLabel="Frozen 2" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-frozen-random" element={<MCQuizView key="trivia-frozen-random" questions={frozenRandomQuestions} title="Frozen Mixed Challenge" scoreLabel="Frozen Mixed Challenge" grades={FROZEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+
+            {/* Classic Tales Trivia */}
+            <Route path="/selector-classic-tales" element={<ClassicTalesSelector />} />
+            <Route path="/trivia-wizard-of-oz" element={<MCQuizView key="trivia-wizard-of-oz" user={user} questions={WIZARD_OF_OZ_TRIVIA} title="The Wizard of Oz" scoreLabel="The Wizard of Oz" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-ugly-duckling" element={<MCQuizView key="trivia-ugly-duckling" user={user} questions={UGLY_DUCKLING_TRIVIA} title="The Ugly Duckling" scoreLabel="The Ugly Duckling" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-little-red-riding-hood" element={<MCQuizView key="trivia-little-red-riding-hood" user={user} questions={LITTLE_RED_RIDING_HOOD_TRIVIA} title="Little Red Riding Hood" scoreLabel="Little Red Riding Hood" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-snow-white" element={<MCQuizView key="trivia-snow-white" user={user} questions={SNOW_WHITE_TRIVIA} title="Snow White" scoreLabel="Snow White" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-cinderella" element={<MCQuizView key="trivia-cinderella" user={user} questions={CINDERELLA_TRIVIA} title="Cinderella" scoreLabel="Cinderella" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-robin-hood" element={<MCQuizView key="trivia-robin-hood" user={user} questions={ROBIN_HOOD_TRIVIA} title="Robin Hood" scoreLabel="Robin Hood" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-alice-in-wonderland" element={<MCQuizView key="trivia-alice-in-wonderland" user={user} questions={ALICE_IN_WONDERLAND_TRIVIA} title="Alice in Wonderland" scoreLabel="Alice in Wonderland" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-classic-tales-random" element={<MCQuizView key="trivia-classic-tales-random" user={user} questions={classicTalesRandomQuestions} title="Classic Tales Mixed Challenge" scoreLabel="Classic Tales Mixed Challenge" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
             <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             

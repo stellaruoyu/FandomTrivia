@@ -1945,5 +1945,285 @@ export const BLOG_POSTS: BlogPost[] = [
         </a>
       </div>
     `
+  },
+  {
+    slug: 'wizard-of-oz-quiz',
+    title: 'The Wizard of Oz Quiz: Can You Follow the Yellow Brick Road to the Emerald City?',
+    metaDescription: 'Follow the Yellow Brick Road! Take our Wizard of Oz quiz to test your knowledge of Dorothy, the Tin Man, the Scarecrow, the Cowardly Lion, and Glinda.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/wizard-of-oz.png',
+    keywords: ['Wizard of Oz quiz', 'Wizard of Oz trivia', 'Dorothy Gale trivia challenge', 'Wicked Witch of the West test', 'Emerald City lore quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Dorothy Gale and her faithful dog Toto are swept away by a cyclone from the plains of Kansas to the magical Land of Oz. Written by L. Frank Baum in 1900 and immortalized by the 1939 musical film starring Judy Garland, this story remains a towering monument of pop culture. From the munchkins of Munchkinland to the mysterious wizard in the Emerald City, Oz is filled with secrets. Do you actually know the color of Dorothy's slippers in the book versus the movie? Test your memory with the ultimate <strong>Wizard of Oz quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Wizard of Oz Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Unlocking the Secrets of Munchkinland and Beyond</h2>
+      <p>Dorothy's journey down the Yellow Brick Road is joined by the Scarecrow, the Tin Man, and the Cowardly Lion, each seeking a heart, a brain, courage, or a way home. Passing our <strong>Wizard of Oz trivia</strong> challenge is a true test of your knowledge of both the literary work and the iconic film adaptation. Do you know which Munchkin Guild welcomes Dorothy with a song? Can you recall the color of the other road running through Munchkinland? These details separate casual fans from true scholars of Oz.</p>
+      <p class="mt-4">From the poppies that put the travelers to sleep to the Wicked Witch's castle guards, the story is packed with memorable trials. If you think you can trace Dorothy's footsteps, <a href="/trivia-wizard-of-oz" class="text-primary hover:text-primary/80 font-bold">take our Dorothy Gale trivia challenge now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-wizard-of-oz" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-400">Direct Link:</span> Jump Straight to the Wizard of Oz Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Wizard of Oz Trivia Facts</h2>
+      <p>True fans of this magical fantasy know that the film has a fascinating history. Let's see if you can answer these in our <strong>Wicked Witch of the West test</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Slippers:</strong> In Baum's original book, Dorothy's slippers were silver, not ruby! Technicolor film necessitated the change to bright red for the movie.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Tin Man's Tears:</strong> The production crew used chocolate syrup to simulate the Tin Man's tears, as oil did not show up well on camera.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Dog Breed:</strong> Toto was played by a female Cairn Terrier named Terry, who was paid more than many of the human actors.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Witch's Broom:</strong> In Munchkinland, the Wicked Witch of the West holds her broomstick in her right hand.</li>
+      </ul>
+
+      <p>Don't click your heels together just yet! Challenge your friends, climb the global leaderboard, and prove your mastery of the path to the Emerald City in our <strong>Emerald City lore quiz</strong>!</p>
+    `
+  },
+  {
+    slug: 'ugly-duckling-quiz',
+    title: 'The Ugly Duckling Quiz: Test Your Knowledge of Andersen\'s Timeless Fable',
+    metaDescription: 'Take the ultimate Ugly Duckling quiz! Test your knowledge on Hans Christian Andersen\'s classic tale, its various film adaptations, and its trivia.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/ugly-duckling.png',
+    keywords: ['Ugly Duckling quiz', 'Ugly Duckling trivia', 'Hans Christian Andersen test', 'Disney Ugly Duckling short quiz', 'fable transformation challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Born in a nest of ducks, a young bird is mocked by his family and peers for being different. Hans Christian Andersen's 1843 fairy tale "The Ugly Duckling" is one of the most beloved stories of self-discovery and transformation in literature. But how well do you actually know the details of the original story and its famous film versions? Do you know which Oscar-winning Disney animated short features the duckling adopting a decoy, or who composed the famous Danny Kaye song? Challenge your understanding with the ultimate <strong>Ugly Duckling quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Ugly Duckling Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">From Barnyard Teasing to Graceful Swans</h2>
+      <p>The Ugly Duckling suffers through a freezing winter alone before discovering his true identity in the spring. Passing our <strong>Ugly Duckling trivia</strong> challenge requires a sharp memory for both the original literature and the various artistic adaptations. Do you know why the duckling didn't stay with the geese in the pond? Can you name the beautiful maid who trades places with Princess Camilla in A.A. Milne's play adaptation? These are the elements that separate fairy tale lovers from true literary experts.</p>
+      <p class="mt-4">Whether you are revisiting the story for nostalgia or testing your knowledge of classical fables, this quiz offers a fun and challenging experience. If you think you can trace the duckling's flight, <a href="/trivia-ugly-duckling" class="text-primary hover:text-primary/80 font-bold">take our Hans Christian Andersen test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-ugly-duckling" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-sky-400">Direct Link:</span> Jump Straight to the Ugly Duckling Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Fascinating Ugly Duckling Facts</h2>
+      <p>True fans of this touching story know that it reaches beyond children's books. Let's see if you can answer these in our <strong>Disney Ugly Duckling short quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Disney Connection:</strong> In Lilo & Stitch, the book of The Ugly Duckling plays a major role as a source of comfort and catharsis for Stitch.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Theorem:</strong> In 1969, physicist Satosi Watanabe formulated the "Ugly Duckling theorem," asserting that classification is not possible without some sort of bias.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Autobiographical Roots:</strong> Andersen supposedly considered the story to be an autobiography, as he spent his youth feeling like an outcast.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Oscar:</strong> The 1939 Disney Silly Symphony color short won the Academy Award for Best Short Subject (Cartoons).</li>
+      </ul>
+
+      <p>Don't let the other farm animals bring you down! Challenge your friends, top the scoreboard, and prove your knowledge of this story of self-realization in our <strong>fable transformation challenge</strong>!</p>
+    `
+  },
+  {
+    slug: 'little-red-riding-hood-quiz',
+    title: 'Little Red Riding Hood Quiz: Can You Outsmart the Big Bad Wolf?',
+    metaDescription: 'Take the ultimate Little Red Riding Hood quiz! Test your knowledge on the Grimms\' path, Perrault\'s dark endings, and folklore adaptations.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/little-red-riding-hood.png',
+    keywords: ['Little Red Riding Hood quiz', 'Little Red Riding Hood trivia', 'Grimm Brothers fairy tale test', 'Charles Perrault folklore quiz', 'Big Bad Wolf survival challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">A young girl in a red hood sets off through the forest to deliver cake and butter to her grandmother. First recorded in the 17th century by Charles Perrault and later refined by the Grimm Brothers, "Little Red Riding Hood" is one of the most recognizable folk stories in human history. But how well do you know the twists, endings, and variations of this dark forest journey? Do you know what the mother explicitly forbade in the Grimms' version, or how Red Riding Hood deals with the wolf in James Thurber's parody? Test your instincts with the ultimate <strong>Little Red Riding Hood quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Little Red Riding Hood Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Stepping Off the Path in the Deep Dark Woods</h2>
+      <p>The encounter between the wolf and the young girl has been reinterpreted across hundreds of cultures. Passing our <strong>Little Red Riding Hood trivia</strong> challenge requires a deep familiarity with the original tales and their modern retellings. Do you know what item is completely missing from the 15th-century oral tradition "The Story of Grandmother"? Can you name the Chinese version of the tale that won the 1990 Caldecott Medal? These details separate casual readers from true folklore historians.</p>
+      <p class="mt-4">From the huntsman who cuts open the sleeping wolf to modern animated parodies like <em>Hoodwinked!</em>, this story has endless layers. If you think you can navigate the forest safely, <a href="/trivia-little-red-riding-hood" class="text-primary hover:text-primary/80 font-bold">take our Grimm Brothers fairy tale test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-little-red-riding-hood" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Little Red Riding Hood Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Folklore and Historical Facts</h2>
+      <p>True scholars of this fable know it's not just a simple children's story. Let's see if you can answer these in our <strong>Charles Perrault folklore quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Dark End:</strong> In Charles Perrault's 1697 version of the tale, there is no huntsman. The girl is eaten by the wolf, and the story simply ends there as a moral warning.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Chinese Variant:</strong> "Lon Po Po" (Grandmother Wolf) is a Chinese version of the story illustrated by Ed Young, which won the Caldecott Medal in 1990.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Modern Weapon:</strong> In James Thurber's 1939 humor parody, Red Riding Hood pulls a revolver out of her picnic basket and shoots the wolf dead.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Wardrobe:</strong> In a worksheet version by South Morningside Primary School, the wolf locks Granny in a wardrobe instead of eating her.</li>
+      </ul>
+
+      <p>Don't stop to pick flowers along the way! Challenge your friends, top the scoreboard, and see if you can survive the journey to Granny's house in our <strong>Big Bad Wolf survival challenge</strong>!</p>
+    `
+  },
+  {
+    slug: 'snow-white-quiz',
+    title: 'Snow White Quiz: Can You Outsmart the Evil Queen\'s Mirror?',
+    metaDescription: 'Take the ultimate Snow White quiz! Test your knowledge on Grimm details, Disney animated secrets, poison apples, and the seven dwarfs.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/snow-white.png',
+    keywords: ['Snow White quiz', 'Snow White trivia', 'seven dwarfs character test', 'poisoned apple lore quiz', 'Grimm Brothers Snow White challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Jealous of her stepdaughter's beauty, the Evil Queen orders a huntsman to kill Snow White, who flees into the cottage of seven dwarfs. Originally published by the Brothers Grimm in 1812 and adapted into Disney's first full-length animated film in 1937, "Snow White" is a landmark in fairy tale history. But do you actually know the details that make up the lore of the dwarfs' mine, the mirror's true words, and the queen's ultimate fate? Do you know who voiced Snow White, or which dwarf doesn't have a beard? Test your memory with the ultimate <strong>Snow White quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Snow White Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Heigh-Ho! Mining for Trivia in the Dwarfs\' Cottage</h2>
+      <p>Living with Sneezy, Doc, Dopey, Happy, Bashful, Sleepy, and Grumpy requires a unique set of skills, but passing our <strong>Snow White trivia</strong> challenge requires an even sharper eye. Do you know which dwarf was a last-minute replacement for a character named "Jumpy"? Can you recall what kind of pie Snow White offers to bake for the dwarfs? These details separate the casual animated fans from true fairy tale scholars.</p>
+      <p class="mt-4">From the countess Margaretha von Waldeck (who is said to have inspired the story) to the queen's red-hot iron shoes in the original Grimm tale, there is a wealth of history to explore. If you think you can face the magic mirror, <a href="/trivia-snow-white" class="text-primary hover:text-primary/80 font-bold">take our seven dwarfs character test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-snow-white" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Snow White Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Behind the Scenes of Disney\'s Masterpiece</h2>
+      <p>True animation fans know that Snow White changed cinematic history forever. Let's see if you can answer these in our <strong>poisoned apple lore quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Magic Mirror Quote:</strong> In the 1937 Disney film, the Queen actually says: "Magic mirror on the wall, who is the fairest one of all?" (The phrase "Mirror, mirror on the wall" is from the Grimms' translation).</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Special Oscar:</strong> Shirley Temple presented Walt Disney with one standard Academy Award statuette and seven miniature ones to represent the seven dwarfs.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Slumber Rescue:</strong> In the original Grimms' tale, the Prince does not wake Snow White with a kiss. Instead, his servants shake the coffin, dislodging the poisoned apple from her throat.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Scullery Job:</strong> Because of the Queen's jealousy, Snow White is forced to work as a scullery maid at the beginning of the movie.</li>
+      </ul>
+
+      <p>Don't eat any apples offered by suspicious strangers! Challenge your friends, top the scoreboard, and prove you're the fairest of them all in our <strong>Grimm Brothers Snow White challenge</strong>!</p>
+    `
+  },
+  {
+    slug: 'cinderella-quiz',
+    title: 'Cinderella Quiz: Can You Outlast the Midnight Chime?',
+    metaDescription: 'Take the ultimate Cinderella quiz! Test your knowledge on Disney World castle trivia, Basile\'s dark lore, and variant glass slippers.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/cinderella.png',
+    keywords: ['Cinderella quiz', 'Cinderella trivia', 'Cinderella castle secrets test', 'fairy godmother magic quiz', 'timeless glass slipper challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Forced into servitude by her wicked stepmother and stepsisters, a young girl finds hope in a fairy godmother and a pair of glass slippers. From the ancient Greek slave girl Rhodopis to the magical 1950 Disney animated film, the story of "Cinderella" is a universal classic. But how well do you know the details of this iconic character, her famous castles, and the dark fairy tale variants from Basile and the Grimms? Do you know what Basile's Zezolla does to her first stepmother, or how many gallons of water fill the castle moat at Disney World? Put your knowledge to the test with the ultimate <strong>Cinderella quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Cinderella Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Magic, moats, and the Clock Striking Twelve</h2>
+      <p>Cinderella's slipper is the ultimate key to her destiny, but passing our <strong>Cinderella trivia</strong> challenge requires a search for details far beyond the ball. Do you know why the suite clock inside Disney World's Cinderella Castle is permanently set to 11:59 PM? Can you name the helper animal in the ancient Chinese variant "Yè Xiàn"? These are the details that separate casual dreamers from true fairy tale scholars.</p>
+      <p class="mt-4">From the Native American warrior "Strong Wind" to the TV production starring Julie Andrews in 1957, this story is a tapestry of history. If you think you can fit into the slipper, <a href="/trivia-cinderella" class="text-primary hover:text-primary/80 font-bold">take our Cinderella castle secrets test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-cinderella" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-indigo-400">Direct Link:</span> Jump Straight to the Cinderella Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Historical and Adaptational Facts</h2>
+      <p>True experts of the Cinderella saga know that the story has many dark and surprising roots. Let's see if you can answer these in our <strong>fairy godmother magic quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Glass Origin:</strong> Some argue that the glass slipper was a mistranslation of the French word for "squirrel fur" (vair), but Charles Perrault's original 1697 text explicitly uses "verre" (glass).</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Basile's Zezolla:</strong> In the early Italian version by Giambattista Basile, Zezolla is persuaded by her governess to murder her first stepmother.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Castle Moat:</strong> The moat surrounding the Cinderella Castle at Walt Disney World holds approximately 3.37 million gallons of water.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The IV clock:</strong> The clock on the castle utilizes "IIII" instead of "IV" because the Roman numeral "IV" was not widely used for clocks until after the Colonial period.</li>
+      </ul>
+
+      <p>Don't let the carriage turn back into a pumpkin! Challenge your friends, top the global leaderboard, and show the world that your magic never ends in our <strong>timeless glass slipper challenge</strong>!</p>
+    `
+  },
+  {
+    slug: 'robin-hood-quiz',
+    title: 'Robin Hood Quiz: Test Your Skills in Sherwood Forest!',
+    metaDescription: 'Take the ultimate Robin Hood quiz! Test your knowledge on Yeoman ballads, Sherwood Forest secrets, Maid Marian, and the Merry Men.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/robin-hood.png',
+    keywords: ['Robin Hood quiz', 'Robin Hood trivia', 'Sherwood Forest legend challenge', 'Maid Marian Merry Men test', 'medieval outlaw folklore quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Deep within Sherwood Forest, a heroic outlaw stands up to the Sheriff of Nottingham and Prince John, stealing from the rich to give to the poor. The legend of Robin Hood has captivated audiences for centuries, from early medieval ballads to the 1973 Disney animation and the 1991 blockbuster film. But how well do you know the details of Robin's archery, his Merry Men, and the historical records of his band? Do you know why Friar Tuck was expelled from Fountains Abbey, or which king pardons Robin in "A Gest of Robyn Hode"? Target your thoughts with the ultimate <strong>Robin Hood quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Robin Hood Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Joining the Outlaws in Lincoln Green</h2>
+      <p>Robin's band of outlaws includes Little John, Will Scarlet, Friar Tuck, and Maid Marian, all fighting for justice. Passing our <strong>Robin Hood trivia</strong> challenge requires a sharp eye for the details of these legendary figures. Do you know Maid Marian's original first name in Anthony Munday's 16th-century plays? Can you name the wandering minstrel who joins the outlaws in the greenwood? These details will separate standard archers from true legends of the forest.</p>
+      <p class="mt-4">From the Major Oak in Sherwood Forest to the hit ballad "Everything I Do I Do It For You" by Bryan Adams, the history of Robin Hood is rich and varied. If you're ready to draw your bow, <a href="/trivia-robin-hood" class="text-primary hover:text-primary/80 font-bold">take our Sherwood Forest legend challenge now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-robin-hood" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Robin Hood Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Outlaw Legends and Ballad Facts</h2>
+      <p>True experts of medieval folklore know that the early ballads tell a different story. Let's see if you can answer these in our <strong>Maid Marian Merry Men test</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Social Status:</strong> In the early ballads like "A Gest of Robyn Hode", Robin is depicted as a "yeoman" (a commoner who was neither a knight nor a peasant), not a fallen nobleman.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Dark Death:</strong> According to traditional ballads, Robin Hood dies when he is betrayed and slowly bled to death by his aunt, the Prioress of Kirklees.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Double Forests:</strong> While Sherwood Forest is the most famous, many early ballads locate Robin Hood's exploits in Barnsdale Forest in Yorkshire.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Warning:</strong> In the ballad "Robin Hood and the Golden Arrow", it is David of Doncaster who warns Robin that the archery contest is a trap.</li>
+      </ul>
+
+      <p>Don't get caught by the Sheriff of Nottingham! Challenge your friends, hit the bullseye on the leaderboard, and prove your outlaw status in our <strong>medieval outlaw folklore quiz</strong>!</p>
+    `
+  },
+  {
+    slug: 'alice-in-wonderland-quiz',
+    title: 'Alice in Wonderland Quiz: Can You Navigate the Rabbit Hole?',
+    metaDescription: 'Take the ultimate Alice in Wonderland quiz! Test your knowledge on Lewis Carroll\'s original books, rejected titles, and Disney secrets.',
+    date: '2026-05-29',
+    author: 'Fandom Trivia Team',
+    image: '/images/alice-in-wonderland.png',
+    keywords: ['Alice in Wonderland quiz', 'Alice in Wonderland trivia', 'Lewis Carroll book secrets test', 'Mad Hatter tea party challenge', 'Queen of Hearts trial quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Curiosity leads a young girl named Alice down a rabbit hole into a whimsical, nonsense realm filled with talking creatures and playing cards. Written by Charles Lutwidge Dodgson under the pen name Lewis Carroll in 1865, "Alice's Adventures in Wonderland" is a masterpiece of literary nonsense. But how well do you actually know the details of the original novel and the 1951 Disney animated film? Do you know what Alice actually eats to shrink at the White Rabbit's house, or which character Carroll based on himself? Jump down the rabbit hole and take the ultimate <strong>Alice in Wonderland quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/selector-classic-tales" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Alice in Wonderland Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Nonsense, Croquet, and Unbirthday Celebrations</h2>
+      <p>Navigating Wonderland requires keeping your head, especially when the Queen of Hearts is shouting "Off with her head!" Passing our <strong>Alice in Wonderland trivia</strong> challenge requires a thorough understanding of the books and adaptations. Do you know which suit of cards comprises the Queen's entire deck in the original book? Can you name the color of Alice's dress in the first color edition, <em>The Nursery Alice</em>? These details separate casual dreamers from true scholars of Carroll's work.</p>
+      <p class="mt-4">From the Caterpillar smoking a hookah on a mushroom to the Caucus Race prizes, the story is a delightful puzzle. If you think you're ready to sit at the tea table, <a href="/trivia-alice-in-wonderland" class="text-primary hover:text-primary/80 font-bold">take our Lewis Carroll book secrets test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-alice-in-wonderland" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-violet-400">Direct Link:</span> Jump Straight to the Alice in Wonderland Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Wonderland Production and Literary Facts</h2>
+      <p>True fans of Lewis Carroll know that the stories are packed with mathematical puzzles and historical links. Let's see if you can answer these in our <strong>Mad Hatter tea party challenge</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Rejected Titles:</strong> Before choosing the final title, Carroll considered "Alice's Hour in Elfland" or "Alice Among the Fairies".</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Dodo Bird:</strong> Carroll based the character of the Dodo on himself, referencing his stammering when introducing himself by his real name: "Do-do-dogson".</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Yellow Dress:</strong> In the first color edition designed for younger readers, Alice actually wore a yellow dress rather than her iconic Disney blue dress.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Sequel Gap:</strong> It took Carroll six years after publishing the first book to release the sequel, "Through the Looking Glass" in 1871.</li>
+      </ul>
+
+      <p>Don't lose your head in the courtroom! Challenge your friends, top the scoreboard, and see if you can solve the riddle of the raven and the writing desk in our <strong>Queen of Hearts trial quiz</strong>!</p>
+    `
   }
 ];
