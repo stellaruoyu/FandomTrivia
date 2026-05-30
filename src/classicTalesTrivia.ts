@@ -27,15 +27,15 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 3,
-    "question": "What year was the movie released?",
+    "question": "What is the color of the slippers Dorothy wears in the 1939 film?",
     "options": [
-      "1935",
-      "1937",
-      "1939",
-      "1942"
+      "Ruby red",
+      "Silver",
+      "Emerald green",
+      "Golden yellow"
     ],
-    "answer": "1939",
-    "evidence": "The movie was released in 1939."
+    "answer": "Ruby red",
+    "evidence": "Dorothy wears ruby slippers in the 1939 film adaptation."
   },
   {
     "id": 4,
@@ -87,15 +87,15 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 8,
-    "question": "What was used to simulate the tin man's tears in the movie?",
+    "question": "What does the Scarecrow want to ask the Wizard of Oz for?",
     "options": [
-      "Strong Coffee",
-      "Engine Oil",
-      "Chocolate Syrup",
-      "Treacle"
+      "A brain",
+      "A heart",
+      "Courage",
+      "A home"
     ],
-    "answer": "Chocolate Syrup",
-    "evidence": "Chocolate Syrup was used to simulate the tin man's tears in the movie."
+    "answer": "A brain",
+    "evidence": "The Scarecrow joins Dorothy to ask the Wizard of Oz for a brain."
   },
   {
     "id": 9,
@@ -147,15 +147,15 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 13,
-    "question": "Margaret Hamilton later became a spokeswoman for which brand of coffee?",
+    "question": "What item is the Wicked Witch of the West desperately trying to retrieve from Dorothy?",
     "options": [
-      "Folger's",
-      "Chock Full O' Nuts",
-      "Taster's Choice",
-      "Maxwell House"
+      "The Ruby Slippers",
+      "The Golden Cap",
+      "The Silver Shoes",
+      "A magic wand"
     ],
-    "answer": "Maxwell House",
-    "evidence": "Margaret Hamilton later became a spokeswoman for the Maxwell House brand of coffee."
+    "answer": "The Ruby Slippers",
+    "evidence": "The Wicked Witch of the West wants to steal the ruby slippers from Dorothy."
   },
   {
     "id": 14,
@@ -186,190 +186,190 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
 export const UGLY_DUCKLING_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "In the 1939 Disney animated short 'The Ugly Duckling', what \n\ninanimate object does the duckling attempt to adopt as his new mother?",
+    "question": "Where does the mother duck build her nest in the classic story?",
     "options": [
-      "A wooden duck decoy",
-      "A painted stone",
-      "A floating log",
-      "A porcelain swan"
+      "Under some burdock leaves",
+      "In an old barn",
+      "On a sandy beach",
+      "High up in an oak tree"
     ],
-    "answer": "A wooden duck decoy",
-    "evidence": "According to 'The Ugly Duckling (1939 film) - Wikipedia', 'He \n\nencounters a wooden duck that he adopts as his new mother before its head \n\ncollides with him.'"
+    "answer": "Under some burdock leaves",
+    "evidence": "In Hans Christian Andersen's story, the mother duck built her nest under burdock leaves."
   },
   {
     "id": 2,
-    "question": "Who composed the song 'The Ugly Duckling' for the 1952 film \n\n'Hans Christian Andersen' starring Danny Kaye?",
+    "question": "How does the last, largest egg look compared to the others in the nest?",
     "options": [
-      "Frank Loesser",
-      "Albert Hay Malotte",
-      "Hans Christian Andersen",
-      "Bernard Cribbins"
+      "It is much larger and greyish",
+      "It is bright blue",
+      "It has brown speckles",
+      "It is perfectly round"
     ],
-    "answer": "Frank Loesser",
-    "evidence": "According to 'The Ugly Duckling by Danny Kaye - Songfacts', \n\n'Like \"The King's New Clothes,\" this Frank Loesser composition appears in the\n\n1952 adaptation Hans Christian Andersen...'"
+    "answer": "It is much larger and greyish",
+    "evidence": "The last egg to hatch is notably larger and has a different color."
   },
   {
     "id": 3,
-    "question": "In A.A. Milne's play 'The Ugly Duckling', what riddle does the\n\nChancellor ask that Carlo incorrectly answers with 'dog'?",
+    "question": "What does the old duck tell the mother duck that the large egg might be?",
     "options": [
-      "What is it which has four legs and mews like a cat?",
-      "What walks on four legs in the morning?",
-      "What has a bark but no bite?",
-      "What has feathers but cannot fly?"
+      "A turkey egg",
+      "A swan egg",
+      "A goose egg",
+      "A peacock egg"
     ],
-    "answer": "What is it which has four legs and mews like a cat?",
-    "evidence": "According to 'The Ugly Duckling (play) - Wikipedia', the \n\nChancellor asks, 'What is it which has four legs and mews like a cat?' and \n\nCarlo answers 'dog'."
+    "answer": "A turkey egg",
+    "evidence": "The old duck visits the nest and suggests it might be a turkey egg."
   },
   {
     "id": 4,
-    "question": "According to the Bird Watcher's General Store background \n\nstory, the story of 'The Ugly Duckling' may have been inspired by Hans \n\nChristian Andersen's feelings for which famed singer?",
+    "question": "What test does the mother duck use to prove the ugly duckling is not a turkey?",
     "options": [
-      "Jenny Lind",
-      "Gracie Fields",
-      "Princess Camilla",
-      "Laura Schlessinger"
+      "Making him swim in the water",
+      "Checking if he can fly",
+      "Seeing if he eats corn",
+      "Checking if he can gobble"
     ],
-    "answer": "Jenny Lind",
-    "evidence": "According to 'The Ugly Duckling Background Story - Bird \n\nWatcher's General Store', 'It has been suggested that his lack of self-esteem \n\nand his feelings for Lind are what inspired him to write his famous story.'"
+    "answer": "Making him swim in the water",
+    "evidence": "She takes him to the water and sees that he swims beautifully, proving he is not a turkey."
   },
   {
     "id": 5,
-    "question": "In 1969, who formulated the 'ugly duckling theorem' stating \n\nthat classification is not possible without some sort of bias?",
+    "question": "What physical feature of the ugly duckling causes the other farmyard animals to tease him?",
     "options": [
-      "Satosi Watanabe",
-      "Douglas Medin",
-      "John R. Woodward",
-      "Cullen Schaffer"
+      "He is too big and grey",
+      "He has blue feathers",
+      "He cannot quack",
+      "He has a crooked leg"
     ],
-    "answer": "Satosi Watanabe",
-    "evidence": "According to 'Ugly duckling theorem - Wikipedia', 'It was \n\nderived by Satosi Watanabe in 1969.'"
+    "answer": "He is too big and grey",
+    "evidence": "The other farmyard animals bite and push him because he is big and ugly."
   },
   {
     "id": 6,
-    "question": "Who provided the duck sounds for the 1939 Disney animated \n\nshort film 'The Ugly Duckling'?",
+    "question": "When the duckling escapes to the moor, what kind of wild birds does he meet first?",
     "options": [
-      "Clarence Nash",
-      "Walt Disney",
-      "Clyde Geronimi",
-      "Jack Cutting"
+      "Wild ducks",
+      "Wild geese",
+      "Swans",
+      "Herons"
     ],
-    "answer": "Clarence Nash",
-    "evidence": "According to the cast list in 'The Ugly Duckling (1939 film) -\n\nWikipedia', Clarence Nash is credited with starring/providing 'Duck sounds'."
+    "answer": "Wild ducks",
+    "evidence": "He flies over the hedge and lands on the moor, where the wild ducks live."
   },
   {
     "id": 7,
-    "question": "In which Disney feature film does 'The Ugly Duckling' book \n\nplay a major role as a source of catharsis for the main character?",
+    "question": "Who hunts the wild geese while the duckling is hiding on the moor?",
     "options": [
-      "Lilo & Stitch",
-      "Beauty and the Beast",
-      "The Little Mermaid",
-      "Chicken Little"
+      "Men with guns and hunting dogs",
+      "Wild foxes",
+      "An eagle",
+      "A farm boy with a net"
     ],
-    "answer": "Lilo & Stitch",
-    "evidence": "According to 'Ugly Duckling | Disney Wiki - Fandom', 'His \n\nnamesake book featuring a different version of the duckling and his family \n\nappears in Lilo & Stitch, playing a major role in the film as a source of \n\ncatharsis for Stitch.'"
+    "answer": "Men with guns and hunting dogs",
+    "evidence": "Hunters and their dogs search the marsh, terrifying the duckling."
   },
   {
     "id": 8,
-    "question": "According to a Reddit user's favorite trivia, Hans Christian \n\nAndersen supposedly considered 'The Ugly Duckling' to be an autobiography \n\nbecause he was convinced he was what?",
+    "question": "When the duckling finds shelter in a cottage during a storm, which two animals live there with the old woman?",
     "options": [
-      "The illegitimate son of royalty",
-      "A changeling child",
-      "A cursed prince",
-      "A duck transformed into a human"
+      "A tomcat and a hen",
+      "A dog and a horse",
+      "A goat and a sheep",
+      "A parrot and a mouse"
     ],
-    "answer": "The illegitimate son of royalty",
-    "evidence": "According to 'What is your favorite bit of trivia for a \n\nparticular fairy tale? - Reddit', 'Hans Christian Andersen was convinced that \n\nhe was the illegitimate son of royalty... Hence, he considered The Ugly \n\nDuckling to be an autobiography.'"
+    "answer": "A tomcat and a hen",
+    "evidence": "The cottage is inhabited by an old woman, her tomcat (whom she calls Sonnie), and her hen (called Chickabiddy)."
   },
   {
     "id": 9,
-    "question": "The 1939 color film version of 'The Ugly Duckling' won an \n\nOscar in 1940 for which category?",
+    "question": "What two things does the tomcat boast he can do, which the duckling cannot?",
     "options": [
-      "Best Short Subject (Cartoons)",
-      "Best Original Song",
-      "Best Animated Feature",
-      "Best Original Score"
+      "Arch his back and purr",
+      "Catch mice and dig",
+      "Bark and swim",
+      "Run fast and climb trees"
     ],
-    "answer": "Best Short Subject (Cartoons)",
-    "evidence": "According to 'The Ugly Duckling (1939 film) - Wikipedia', 'The\n\n1939 color film won the 1940 Oscar for Best Short Subject (Cartoons)...'"
+    "answer": "Arch his back and purr",
+    "evidence": "The tomcat asks if the duckling can arch his back or purr, declaring those are the only things that matter."
   },
   {
     "id": 10,
-    "question": "According to the Education Bureau's reading comprehension \n\ntext, why didn't the ugly duckling stay with the geese?",
+    "question": "Why does the duckling leave the cottage?",
     "options": [
-      "A hunter fired a shot and frightened them away",
-      "The geese laughed at his long beak",
-      "The mother goose chased him away",
-      "He was too cold in the pond"
+      "He longs to float on the water again",
+      "The old woman throws him out",
+      "The cat attacks him",
+      "The house catches fire"
     ],
-    "answer": "A hunter fired a shot and frightened them away",
-    "evidence": "According to 'The Ugly Duckling - Education Bureau', 'The \n\nhunter fired a shot, which did not hit any of the geese but they flew off in \n\nfear.'"
+    "answer": "He longs to float on the water again",
+    "evidence": "The duckling feels a strong urge to swim on the water, which the hen and cat mock."
   },
   {
     "id": 11,
-    "question": "In the British Council 'LearnEnglish Kids' version of the \n\nstory, how many little eggs and big eggs did Mummy Duck have in her nest?",
+    "question": "Where does the duckling get frozen during the harsh winter?",
     "options": [
-      "Five little eggs and one big egg",
-      "Four little eggs and one big egg",
-      "Three little eggs and two big eggs",
-      "Six little eggs and one big egg"
+      "In the ice of the pond",
+      "In a snowdrift in the woods",
+      "Inside a hollow tree trunk",
+      "Under a farm cart"
     ],
-    "answer": "Five little eggs and one big egg",
-    "evidence": "According to 'The ugly duckling – ANSWERS | LearnEnglish \n\nKids', the correct sentence order states: 'In her nest, she had five little \n\neggs and one big egg.'"
+    "answer": "In the ice of the pond",
+    "evidence": "The water freezes closer and closer around him until he is frozen fast in the ice."
   },
   {
     "id": 12,
-    "question": "In the ABC special 'Disney's Most Unlikely Heroes', which \n\ncomedian stated that the Ugly Duckling was his favorite character?",
+    "question": "Who rescues the frozen duckling from the ice?",
     "options": [
-      "Gilbert Gottfried",
-      "Danny Kaye",
-      "Bernard Cribbins",
-      "Clarence Nash"
+      "A peasant who breaks the ice with his wooden shoe",
+      "A kind young girl",
+      "The mother duck",
+      "A friendly dog"
     ],
-    "answer": "Gilbert Gottfried",
-    "evidence": "According to 'Ugly Duckling | Disney Wiki - Fandom', 'The Ugly\n\nDuckling was Gilbert Gottfried's favorite character as stated in the ABC \n\nspecial Disney's Most Unlikely Heroes.'"
+    "answer": "A peasant who breaks the ice with his wooden shoe",
+    "evidence": "A peasant finds the duckling, breaks the ice with his shoe, and carries him home."
   },
   {
     "id": 13,
-    "question": "In A.A. Milne's play 'The Ugly Duckling', what is the name of \n\nthe beautiful but empty-headed maid whom Princess Camilla trades places with?",
+    "question": "What happens when the duckling is taken into the peasant's cottage?",
     "options": [
-      "Dulcibella",
-      "Rosalind",
-      "Cinderella",
-      "Giselle"
+      "The children frighten him and he makes a mess in the milk and butter",
+      "The peasant's wife cooks him",
+      "He becomes best friends with the dog",
+      "He lays a golden egg"
     ],
-    "answer": "Dulcibella",
-    "evidence": "According to 'The Ugly Duckling (play) - Wikipedia', 'They \n\nforce Camilla to trade places with her beautiful but unrealistically \n\nemptyheaded maid, Dulcibella, before the prince arrives.'"
+    "answer": "The children frighten him and he makes a mess in the milk and butter",
+    "evidence": "The children want to play with him, but he gets scared, flies into the milk pan, then the butter cask, and then the meal tub."
   },
   {
     "id": 14,
-    "question": "Who composed the music for the 1985 adaptation of A.A. Milne's\n\n'The Ugly Duckling' commissioned by Laura Schlessinger?",
+    "question": "What does the duckling see in the pond in spring that makes him bow his head in preparation for death?",
     "options": [
-      "Allan Bell",
-      "Albert Hay Malotte",
-      "Frank Loesser",
-      "Simon Johnston"
+      "Three beautiful white swans",
+      "A hunter pointing a gun",
+      "A pack of wild dogs",
+      "His old family of ducks"
     ],
-    "answer": "Allan Bell",
-    "evidence": "According to 'The Ugly Duckling (play) - Wikipedia', 'Allan \n\nBell composed the music and Bev Ross wrote the libretto.' for the 1985 \n\nadaptation."
+    "answer": "Three beautiful white swans",
+    "evidence": "He sees the beautiful swans and flies toward them, expecting them to kill him because he is so ugly."
   },
   {
     "id": 15,
-    "question": "The ugly duckling theorem asserts that any two different \n\nobjects share the same number of what?",
+    "question": "What does the duckling see when he looks at his reflection in the clear water at the end?",
     "options": [
-      "Extensional properties",
-      "Boolean variables",
-      "Intensional qualities",
-      "Categorical biases"
+      "A beautiful white swan",
+      "A large grey duck",
+      "A golden eagle",
+      "A colorful peacock"
     ],
-    "answer": "Extensional properties",
-    "evidence": "According to 'Ugly duckling theorem - Wikipedia', the theorem \n\n'asserts that any two different objects share the same number of (extensional) \n\nproperties.'"
+    "answer": "A beautiful white swan",
+    "evidence": "He looks at his reflection and sees he is no longer a dark, ugly bird, but a graceful white swan."
   }
 ];
 
 export const LITTLE_RED_RIDING_HOOD_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "According to the Grimm Brothers' version, what does Little Red\n\nRiding Hood's mother explicitly tell her not to do?",
+    "question": "According to the Grimm Brothers' version, what does Little Red Riding Hood's mother explicitly tell her not to do?",
     "options": [
       "Talk to strangers",
       "Run off the path",
@@ -377,11 +377,11 @@ export const LITTLE_RED_RIDING_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Take off her hood"
     ],
     "answer": "Run off the path",
-    "evidence": "In the Grimms' tale, however, this is made explicit: 'when you\n\nare going, walk nicely and quietly and do not run off the path.'"
+    "evidence": "In the Grimms' tale, however, this is made explicit: 'when you are going, walk nicely and quietly and do not run off the path.'"
   },
   {
     "id": 2,
-    "question": "In Perrault's version of the tale, what is the final fate of \n\nLittle Red Riding Hood?",
+    "question": "In Perrault's version of the tale, what is the final fate of Little Red Riding Hood?",
     "options": [
       "A huntsman saves her",
       "She shoots the wolf",
@@ -389,47 +389,47 @@ export const LITTLE_RED_RIDING_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "She escapes by saying she needs to use the toilet"
     ],
     "answer": "The wolf eats her and she is not rescued",
-    "evidence": "In Perrault's story, the girl is eaten, and there is no happy \n\nending."
+    "evidence": "In Perrault's story, the girl is eaten, and there is no happy ending."
   },
   {
     "id": 3,
-    "question": "What is the name of the Italian folk tale version of Little \n\nRed Riding Hood?",
+    "question": "What is in the basket that Little Red Riding Hood is carrying to her grandmother?",
     "options": [
-      "The False Grandmother",
-      "The Grandmother Tiger",
-      "The Glass Mountain",
-      "The Story of Grandmother"
+      "Cake and wine",
+      "Bread and cheese",
+      "Apples and honey",
+      "Soup and medicine"
     ],
-    "answer": "The False Grandmother",
-    "evidence": "In Italy, there are several versions, like one called The \n\nFalse Grandmother."
+    "answer": "Cake and wine",
+    "evidence": "In the classic Grimm story, the mother gives her a piece of cake and a bottle of wine to take to grandmother."
   },
   {
     "id": 4,
-    "question": "Which author wrote a short story titled 'Riding the Red' that \n\nadapts Perrault's tale?",
+    "question": "Where does the grandmother live?",
     "options": [
-      "Angela Carter",
-      "Carol Ann Duffy",
-      "Nalo Hopkinson",
-      "James Thurber"
+      "Out in the wood, half a league from the village",
+      "On the other side of the high mountain",
+      "In the middle of the village square",
+      "By the bank of the river"
     ],
-    "answer": "Nalo Hopkinson",
-    "evidence": "Nalo Hopkinson's short story 'Riding the Red', a modern \n\nadaptation of Charles Perrault's 'Little Red Riding Hood'."
+    "answer": "Out in the wood, half a league from the village",
+    "evidence": "Her grandmother lived out in the wood, half a league from the village."
   },
   {
     "id": 5,
-    "question": "In the Magik Theatre production of 'Red Riding Hood' by \n\nAllison Gregory, who interrupts Wolfgang's performance?",
+    "question": "What animal does Little Red Riding Hood meet in the wood?",
     "options": [
-      "A woodcutter",
-      "A delivery driver",
-      "Little Red Riding Hood",
-      "A huntsman"
+      "A wolf",
+      "A bear",
+      "A fox",
+      "A wild boar"
     ],
-    "answer": "A delivery driver",
-    "evidence": "When Wolfgang... sets out to perform his one-man version of \n\nthe Red Riding Hood story, he’s interrupted by a delivery driver with a \n\nmysterious package..."
+    "answer": "A wolf",
+    "evidence": "She meets a wolf in the wood, but she does not know what a wicked beast he is."
   },
   {
     "id": 6,
-    "question": "What did Little Red Riding Hood do to the wolf after he fell \n\nasleep in the Grimm version?",
+    "question": "What did Little Red Riding Hood do to the wolf after he fell asleep in the Grimm version?",
     "options": [
       "Filled his belly with stones",
       "Chopped off his head",
@@ -437,122 +437,122 @@ export const LITTLE_RED_RIDING_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Shot him with a revolver"
     ],
     "answer": "Filled his belly with stones",
-    "evidence": "Red-Cap, however, quickly fetched great stones with which they\n\nfilled the wolf's belly..."
+    "evidence": "Red-Cap, however, quickly fetched great stones with which they filled the wolf's belly..."
   },
   {
     "id": 7,
-    "question": "In the 15th-century oral tradition known as 'The Story of \n\nGrandmother', what iconic item is missing from the tale?",
+    "question": "How does the wolf get into the grandmother's house?",
     "options": [
-      "The wolf",
-      "The grandmother",
-      "The red hood",
-      "The forest"
+      "He pulls the string to lift the latch",
+      "He breaks the door down",
+      "He climbs in through the window",
+      "He goes down the chimney"
     ],
-    "answer": "The red hood",
-    "evidence": "The oral tradition is known as 'The Story of Grandmother' and \n\nis missing the iconic red hood..."
+    "answer": "He pulls the string to lift the latch",
+    "evidence": "The wolf knocks, and when Granny tells him to lift the latch, he pulls the string and opens the door."
   },
   {
     "id": 8,
-    "question": "Which animated movie parody features a smart and independent \n\nyoung girl simply named 'Red'?",
+    "question": "What does the wolf do immediately after entering the grandmother's house?",
     "options": [
-      "The Company of Wolves",
-      "Hoodwinked!",
-      "Into the Woods",
-      "Revolting Rhymes"
+      "He eats the grandmother whole",
+      "He locks her in a wardrobe",
+      "He ties her to the bed",
+      "He hides under her bed"
     ],
-    "answer": "Hoodwinked!",
-    "evidence": "In the animated movie Hoodwinked!, she is seen as a young girl\n\nwho is smart, independent, and named Red."
+    "answer": "He eats the grandmother whole",
+    "evidence": "The wolf goes straight to the grandmother's bed and devours her."
   },
   {
     "id": 9,
-    "question": "In a version of the tale written by James Thurber, how does \n\nLittle Red Riding Hood deal with the wolf?",
+    "question": "What disguise does the wolf wear to deceive Little Red Riding Hood?",
     "options": [
-      "She calls a huntsman",
-      "She fills his stomach with stones",
-      "She shoots him dead with a revolver",
-      "She poisons his food"
+      "Grandmother's nightgown, cap, and spectacles",
+      "A shepherd's cloak",
+      "A woolen sheepskin",
+      "A woodcutter's coat"
     ],
-    "answer": "She shoots him dead with a revolver",
-    "evidence": "So she pulled a revolver out of her picnic basket and shot the\n\nwolf dead."
+    "answer": "Grandmother's nightgown, cap, and spectacles",
+    "evidence": "He puts on her clothes, dresses himself in her cap, and lies in bed."
   },
   {
     "id": 10,
-    "question": "What book won the 1990 Randolph Caldecott Medal for its \n\nwatercolor and pastel pictures?",
+    "question": "What is the first body part Little Red Riding Hood comments on when she sees the disguised wolf?",
     "options": [
-      "Lon Po Po",
-      "The Company of Wolves",
-      "Little Red Cap",
-      "Revolting Rhymes"
+      "His ears",
+      "His eyes",
+      "His hands",
+      "His teeth"
     ],
-    "answer": "Lon Po Po",
-    "evidence": "Lon Po Po is an old Chinese version of Little Red Riding Hood.\n\nIt won the 1990 Randolph Caldecott Medal for its beautiful watercolor and \n\npastel pictures by Young."
+    "answer": "His ears",
+    "evidence": "She says: 'Oh! grandmother, what big ears you have!'"
   },
   {
     "id": 11,
-    "question": "In the primary school worksheet version of the story by South \n\nMorningside Primary School, what does the wolf do with Granny?",
+    "question": "Why does the wolf say he has such big eyes?",
     "options": [
-      "Eats her whole",
-      "Locks her in the wardrobe",
-      "Chases her into the woods",
-      "Ties her to a chair"
+      "To see you the better",
+      "To cry for you",
+      "To watch the forest",
+      "To scare the hunters"
     ],
-    "answer": "Locks her in the wardrobe",
-    "evidence": "The wolf ran to Granny's house and locked Granny in the \n\nwardrobe!"
+    "answer": "To see you the better",
+    "evidence": "'The better to see you with, my child.'"
   },
   {
     "id": 12,
-    "question": "Who composed the opera 'Le petit chaperon rouge' that was \n\nfirst performed in Paris in 1818?",
+    "question": "Who hears the wolf snoring loudly and decides to check inside the house?",
     "options": [
-      "Charles Perrault",
-      "François Richard Fleury",
-      "François Adrien Boieldieu",
-      "James Orchard Halliwell-Phillipps"
+      "A huntsman",
+      "A woodcutter",
+      "Red Riding Hood's mother",
+      "A passing shepherd"
     ],
-    "answer": "François Adrien Boieldieu",
-    "evidence": "François Adrien Boieldieu (1775 - 1834) created an opera based\n\non the story. The opera is called Le petit chaperon rouge. It was first \n\nperformed in Paris in 1818."
+    "answer": "A huntsman",
+    "evidence": "The huntsman was just passing the house, and thought to himself: 'How the old woman is snoring! I must see if she wants anything.'"
   },
   {
     "id": 13,
-    "question": "In Roald Dahl's 'Revolting Rhymes', what format is used to \n\nretell the story of Little Red Riding Hood?",
+    "question": "Why doesn't the huntsman shoot the wolf immediately when he finds him in the bed?",
     "options": [
-      "A play",
-      "A funny poem",
-      "A short novel",
-      "An opera"
+      "He thinks the wolf might have eaten the grandmother, and she can still be saved",
+      "He has run out of bullets",
+      "He is afraid of the wolf",
+      "He wants to capture the wolf alive"
     ],
-    "answer": "A funny poem",
-    "evidence": "Roald Dahl re-told the story in a funny poem about Little Red \n\nRiding Hood. It is part of his collection called Revolting Rhymes."
+    "answer": "He thinks the wolf might have eaten the grandmother, and she can still be saved",
+    "evidence": "He thought the wolf might have devoured the grandmother, and that she might still be saved, so he did not fire."
   },
   {
     "id": 14,
-    "question": "According to the Magik Theatre resource guide, what ingredient\n\nis poured over the poked holes in the Little Red Riding Hood cake?",
+    "question": "What tool does the huntsman use to free Little Red Riding Hood and her grandmother from the wolf?",
     "options": [
-      "Cherry syrup",
-      "Strawberry gelatin mixture",
-      "Red food coloring",
-      "Raspberry jam"
+      "Scissors",
+      "An axe",
+      "A knife",
+      "A saw"
     ],
-    "answer": "Strawberry gelatin mixture",
-    "evidence": "Slowly pour the gelatin mixture over the cake, letting it soak\n\ninto the holes."
+    "answer": "Scissors",
+    "evidence": "He took a pair of scissors and began to cut open the stomach of the sleeping wolf."
   },
   {
     "id": 15,
-    "question": "In a 1927 children's novel by Sir Compton MacKenzie, 'Santa \n\nClaus in Summer', who is Red Riding Hood's father?",
+    "question": "In a second story branch in the Grimm version, how do Red Riding Hood and Granny defeat a second wolf?",
     "options": [
-      "The Woodsman",
-      "A highwayman named Riding Hood",
-      "The huntsman",
-      "A tailor"
+      "They drown him by luring him to a trough of sausage water",
+      "They lock him out in the cold",
+      "They hit him with a broom",
+      "They shoot him together"
     ],
-    "answer": "A highwayman named Riding Hood",
-    "evidence": "In 1927, Sir Compton MacKenzie used Little Red Riding Hood as \n\na main character in his children's novel 'Santa Claus in Summer.' In this book,\n\nRed Riding Hood is the daughter of a highwayman named Riding Hood."
+    "answer": "They drown him by luring him to a trough of sausage water",
+    "evidence": "They boil sausages and fill a big stone trough, and the smell lures the wolf to slip off the roof and drown."
   }
 ];
 
 export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "What job did the Evil Queen force Snow White to perform \n\nbecause of her jealousy?",
+    "question": "What job did the Evil Queen force Snow White to perform because of her jealousy?",
     "options": [
       "Scullery maid",
       "Cook",
@@ -560,23 +560,23 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Laundress"
     ],
     "answer": "Scullery maid",
-    "evidence": "The Evil Queen was jealous of Snow White and her beauty so she\n\nmade her a scullery maid. (Source 2)"
+    "evidence": "The Evil Queen was jealous of Snow White and her beauty so she made her a scullery maid."
   },
   {
     "id": 2,
-    "question": "In the original Brothers Grimm fairy tale, what body parts did\n\nthe Evil Queen ask the huntsman to bring back as proof of Snow White's death?",
+    "question": "Who does the Magic Mirror name as the fairest in the land, triggering the Queen's jealous rage?",
     "options": [
-      "Her heart and liver",
-      "Her head",
-      "A lock of her hair and her heart",
-      "Her hands"
+      "Snow White",
+      "The Evil Queen",
+      "The Prince",
+      "Cinderella"
     ],
-    "answer": "Her heart and liver",
-    "evidence": "She tells him to bring back the girl's heart and liver. \n\n(Source 10)"
+    "answer": "Snow White",
+    "evidence": "The Magic Mirror reveals that Snow White is now the fairest in the land, sparking the Queen's jealousy."
   },
   {
     "id": 3,
-    "question": "What animal did the huntsman actually kill instead of Snow \n\nWhite to trick the queen?",
+    "question": "What animal did the huntsman actually kill instead of Snow White to trick the queen?",
     "options": [
       "A wild boar",
       "A dog",
@@ -584,11 +584,11 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "A bear"
     ],
     "answer": "A wild boar",
-    "evidence": "He brings back the organs of a boar instead, which the queen \n\neats. (Source 10)"
+    "evidence": "He brings back the organs of a boar instead, which the queen eats."
   },
   {
     "id": 4,
-    "question": "What type of pie does Snow White offer to bake for the \n\ndwarfs?",
+    "question": "What type of pie does Snow White offer to bake for the dwarfs?",
     "options": [
       "Gooseberry pie",
       "Apple pie",
@@ -596,23 +596,23 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Pecan pie"
     ],
     "answer": "Gooseberry pie",
-    "evidence": "What type of pie does Snow White offer to bake? c) gooseberry \n\npie (Source 9)"
+    "evidence": "Snow White offers to bake gooseberry pie for the dwarfs."
   },
   {
     "id": 5,
-    "question": "Who voiced Snow White in the 1937 Disney animated film?",
+    "question": "How does the Evil Queen find out that Snow White is still alive in the forest?",
     "options": [
-      "Adriana Caselotti",
-      "Lucille La Verne",
-      "Marguerite Clark",
-      "Shirley Temple"
+      "The Magic Mirror tells her",
+      "The Huntsman confesses",
+      "One of the dwarfs tells her",
+      "Her pet raven spots Snow White"
     ],
-    "answer": "Adriana Caselotti",
-    "evidence": "Snow White - Adriana Caselotti (1916–1997) (Source 6)"
+    "answer": "The Magic Mirror tells her",
+    "evidence": "The Magic Mirror reveals to the Queen that Snow White is still alive and living with the dwarfs."
   },
   {
     "id": 6,
-    "question": "What was the fate of the Evil Queen at the end of the Disney \n\nmovie 'Snow White and the Seven Dwarfs'?",
+    "question": "What was the fate of the Evil Queen at the end of the Disney movie 'Snow White and the Seven Dwarfs'?",
     "options": [
       "Crushed by boulder",
       "Forced to dance in red-hot iron shoes",
@@ -620,44 +620,44 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Turned into a frog"
     ],
     "answer": "Crushed by boulder",
-    "evidence": "What is the Queen's fate after tricking Snow White with the \n\npoisoned apple? Crushed by boulder (Source 7)"
+    "evidence": "The Queen's fate after tricking Snow White with the poisoned apple is being crushed by a boulder."
   },
   {
     "id": 7,
-    "question": "During the making of 'Snow White', Sneezy was a last-minute \n\nreplacement for which dwarf name?",
+    "question": "What does the Queen use to poison the apple?",
     "options": [
-      "Jumpy",
-      "Wheezy",
-      "Pudgy",
-      "Silly"
+      "A sleeping death potion",
+      "Snake venom",
+      "A toxic mushroom",
+      "Poisonous nightshade"
     ],
-    "answer": "Jumpy",
-    "evidence": "During the making of \"Snow White,\" Sneezy was a last-minute \n\nreplacement for? Answer: Jumpy (Source 2)"
+    "answer": "A sleeping death potion",
+    "evidence": "The Queen brews a potion of 'Sleeping Death' to dip the apple in."
   },
   {
     "id": 8,
-    "question": "What did the Wicked Queen actually say to the mirror in the \n\n1937 Disney film?",
+    "question": "What did the Wicked Queen actually say to the mirror in the 1937 Disney film?",
     "options": [
       "Magic mirror on the wall, who is the fairest one of all?",
       "Mirror, mirror on the wall, who is the fairest of them all?",
       "Magic mirror on the wall, who is the fairest of them all?",
       "Mirror of magic on the wall, tell me who's the fairest of them all?",
-      "Magic mirror on the wall, who is the fairest one of \n\nall?"
+      "Magic mirror on the wall, who is the fairest one of all?"
     ],
-    "answer": "Magic mirror on the wall, who is the fairest one of \n\nall?",
-    "evidence": "The wicked Queen really said \"Magic mirror on the wall, who \n\nis the fairest one of all?\" (Source 5)"
+    "answer": "Magic mirror on the wall, who is the fairest one of all?",
+    "evidence": "The wicked Queen really said 'Magic mirror on the wall, who is the fairest one of all?'"
   },
   {
     "id": 9,
-    "question": "How many Academy Award statuettes was Walt Disney presented \n\nwith for Snow White?",
+    "question": "What animal friends guide the Prince to Snow White's glass coffin?",
     "options": [
-      "One normal sized statuette and seven miniature ones",
-      "Three normal sized statuettes",
-      "Eight normal sized statuettes",
-      "One normal sized statuette"
+      "Forest animals like deer and birds",
+      "The dwarfs' horses",
+      "The Queen's hunting dogs",
+      "None - he finds it by himself"
     ],
-    "answer": "One normal sized statuette and seven miniature ones",
-    "evidence": "Shirley Temple presented Walt Disney with a unique honorary \n\nOscar – one normal sized statuette and seven miniature ones! (Source 8)"
+    "answer": "Forest animals like deer and birds",
+    "evidence": "The forest animals lead the Prince to the clearing where the dwarfs are mourning."
   },
   {
     "id": 10,
@@ -669,32 +669,31 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Sleepy"
     ],
     "answer": "Doc",
-    "evidence": "Which of the Dwarfs wears glasses? b) Doc (Source 9)"
+    "evidence": "Doc is the only dwarf who wears glasses."
   },
   {
     "id": 11,
-    "question": "What real-life historical figure is suggested to have inspired\n\nthe story of Snow White?",
+    "question": "What does the Queen transform herself into to deliver the poisoned apple?",
     "options": [
-      "Margaretha von Waldeck",
-      "Mary of Hungary",
-      "Queen Brangoma",
-      "Mary Somerville"
+      "An old peddler woman",
+      "A black raven",
+      "A forest fairy",
+      "A dwarf"
     ],
-    "answer": "Margaretha von Waldeck",
-    "evidence": "Research has suggested that the origins of Snow White could \n\nactually lie in history and may have been inspired by the countess Margaretha \n\nvon Waldeck (Source 8)"
+    "answer": "An old peddler woman",
+    "evidence": "The Queen drinks a potion to transform herself into an ugly old peddler woman."
   },
   {
     "id": 12,
-    "question": "In the original Brothers Grimm fairy tale, how does Snow White\n\nwake up from her death-like slumber in the coffin?",
+    "question": "What is the only antidote to the 'Sleeping Death' caused by the poisoned apple?",
     "options": [
-      "The coffin is shaken, dislodging the apple in her throat",
-      "The Prince kisses her",
-      "The dwarfs cut the laces of her corset",
-      "True love's hug",
-      "The coffin is shaken, dislodging the apple in her \n\nthroat"
+      "Love's first kiss",
+      "A magic flower",
+      "Water from a pure spring",
+      "The Queen's defeat"
     ],
-    "answer": "The coffin is shaken, dislodging the apple in her \n\nthroat",
-    "evidence": "As the servants carry her, the coffin is shaken, dislodging \n\nthe apple in her throat. (Source 10)"
+    "answer": "Love's first kiss",
+    "evidence": "The text in the Queen's spellbook states that the victim of the Sleeping Death can only be revived by Love's First Kiss."
   },
   {
     "id": 13,
@@ -706,7 +705,7 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Emeralds & sapphires"
     ],
     "answer": "Diamonds & rubies",
-    "evidence": "When the seven dwarfs are seen for the first time, they are \n\nhard at work in the mine. What stones are they mining? Answer: Diamonds & \n\nrubies (Source 2)"
+    "evidence": "When the seven dwarfs are seen for the first time, they are hard at work in the mine digging for diamonds and rubies."
   },
   {
     "id": 14,
@@ -718,210 +717,209 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
       "Happy"
     ],
     "answer": "Dopey",
-    "evidence": "Which Dwarf does not have a beard? d) Dopey (Source 9)"
+    "evidence": "Dopey is the only dwarf without a beard."
   },
   {
     "id": 15,
-    "question": "Who provided the voice for the Magic Mirror in the 1937 Disney\n\nanimated film?",
+    "question": "What song does Snow White sing to the animals while cleaning the dwarfs' cottage?",
     "options": [
-      "Moroni Olsen",
-      "Stuart Buchanan",
-      "Billy Gilbert",
-      "Roy Atwell"
+      "Whistle While You Work",
+      "Some Day My Prince Will Come",
+      "With a Smile and a Song",
+      "I'm Wishing"
     ],
-    "answer": "Moroni Olsen",
-    "evidence": "Magic Mirror - Moroni Olsen (1889–1954) (Source 6)"
+    "answer": "Whistle While You Work",
+    "evidence": "Snow White sings 'Whistle While You Work' while cleaning the cottage."
   }
 ];
 
 export const CINDERELLA_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "How tall is Disney World's Cinderella Castle when measured \n\nfrom the concrete bottom of the water moat?",
+    "question": "Who are Cinderella's two wicked stepsisters in the Disney film?",
     "options": [
-      "189 feet",
-      "190 feet",
-      "100 feet",
-      "197 feet"
+      "Anastasia and Drizella",
+      "Lucinda and Prudence",
+      "Mary and Nora",
+      "Clarissa and Beatrice"
     ],
-    "answer": "189 feet",
-    "evidence": "According to the Reader's Digest article, 'It's 189 feet tall \n\nwhen measured from the concrete bottom of the water moat.'"
+    "answer": "Anastasia and Drizella",
+    "evidence": "Cinderella's stepsisters are named Anastasia and Drizella."
   },
   {
     "id": 2,
-    "question": "What time does the grandfather clock inside the Disney World \n\nCinderella Castle Suite forever display?",
+    "question": "What is the name of Cinderella's loyal dog?",
     "options": [
-      "11:59 p.m.",
-      "Midnight",
-      "12:01 a.m.",
-      "10:00 p.m."
+      "Bruno",
+      "Major",
+      "Buster",
+      "Toby"
     ],
-    "answer": "11:59 p.m.",
-    "evidence": "The suite's grandfather clock doesn't actually work. It is \n\nforever 11:59 p.m. inside the suite, so unlike Cinderella's magic, the guests' \n\nmagic never has to end."
+    "answer": "Bruno",
+    "evidence": "Cinderella's dog is named Bruno."
   },
   {
     "id": 3,
-    "question": "Considered one of the earliest known versions of the \n\nCinderella story, where did the slave girl Rhodopis originally come from?",
+    "question": "What is the name of the wicked stepmother's fat, conniving cat?",
     "options": [
-      "Greece",
-      "Rome",
-      "Persia",
-      "Egypt"
+      "Lucifer",
+      "Diablo",
+      "Gideon",
+      "Azrael"
     ],
-    "answer": "Greece",
-    "evidence": "Although her being sold and becoming a slave to Egyptians \n\nmight remind you of the Biblical Joseph account, Rhodopis came from Greece."
+    "answer": "Lucifer",
+    "evidence": "The stepmother's cat is named Lucifer."
   },
   {
     "id": 4,
-    "question": "What is the true origin of Cinderella's glass slippers in \n\nCharles Perrault's 1697 version of the tale?",
+    "question": "What are the names of the two main mice who help Cinderella?",
     "options": [
-      "They were a deliberate invention by Perrault.",
-      "They were a mistranslation of the word for 'squirrel fur'.",
-      "They were based on an ancient Greek myth.",
-      "They were adapted from the Brothers Grimm version."
+      "Jaq and Gus",
+      "Bernard and Bianca",
+      "Mickey and Morty",
+      "Timothy and Roquefort"
     ],
-    "answer": "They were a deliberate invention by Perrault.",
-    "evidence": "The principal difficulty with the standard explanation is that\n\npantoufle de verre appears in Perrault's original text, so this is definitely \n\nnot a question of mistranslation... The glass slipper, then... seems to be one \n\nof Perrault's own contributions to the Cinderella story."
+    "answer": "Jaq and Gus",
+    "evidence": "Jaq and Gus are the two primary mice who assist Cinderella."
   },
   {
     "id": 5,
-    "question": "In the ancient Chinese version of Cinderella called 'Yè Xiàn,'\n\nwhat animal befriends the main character?",
+    "question": "What does the Fairy Godmother turn the pumpkin into?",
     "options": [
-      "A fish",
-      "A dragon",
-      "A panda",
-      "An elephant"
+      "A carriage",
+      "A gown",
+      "A glass slipper",
+      "A horse"
     ],
-    "answer": "A fish",
-    "evidence": "She befriended a large fish, which seemed to be either the \n\nreincarnation of her biological mother or a gift sent to her by her mother."
+    "answer": "A carriage",
+    "evidence": "The Fairy Godmother transforms a pumpkin into a beautiful carriage."
   },
   {
     "id": 6,
-    "question": "How does the 1857 edition of the Grimm Brothers' 'Cinderella' \n\nnotably differ from their 1812 version?",
+    "question": "What animals does the Fairy Godmother transform into the horses for the carriage?",
     "options": [
-      "Cinderella's father calls her a 'deformed little Cinderella.'",
-      "Cinderella has glass slippers instead of gold.",
-      "Cinderella's mother doesn't die.",
-      "The stepsisters don't get their eyes pecked out.",
-      "Cinderella's father calls her a 'deformed little \n\nCinderella.'"
+      "Four mice",
+      "Two lizards",
+      "A horse",
+      "A dog"
     ],
-    "answer": "Cinderella's father calls her a 'deformed little \n\nCinderella.'",
-    "evidence": "In the 1857 edition, her father is quoted as saying, \n\n'No...There is only a deformed little Cinderella from my first wife, but she \n\ncannot possibly be the bride.'"
+    "answer": "Four mice",
+    "evidence": "The Fairy Godmother turns four mice into carriage horses."
   },
   {
     "id": 7,
-    "question": "Why is the number '4' written as 'IIII' instead of 'IV' on the\n\nDisney World Cinderella Castle's clock?",
+    "question": "What does the horse Major get transformed into?",
     "options": [
-      "It is historically accurate to the colonial period.",
-      "It was a construction error.",
-      "It represents the four Disney parks.",
-      "Walt Disney preferred that style."
+      "The coachman",
+      "A carriage horse",
+      "The footman",
+      "The Prince's guard"
     ],
-    "answer": "It is historically accurate to the colonial period.",
-    "evidence": "The number '4' on the castle's clock is written as 'IIII' \n\ninstead of 'IV' but this isn't an error. Instead, it is historically accurate \n\nbecause 'IV' wasn't used until after the Colonial Period."
+    "answer": "The coachman",
+    "evidence": "Major the horse is transformed into the coachman."
   },
   {
     "id": 8,
-    "question": "Who starred as Cinderella in the original 1957 television \n\npresentation of Rodgers & Hammerstein's Cinderella?",
+    "question": "What animal is transformed into the footman?",
     "options": [
-      "Julie Andrews",
-      "Lesley Ann Warren",
-      "Brandy",
-      "Whitney Houston"
+      "Bruno the dog",
+      "Gus the mouse",
+      "Lucifer the cat",
+      "A barn owl"
     ],
-    "answer": "Julie Andrews",
-    "evidence": "Originally presented on television in 1957 starring Julie \n\nAndrews, Rodgers & Hammerstein's Cinderella was the most widely viewed program \n\nin the history of the medium."
+    "answer": "Bruno the dog",
+    "evidence": "Bruno the dog is transformed into the footman."
   },
   {
     "id": 9,
-    "question": "In the Scottish variant of Cinderella called 'Rashin-Coatie,' \n\nwhat creature acts in a similar role to a fairy godmother?",
+    "question": "What is the magical phrase the Fairy Godmother speaks to cast her spells?",
     "options": [
-      "A male calf",
-      "A female sheep",
-      "A crab",
-      "A golden fish"
+      "Bibbidi-Bobbidi-Boo",
+      "Abracadabra",
+      "Alakazam",
+      "Hocus Pocus"
     ],
-    "answer": "A male calf",
-    "evidence": "In 'Rashin-Coatie', a Scottish variant of 'Cinderella', there \n\nwas a creature who helped the Cinderella character... It was a male calf."
+    "answer": "Bibbidi-Bobbidi-Boo",
+    "evidence": "The Fairy Godmother sings and speaks 'Bibbidi-Bobbidi-Boo' to perform her magic."
   },
   {
     "id": 10,
-    "question": "What materials were actually used to build the Cinderella \n\nCastle at Disney World?",
+    "question": "At what exact time will the Fairy Godmother's magic expire?",
     "options": [
-      "Steel, concrete, plaster, and fiberglass",
-      "Marble and brick",
-      "Stone and wood",
-      "Solid concrete and brick"
+      "Midnight",
+      "11:00 p.m.",
+      "1:00 a.m.",
+      "Sunrise"
     ],
-    "answer": "Steel, concrete, plaster, and fiberglass",
-    "evidence": "Magical construction makes the Cinderella Castle look like \n\nit's made of marble, but it's actually made of steel, concrete, plaster, and \n\nfiberglass."
+    "answer": "Midnight",
+    "evidence": "The spell will be broken and everything will return to normal at the stroke of midnight."
   },
   {
     "id": 11,
-    "question": "In Giambattista Basile's Italian version of Cinderella, what \n\ndoes the main character, Zezolla, do to her first stepmother?",
+    "question": "Which item of Cinderella's outfit does not change back to normal after midnight?",
     "options": [
-      "She murders her.",
-      "She forgives her.",
-      "She poisons her daughters.",
-      "She banishes her from the kingdom."
+      "Her glass slippers",
+      "Her ball gown",
+      "Her carriage",
+      "Her horses"
     ],
-    "answer": "She murders her.",
-    "evidence": "Zezolla's beloved governess, the woman who became her second \n\nstepmother, actually persuaded Zezolla to murder her first stepmother."
+    "answer": "Her glass slippers",
+    "evidence": "Only the glass slippers remain as they were after the magic fades."
   },
   {
     "id": 12,
-    "question": "In the Vietnamese Cinderella story 'Tấm and Cám', what does \n\nTấm do to her half-sister Cám at the end of the story?",
+    "question": "Why does the King want the Prince to marry?",
     "options": [
-      "Pours boiling water on her",
-      "Turns her into a bird",
-      "Forgives her and lets her live in the palace",
-      "Exiles her to an island"
+      "He wants grandchildren before he dies",
+      "He wants to unite two kingdoms",
+      "The Prince is getting too old",
+      "He wants to hold a grand feast"
     ],
-    "answer": "Pours boiling water on her",
-    "evidence": "She then commanded the royal guards to pour boiling water on \n\nCám."
+    "answer": "He wants grandchildren before he dies",
+    "evidence": "The King is eager to see the Prince married and have grandchildren."
   },
   {
     "id": 13,
-    "question": "In a Native American version of Cinderella, what is the name \n\nof the warrior who could make himself invisible?",
+    "question": "What does the Grand Duke do to find the mysterious girl from the ball?",
     "options": [
-      "Strong Wind",
-      "Rushing Water",
-      "Great Bear",
-      "Golden Eagle"
+      "He has every maiden in the kingdom try on the glass slipper",
+      "He paints a portrait of her",
+      "He searches the forest",
+      "He holds another ball"
     ],
-    "answer": "Strong Wind",
-    "evidence": "There is a 'Cinderella' story in which a warrior could make \n\nhimself invisible. His name was Strong Wind."
+    "answer": "He has every maiden in the kingdom try on the glass slipper",
+    "evidence": "The Grand Duke travels the kingdom to find the lady whose foot fits the glass slipper."
   },
   {
     "id": 14,
-    "question": "What does the Italian word 'cenere,' the root of the name \n\n'Cenerentola' (Cinderella), mean?",
+    "question": "Where does the stepmother lock Cinderella to prevent her from trying on the slipper?",
     "options": [
-      "Ash",
-      "Servant",
-      "Glass",
-      "Pumpkin"
+      "In the attic room",
+      "In the cellar",
+      "In the pantry",
+      "In the garden shed"
     ],
-    "answer": "Ash",
-    "evidence": "The name 'Cenerentola' derives from the Italian word cenere \n\n'ash, cinder,' an allusion to the fact that servants and scullions of the time \n\nwere usually soiled with ash."
+    "answer": "In the attic room",
+    "evidence": "The stepmother locks Cinderella in her bedroom at the top of the tower."
   },
   {
     "id": 15,
-    "question": "Approximately how many gallons of water fill the moat \n\nsurrounding Disney World's Cinderella Castle?",
+    "question": "How do the mice get the key to free Cinderella from the locked room?",
     "options": [
-      "3.37 million gallons",
-      "1 million gallons",
-      "5.5 million gallons",
-      "10 million gallons"
+      "They steal it from the stepmother's pocket while she is distracted",
+      "They find it in the garden",
+      "They break the lock with a tool",
+      "They convince Bruno to bite the door"
     ],
-    "answer": "3.37 million gallons",
-    "evidence": "The castle's moat is filled with approximately 3.37 million \n\ngallons of water."
+    "answer": "They steal it from the stepmother's pocket while she is distracted",
+    "evidence": "Jaq and Gus pull the key out of the stepmother's dress pocket and drag it up the stairs."
   }
 ];
 
 export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "According to early ballads and legends, what is the name of \n\nRobin Hood's forest home located in Yorkshire?",
+    "question": "According to early ballads and legends, what is the name of Robin Hood's forest home located in Yorkshire?",
     "options": [
       "Sherwood Forest",
       "Black Forest",
@@ -929,11 +927,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "The Lost Forest"
     ],
     "answer": "Barnsdale Forest",
-    "evidence": "While Sherwood is famous, early ballads set events in the \n\nmedieval forest of Barnsdale in Yorkshire, and Robin Hood identifies himself as\n\n'Robin Hood of Barnesdale' in the ballad 'Robin Hood and Guy of Gisborne'."
+    "evidence": "While Sherwood is famous, early ballads set events in the medieval forest of Barnsdale in Yorkshire, and Robin Hood identifies himself as 'Robin Hood of Barnesdale' in the ballad 'Robin Hood and Guy of Gisborne'."
   },
   {
     "id": 2,
-    "question": "In the 1973 animated Disney film 'Robin Hood', what animal \n\nportrays the title character?",
+    "question": "In the 1973 animated Disney film 'Robin Hood', what animal portrays the title character?",
     "options": [
       "A bear",
       "A fox",
@@ -941,11 +939,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "A wolf"
     ],
     "answer": "A fox",
-    "evidence": "In the 1973 animated Disney film, 'Robin Hood', the title \n\ncharacter is an anthropomorphic vixen (female fox)/fox."
+    "evidence": "In the 1973 animated Disney film, 'Robin Hood', the title character is an anthropomorphic vixen (female fox)/fox."
   },
   {
     "id": 3,
-    "question": "In the 1991 film 'Robin Hood: Prince of Thieves', which \n\nunusual character is added to the band of Merry Men?",
+    "question": "In the 1991 film 'Robin Hood: Prince of Thieves', which unusual character is added to the band of Merry Men?",
     "options": [
       "Friar Tuck",
       "Azeem",
@@ -953,11 +951,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Allen"
     ],
     "answer": "Azeem",
-    "evidence": "Azeem, a Moor from the Holy Lands, is added to the band of \n\nMerry Men in the 1991 film version."
+    "evidence": "Azeem, a Moor from the Holy Lands, is added to the band of Merry Men in the 1991 film version."
   },
   {
     "id": 4,
-    "question": "In the early ballads, such as 'A Gest of Robyn Hode', what is \n\nRobin Hood's social status?",
+    "question": "In the early ballads, such as 'A Gest of Robyn Hode', what is Robin Hood's social status?",
     "options": [
       "Earl",
       "Yeoman",
@@ -965,11 +963,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Knight"
     ],
     "answer": "Yeoman",
-    "evidence": "The early ballads are quite clear on Robin Hood's social \n\nstatus: he is a yeoman, which referred to commoners who were neither a knight \n\nnor a peasant."
+    "evidence": "The early ballads are quite clear on Robin Hood's social status: he is a yeoman, which referred to commoners who were neither a knight nor a peasant."
   },
   {
     "id": 5,
-    "question": "Which king pardons Robin Hood in the early ballad 'A Gest of \n\nRobyn Hode'?",
+    "question": "Which king pardons Robin Hood in the early ballad 'A Gest of Robyn Hode'?",
     "options": [
       "King Richard I",
       "King John",
@@ -977,7 +975,7 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "King Henry II"
     ],
     "answer": "King Edward",
-    "evidence": "The early compilation, 'A Gest of Robyn Hode', names the king \n\nas 'Edward'; and while it does show Robin Hood accepting the king's pardon, he \n\nlater repudiates it."
+    "evidence": "The early compilation, 'A Gest of Robyn Hode', names the king as 'Edward'; and while it does show Robin Hood accepting the king's pardon, he later repudiates it."
   },
   {
     "id": 6,
@@ -989,11 +987,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Emerald Green"
     ],
     "answer": "Lincoln Green",
-    "evidence": "They traditionally wear Lincoln Green to blend into the \n\ntrees."
+    "evidence": "They traditionally wear Lincoln Green to blend into the trees."
   },
   {
     "id": 7,
-    "question": "According to the traditional legend and ballads, how did Robin\n\nHood die?",
+    "question": "According to the traditional legend and ballads, how did Robin Hood die?",
     "options": [
       "Executed by the Sheriff of Nottingham",
       "Slain in battle during the Crusades",
@@ -1001,23 +999,23 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Bled to death by the Prioress of Kirklees"
     ],
     "answer": "Bled to death by the Prioress of Kirklees",
-    "evidence": "Robin went to Kirklees Priory to be treated by his aunt, the \n\nPrioress, but she betrayed him and slowly bled him to death."
+    "evidence": "Robin went to Kirklees Priory to be treated by his aunt, the Prioress, but she betrayed him and slowly bled him to death."
   },
   {
     "id": 8,
-    "question": "Who performed the hit song 'Everything I Do I Do It For You' \n\nfrom the 1991 film 'Robin Hood, Prince of Thieves'?",
+    "question": "Who is Robin Hood's main companion and right-hand man?",
     "options": [
-      "Elton John",
-      "Paul McCartney",
-      "Bryan Adams",
-      "Phil Collins"
+      "Little John",
+      "Friar Tuck",
+      "Will Scarlet",
+      "Alan-a-Dale"
     ],
-    "answer": "Bryan Adams",
-    "evidence": "'Everything I Do I Do It For You' by Bryan Adams was the hit \n\nsong from the 1991 film 'Robin Hood, Prince of Thieves'."
+    "answer": "Little John",
+    "evidence": "Little John is Robin Hood's trusted second-in-command and closest friend."
   },
   {
     "id": 9,
-    "question": "Which famous tree in Sherwood Forest is said to have been the \n\nlocation for Robin's hideout?",
+    "question": "Which famous tree in Sherwood Forest is said to have been the location for Robin's hideout?",
     "options": [
       "The Outlaw's Oak",
       "The Major Oak",
@@ -1025,19 +1023,19 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "The Royal Oak"
     ],
     "answer": "The Major Oak",
-    "evidence": "The Major Oak, which resides in the heart of Sherwood Forest, \n\nis popularly believed to have been used by the Merry Men as a hide-out."
+    "evidence": "The Major Oak, which resides in the heart of Sherwood Forest, is popularly believed to have been used by the Merry Men as a hide-out."
   },
   {
     "id": 10,
-    "question": "Which of these actors has never played the role of Robin \n\nHood?",
+    "question": "What is the Sheriff of Nottingham's primary job?",
     "options": [
-      "Tom Hanks",
-      "Kevin Costner",
-      "Douglas Fairbanks",
-      "Russell Crowe"
+      "Collecting heavy taxes from the poor",
+      "Guarding the castle gates",
+      "Training the King's archers",
+      "Hunting wild animals in Sherwood"
     ],
-    "answer": "Tom Hanks",
-    "evidence": "Tom Hanks has never played the role, while Costner, Fairbanks,\n\nand Crowe have all portrayed Robin Hood."
+    "answer": "Collecting heavy taxes from the poor",
+    "evidence": "The Sheriff of Nottingham relentlessly collects high taxes from the townspeople."
   },
   {
     "id": 11,
@@ -1049,11 +1047,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Quarterstaff"
     ],
     "answer": "Bow",
-    "evidence": "Robin Hood is traditionally depicted as being exceptional with\n\na bow (specifically, the English longbow)."
+    "evidence": "Robin Hood is traditionally depicted as being exceptional with a bow (specifically, the English longbow)."
   },
   {
     "id": 12,
-    "question": "According to the ballad 'Robin Hood and the Golden Arrow', who\n\nwarns Robin Hood that the archery contest is a trap?",
+    "question": "According to the ballad 'Robin Hood and the Golden Arrow', who warns Robin Hood that the archery contest is a trap?",
     "options": [
       "Little John",
       "Maid Marian",
@@ -1061,11 +1059,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Will Scarlet"
     ],
     "answer": "David of Doncaster",
-    "evidence": "Robin decides to compete, despite a warning from David of \n\nDoncaster that it is a trap."
+    "evidence": "Robin decides to compete, despite a warning from David of Doncaster that it is a trap."
   },
   {
     "id": 13,
-    "question": "Who is the wandering minstrel that is often depicted as \n\njoining Robin Hood's outlaws?",
+    "question": "Who is the wandering minstrel that is often depicted as joining Robin Hood's outlaws?",
     "options": [
       "Much the Miller's Son",
       "Arthur a Bland",
@@ -1073,11 +1071,11 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Alan-a-Dale"
     ],
     "answer": "Alan-a-Dale",
-    "evidence": "Alan A-Dale is a wandering minstrel who joins the outlaws, \n\nfirst appearing in a 17th-century broadside ballad."
+    "evidence": "Alan A-Dale is a wandering minstrel who joins the outlaws, first appearing in a 17th-century broadside ballad."
   },
   {
     "id": 14,
-    "question": "In Anthony Munday's late 16th-century plays, what is Maid \n\nMarian's true first name before she joins Robin in the greenwood?",
+    "question": "In Anthony Munday's late 16th-century plays, what is Maid Marian's true first name before she joins Robin in the greenwood?",
     "options": [
       "Clorinda",
       "Matilda",
@@ -1085,39 +1083,38 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "Isabella"
     ],
     "answer": "Matilda",
-    "evidence": "In Munday's plays, Marian appears as Robin's lawfully-wedded \n\nwife, who changes her name from Matilda when she joins him in the greenwood."
+    "evidence": "In Munday's plays, Marian appears as Robin's lawfully-wedded wife, who changes her name from Matilda when she joins him in the greenwood."
   },
   {
     "id": 15,
-    "question": "According to legend, why did Friar Tuck join Robin Hood's \n\nband?",
+    "question": "According to legend, why did Friar Tuck join Robin Hood's band?",
     "options": [
       "He was especially talented in making beer and wine.",
       "They needed someone inside the church to help with their deeds.",
-      "He was expelled from Fountains Abbey for lack of respect for \n\nauthority.",
-      "He wanted to help the group change their ways.",
-      "He was expelled from Fountains Abbey for lack of respect\n\nfor authority."
+      "He was expelled from Fountains Abbey for lack of respect for authority.",
+      "He wanted to help the group change their ways."
     ],
-    "answer": "He was expelled from Fountains Abbey for lack of respect\n\nfor authority.",
-    "evidence": "According to the 'Tales of Robin Hood Trivia Game', Friar Tuck\n\nwas expelled from Fountains Abbey due to his lack of respect for authority."
+    "answer": "He was expelled from Fountains Abbey for lack of respect for authority.",
+    "evidence": "According to the 'Tales of Robin Hood Trivia Game', Friar Tuck was expelled from Fountains Abbey due to his lack of respect for authority."
   }
 ];
 
 export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "What was one of the rejected titles Lewis Carroll considered \n\nfor the novel?",
+    "question": "What makes Alice shrink and grow throughout her journey in Wonderland?",
     "options": [
-      "Alice's Hour in Elfland",
-      "Alice Among the Goblins",
-      "Alice's Dream World",
-      "Alice's Magic Garden"
+      "Eating cakes/mushrooms and drinking potions",
+      "Wishing upon a star",
+      "Crossing the river",
+      "Talking to the Cheshire Cat"
     ],
-    "answer": "Alice's Hour in Elfland",
-    "evidence": "Before deciding on the final title, Lewis Carroll considered \n\ncalling the book \"Alice's Hour in Elfland\" or \"Alice Among the Fairies\"."
+    "answer": "Eating cakes/mushrooms and drinking potions",
+    "evidence": "Alice changes size by consuming various magical cakes, mushrooms, and liquid potions."
   },
   {
     "id": 2,
-    "question": "In the original book, what suit are all the cards in the \n\nQueen's kingdom?",
+    "question": "In the original book, what suit are all the cards in the Queen's kingdom?",
     "options": [
       "Hearts",
       "Spades",
@@ -1125,11 +1122,11 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "A mix of all suits"
     ],
     "answer": "Hearts",
-    "evidence": "The original book emphasizes that the deck of cards in the \n\nQueen's kingdom is composed entirely of Hearts."
+    "evidence": "The original book emphasizes that the deck of cards in the Queen's kingdom is composed entirely of Hearts."
   },
   {
     "id": 3,
-    "question": "What did Alice actually eat at the White Rabbit's house to \n\nshrink in the original book, compared to the Disney film?",
+    "question": "What did Alice actually eat at the White Rabbit's house to shrink in the original book, compared to the Disney film?",
     "options": [
       "Miniature cakes",
       "Magical carrots",
@@ -1137,35 +1134,35 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "A mushroom"
     ],
     "answer": "Miniature cakes",
-    "evidence": "While the film shows Alice eating magical carrots, the \n\noriginal book states that she ate miniature cakes hidden around the White \n\nRabbit's house."
+    "evidence": "While the film shows Alice eating magical carrots, the original book states that she ate miniature cakes hidden around the White Rabbit's house."
   },
   {
     "id": 4,
-    "question": "What is the real name of the author known by the pseudonym \n\nLewis Carroll?",
+    "question": "What animal does the baby that Alice holds turn into?",
     "options": [
-      "Charles Lutwidge Dodgson",
-      "Henry Liddell",
-      "John Tenniel",
-      "Arthur Conan Doyle"
+      "A pig",
+      "A rabbit",
+      "A cat",
+      "A frog"
     ],
-    "answer": "Charles Lutwidge Dodgson",
-    "evidence": "Lewis Carroll was the pen name of Charles Lutwidge Dodgson, a \n\nmathematics teacher at Oxford."
+    "answer": "A pig",
+    "evidence": "The baby handed to Alice by the Duchess turns into a pig and runs away."
   },
   {
     "id": 5,
-    "question": "Which character in the story was based on Lewis Carroll \n\nhimself?",
+    "question": "What is the Cheshire Cat famous for doing?",
     "options": [
-      "The Dodo",
-      "The Mad Hatter",
-      "The White Rabbit",
-      "The Cheshire Cat"
+      "Disappearing and leaving only his grin",
+      "Reciting poetry",
+      "Guarding the Queen's garden",
+      "Giving Alice a map"
     ],
-    "answer": "The Dodo",
-    "evidence": "Carroll based the character of the Dodo on himself, \n\nreferencing his real last name, Dodgson, and his tendency to stammer when \n\nintroducing himself as 'Do-do-dogson'."
+    "answer": "Disappearing and leaving only his grin",
+    "evidence": "The Cheshire Cat is known for his ability to vanish, sometimes leaving just his wide smile behind."
   },
   {
     "id": 6,
-    "question": "According to the 1951 Disney film, who is standing over Alice \n\nwhen she wakes up from her dream?",
+    "question": "According to the 1951 Disney film, who is standing over Alice when she wakes up from her dream?",
     "options": [
       "Her au pair",
       "Her sister",
@@ -1173,23 +1170,23 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "The Queen of Hearts"
     ],
     "answer": "Her au pair",
-    "evidence": "In the Disney film, Alice wakes up to find her au pair \n\nstanding over her, whereas in the original book, she wakes up with her sister."
+    "evidence": "In the Disney film, Alice wakes up to find her au pair standing over her, whereas in the original book, she wakes up with her sister."
   },
   {
     "id": 7,
-    "question": "What color was Alice's dress in the first color edition, 'The \n\nNursery Alice'?",
+    "question": "What is the Mad Hatter's riddle that has no answer?",
     "options": [
-      "Yellow",
-      "Blue",
-      "Red",
-      "Green"
+      "Why is a raven like a writing-desk?",
+      "How many miles to Babylon?",
+      "Which came first, the chicken or the egg?",
+      "Where does the sun go at night?"
     ],
-    "answer": "Yellow",
-    "evidence": "In the first color edition designed for younger readers, 'The \n\nNursery Alice', Alice was illustrated wearing a yellow dress."
+    "answer": "Why is a raven like a writing-desk?",
+    "evidence": "During the tea party, the Mad Hatter asks Alice: 'Why is a raven like a writing-desk?'"
   },
   {
     "id": 8,
-    "question": "What animals are used as croquet mallets in the Queen of \n\nHearts' game?",
+    "question": "What animals are used as croquet mallets in the Queen of Hearts' game?",
     "options": [
       "Flamingoes",
       "Hedgehogs",
@@ -1197,11 +1194,11 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "Dodos"
     ],
     "answer": "Flamingoes",
-    "evidence": "When playing croquet with the Queen of Hearts, the mallets are\n\nactually flamingoes and the balls are hedgehogs."
+    "evidence": "When playing croquet with the Queen of Hearts, the mallets are actually flamingoes and the balls are hedgehogs."
   },
   {
     "id": 9,
-    "question": "In the book, who is the actual subject of the trial when Alice\n\nis in the courtroom?",
+    "question": "In the book, who is the actual subject of the trial when Alice is in the courtroom?",
     "options": [
       "The Knave of Hearts",
       "The Cheshire Cat",
@@ -1209,11 +1206,11 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "The Mad Hatter"
     ],
     "answer": "The Knave of Hearts",
-    "evidence": "Unlike the film where Alice is tried, the book features the \n\nKnave of Hearts as the subject of the trial."
+    "evidence": "Unlike the film where Alice is tried, the book features the Knave of Hearts as the subject of the trial."
   },
   {
     "id": 10,
-    "question": "What name does the White Rabbit call Alice when he mistakes \n\nher for his servant?",
+    "question": "What name does the White Rabbit call Alice when he mistakes her for his servant?",
     "options": [
       "Mary Ann",
       "Lola",
@@ -1221,11 +1218,11 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "Jane"
     ],
     "answer": "Mary Ann",
-    "evidence": "The White Rabbit mistakenly assumes Alice is his servant, \n\ncalling her Mary Ann, and tells her to fetch his gloves."
+    "evidence": "The White Rabbit mistakenly assumes Alice is his servant, calling her Mary Ann, and tells her to fetch his gloves."
   },
   {
     "id": 11,
-    "question": "Why are the Mad Hatter, March Hare, and Dormouse stuck in a \n\nnever-ending tea party in the first book?",
+    "question": "Why are the Mad Hatter, March Hare, and Dormouse stuck in a never-ending tea party in the first book?",
     "options": [
       "The Mad Hatter got into an argument with time itself",
       "It is an unbirthday party",
@@ -1233,32 +1230,31 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "They lost their watches"
     ],
     "answer": "The Mad Hatter got into an argument with time itself",
-    "evidence": "In the first book, they are stuck in a never-ending tea party \n\nbecause the Mad Hatter got into an argument with time itself."
+    "evidence": "In the first book, they are stuck in a never-ending tea party because the Mad Hatter got into an argument with time itself."
   },
   {
     "id": 12,
-    "question": "How many years did it take Lewis Carroll to publish the \n\nsequel, 'Through the Looking Glass'?",
+    "question": "Who sings the song 'The Walrus and the Carpenter' to Alice?",
     "options": [
-      "6 years",
-      "16 years",
-      "10 years",
-      "3 years"
+      "Tweedledee and Tweedledum",
+      "The Mad Hatter",
+      "The Cheshire Cat",
+      "The Caterpillar"
     ],
-    "answer": "6 years",
-    "evidence": "The sequel, 'Through the Looking Glass, and What Alice Found \n\nThere', was published in 1871, which was six years after the original novel."
+    "answer": "Tweedledee and Tweedledum",
+    "evidence": "Tweedledee and Tweedledum recite the poem/song of 'The Walrus and the Carpenter' to Alice."
   },
   {
     "id": 13,
-    "question": "What is the primary difference between the Red Queen and the \n\nQueen of Hearts?",
+    "question": "What does the Queen of Hearts shout whenever she is angry?",
     "options": [
-      "The Red Queen is a living chess piece, while the Queen of Hearts is a \n\nplaying card",
-      "They are the exact same character",
-      "The Red Queen is friendly, while the Queen of Hearts is evil",
-      "The Queen of Hearts is from the sequel, and the Red Queen is from the \n\nfirst book",
-      "The Red Queen is a living chess piece, while the Queen \n\nof Hearts is a playing card"
+      "Off with their heads!",
+      "No more tea!",
+      "Lock them up!",
+      "Silence in the court!"
     ],
-    "answer": "The Red Queen is a living chess piece, while the Queen \n\nof Hearts is a playing card",
-    "evidence": "In the original literature, the Red Queen is a living chess \n\npiece, whereas the Queen of Hearts is a playing card."
+    "answer": "Off with their heads!",
+    "evidence": "The short-tempered Queen of Hearts frequently orders executions by screaming 'Off with their heads!'"
   },
   {
     "id": 14,
@@ -1270,11 +1266,11 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "Small cakes"
     ],
     "answer": "Comfits",
-    "evidence": "According to the multiple choice test in the sources, Alice \n\nprovides comfits as prizes for the Caucus Race."
+    "evidence": "According to the multiple choice test in the sources, Alice provides comfits as prizes for the Caucus Race."
   },
   {
     "id": 15,
-    "question": "What was the Caterpillar smoking from when Alice first \n\nencountered him?",
+    "question": "What was the Caterpillar smoking from when Alice first encountered him?",
     "options": [
       "A hookah",
       "A pipe",
@@ -1282,7 +1278,7 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
       "An apple core"
     ],
     "answer": "A hookah",
-    "evidence": "When Alice first meets the Caterpillar, he is sitting on a \n\nmushroom and smoking a hookah."
+    "evidence": "When Alice first meets the Caterpillar, he is sitting on a mushroom and smoking a hookah."
   }
 ];
 
@@ -1292,4 +1288,3 @@ export const CLASSIC_TALES_GRADES = [
   { "minScore": 50, "rank": "Town Crier", "color": "text-slate-400" },
   { "minScore": 0, "rank": "Forest Wanderer", "color": "text-rose-400" }
 ];
-

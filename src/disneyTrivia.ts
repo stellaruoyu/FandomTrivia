@@ -9,15 +9,15 @@ export const LION_KING_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 2,
-    question: 'Who voiced the adult Simba in the 1994 animated classic?',
-    options: ['Matthew Broderick', 'Jonathan Taylor Thomas', 'James Earl Jones', 'Jeremy Irons'],
-    answer: 'Matthew Broderick'
+    question: 'What is the name of Simba\'s father?',
+    options: ['Mufasa', 'Scar', 'Kovu', 'Rafiki'],
+    answer: 'Mufasa'
   },
   {
     id: 3,
-    question: 'Which Shakespearean play was the primary narrative inspiration for The Lion King?',
-    options: ['Macbeth', 'Romeo and Juliet', 'Hamlet', 'The Tempest'],
-    answer: 'Hamlet'
+    question: 'What animal is Pumbaa?',
+    options: ['Warthog', 'Meerkat', 'Mandrill', 'Hyena'],
+    answer: 'Warthog'
   },
   {
     id: 4,
@@ -27,9 +27,9 @@ export const LION_KING_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 5,
-    question: 'Which song from the film won the Academy Award for Best Original Song in 1995?',
-    options: ['Circle of Life', 'Can You Feel the Love Tonight', 'I Just Can\'t Wait to Be King', 'Hakuna Matata'],
-    answer: 'Can You Feel the Love Tonight'
+    question: 'What is the name of Scar\'s hyena henchmen trio?',
+    options: ['Shenzi, Banzai, and Ed', 'Zira, Kovu, and Nuka', 'Timon, Pumbaa, and Simba', 'Kiara, Vitani, and Kopa'],
+    answer: 'Shenzi, Banzai, and Ed'
   },
   {
     id: 6,
@@ -39,9 +39,9 @@ export const LION_KING_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 7,
-    question: 'Who composed the instrumental orchestral score for the 1994 animated film?',
-    options: ['Alan Menken', 'Hans Zimmer', 'Elton John', 'John Williams'],
-    answer: 'Hans Zimmer'
+    question: 'What does Rafiki use to paint a drawing of newborn Simba on his tree?',
+    options: ['Juice from a gourd', 'Mud from the river', 'Leaves', 'Charcoal'],
+    answer: 'Juice from a gourd'
   },
   {
     id: 8,
@@ -57,18 +57,18 @@ export const LION_KING_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 10,
-    question: 'Which characters were originally intended to sing "Can You Feel the Love Tonight" before Elton John objected?',
-    options: ['Timon and Pumbaa', 'Scar and the Hyenas', 'Mufasa and Sarabi', 'Rafiki and Zazu'],
-    answer: 'Timon and Pumbaa'
+    question: 'Who inherits the throne at the end of the first Lion King movie?',
+    options: ['Simba', 'Kovu', 'Scar', 'Nala'],
+    answer: 'Simba'
   }
 ];
 
 export const ALADDIN_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: 'Which famous actor voiced the Genie in the 1992 animated classic?',
-    options: ['Jim Carrey', 'Robin Williams', 'Billy Crystal', 'Eddie Murphy'],
-    answer: 'Robin Williams'
+    question: 'How many wishes does the Genie grant to the holder of the lamp?',
+    options: ['Three', 'One', 'Unlimited', 'Five'],
+    answer: 'Three'
   },
   {
     id: 2,
@@ -90,9 +90,9 @@ export const ALADDIN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 5,
-    question: 'Who voiced Aladdin\'s speaking voice in the 1992 animated film?',
-    options: ['Scott Weinger', 'Brad Kane', 'Val Kilmer', 'Rob Lowe'],
-    answer: 'Scott Weinger'
+    question: 'What alias does Aladdin use to try and impress Princess Jasmine?',
+    options: ['Prince Ali Ababwa', 'Prince Achmed', 'Prince Eugene', 'Sultan of Agrabah'],
+    answer: 'Prince Ali Ababwa'
   },
   {
     id: 6,
@@ -108,21 +108,31 @@ export const ALADDIN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: 'Which song from Aladdin won the Academy Award for Best Original Song?',
-    options: ['A Whole New World', 'Friend Like Me', 'Prince Ali', 'Arabian Nights'],
-    answer: 'A Whole New World'
+    question: 'What is the name of Aladdin\'s pet monkey?',
+    options: ['Abu', 'Rajah', 'Iago', 'Gideon'],
+    answer: 'Abu'
   },
   {
     id: 9,
-    question: 'In the 2019 live-action remake, which actress plays Princess Jasmine?',
-    options: ['Naomi Scott', 'Tara Sutaria', 'Mena Massoud', 'Zendaya'],
-    answer: 'Naomi Scott'
+    question: 'What three rules must Genie follow when granting wishes?',
+    options: [
+      'No killing, no making people fall in love, and no raising the dead',
+      'No wishing for money, no wishing for power, and no wishing for more wishes',
+      'No changing the past, no telling lies, and no escaping Agrabah',
+      'No flying, no shrinking, and no magic outside the cave'
+    ],
+    answer: 'No killing, no making people fall in love, and no raising the dead'
   },
   {
     id: 10,
-    question: 'In original folklore, the story of Aladdin belongs to which anthology of Middle Eastern tales?',
-    options: ['One Thousand and One Nights', 'The Epic of Gilgamesh', 'The Shahnameh', 'Sinbad the Sailor'],
-    answer: 'One Thousand and One Nights'
+    question: 'How does Aladdin escape the Cave of Wonders when Jafar betrays him?',
+    options: [
+      'By flying out on the Magic Carpet',
+      'By rubbing the lamp and using Genie\'s power',
+      'By climbing the walls',
+      'Abu digs a tunnel'
+    ],
+    answer: 'By rubbing the lamp and using Genie\'s power'
   }
 ];
 
@@ -147,9 +157,14 @@ export const BEAUTY_BEAST_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 4,
-    question: 'Who voiced Belle in the 1991 Disney animated classic?',
-    options: ['Paige O\'Hara', 'Jodi Benson', 'Judy Kuhn', 'Lea Salonga'],
-    answer: 'Paige O\'Hara'
+    question: 'What does Gaston do to try to force Belle to marry him?',
+    options: [
+      'Threatens to lock her father in the asylum',
+      'Locks Belle in a tower',
+      'Bribes Belle\'s father',
+      'Banishes Belle from the village'
+    ],
+    answer: 'Threatens to lock her father in the asylum'
   },
   {
     id: 5,
@@ -165,15 +180,15 @@ export const BEAUTY_BEAST_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 7,
-    question: 'Beauty and the Beast made Academy Award history in 1992 by being the first animated film nominated for which award?',
-    options: ['Best Picture', 'Best Director', 'Best Original Screenplay', 'Best Sound Editing'],
-    answer: 'Best Picture'
+    question: 'What household object is Lumiere transformed into?',
+    options: ['A candelabra', 'A clock', 'A teapot', 'A wardrobe'],
+    answer: 'A candelabra'
   },
   {
     id: 8,
-    question: 'In the 2017 live-action adaptation, which actress plays Belle?',
-    options: ['Emma Watson', 'Lily James', 'Alicia Vikander', 'Emma Stone'],
-    answer: 'Emma Watson'
+    question: 'What does Cogsworth get transformed into?',
+    options: ['A mantel clock', 'A feather duster', 'A footstool', 'A teacup'],
+    answer: 'A mantel clock'
   },
   {
     id: 9,
@@ -223,7 +238,7 @@ export const LITTLE_MERMAID_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 6,
     question: 'What name does Ariel give to a common human fork?',
-    options: ['A dinglehopper', 'A snarfblatt', 'A gizmo', 'A thingamabob'],
+    options: ['A dinglehopper', 'A snarfblatt', 'A gizmo', 'A thingamobob'],
     answer: 'A dinglehopper'
   },
   {
@@ -234,20 +249,25 @@ export const LITTLE_MERMAID_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: 'Which song from the movie won the Academy Award for Best Original Song in 1990?',
-    options: ['Under the Sea', 'Part of Your World', 'Kiss the Girl', 'Poor Unfortunate Souls'],
-    answer: 'Under the Sea'
+    question: 'What does Ariel have to give up to Ursula in exchange for human legs?',
+    options: [
+      'Her voice',
+      'Her mermaid tail',
+      'Her father\'s trident',
+      'Her collection of human treasures'
+    ],
+    answer: 'Her voice'
   },
   {
     id: 9,
-    question: 'Who voiced the sea witch Ursula in the 1989 animated classic?',
-    options: ['Pat Carroll', 'Jodi Benson', 'Eartha Kitt', 'Glenn Close'],
-    answer: 'Pat Carroll'
+    question: 'What is the name of King Triton\'s crab advisor and court composer?',
+    options: ['Sebastian', 'Flounder', 'Scuttle', 'Louis'],
+    answer: 'Sebastian'
   },
   {
     id: 10,
     question: 'In "The Little Mermaid: Ariel\'s Beginning", what musical instrument does Ariel\'s mother, Queen Athena, love?',
-    options: ['A harp', 'A music box', 'A flute', 'A lyre'],
+    options: ['A music box', 'A harp', 'A flute', 'A lyre'],
     answer: 'A music box'
   }
 ];
@@ -291,12 +311,18 @@ export const TANGLED_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 7,
-    question: 'Who voiced Princess Rapunzel in the 2010 animated film?',
-    options: ['Mandy Moore', 'Kristen Bell', 'Idina Menzel', 'Kelly MacDonald'],
-    answer: 'Mandy Moore'
+    question: 'What is Mother Gothel\'s motivation for keeping Rapunzel locked in the tower?',
+    options: [
+      'To use her hair\'s magic to remain young forever',
+      'To protect her from the outside world',
+      'To hide her from her real parents',
+      'To teach her how to paint'
+    ],
+    answer: 'To use her hair\'s magic to remain young forever'
   },
   {
     id: 8,
+    type: 'question',
     question: 'In the 2012 wedding sequel short "Tangled Ever After", which two characters lose the wedding rings?',
     options: ['Pascal and Maximus', 'Flynn and Rapunzel', 'Hook Hand and Shorty', 'The King and Queen'],
     answer: 'Pascal and Maximus'
@@ -342,9 +368,14 @@ export const MULAN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 5,
-    question: 'Which famous comedian provided the voice of Mushu in the 1998 animated film?',
-    options: ['Eddie Murphy', 'Chris Rock', 'Robin Williams', 'Martin Lawrence'],
-    answer: 'Eddie Murphy'
+    question: 'Mulan\'s military training task requires her to retrieve an arrow from the top of a tall pole. What two items does she use to climb the pole?',
+    options: [
+      'Two heavy bronze medallions representing discipline and strength',
+      'Her sash and her boots',
+      'A rope and a sword',
+      'A ladder and Mushu\'s fire'
+    ],
+    answer: 'Two heavy bronze medallions representing discipline and strength'
   },
   {
     id: 6,
@@ -366,14 +397,24 @@ export const MULAN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 9,
-    question: 'In the 2020 live-action movie, what creature guides Mulan instead of Mushu?',
-    options: ['A phoenix', 'A falcon', 'A white wolf', 'A golden dragon'],
-    answer: 'A phoenix'
+    question: 'What does Mulan use to cause an avalanche that buries the Hun army?',
+    options: [
+      'A rocket launcher/cannon',
+      'A sword slash',
+      'A loud shout',
+      'Mushu\'s fire breath'
+    ],
+    answer: 'A rocket launcher/cannon'
   },
   {
     id: 10,
-    question: 'Who provided the voice of Captain / General Li Shang in the 1998 classic?',
-    options: ['BD Wong', 'Donny Osmond', 'Jackie Chan', 'Pat Morita'],
-    answer: 'BD Wong'
+    question: 'How do Mulan\'s friends (Yao, Ling, and Chien-Po) sneak into the palace to rescue the Emperor?',
+    options: [
+      'They disguise themselves as concubines',
+      'They climb the palace walls with ropes',
+      'They crawl through the sewers',
+      'They hide inside food carts'
+    ],
+    answer: 'They disguise themselves as concubines'
   }
 ];

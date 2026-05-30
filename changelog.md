@@ -4,11 +4,12 @@ All notable changes to Fandom Trivia will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [2026-05-30] - Snow White & Cinderella Disneyland Relocation
+## [2026-05-30] - Snow White & Cinderella Disneyland Relocation & Trivia Content Cleanup
 ### Changed
 - **Snow White & Cinderella Quizzes**: Moved the "Snow White" and "Cinderella" quizzes from the Classic Tales section to the Disneyland section, adjusting their scoring/grading scales to `DISNEYLAND_GRADES`.
 - **Search Metadata**: Added 'Disney' tags to Snow White and Cinderella universe definitions to align with Disney content search indexing.
 - **Classic Tales Universe**: Updated Classic Tales random mix, count descriptions, and metadata to exclude Snow White and Cinderella.
+- **In-Universe Trivia Cleanup**: Replaced all real-world production details, cast/crew trivia, Academy Awards history, theme park facts, and non-canonical variants from Classic Tales and Disneyland quizzes, replacing them with 100% in-universe plot and character questions.
 
 ## [2026-05-29] - Classic Tales Quizzes & Blogs
 ### Added

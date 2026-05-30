@@ -16,7 +16,7 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
     version: '1.7.1',
     date: '2026-05-30',
-    title: 'Snow White & Cinderella Disneyland Relocation',
+    title: 'Disneyland Relocation & Trivia Content Cleanup',
     items: [
       {
         type: 'changed',
@@ -31,6 +31,10 @@ export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
       {
         type: 'changed',
         text: 'Added the "Disney" tag to Snow White and Cinderella metadata, and updated the Classic Tales selector, descriptions, and random challenge mix to exclude them.',
+      },
+      {
+        type: 'improved',
+        text: 'Removed all real-world production details, cast/crew trivia, Academy Awards history, theme park facts, and non-canonical variants from Classic Tales and Disneyland quizzes, replacing them with 100% in-universe plot and character questions.',
       }
     ]
   },
