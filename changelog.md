@@ -4,6 +4,13 @@ All notable changes to Fandom Trivia will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2026-05-29] - Classic Tales Quizzes & Blogs
+### Added
+- **Classic Tales Universe**: Added 7 new classic story quizzes: The Wizard of Oz, The Ugly Duckling, Little Red Riding Hood, Snow White, Cinderella, Robin Hood, and Alice in Wonderland.
+- **Fable Explorer Badge**: Added a new badge awarded upon completing any classic tales trivia challenge.
+- **SEO Blog Posts**: Added 7 highly engaging, SEO-optimized blog posts for each of the stories to drive search traffic.
+- **Classic Tales Mixed Challenge**: Added a combined random challenge mode containing 20 questions pulled from all classic stories.
+
 ## [2026-05-28] - Rabbit Idioms Trivia & React Crash Fix
 ### Added
 - **Rabbit Idioms Quiz**: Added a new rabbit-themed idiom trivia challenge with 15 bilingual questions.

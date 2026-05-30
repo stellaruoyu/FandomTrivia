@@ -14,6 +14,33 @@ export interface ChangelogEntry {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    version: '1.7.0',
+    date: '2026-05-29',
+    title: 'Classic Tales Quizzes & Blogs',
+    items: [
+      {
+        type: 'added',
+        text: 'Added a new Classic Tales category featuring 7 new fairy tale and legend quizzes: The Wizard of Oz, The Ugly Duckling, Little Red Riding Hood, Snow White, Cinderella, Robin Hood, and Alice in Wonderland.',
+        linkText: 'Explore Classic Tales',
+        linkUrl: '/selector-classic-tales'
+      },
+      {
+        type: 'added',
+        text: 'Added 7 new highly engaging, SEO-optimized blog posts for each classic tale to drive search engine traffic.',
+        linkText: 'Read Blogs',
+        linkUrl: '/blog'
+      },
+      {
+        type: 'added',
+        text: 'Added the "Fable Explorer" badge, unlocked upon completing any Classic Tales quiz.',
+      },
+      {
+        type: 'added',
+        text: 'Added a combined Classic Tales Mixed Challenge that compiles 20 random questions across all seven fairy tales.',
+      }
+    ]
+  },
+  {
     version: '1.6.0',
     date: '2026-05-28',
     title: 'Rabbit Idioms Trivia & React Crash Fix',
