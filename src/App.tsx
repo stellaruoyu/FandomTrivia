@@ -3803,6 +3803,175 @@ const MCQuizView = (props: {
   );
 };
 
+const getThematicCharacterRaw = (title: string, pct: number, defaultCharacter: any) => {
+  const t = title.toLowerCase();
+  
+  // The Lion King
+  if (t.includes('lion king')) {
+    if (pct >= 90) return { name: 'Simba', desc: 'You are the true King of Pride Rock! Your knowledge is absolutely flawless.' };
+    if (pct >= 70) return { name: 'Mufasa', desc: 'Great job. You have shown wisdom and strength, and you remember who you are.' };
+    if (pct >= 50) return { name: 'Timon & Pumbaa', desc: 'Hakuna Matata! A solid effort, but you still have a few things to learn about the savanna.' };
+    return { name: 'Scar', desc: 'Be prepared! Your scores are in the shadows. You need to rewatch the film to claim the throne.' };
+  }
+  
+  // Aladdin
+  if (t.includes('aladdin')) {
+    if (pct >= 90) return { name: 'Genie', desc: 'You\'ve got phenomenal cosmic power! You answered everything correctly.' };
+    if (pct >= 70) return { name: 'Aladdin', desc: 'A diamond in the rough! You navigated Agrabah with ease and got a great score.' };
+    if (pct >= 50) return { name: 'Jasmine', desc: 'A whole new world of trivia awaits you. Good effort, but you can do better.' };
+    return { name: 'Jafar', desc: 'Your wishes are wasted! You got lost in the Cave of Wonders. Rewatch the movie.' };
+  }
+  
+  // Beauty and the Beast
+  if (t.includes('beauty') && t.includes('beast')) {
+    if (pct >= 90) return { name: 'Belle', desc: 'A true scholar of the library! Your knowledge of the enchanted castle is magnificent.' };
+    if (pct >= 70) return { name: 'Beast', desc: 'You have learned to love trivia! A great score, showing real heart.' };
+    if (pct >= 50) return { name: 'Lumiere', desc: 'Be our guest and try again! A decent effort, but we need more spark.' };
+    return { name: 'Gaston', desc: 'No one fails a quiz like Gaston! You rely on brawn rather than brains. Rewatch the classic.' };
+  }
+  
+  // The Little Mermaid
+  if (t.includes('little mermaid')) {
+    if (pct >= 90) return { name: 'Ariel', desc: 'You belong in the world above! Your knowledge of human and mermaid lore is perfect.' };
+    if (pct >= 70) return { name: 'King Triton', desc: 'You rule the seas! A powerful score that makes the oceans proud.' };
+    if (pct >= 50) return { name: 'Sebastian', desc: 'Under the sea, we need more practice! A good effort, but you are a bit nervous.' };
+    return { name: 'Ursula', desc: 'Poor unfortunate soul! Your score is trapped in the abyss. You need to bargain for another try.' };
+  }
+  
+  // Tangled
+  if (t.includes('tangled')) {
+    if (pct >= 90) return { name: 'Rapunzel', desc: 'Your dream has come true! You have the magical power of perfect memory.' };
+    if (pct >= 70) return { name: 'Flynn Rider', desc: 'You\'ve got the smolder! A very clever score, escaping any guards.' };
+    if (pct >= 50) return { name: 'Maximus', desc: 'A determined effort! You are on the right trail, but not quite at the destination.' };
+    return { name: 'Mother Gothel', desc: 'Mother knows best... and she says you need to study more! Locked in the tower until you rewatch.' };
+  }
+  
+  // Mulan
+  if (t.includes('mulan')) {
+    if (pct >= 90) return { name: 'Mulan', desc: 'You have brought great honor to your family! Your tactical mind is legendary.' };
+    if (pct >= 70) return { name: 'Li Shang', desc: 'Let\'s get down to business! You are well-trained and got a very strong score.' };
+    if (pct >= 50) return { name: 'Mushu', desc: 'Dishonor on you, dishonor on your cow... just kidding! A good start, but needs more fire.' };
+    return { name: 'Shan Yu', desc: 'Your army has fallen! You got buried in the avalanche of questions. Back to training camp.' };
+  }
+  
+  // Snow White
+  if (t.includes('snow white')) {
+    if (pct >= 90) return { name: 'Snow White', desc: 'You are the fairest of them all! A beautiful, perfect score.' };
+    if (pct >= 70) return { name: 'Doc', desc: 'Everything is in order! A very organized and smart performance.' };
+    if (pct >= 50) return { name: 'Grumpy', desc: 'Hmph! Not bad, I suppose. But you could definitely do better if you tried.' };
+    return { name: 'Evil Queen', desc: 'Magic mirror on the wall, this score is the lowest of them all! Beware of the poison apple.' };
+  }
+  
+  // Cinderella
+  if (t.includes('cinderella')) {
+    if (pct >= 90) return { name: 'Cinderella', desc: 'The slipper fits perfectly! You made it to the ball and got a dream score.' };
+    if (pct >= 70) return { name: 'Fairy Godmother', desc: 'Bibbidi-Bobbidi-Boo! You worked some real magic on this quiz.' };
+    if (pct >= 50) return { name: 'Jaq & Gus', desc: 'We help Cinderelly! A good team effort, but watch out for Lucifer the cat.' };
+    return { name: 'Wicked Stepmother', desc: 'Lock her in the attic! Your score is unacceptable. No ball for you.' };
+  }
+  
+  // The Wizard of Oz
+  if (t.includes('wizard of oz')) {
+    if (pct >= 90) return { name: 'Wizard of Oz', desc: 'The Great and Powerful! You know every secret of the Emerald City.' };
+    if (pct >= 70) return { name: 'Dorothy', desc: 'There\'s no place like home! You followed the Yellow Brick Road to a great score.' };
+    if (pct >= 50) return { name: 'Scarecrow', desc: 'If you only had a brain... wait, you do! A good effort, but some straw is loose.' };
+    return { name: 'Wicked Witch', desc: 'I\'m melting! Your score was defeated by water. Try again, my pretty!' };
+  }
+  
+  // The Ugly Duckling
+  if (t.includes('ugly duckling')) {
+    if (pct >= 90) return { name: 'Beautiful Swan', desc: 'You have fully transformed! Your knowledge is graceful and perfect.' };
+    if (pct >= 70) return { name: 'Mother Duck', desc: 'You watched over the nest well. A very proud and strong score.' };
+    if (pct >= 50) return { name: 'Tomcat', desc: 'Can you purr? A decent effort, but you still have a bit of attitude to adjust.' };
+    return { name: 'Ugly Duckling', desc: 'Pecked at by the others! You feel out of place with this score. Keep swimming to find your true self.' };
+  }
+  
+  // Little Red Riding Hood
+  if (t.includes('red riding hood')) {
+    if (pct >= 90) return { name: 'Huntsman', desc: 'You saved the day! A sharp, quick mind that saw right through the wolf.' };
+    if (pct >= 70) return { name: 'Red Riding Hood', desc: 'You walked nicely on the path! A great score, though you paused for some flowers.' };
+    if (pct >= 50) return { name: 'Grandmother', desc: 'Safe in the wardrobe! A decent effort, but you need some cake and wine to recover.' };
+    return { name: 'Big Bad Wolf', desc: 'All the better to eat you with! You fell into the trap. Watch out for the stones in your belly.' };
+  }
+  
+  // Robin Hood
+  if (t.includes('robin hood')) {
+    if (pct >= 90) return { name: 'Robin Hood', desc: 'A legendary shot! You hit the bullseye on every single question.' };
+    if (pct >= 70) return { name: 'Little John', desc: 'You are a giant of Sherwood! A very sturdy and high-quality performance.' };
+    if (pct >= 50) return { name: 'Friar Tuck', desc: 'Pass the cider! A jolly good effort, but you got distracted in the abbey.' };
+    return { name: 'Sheriff of Nottingham', desc: 'Taxes collected! Your score is bankrupt. You\'ve been robbed by the outlaws.' };
+  }
+  
+  // Alice in Wonderland
+  if (t.includes('alice in wonderland')) {
+    if (pct >= 90) return { name: 'Alice', desc: 'Curiouser and curiouser! You navigated the nonsense of Wonderland perfectly.' };
+    if (pct >= 70) return { name: 'Cheshire Cat', desc: 'We\'re all mad here! A mysterious and clever score, leaving a wide grin.' };
+    if (pct >= 50) return { name: 'Mad Hatter', desc: 'A mad tea party! Your answers are a bit eccentric, but it\'s always unbirthday time.' };
+    return { name: 'Queen of Hearts', desc: 'Off with your head! An angry score that won\'t please the court.' };
+  }
+  
+  // Attack on Titan
+  if (t.includes('attack on titan')) {
+    if (pct >= 90) return { name: 'Levi Ackerman', desc: 'Clean and deadly. Your knowledge is flawless on this battlefield.' };
+    if (pct >= 70) return { name: 'Eren Yeager', desc: 'You fight for freedom! A very fierce and powerful score.' };
+    if (pct >= 50) return { name: 'Armin Arlert', desc: 'A strategic mind! You survived the Titan attack, but we need a better plan.' };
+    return { name: 'Colossal Titan', desc: 'You breached the wall, but failed to secure the victory. Rewatch the fight.' };
+  }
+  
+  // Demon Slayer
+  if (t.includes('demon slayer')) {
+    if (pct >= 90) return { name: 'Tanjiro Kamado', desc: 'Your Hinokami Kagura is perfect! A legendary performance.' };
+    if (pct >= 70) return { name: 'Nezuko Kamado', desc: 'Mmh! (Approved). A very cute and powerful performance.' };
+    if (pct >= 50) return { name: 'Zenitsu Agatsuma', desc: 'You did it while sleeping! A good score, but stop screaming.' };
+    return { name: 'Inosuke Hashibira', desc: '猪突猛進! You rushed in blindly and got lost. Train harder!' };
+  }
+  
+  // Jujutsu Kaisen
+  if (t.includes('jujutsu kaisen')) {
+    if (pct >= 90) return { name: 'Satoru Gojo', desc: 'Don\'t worry, you are the strongest! A completely flawless score.' };
+    if (pct >= 70) return { name: 'Megumi Fushiguro', desc: 'With this treasure I summon... a great score! Smart and composed.' };
+    if (pct >= 50) return { name: 'Yuji Itadori', desc: 'You ate the finger but survived! A solid effort, keep training.' };
+    return { name: 'Ryomen Sukuna', desc: 'Malevolent Shrine collapsed! Your knowledge is not enough to rule the curses.' };
+  }
+  
+  // One Piece
+  if (t.includes('one piece')) {
+    if (pct >= 90) return { name: 'Monkey D. Luffy', desc: 'You are the King of the Pirates! A legendary treasure of a score.' };
+    if (pct >= 70) return { name: 'Roronoa Zoro', desc: 'Three-sword style victory! You didn\'t get lost on this quiz.' };
+    if (pct >= 50) return { name: 'Nami', desc: 'A good map of answers, but we need more gold to pass.' };
+    return { name: 'Buggy the Clown', desc: 'Flashy but a total failure! You got split into pieces by these questions.' };
+  }
+  
+  // Naruto
+  if (t.includes('naruto')) {
+    if (pct >= 90) return { name: 'Naruto Uzumaki', desc: 'Believe it! You are the Hokage of trivia.' };
+    if (pct >= 70) return { name: 'Sasuke Uchiha', desc: 'Chidori strike! A very sharp and cool score.' };
+    if (pct >= 50) return { name: 'Kakashi Hatake', desc: 'You copied some answers? Just kidding. A solid, relaxed effort.' };
+    return { name: 'Sakura Haruno', desc: 'Cha! You need to study more scroll work at the academy.' };
+  }
+  
+  // Death Note
+  if (t.includes('death note')) {
+    if (pct >= 90) return { name: 'L', desc: 'Exactly as I calculated. Your deductive reasoning is flawless.' };
+    if (pct >= 70) return { name: 'Light Yagami', desc: 'You wrote the correct answers in the notebook. A brilliant mind.' };
+    if (pct >= 50) return { name: 'Misa Amane', desc: 'You did it for Light! A good try, but a bit impulsive.' };
+    return { name: 'Ryuk', desc: 'Humans are indeed interesting, but you need to rewatch the show.' };
+  }
+
+  return defaultCharacter;
+};
+
+const getThematicCharacter = (title: string, pct: number, defaultCharacter: any) => {
+  const result = getThematicCharacterRaw(title, pct, defaultCharacter);
+  if (result && result !== defaultCharacter) {
+    return {
+      ...result,
+      image: defaultCharacter?.image || ''
+    };
+  }
+  return result;
+};
+
 const MCQuizContent = ({ questions = [], title, scoreLabel, grades, user, onQuizComplete, isDaily }: {
   questions?: MCTriviaQuestion[],
   title: string,
@@ -5297,7 +5466,7 @@ const MCQuizContent = ({ questions = [], title, scoreLabel, grades, user, onQuiz
     const gradeEntry = grades.find(g => pct >= g.threshold) || grades[grades.length - 1];
     const grade = gradeEntry.label;
     const gradeColor = gradeEntry.color;
-    const character = gradeEntry.character;
+    const character = getThematicCharacter(title, pct, gradeEntry.character);
     const shareUrl = `${SITE_URL}${location.pathname}`;
     const defaultShareMessage = `Hey! I just played on FandomTrivia's ${title} quiz and scored ${scoreForDisplay}/${pctBase}! Come check it out here: ${shareUrl}`;
 

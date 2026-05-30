@@ -1283,8 +1283,8 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
 ];
 
 export const CLASSIC_TALES_GRADES = [
-  { "minScore": 90, "rank": "Grand Storyteller", "color": "text-amber-400" },
-  { "minScore": 70, "rank": "Fairy Godmother", "color": "text-indigo-400" },
-  { "minScore": 50, "rank": "Town Crier", "color": "text-slate-400" },
-  { "minScore": 0, "rank": "Forest Wanderer", "color": "text-rose-400" }
+  { threshold: 90, label: "Grand Storyteller", color: "text-amber-400", character: { name: "Fairy Godmother", image: "/images/classic-tales.png", desc: "Bibbidi-Bobbidi-Boo! You worked some real magic on this mixed classic tales quiz." } },
+  { threshold: 70, label: "Fairy Godmother", color: "text-indigo-400", character: { name: "Robin Hood", image: "/images/classic-tales.png", desc: "A legendary performance! You hit the bullseye on these classic tales questions." } },
+  { threshold: 50, label: "Town Crier", color: "text-slate-400", character: { name: "Dorothy", image: "/images/classic-tales.png", desc: "There's no place like home! You followed the Yellow Brick Road to a decent score." } },
+  { threshold: 0, label: "Forest Wanderer", color: "text-rose-400", character: { name: "Big Bad Wolf", image: "/images/classic-tales.png", desc: "All the better to eat you with! You fell into the trap. Watch out for the stones in your belly." } }
 ];

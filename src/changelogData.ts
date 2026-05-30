@@ -14,6 +14,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG_ENTRIES: ChangelogEntry[] = [
   {
+    version: '1.7.2',
+    date: '2026-05-30',
+    title: 'Thematic Quiz Result Characters',
+    items: [
+      {
+        type: 'added',
+        text: 'Dynamically assign quiz-specific result characters (e.g., Simba/Mufasa for Lion King, Gojo/Megumi for Jujutsu Kaisen, and Robin Hood/Fairy Godmother for Classic Tales) on the quiz completion screen instead of generic category fallbacks.',
+      }
+    ]
+  },
+  {
     version: '1.7.1',
     date: '2026-05-30',
     title: 'Disneyland Relocation & Trivia Content Cleanup',
