@@ -2225,5 +2225,55 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Don't lose your head in the courtroom! Challenge your friends, top the scoreboard, and see if you can solve the riddle of the raven and the writing desk in our <strong>Queen of Hearts trial quiz</strong>!</p>
     `
+  },
+  {
+    slug: 'july-4th-trivia-quiz',
+    title: '4th of July Trivia Quiz: Can You Pass the Ultimate Independence Day Challenge?',
+    metaDescription: 'Are you a true history buff? Take our ultimate 4th of July trivia quiz to test your knowledge of America\'s birthday, founders, and traditions!',
+    date: '2026-06-04',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg',
+    keywords: ['4th of July trivia quiz', 'Independence Day history test', 'USA birthday trivia', 'Declaration of Independence questions', 'American Revolution history quiz'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Every year on the Fourth of July, millions of Americans gather to celebrate with fireworks, barbecues, and patriotic parades. But how much do you actually know about the historic events that birthed the nation? From the secret drafts of the Declaration of Independence to the remarkable coincidences of our Founding Fathers, the history of America's birthday is packed with fascinating stories. Are you a true history scholar, or just here for the hot dogs? Test your knowledge with the ultimate <strong>4th of July trivia quiz</strong> now!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-july-4th" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the 4th of July Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">The Real Story of July 4th, 1776</h2>
+      <p>While we celebrate Independence Day on July 4th, the path to American freedom wasn't a single-day event. In fact, the Continental Congress voted to declare independence on July 2nd, prompting John Adams to write to his wife that July 2nd would be celebrated by future generations as the great anniversary festival. So why July 4th? That was the day the Congress formally adopted the final text of the Declaration of Independence drafted by Thomas Jefferson.</p>
+      <p class="mt-4">Furthermore, most of the delegates didn't actually sign the document until August 2, 1776. If you want to see how well you know these hidden details of the American Revolution, <a href="/trivia-july-4th" class="text-primary hover:text-primary/80 font-bold">take our Independence Day history test now</a> and see if you can get a perfect score!</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-july-4th" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-rose-400">Direct Link:</span> Jump Straight to the Independence Day Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Fascinating USA Birthday Trivia Facts</h2>
+      <p>History is full of twists and coincidences that feel stranger than fiction. Here are a few incredible facts that you might encounter in our <strong>USA birthday trivia</strong> challenge:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The July 4th Coincidence:</strong> Former presidents and signers John Adams and Thomas Jefferson both died on July 4, 1826, exactly 50 years after the Declaration was adopted. Five years later, James Monroe also passed away on July 4th.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Oldest Signer:</strong> Benjamin Franklin was the oldest person to sign the Declaration of Independence in 1776, at the ripe age of 70.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Turkey Preference:</strong> Benjamin Franklin famously wrote a letter to his daughter explaining why the Wild Turkey would make a much more respectable national symbol than the Bald Eagle.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Paid Holiday:</strong> Although July 4th was declared a federal holiday in 1870, it wasn't made a paid federal holiday for government employees until 1938.</li>
+      </ul>
+
+      <p>Do you think you can handle more historical curves? From the number of signers to the history of the Liberty Bell and the origins of the Dunlap Broadsides, our quiz is designed to challenge even the most seasoned patriots. Show your friends and family that your history knowledge is as bright as a sparkler!</p>
+
+      <h3 class="text-2xl font-black italic uppercase mt-8 mb-4">How Well Do You Actually Know the Founders?</h3>
+      <p>Many people know that John Hancock signed the document with his famous, oversized signature, but did you know that George Washington never actually signed the Declaration of Independence? Since Washington was actively commanding the Continental Army in New York, he was unable to attend the session in Philadelphia. Instead, he had the document read aloud to his troops to inspire them in the fight ahead.</p>
+      <p class="mt-4">It's details like this that make our <strong>Declaration of Independence questions</strong> so engaging. Don't wait until the fireworks start to prove your patriotism. Click below, answer all 20 questions, and claim your place at the top of the Fandom Trivia leaderboards!</p>
+
+      <div class="my-12 text-center">
+        <a href="/trivia-july-4th" class="inline-block bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-xl font-black text-base uppercase tracking-widest transition-all shadow-xl shadow-primary/30 hover:scale-105 transform">
+          Take the Ultimate July 4th Quiz Now!
+        </a>
+      </div>
+    `
   }
 ];

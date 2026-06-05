@@ -322,7 +322,6 @@ export const TANGLED_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    type: 'question',
     question: 'In the 2012 wedding sequel short "Tangled Ever After", which two characters lose the wedding rings?',
     options: ['Pascal and Maximus', 'Flynn and Rapunzel', 'Hook Hand and Shorty', 'The King and Queen'],
     answer: 'Pascal and Maximus'

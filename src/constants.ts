@@ -248,6 +248,14 @@ export const BADGES: Badge[] = [
     icon: 'BookOpen',
     color: 'text-yellow-400',
     targetQuiz: 'classic-tales'
+  },
+  {
+    id: 'independence-patriot',
+    name: 'Patriot',
+    description: 'Complete the 4th of July trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-rose-400',
+    targetQuiz: '4th-of-july'
   }
 ];
 
@@ -645,6 +653,17 @@ export const UNIVERSES = [
     buttonText: 'Enter the Playlist',
     icon: 'Sparkles',
     path: '/selector-usa-songs'
+  },
+  {
+    id: 'july-4th',
+    title: '4th of July',
+    tags: ['History', 'Holiday', 'USA'],
+    description: "Celebrate America's birthday! Test your knowledge on the Declaration of Independence, patriotic symbols, historical founders, and Fourth of July traditions.",
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg',
+    seoAlt: 'Spectacular Fourth of July fireworks bursting behind the Washington Monument in Washington D.C.',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-july-4th'
   },
   {
     id: 'hangman',

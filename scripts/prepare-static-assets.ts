@@ -154,6 +154,7 @@ const sitemapEntries: SitemapEntry[] = [
   {path: '/trivia-frozen-1', priority: '0.6'},
   {path: '/trivia-frozen-2', priority: '0.6'},
   {path: '/trivia-frozen-random', priority: '0.6'},
+  {path: '/trivia-july-4th', priority: '0.6'},
   ...BLOG_POSTS.map((post) => ({
     path: `/blog/${post.slug}`,
     priority: '0.6',

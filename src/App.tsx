@@ -69,6 +69,7 @@ import {
   PERCY_JACKSON_QUIZ_MAP,
 } from './percyJacksonTrivia';
 import { USA_SONGS_TRIVIA } from './usaSongsTrivia';
+import { JULY_4TH_TRIVIA } from './july4thTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -197,6 +198,8 @@ const getQuizTitle = (quizId: string): string => {
     'pawpatrol': 'PAW Patrol: Mission Ready',
     'usa-songs': 'USA Songs Challenge',
     'usa-songs-challenge': 'USA Songs Challenge',
+    'july-4th': '4th of July Trivia',
+    '4th-of-july': '4th of July Trivia',
     'kfp-1': 'Kung Fu Panda',
     'kfp-2': 'Kung Fu Panda 2',
     'kfp-3': 'Kung Fu Panda 3',
@@ -327,6 +330,7 @@ const getUniverseName = (quizId: string): string => {
   if (q.includes('goat')) return 'GOAT';
   if (q.includes('rabbit')) return 'Rabbit Idioms';
   if (q.includes('usa-songs') || q.includes('usa songs')) return 'USA Songs';
+  if (q.includes('july-4th') || q.includes('july 4th') || q.includes('independence')) return '4th of July';
   if (q.includes('kpop') || q.includes('demon')) return 'K-Pop Universe';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end') || q.includes('forest') || q.includes('death')) return 'Three-Body Universe';
   if (q.includes('zootopia')) return 'Zootopia Universe';
@@ -359,6 +363,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('goat')) return '/images/goat.jpg';
   if (q.includes('rabbit')) return '/images/rabbit.png';
   if (q.includes('usa-songs') || q.includes('usa songs')) return USA_SONGS_CARD_IMAGE;
+  if (q.includes('july-4th') || q.includes('july 4th') || q.includes('independence')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
@@ -1951,6 +1956,13 @@ const USA_SONGS_GRADES = [
   { threshold: 70, label: 'Radio Insider', color: 'text-rose-300', character: { name: 'Playlist Curator', image: USA_SONGS_CARD_IMAGE, desc: 'Strong recall. You can track major songs across decades with confidence.' } },
   { threshold: 50, label: 'Weekend Listener', color: 'text-blue-400', character: { name: 'Road Trip DJ', image: USA_SONGS_CARD_IMAGE, desc: 'You know a lot of the hits, but there are still more classics to learn.' } },
   { threshold: 0, label: 'Fresh Ears', color: 'text-slate-400', character: { name: 'New Listener', image: USA_SONGS_CARD_IMAGE, desc: 'Time to build that playlist and start learning the biggest songs.' } },
+];
+
+const JULY_4TH_GRADES = [
+  { threshold: 90, label: 'Founding Father', color: 'text-amber-300', character: { name: 'Historian Extraordinaire', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'You are a true scholar of American history. Jefferson and Adams would be proud!' } },
+  { threshold: 70, label: 'Patriot', color: 'text-rose-300', character: { name: 'Citizen Scholar', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Excellent score. You know the history, documents, and traditions behind the nation\'s birthday.' } },
+  { threshold: 50, label: 'Weekend Celebrator', color: 'text-blue-400', character: { name: 'Barbecue Enthusiast', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Good effort! You know the basics of July 4th, but there are still some historic details to uncover.' } },
+  { threshold: 0, label: 'Rookie Colonist', color: 'text-slate-400', character: { name: 'History Student', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Time to hit the history books and learn more about America\'s Independence Day.' } },
 ];
 
 const HoppersSelector = ({ key }: { key?: string }) => {
@@ -9329,10 +9341,7 @@ export default function App() {
             <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-usa-songs" element={<MCQuizView key="trivia-usa-songs" questions={USA_SONGS_TRIVIA} title="USA Songs Challenge" scoreLabel="USA Songs Challenge" grades={USA_SONGS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-wicked-part-1" element={<MCQuizView key="trivia-wicked-part-1" questions={WICKED_PART_1_TRIVIA} title="Wicked: Part 1" scoreLabel="Wicked: Part 1" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-wicked-part-2" element={<MCQuizView key="trivia-wicked-part-2" questions={WICKED_PART_2_TRIVIA} title="Wicked: For Good" scoreLabel="Wicked: For Good" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-usa-songs" element={<MCQuizView key="trivia-usa-songs" questions={USA_SONGS_TRIVIA} title="USA Songs Challenge" scoreLabel="USA Songs Challenge" grades={USA_SONGS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-july-4th" element={<MCQuizView key="trivia-july-4th" questions={JULY_4TH_TRIVIA} title="4th of July Trivia" scoreLabel="4th of July Trivia" grades={JULY_4TH_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
