@@ -363,7 +363,7 @@ const getQuizImage = (quizId: string): string => {
   if (q.includes('goat')) return '/images/goat.jpg';
   if (q.includes('rabbit')) return '/images/rabbit.png';
   if (q.includes('usa-songs') || q.includes('usa songs')) return USA_SONGS_CARD_IMAGE;
-  if (q.includes('july-4th') || q.includes('july 4th') || q.includes('independence')) return 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg';
+  if (q.includes('july-4th') || q.includes('july 4th') || q.includes('independence')) return '/images/july-4th.jpg';
   if (q.includes('kpop')) return '/images/Soda Pop and How It\'s Done.jpg';
   if (q.includes('three-body') || q.includes('dark-forest') || q.includes('deaths-end')) return '/images/threebody.jpg';
   if (q.includes('zootopia')) return '/images/zootopia.jpg';
@@ -1959,10 +1959,10 @@ const USA_SONGS_GRADES = [
 ];
 
 const JULY_4TH_GRADES = [
-  { threshold: 90, label: 'Founding Father', color: 'text-amber-300', character: { name: 'Historian Extraordinaire', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'You are a true scholar of American history. Jefferson and Adams would be proud!' } },
-  { threshold: 70, label: 'Patriot', color: 'text-rose-300', character: { name: 'Citizen Scholar', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Excellent score. You know the history, documents, and traditions behind the nation\'s birthday.' } },
-  { threshold: 50, label: 'Weekend Celebrator', color: 'text-blue-400', character: { name: 'Barbecue Enthusiast', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Good effort! You know the basics of July 4th, but there are still some historic details to uncover.' } },
-  { threshold: 0, label: 'Rookie Colonist', color: 'text-slate-400', character: { name: 'History Student', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg', desc: 'Time to hit the history books and learn more about America\'s Independence Day.' } },
+  { threshold: 90, label: 'Founding Father', color: 'text-amber-300', character: { name: 'Historian Extraordinaire', image: '/images/july-4th.jpg', desc: 'You are a true scholar of American history. Jefferson and Adams would be proud!' } },
+  { threshold: 70, label: 'Patriot', color: 'text-rose-300', character: { name: 'Citizen Scholar', image: '/images/july-4th.jpg', desc: 'Excellent score. You know the history, documents, and traditions behind the nation\'s birthday.' } },
+  { threshold: 50, label: 'Weekend Celebrator', color: 'text-blue-400', character: { name: 'Barbecue Enthusiast', image: '/images/july-4th.jpg', desc: 'Good effort! You know the basics of July 4th, but there are still some historic details to uncover.' } },
+  { threshold: 0, label: 'Rookie Colonist', color: 'text-slate-400', character: { name: 'History Student', image: '/images/july-4th.jpg', desc: 'Time to hit the history books and learn more about America\'s Independence Day.' } },
 ];
 
 const HoppersSelector = ({ key }: { key?: string }) => {

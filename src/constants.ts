@@ -659,7 +659,7 @@ export const UNIVERSES = [
     title: '4th of July',
     tags: ['History', 'Holiday', 'USA'],
     description: "Celebrate America's birthday! Test your knowledge on the Declaration of Independence, patriotic symbols, historical founders, and Fourth of July traditions.",
-    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg',
+    image: '/images/july-4th.jpg',
     seoAlt: 'Spectacular Fourth of July fireworks bursting behind the Washington Monument in Washington D.C.',
     buttonText: 'Start the Quiz',
     icon: 'Sparkles',

@@ -2232,7 +2232,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Are you a true history buff? Take our ultimate 4th of July trivia quiz to test your knowledge of America\'s birthday, founders, and traditions!',
     date: '2026-06-04',
     author: 'Fandom Trivia Team',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Fourth_of_July_fireworks_behind_the_Washington_Monument%2C_1986.jpg',
+    image: '/images/july-4th.jpg',
     keywords: ['4th of July trivia quiz', 'Independence Day history test', 'USA birthday trivia', 'Declaration of Independence questions', 'American Revolution history quiz'],
     content: `
       <p class="lead text-xl text-slate-300 mb-6">Every year on the Fourth of July, millions of Americans gather to celebrate with fireworks, barbecues, and patriotic parades. But how much do you actually know about the historic events that birthed the nation? From the secret drafts of the Declaration of Independence to the remarkable coincidences of our Founding Fathers, the history of America's birthday is packed with fascinating stories. Are you a true history scholar, or just here for the hot dogs? Test your knowledge with the ultimate <strong>4th of July trivia quiz</strong> now!</p>
