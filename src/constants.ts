@@ -256,6 +256,14 @@ export const BADGES: Badge[] = [
     icon: 'Sparkles',
     color: 'text-rose-400',
     targetQuiz: '4th-of-july'
+  },
+  {
+    id: 'coding-wizard',
+    name: '10x Vibe Coder',
+    description: 'Complete the Coding & Vibes trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-yellow-400',
+    targetQuiz: 'coding'
   }
 ];
 
@@ -1007,6 +1015,17 @@ export const UNIVERSES = [
     buttonText: 'Start the Quiz',
     icon: 'Sparkles',
     path: '/trivia-alice-in-wonderland'
+  },
+  {
+    id: 'coding',
+    title: 'Coding & Vibes',
+    tags: ['Tech', 'Git', 'AI', 'Coding'],
+    description: 'Get ready to test your knowledge of Git, GitHub, and the latest developer paradigm of Vibe Coding! Prove that you know your rebase from your merge and can vibe with the best of them.',
+    image: '/images/coding.png',
+    seoAlt: 'Cyberpunk neon computer programming interface, Git branching graph, and a cute AI coding assistant robot',
+    buttonText: 'Start Coding',
+    icon: 'Sparkles',
+    path: '/trivia-coding'
   }
 ];
 
@@ -10566,5 +10585,203 @@ export const DOG_MAN_RANDOM_TRIVIA: MCTriviaQuestion[] = [
     ],
     "answer": "True",
     "evidence": "Dog Man-1 PDF 93% (27) Dog Man-1 58 pages"
+  }
+];
+
+export const CODING_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "By default, when running 'git init' on a standard Git installation without local overrides, what is the traditional default branch name created?",
+    options: ["master", "main", "trunk", "root"],
+    answer: "master",
+    evidence: "Traditionally, Git's default branch name is master, though GitHub and modern tools default to main."
+  },
+  {
+    id: 2,
+    question: "What does the command 'git reflog' do?",
+    options: [
+      "Records every change made to the tips of branches and other references",
+      "Shows a list of files that are currently ignored by .gitignore",
+      "Forces a remote repository to match the local commit history",
+      "Deletes all untracked files in the working directory"
+    ],
+    answer: "Records every change made to the tips of branches and other references",
+    evidence: "git reflog is a safety net that records every time HEAD changes, allowing you to recover lost commits."
+  },
+  {
+    id: 3,
+    question: "Which command is used to temporarily save changes in your working directory without committing them, so you can work on something else?",
+    options: ["git stash", "git save", "git hold", "git cache"],
+    answer: "git stash",
+    evidence: "git stash takes your dirty working directory and saves it on a stack of unfinished changes."
+  },
+  {
+    id: 4,
+    question: "In Git, what is the key difference between 'git merge' and 'git rebase'?",
+    options: [
+      "Merge creates a new commit joining histories; Rebase moves commits on top of another base tip",
+      "Merge rewrites project history; Rebase preserves the exact original commit graph",
+      "Merge only works on remote branches; Rebase only works on local branches",
+      "Merge deletes the source branch; Rebase keeps both branches intact"
+    ],
+    answer: "Merge creates a new commit joining histories; Rebase moves commits on top of another base tip",
+    evidence: "Rebase rewrites project history by creating brand new commits for each commit in the original branch, whereas merge joins them with a merge commit."
+  },
+  {
+    id: 5,
+    question: "What is the official name of GitHub's half-cat, half-octopus mascot, commonly referred to as the Octocat?",
+    options: ["Monalisa", "Octocat", "Octavia", "Hubert"],
+    answer: "Monalisa",
+    evidence: "GitHub's mascot is the Octocat, and her official name is Monalisa."
+  },
+  {
+    id: 6,
+    question: "Which file format is primarily used to define GitHub Actions workflows?",
+    options: ["YAML", "JSON", "XML", "TOML"],
+    answer: "YAML",
+    evidence: "GitHub Actions workflows are defined in .github/workflows using YAML syntax."
+  },
+  {
+    id: 7,
+    question: "What does 'Vibe Coding' mean in modern developer slang?",
+    options: [
+      "Coding primarily by prompting AI models and directing the 'vibes' while the AI generates and debugs the code",
+      "Coding only while listening to lo-fi hip hop music and relaxing",
+      "Programming in groups without speaking, using only hand gestures and telepathy",
+      "Writing code using virtual reality headsets in 3D workspaces"
+    ],
+    answer: "Coding primarily by prompting AI models and directing the 'vibes' while the AI generates and debugs the code",
+    evidence: "Vibe coding is the practice of developer-as-director, leveraging LLMs to write, edit, and fix code based on high-level instructions."
+  },
+  {
+    id: 8,
+    question: "Who is widely credited with coining or popularizing the term 'Vibe Coding' in early 2025?",
+    options: ["Andrej Karpathy", "Sam Altman", "Yann LeCun", "Linus Torvalds"],
+    answer: "Andrej Karpathy",
+    evidence: "Andrej Karpathy, former Director of AI at Tesla and OpenAI co-founder, popularized the term in early 2025."
+  },
+  {
+    id: 9,
+    question: "What does the command 'git add -p' (or 'git add --patch') allow you to do?",
+    options: [
+      "Interactively review and select specific hunks of changes to stage",
+      "Automatically stage all files including ignored ones",
+      "Push staged changes to the remote repository immediately",
+      "Apply a patch file from a pull request to your branch"
+    ],
+    answer: "Interactively review and select specific hunks of changes to stage",
+    evidence: "git add -p allows you to stage changes in a file interactively, hunk by hunk."
+  },
+  {
+    id: 10,
+    question: "What is the main purpose of creating a 'Fork' on GitHub?",
+    options: [
+      "Create a copy of a repository in your own GitHub account to make changes independently",
+      "Merge two different repositories into a single unified project",
+      "Set up a pipeline to build and deploy your application to Vercel",
+      "Split a repository into multiple smaller repositories automatically"
+    ],
+    answer: "Create a copy of a repository in your own GitHub account to make changes independently",
+    evidence: "Forks are used to propose changes to someone else's project or use someone else's project as a starting point."
+  },
+  {
+    id: 11,
+    question: "If you want to undo the changes of a specific commit by creating a new commit that does the exact opposite, which command should you use?",
+    options: ["git revert", "git reset", "git checkout", "git clean"],
+    answer: "git revert",
+    evidence: "git revert creates a new commit that offsets the changes of an existing commit, making it safe for public history."
+  },
+  {
+    id: 12,
+    question: "What does 'git cherry-pick' do?",
+    options: [
+      "Applies the changes introduced by some existing commits onto the current branch",
+      "Selects the most popular commits on GitHub for a specific repository",
+      "Deletes commits that do not compile or fail tests",
+      "Renames a branch to a sweeter or more appealing name"
+    ],
+    answer: "Applies the changes introduced by some existing commits onto the current branch",
+    evidence: "git cherry-pick lets you pick a specific commit from one branch and apply it to another."
+  },
+  {
+    id: 13,
+    question: "Which of the following is a key practice for success when 'vibe coding' with AI coding agents?",
+    options: [
+      "Providing clear feedback loops, compiling/running code, and iteratively refining prompts",
+      "Never looking at the code and hoping for the best",
+      "Writing all helper functions manually and letting AI only write comments",
+      "Restricting the AI to only edit one line of code per hour"
+    ],
+    answer: "Providing clear feedback loops, compiling/running code, and iteratively refining prompts",
+    evidence: "Vibe coding relies on iterative feedback—giving the AI error logs, compiler outputs, or visual bugs to fix."
+  },
+  {
+    id: 14,
+    question: "What is the default port used by Vite development servers, which is a common site when vibe coding modern frontend apps?",
+    options: ["5173", "3000", "8080", "5000"],
+    answer: "5173",
+    evidence: "Vite's default dev server port is 5173 (which spells out V-I-T-E on a keypad)."
+  },
+  {
+    id: 15,
+    question: "In GitHub, what is 'Dependabot'?",
+    options: [
+      "An automated bot that scans repositories for vulnerable dependencies and creates Pull Requests to update them",
+      "A chat bot that answers general questions about the repository's readme",
+      "A tool that hosts live previews of pull requests on every commit",
+      "A system that automatically approves pull requests from trusted contributors"
+    ],
+    answer: "An automated bot that scans repositories for vulnerable dependencies and creates Pull Requests to update them",
+    evidence: "Dependabot helps keep your dependencies secure and up-to-date by automatically creating PRs for security updates."
+  },
+  {
+    id: 16,
+    question: "What is a 'Detached HEAD' state in Git?",
+    options: [
+      "HEAD points to a specific commit rather than a local branch",
+      "The developer has stopped vibe coding and started coding manually",
+      "A branch has been deleted but the local directory is still open",
+      "The remote repository has rejected a force push"
+    ],
+    answer: "HEAD points to a specific commit rather than a local branch",
+    evidence: "In a detached HEAD state, HEAD refers directly to a commit instead of a branch reference."
+  },
+  {
+    id: 17,
+    question: "What is the filename used at the root of a Git repository to define which patterns of files should not be tracked?",
+    options: [".gitignore", ".gitconfig", ".gitattributes", ".gitkeep"],
+    answer: ".gitignore",
+    evidence: "A .gitignore file specifies intentionally untracked files that Git should ignore."
+  },
+  {
+    id: 18,
+    question: "Which command is used to download objects and refs from another repository, but DOES NOT integrate them into your current working branch?",
+    options: ["git fetch", "git pull", "git clone", "git checkout"],
+    answer: "git fetch",
+    evidence: "git fetch downloads the latest changes from a remote repository, but does not merge them into your local branches like git pull does."
+  },
+  {
+    id: 19,
+    question: "When 'vibe coding' with AI agents, what is a best practice for handling compilation or test failures?",
+    options: [
+      "Copy and paste the exact error message or build log into the agent's prompt",
+      "Delete the entire project and start over from scratch",
+      "Manually re-write the code in a different programming language",
+      "Wait 24 hours for the AI to fix it in its sleep"
+    ],
+    answer: "Copy and paste the exact error message or build log into the agent's prompt",
+    evidence: "Feeding precise, raw compiler or runtime errors into an AI agent is the fastest way for it to identify and resolve bugs."
+  },
+  {
+    id: 20,
+    question: "What does the command 'git commit --amend' do?",
+    options: [
+      "Combines the staged changes with the previous commit instead of creating a new one",
+      "Deletes the last commit and restores the files to the workspace",
+      "Sends the last commit directly to GitHub as a pull request",
+      "Translates the commit message into multiple languages"
+    ],
+    answer: "Combines the staged changes with the previous commit instead of creating a new one",
+    evidence: "git commit --amend is used to modify the most recent commit, adding new staged changes or updating the commit message."
   }
 ];

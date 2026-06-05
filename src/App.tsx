@@ -33,7 +33,7 @@ import {
   TOY_STORY_1_TRIVIA, TOY_STORY_2_TRIVIA, TOY_STORY_3_TRIVIA, TOY_STORY_4_TRIVIA, TOY_STORY_RANDOM_TRIVIA, TOY_STORY_GRADES,
   SHREK_1_TRIVIA, SHREK_2_TRIVIA, SHREK_3_TRIVIA, SHREK_4_TRIVIA, SHREK_GRADES,
   DOG_MAN_TRIVIA_BOOK1, DOG_MAN_TRIVIA_BOOK2, DOG_MAN_TRIVIA_BOOK3, DOG_MAN_TRIVIA_BOOK4, DOG_MAN_TRIVIA_BOOK5, DOG_MAN_TRIVIA_BOOK6, DOG_MAN_TRIVIA_BOOK7, DOG_MAN_TRIVIA_BOOK8, DOG_MAN_TRIVIA_BOOK9, DOG_MAN_TRIVIA_BOOK10, DOG_MAN_TRIVIA_BOOK11, DOG_MAN_TRIVIA_BOOK12, DOG_MAN_TRIVIA_BOOK13, DOG_MAN_TRIVIA_BOOK14, DOG_MAN_GRADES,
-  MCTriviaQuestion, BADGES, Badge
+  MCTriviaQuestion, BADGES, Badge, CODING_TRIVIA
 } from './constants';
 import {
   STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA,
@@ -1128,6 +1128,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const universeRouteMap: Record<string, string> = {
+      'coding': '/trivia-coding',
       'disneyland': '/selector-disneyland',
       'lion-king': '/trivia-lion-king',
       'aladdin': '/trivia-aladdin',
@@ -1929,6 +1930,13 @@ const KPOP_GRADES = [
   { threshold: 70, label: 'Saja Superfan', color: 'text-purple-400', character: { name: 'Lead Hunter', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Your instincts are sharp and your beats are lethal.' } },
   { threshold: 50, label: 'K-Pop Casual', color: 'text-blue-400', character: { name: 'Rookie Trainee', image: "/images/Soda Pop and How It's Done.jpg", desc: 'You have potential, but the demons are still faster.' } },
   { threshold: 0, label: 'Trainee', color: 'text-slate-400', character: { name: 'Civilian Fan', image: "/images/Soda Pop and How It's Done.jpg", desc: 'Keep practicing your moves before entering the supernatural zone.' } },
+];
+
+const CODING_GRADES = [
+  { threshold: 90, label: '10x Vibe Coder', color: 'text-amber-400', character: { name: 'Andrej Karpathy', image: '/images/coding.png', desc: 'You are the ultimate developer-director. Your prompts are poetry, your commits are atomic, and your vibes are immaculate.' } },
+  { threshold: 70, label: 'Senior Git Architect', color: 'text-cyan-300', character: { name: 'Linus Torvalds', image: '/images/coding.png', desc: 'Incredible work. You know how to resolve merge conflicts, rewrite history, and lead a codebase with confidence.' } },
+  { threshold: 50, label: 'Junior Prompt Engineer', color: 'text-blue-400', character: { name: 'Agent Assistant', image: '/images/coding.png', desc: 'You have a good grasp of the basics. A few more interactive debugging sessions and you will be vibing in no time.' } },
+  { threshold: 0, label: 'Syntax Error', color: 'text-slate-400', character: { name: 'Merge Conflict', image: '/images/coding.png', desc: 'Uh oh! It seems there is a conflict in your knowledge branch. Time to read the docs, pull the main branch, and try again.' } },
 ];
 
 const WICKED_GRADES = [
@@ -7775,6 +7783,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                         navigate(universe.path);
                         return;
                       }
+                      if (universe.id === 'coding') navigate('/trivia-coding');
                       if (universe.id === 'twilight') navigate('/selector-twilight');
                       if (universe.id === 'kpop') navigate('/selector-kpop');
                       if (universe.id === 'usa-songs') navigate('/selector-usa-songs');
@@ -9585,6 +9594,9 @@ export default function App() {
             <Route path="/trivia-robin-hood" element={<MCQuizView key="trivia-robin-hood" user={user} questions={ROBIN_HOOD_TRIVIA} title="Robin Hood" scoreLabel="Robin Hood" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-alice-in-wonderland" element={<MCQuizView key="trivia-alice-in-wonderland" user={user} questions={ALICE_IN_WONDERLAND_TRIVIA} title="Alice in Wonderland" scoreLabel="Alice in Wonderland" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-classic-tales-random" element={<MCQuizView key="trivia-classic-tales-random" user={user} questions={classicTalesRandomQuestions} title="Classic Tales Mixed Challenge" scoreLabel="Classic Tales Mixed Challenge" grades={CLASSIC_TALES_GRADES} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+
+            {/* Coding Trivia */}
+            <Route path="/trivia-coding" element={<MCQuizView key="trivia-coding" questions={CODING_TRIVIA} title="Coding & Vibes" scoreLabel="Coding & Vibes" grades={CODING_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
             <Route path="/dashboard" element={user ? <DashboardView user={user} key="dashboard" /> : <LandingView key="auth-redirect" setUser={setUser} onUnlockBadge={evaluateBadges} />} />
             
