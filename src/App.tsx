@@ -8127,6 +8127,8 @@ const RankingsView = ({ user }: { user: User | null }) => {
   const [error, setError] = useState<string | null>(null);
   const [rankingType, setRankingType] = useState<'accuracy' | 'speed'>('accuracy');
   const [expandedQuizzes, setExpandedQuizzes] = useState<Set<string>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
 
   const toggleExpand = (quizId: string) => {
     setExpandedQuizzes(prev => {
@@ -8136,6 +8138,54 @@ const RankingsView = ({ user }: { user: User | null }) => {
       return next;
     });
   };
+
+  const filteredScores = useMemo(() => {
+    if (!searchTerm.trim()) return scores;
+    const term = searchTerm.toLowerCase().trim();
+
+    return scores
+      .map(universeGroup => {
+        const universeMatches = universeGroup.universe.toLowerCase().includes(term);
+
+        const filteredQuizzes = universeGroup.quizzes
+          .map((quizData: any) => {
+            const quizTitleMatches = getQuizTitle(quizData.quiz_id).toLowerCase().includes(term);
+
+            const filteredUserScores = quizData.scores.filter((scoreRow: any) => {
+              const username = (scoreRow.profiles?.username || 'Unknown User').toLowerCase();
+              return username.includes(term);
+            });
+
+            if (universeMatches || quizTitleMatches) {
+              return quizData;
+            }
+
+            if (filteredUserScores.length > 0) {
+              return {
+                ...quizData,
+                scores: filteredUserScores
+              };
+            }
+
+            return null;
+          })
+          .filter(Boolean);
+
+        if (universeMatches && universeGroup.quizzes.length > 0) {
+          return universeGroup;
+        }
+
+        if (filteredQuizzes.length > 0) {
+          return {
+            ...universeGroup,
+            quizzes: filteredQuizzes
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+  }, [scores, searchTerm]);
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -8262,6 +8312,20 @@ const RankingsView = ({ user }: { user: User | null }) => {
               <Trophy className="size-8 text-amber-400" />
               Global Rankings
             </h2>
+            <button
+              onClick={() => {
+                setShowSearch(prev => !prev);
+                if (showSearch) setSearchTerm('');
+              }}
+              className={`size-10 rounded-xl border flex items-center justify-center transition-all ${
+                showSearch
+                  ? 'bg-primary/20 border-primary text-primary hover:bg-primary/30'
+                  : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
+              }`}
+              title="Search Leaderboard"
+            >
+              <Search className="size-4" />
+            </button>
           </div>
 
           <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 self-start md:self-auto">
@@ -8290,6 +8354,35 @@ const RankingsView = ({ user }: { user: User | null }) => {
           </div>
         </div>
 
+        <AnimatePresence>
+          {showSearch && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="relative"
+            >
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 size-4" />
+              <input
+                type="text"
+                placeholder="Search by universe, quiz title, or username..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-10 py-3 bg-white/5 border border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/30 rounded-2xl text-white placeholder-slate-500 outline-none transition-all text-sm font-medium"
+                autoFocus
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  <X className="size-4" />
+                </button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {loading ? (
           <div className="text-center py-20 text-slate-400 font-bold animate-pulse">
             Loading top scores...
@@ -8302,9 +8395,13 @@ const RankingsView = ({ user }: { user: User | null }) => {
           <div className="text-center py-20 text-slate-400 font-bold">
             No scores recorded yet. Be the first!
           </div>
+        ) : filteredScores.length === 0 ? (
+          <div className="text-center py-20 text-slate-400 font-bold bg-white/5 rounded-3xl border border-white/10 p-8">
+            No matching rankings found for &ldquo;{searchTerm}&rdquo;
+          </div>
         ) : (
           <div className="space-y-20">
-            {scores.map((universeGroup) => (
+            {filteredScores.map((universeGroup) => (
               <div key={universeGroup.universe} className="space-y-8">
                 <div className="flex items-center gap-4 border-b-2 border-primary/20 pb-4">
                   <div className="px-4 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-black uppercase tracking-widest">

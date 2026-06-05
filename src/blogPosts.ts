@@ -11,6 +11,40 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'coding-vibes-trivia',
+    title: 'Coding & Vibes: Can You Ace the Ultimate Git, GitHub, and AI Vibe Coding Quiz?',
+    metaDescription: 'Prompt the AI and check your git branches! Take our Coding & Vibes quiz to test your Git commands, GitHub knowledge, and modern AI Vibe Coding expertise.',
+    date: '2026-06-05',
+    author: 'Fandom Trivia Team',
+    image: '/images/coding.png',
+    keywords: ['Coding and Vibes quiz', 'Git and GitHub trivia', 'vibe coding test', 'AI coding agent challenge', 'programmer trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Are you a terminal wizard who knows their rebase from their merge? Or are you a modern "Vibe Coder" who commands AI agents to build entire applications with a single prompt? FandomTrivia's latest <strong>Coding & Vibes quiz</strong> is here to test your developer mettle. From git reflog safety nets to GitHub actions and the latest AI engineering slang, we are putting your engineering knowledge to the test. Let's see if you can compile a perfect score!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-coding" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Coding & Vibes Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">The Git & GitHub Foundation</h2>
+      <p>Every developer knows that version control is the backbone of modern engineering. To pass our <strong>Git and GitHub trivia</strong>, you'll need to remember the difference between git reset and git revert, understand what a detached HEAD state actually means, and identify the official name of the legendary GitHub mascot (the Octocat!). Do you know how to review code hunks interactively with git add -p? These are the toolbelt details that separate the seniors from the rookies.</p>
+      <p class="mt-4">From workflow automation in YAML to fork-and-pull collaboration, version control is an art form. If you're ready to show off your command line chops, <a href="/trivia-coding" class="text-primary hover:text-primary/80 font-bold">take our programmer trivia challenge now</a>.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Welcome to the Era of Vibe Coding</h2>
+      <p>Coined and popularized by AI pioneer Andrej Karpathy in early 2025, "Vibe Coding" describes a new developer paradigm: where humans design, direct, and verify, while AI agents write, refactor, and debug the code. But vibe coding isn't just about wishing for code; it's a high-level orchestration skill. In this <strong>vibe coding test</strong>, you will face questions about prompt iterations, handling compilation errors, and maintaining developer-agent alignment.</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Slang:</strong> "Vibe Coding" means developer-as-director, guiding LLMs to write code based on natural language feedback.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Loop:</strong> Success requires interactive testing, pasting error logs back to the agent, and structured prompt changes.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Version Control:</strong> Git becomes even more critical to revert experimental AI changes that didn't match the vibe.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Tools:</strong> From cursor-based code editing to agentic terminals, the developer's role is shifting from typing syntax to system architecture.</li>
+      </ul>
+
+      <p>Do you have the engineering depth and the prompt engineering instinct to top our coding leaderboard? Initialize your local repository, focus your terminal, and test your vibes today!</p>
+    `
+  },
+  {
     slug: 'frozen-2-quiz',
     title: 'Frozen 2 Quiz: Can You Brave the Enchanted Forest and Find Ahtohallan?',
     metaDescription: 'Step into the unknown! Take our Frozen 2 quiz and test your knowledge on nature spirits, Ahtohallan, Northuldra, and Elsa\'s destiny.',
