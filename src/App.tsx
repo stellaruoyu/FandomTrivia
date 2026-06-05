@@ -1430,41 +1430,28 @@ const CookiePolicyView = ({ key }: { key?: string }) => (
 const DailyMysteryChallenge = () => {
   const navigate = useNavigate();
   
-  // Use current date as seed for consistent daily selection
+  // Use current local calendar date to compute UTC midnight (DST safe) as seed for consistent daily selection
   const dailyUniverse = useMemo(() => {
     const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
+    const y = today.getFullYear();
+    const m = today.getMonth();
+    const d = today.getDate();
+    const localMidnightUtc = Date.UTC(y, m, d);
+    const dayCount = Math.floor(localMidnightUtc / 86400000);
     const list = UNIVERSES.filter(u => !u.hideOnHomepage);
-    return list[dayOfYear % list.length];
+    return list[dayCount % list.length];
   }, []);
 
   const handleStart = () => {
-    if (dailyUniverse.id === 'twilight') navigate('/selector-twilight', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'kpop') navigate('/selector-kpop', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'usa-songs') navigate('/selector-usa-songs', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'harry-potter') navigate('/selector-harry-potter', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'percy-jackson') navigate('/selector-percy-jackson', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'star-wars') navigate('/selector-star-wars', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'three-body') navigate('/selector-three-body', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'zootopia') navigate('/selector-zootopia', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'despicable-me') navigate('/selector-despicable-me', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'frozen') navigate('/selector-frozen', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'moana') navigate('/selector-moana', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'avatar') navigate('/selector-avatar', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'minecraft') navigate('/selector-minecraft', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'super-mario') navigate('/selector-super-mario', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'pawpatrol') navigate('/selector-paw-patrol', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'toy-story') navigate('/selector-toy-story', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'shrek') navigate('/selector-shrek', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'dog-man') navigate('/selector-dog-man', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'bad-guys') navigate('/selector-bad-guys', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'hoppers') navigate('/selector-hoppers', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'wicked') navigate('/selector-wicked', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'rabbit') navigate('/selector-rabbit', { state: { isDaily: true } });
-    else if (dailyUniverse.id === 'classic-tales') navigate('/selector-classic-tales', { state: { isDaily: true } });
+    if (dailyUniverse.path) {
+      navigate(dailyUniverse.path, { state: { isDaily: true } });
+      return;
+    }
+    if (dailyUniverse.id === 'pawpatrol') {
+      navigate('/selector-paw-patrol', { state: { isDaily: true } });
+      return;
+    }
+    navigate(`/selector-${dailyUniverse.id}`, { state: { isDaily: true } });
   };
 
   return (
