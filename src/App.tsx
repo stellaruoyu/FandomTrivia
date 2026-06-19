@@ -13,7 +13,7 @@ import {
   ChevronUp, ChevronDown,
   ExternalLink, Droplets, Wand2, Bolt, LayoutDashboard, LogOut, User as UserIcon,
   BookOpen, Check, X, RotateCcw, Eye, EyeOff, ArrowLeft, Settings, Hash, Megaphone, Lightbulb, Send, Clock, Target, Snowflake,
-  Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette, Trash2
+  Volume2, VolumeX, Sparkles, Car, Lock, Shirt, Scissors, Smile, Palette, Trash2, Ghost
 } from 'lucide-react';
 import {
   NAV_LINKS, DASHBOARD_NAV_LINKS, UNIVERSES, TOURNAMENTS,
@@ -70,6 +70,11 @@ import {
 } from './percyJacksonTrivia';
 import { USA_SONGS_TRIVIA } from './usaSongsTrivia';
 import { JULY_4TH_TRIVIA } from './july4thTrivia';
+import { JUNETEENTH_TRIVIA } from './juneteenthTrivia';
+import { WORLD_CUP_TRIVIA } from './worldCupTrivia';
+import { THANKSGIVING_TRIVIA } from './thanksgivingTrivia';
+import { CHRISTMAS_TRIVIA } from './christmasTrivia';
+import { HALLOWEEN_TRIVIA } from './halloweenTrivia';
 import ParticleCanvas from './ParticleCanvas';
 import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
@@ -1958,6 +1963,41 @@ const JULY_4TH_GRADES = [
   { threshold: 70, label: 'Patriot', color: 'text-rose-300', character: { name: 'Citizen Scholar', image: '/images/july-4th.jpg', desc: 'Excellent score. You know the history, documents, and traditions behind the nation\'s birthday.' } },
   { threshold: 50, label: 'Weekend Celebrator', color: 'text-blue-400', character: { name: 'Barbecue Enthusiast', image: '/images/july-4th.jpg', desc: 'Good effort! You know the basics of July 4th, but there are still some historic details to uncover.' } },
   { threshold: 0, label: 'Rookie Colonist', color: 'text-slate-400', character: { name: 'History Student', image: '/images/july-4th.jpg', desc: 'Time to hit the history books and learn more about America\'s Independence Day.' } },
+];
+
+const JUNETEENTH_GRADES = [
+  { threshold: 90, label: 'Freedom Fighter', color: 'text-amber-300', character: { name: 'Civil Rights Historian', image: '/images/juneteenth.jpg', desc: 'You are a true scholar of Juneteenth history. Opal Lee would be proud!' } },
+  { threshold: 70, label: 'Advocate', color: 'text-rose-300', character: { name: 'Community Scholar', image: '/images/juneteenth.jpg', desc: 'Excellent score. You know the history, documents, and traditions behind Juneteenth.' } },
+  { threshold: 50, label: 'Celebrator', color: 'text-blue-400', character: { name: 'Jubilee Enthusiast', image: '/images/juneteenth.jpg', desc: 'Good effort! You know the basics of Juneteenth, but there are still some historic details to uncover.' } },
+  { threshold: 0, label: 'Learner', color: 'text-slate-400', character: { name: 'History Student', image: '/images/juneteenth.jpg', desc: 'Time to hit the history books and learn more about Freedom Day.' } },
+];
+
+const WORLD_CUP_GRADES = [
+  { threshold: 90, label: 'Golden Boot Winner', color: 'text-amber-300', character: { name: 'World Champion', image: '/images/world-cup.jpg', desc: 'You are a true soccer historian. Pele and Messi would be proud!' } },
+  { threshold: 70, label: 'Tournament Finalist', color: 'text-rose-300', character: { name: 'Soccer Scholar', image: '/images/world-cup.jpg', desc: 'Excellent score. You know the history, iconic moments, and legends of the World Cup.' } },
+  { threshold: 50, label: 'Group Stage Qualifier', color: 'text-blue-400', character: { name: 'Avid Fan', image: '/images/world-cup.jpg', desc: 'Good effort! You know the basics of the World Cup, but there are still some historic details to uncover.' } },
+  { threshold: 0, label: 'Benchwarmer', color: 'text-slate-400', character: { name: 'Rookie Spectator', image: '/images/world-cup.jpg', desc: 'Time to hit the pitch and learn more about the beautiful game.' } },
+];
+
+const THANKSGIVING_GRADES = [
+  { threshold: 90, label: 'Master Carver', color: 'text-amber-300', character: { name: 'Thanksgiving Historian', image: '/images/thanksgiving.jpg', desc: 'You are a true scholar of Thanksgiving history!' } },
+  { threshold: 70, label: 'Parade Leader', color: 'text-rose-300', character: { name: 'Holiday Scholar', image: '/images/thanksgiving.jpg', desc: 'Excellent score. You know the history, traditions, and origins of Thanksgiving.' } },
+  { threshold: 50, label: 'Turkey Trotter', color: 'text-blue-400', character: { name: 'Feast Enthusiast', image: '/images/thanksgiving.jpg', desc: 'Good effort! You know the basics of Thanksgiving, but there are still some historic details to uncover.' } },
+  { threshold: 0, label: 'Dinner Guest', color: 'text-slate-400', character: { name: 'Holiday Rookie', image: '/images/thanksgiving.jpg', desc: 'Time to study up on the history of this autumn holiday.' } },
+];
+
+const CHRISTMAS_GRADES = [
+  { threshold: 90, label: 'Santa Claus', color: 'text-amber-300', character: { name: 'Christmas Historian', image: '/images/christmas.jpg', desc: 'You are a true master of Christmas trivia! Rudolph would be proud.' } },
+  { threshold: 70, label: 'Elf on the Shelf', color: 'text-rose-300', character: { name: 'Holiday Expert', image: '/images/christmas.jpg', desc: 'Excellent score. You know your holiday traditions and classic songs well.' } },
+  { threshold: 50, label: 'Carol Singer', color: 'text-blue-400', character: { name: 'Festive Fan', image: '/images/christmas.jpg', desc: 'Good effort! You know the basics of the holiday, but there is still more to learn.' } },
+  { threshold: 0, label: 'Grinch', color: 'text-slate-400', character: { name: 'Holiday Rookie', image: '/images/christmas.jpg', desc: 'Time to brush up on your holiday cheer and facts!' } },
+];
+
+const HALLOWEEN_GRADES = [
+  { threshold: 90, label: 'Vampire Lord', color: 'text-amber-300', character: { name: 'Master of Horror', image: '/images/halloween.jpg', desc: 'You are a true master of the macabre! Dracula would be proud.' } },
+  { threshold: 70, label: 'Witch', color: 'text-rose-300', character: { name: 'Spooky Scholar', image: '/images/halloween.jpg', desc: 'Excellent score. You know your spooky legends and classic horror movies well.' } },
+  { threshold: 50, label: 'Ghost', color: 'text-blue-400', character: { name: 'Trick-or-Treater', image: '/images/halloween.jpg', desc: 'Good effort! You know the basics of the holiday, but there is still more to learn.' } },
+  { threshold: 0, label: 'Zombie', color: 'text-slate-400', character: { name: 'Frightened Rookie', image: '/images/halloween.jpg', desc: 'Time to brush up on your spooky facts before the full moon!' } },
 ];
 
 const HoppersSelector = ({ key }: { key?: string }) => {
@@ -7662,6 +7702,14 @@ const LandingView = ({ setUser, onUnlockBadge }: {
   key?: string
 }) => {
   const navigate = useNavigate();
+  const [holidaySearch, setHolidaySearch] = useState('');
+  
+  const holidayUniverses = UNIVERSES.filter(u => 
+    u.tags.includes('Holiday') && 
+    (u.title.toLowerCase().includes(holidaySearch.toLowerCase()) || 
+     u.description.toLowerCase().includes(holidaySearch.toLowerCase()))
+  );
+
   return (
   <motion.div
     initial={{ opacity: 0 }}
@@ -7732,6 +7780,83 @@ const LandingView = ({ setUser, onUnlockBadge }: {
       </section>
 
       <DailyMysteryChallenge />
+
+      {/* Holiday Grid */}
+      <section id="holidays" className="max-w-7xl mx-auto px-6 pb-20">
+        <div className="flex items-end justify-between mb-10">
+          <div className="space-y-2">
+            <h3 className="text-3xl font-extrabold text-white">Holiday Trivia</h3>
+            <p className="text-slate-400 font-medium">Celebrate the seasons with festive trivia and legends.</p>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search holidays..."
+              value={holidaySearch}
+              onChange={(e) => setHolidaySearch(e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-primary/50 transition-colors w-48 sm:w-64"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {holidayUniverses.map((universe, i) => (
+            <motion.div
+              key={universe.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url("${universe.image}")` }}
+                role="img"
+                aria-label={universe.title + " Trivia Universe Background"}
+              ></div>
+              <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
+              <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">
+                <div className="flex items-center gap-2">
+                  {universe.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-widest border border-white/20">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h4 className="text-4xl font-extrabold text-white tracking-tight">
+                  {universe.title}
+                </h4>
+                <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
+                
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (universe.path) {
+                        navigate(universe.path);
+                        return;
+                      }
+                    }}
+                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all"
+                  >
+                    {universe.buttonText}
+                  </button>
+                </div>
+              </div>
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                {universe.icon === 'Ghost' && <Ghost className="text-white/50 size-10" />}
+                {universe.icon === 'Sparkles' && <Sparkles className="text-white/50 size-10" />}
+              </div>
+            </motion.div>
+          ))}
+          {holidayUniverses.length === 0 && (
+            <div className="col-span-full text-center py-20 bg-white/5 rounded-2xl border border-white/10">
+              <p className="text-slate-400 font-medium">No holidays found matching "{holidaySearch}".</p>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Universe Grid */}
 
@@ -9435,6 +9560,11 @@ export default function App() {
             <Route path="/trivia-wicked-random" element={<MCQuizView key="trivia-wicked-random" questions={WICKED_MIXED_TRIVIA} title="Wicked Mixed Challenge" scoreLabel="Wicked Mixed Challenge" grades={WICKED_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-usa-songs" element={<MCQuizView key="trivia-usa-songs" questions={USA_SONGS_TRIVIA} title="USA Songs Challenge" scoreLabel="USA Songs Challenge" grades={USA_SONGS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-july-4th" element={<MCQuizView key="trivia-july-4th" questions={JULY_4TH_TRIVIA} title="4th of July Trivia" scoreLabel="4th of July Trivia" grades={JULY_4TH_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-juneteenth" element={<MCQuizView key="trivia-juneteenth" questions={JUNETEENTH_TRIVIA} title="Juneteenth Trivia" scoreLabel="Juneteenth Trivia" grades={JUNETEENTH_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup" element={<MCQuizView key="trivia-world-cup" questions={WORLD_CUP_TRIVIA} title="World Cup Soccer Trivia" scoreLabel="World Cup Soccer Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-thanksgiving" element={<MCQuizView key="trivia-thanksgiving" questions={THANKSGIVING_TRIVIA} title="Thanksgiving Trivia" scoreLabel="Thanksgiving Trivia" grades={THANKSGIVING_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-christmas" element={<MCQuizView key="trivia-christmas" questions={CHRISTMAS_TRIVIA} title="Christmas Trivia" scoreLabel="Christmas Trivia" grades={CHRISTMAS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-halloween" element={<MCQuizView key="trivia-halloween" questions={HALLOWEEN_TRIVIA} title="Halloween Trivia" scoreLabel="Halloween Trivia" grades={HALLOWEEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-mc" element={<MCQuizView key="trivia-twilight-mc" questions={TWILIGHT_MC_TRIVIA} title="Twilight MC Trivia" scoreLabel="Twilight MC Trivia" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-twilight-book" element={<MCQuizView key="trivia-twilight-book" questions={TWILIGHT_BOOK_TRIVIA} title="Twilight: Book 1" scoreLabel="Twilight: Book 1" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-newmoon" element={<MCQuizView key="trivia-newmoon" questions={NEW_MOON_TRIVIA} title="New Moon" scoreLabel="New Moon" grades={TWILIGHT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

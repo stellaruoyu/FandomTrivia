@@ -258,6 +258,46 @@ export const BADGES: Badge[] = [
     targetQuiz: '4th-of-july'
   },
   {
+    id: 'juneteenth-scholar',
+    name: 'Freedom Scholar',
+    description: 'Complete the Juneteenth trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-emerald-400',
+    targetQuiz: 'juneteenth'
+  },
+  {
+    id: 'world-cup-champion',
+    name: 'World Champion',
+    description: 'Complete the World Cup Soccer trivia challenge.',
+    icon: 'Trophy',
+    color: 'text-amber-400',
+    targetQuiz: 'world-cup'
+  },
+  {
+    id: 'thanksgiving-scholar',
+    name: 'Master Carver',
+    description: 'Complete the Thanksgiving trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-orange-400',
+    targetQuiz: 'thanksgiving'
+  },
+  {
+    id: 'christmas-scholar',
+    name: 'Santa Claus',
+    description: 'Complete the Christmas trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-red-400',
+    targetQuiz: 'christmas'
+  },
+  {
+    id: 'halloween-scholar',
+    name: 'Vampire Lord',
+    description: 'Complete the Halloween trivia challenge.',
+    icon: 'Ghost',
+    color: 'text-purple-400',
+    targetQuiz: 'halloween'
+  },
+  {
     id: 'coding-wizard',
     name: '10x Vibe Coder',
     description: 'Complete the Coding & Vibes trivia challenge.',
@@ -672,6 +712,61 @@ export const UNIVERSES = [
     buttonText: 'Start the Quiz',
     icon: 'Sparkles',
     path: '/trivia-july-4th'
+  },
+  {
+    id: 'juneteenth',
+    title: 'Juneteenth',
+    tags: ['History', 'Holiday', 'USA'],
+    description: "Commemorate Freedom Day! Test your knowledge on the history of Juneteenth, Emancipation, and the traditions of this important American holiday.",
+    image: '/images/juneteenth.jpg',
+    seoAlt: 'People celebrating Juneteenth Freedom Day',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-juneteenth'
+  },
+  {
+    id: 'world-cup',
+    title: 'World Cup Soccer',
+    tags: ['Sports', 'Soccer', 'Global'],
+    description: "Test your knowledge of the beautiful game! From legendary goals to historic upsets, see how well you know the FIFA World Cup.",
+    image: '/images/world-cup.jpg',
+    seoAlt: 'Soccer ball on a stadium pitch during a World Cup match',
+    buttonText: 'Start the Match',
+    icon: 'Globe',
+    path: '/trivia-world-cup'
+  },
+  {
+    id: 'thanksgiving',
+    title: 'Thanksgiving',
+    tags: ['History', 'Holiday', 'USA'],
+    description: "Gather around the table! Test your knowledge on the history of Thanksgiving, the Pilgrims, and beloved holiday traditions.",
+    image: '/images/thanksgiving.jpg',
+    seoAlt: 'A beautiful Thanksgiving feast on a wooden table',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-thanksgiving'
+  },
+  {
+    id: 'christmas',
+    title: 'Christmas',
+    tags: ['Holiday', 'Festive', 'Winter'],
+    description: "Deck the halls! Test your knowledge on the history of Christmas, classic holiday movies, and festive traditions.",
+    image: '/images/christmas.jpg',
+    seoAlt: 'Beautifully decorated Christmas tree with lights and presents',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-christmas'
+  },
+  {
+    id: 'halloween',
+    title: 'Halloween',
+    tags: ['Holiday', 'Spooky', 'Horror'],
+    description: "Trick or treat! Test your knowledge on the history of Halloween, classic horror monsters, and spooky traditions.",
+    image: '/images/halloween.jpg',
+    seoAlt: 'Spooky Jack-o-lantern glowing in the dark',
+    buttonText: 'Enter the Haunted House',
+    icon: 'Ghost',
+    path: '/trivia-halloween'
   },
   {
     id: 'hangman',

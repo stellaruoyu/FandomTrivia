@@ -11,6 +11,206 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'halloween-spooky-quiz',
+    title: 'Halloween Quiz: Are You a Master of the Macabre?',
+    metaDescription: 'Get into the spooky spirit! Take our Halloween quiz to test your knowledge of horror movies, urban legends, and spooky traditions.',
+    date: '2026-06-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/halloween.jpg',
+    keywords: ['Halloween quiz', 'spooky trivia', 'Halloween traditions test', 'horror movies quiz', 'macabre trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">When the leaves turn brown and the nights grow long, it's time for ghosts and ghouls to come out to play! Halloween is a season of spooky fun, ancient traditions, and classic horror cinema. From the Celtic origins of Samhain to the chilling suspense of John Carpenter's movies, the holiday is packed with fascinating lore. Are you a true master of horror or easily spooked? Grab your flashlight and take our ultimate <strong>Halloween quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-halloween" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Halloween Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Knowledge of Spooky Traditions</h2>
+      <p>The history of Halloween is a mix of ancient festivals and modern pop culture. Passing our <strong>spooky trivia</strong> challenge requires a deep knowledge of how the season has evolved. Do you know which country is credited with starting the holiday? Can you name the original vegetable carved to make Jack-o'-lanterns? These are the details that separate the Vampire Lords from the Zombies.</p>
+      <p class="mt-4">From the classic gothic horror of Mary Shelley's Frankenstein to the beloved 90s classic Hocus Pocus, the holiday has left a massive mark on pop culture. If you think you're ready to show off your spooky knowledge, <a href="/trivia-halloween" class="text-primary hover:text-primary/80 font-bold">take our Halloween traditions test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-halloween" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-purple-400">Direct Link:</span> Jump Straight to the Halloween Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Horror Movies, Legends, and Lore</h2>
+      <p>True holiday scholars know that horror movies and monsters are a genre of their own. Let's see if you know these legendary facts in our <strong>horror movies quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Origin:</strong> Halloween stems from the ancient Celtic festival of Samhain.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Carving:</strong> Jack-o'-lanterns were originally carved out of turnips.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Game:</strong> Bobbing for apples is a classic traditional Halloween game.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Movie:</strong> John Carpenter's 'Halloween' was originally titled 'The Babysitter Murders'.</li>
+      </ul>
+
+      <p>Don't be scared! Enter the haunted house, test your knowledge, and see if you can earn the title of Master of Horror in our <strong>macabre trivia</strong>!</p>
+    `
+  },
+  {
+    slug: 'christmas-holiday-quiz',
+    title: 'Christmas Quiz: Are You the Ultimate Holiday Expert?',
+    metaDescription: 'Get into the festive spirit! Take our Christmas quiz to test your knowledge of holiday traditions, classic songs, and seasonal movies.',
+    date: '2026-06-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/christmas.jpg',
+    keywords: ['Christmas quiz', 'holiday trivia', 'Christmas traditions test', 'festive season quiz', 'Christmas movies trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">It's the most wonderful time of the year! Christmas is a global celebration filled with rich traditions, unforgettable movies, and timeless music. From the historical origins of Saint Nicholas to the modern magic of 'Home Alone', the holiday season is packed with fascinating trivia. Are you a true festive fan or a bit of a Grinch? Pour yourself some hot cocoa and take our ultimate <strong>Christmas quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-christmas" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Christmas Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Knowledge of Holiday Traditions</h2>
+      <p>The history of Christmas is a mix of ancient celebrations and modern culture. Passing our <strong>holiday trivia</strong> challenge requires a deep knowledge of how the season has evolved. Do you know which country is credited with starting the Christmas tree tradition? Can you name the modern-day country where Saint Nicholas was born? These are the details that separate the true Santas from the Elves on the Shelf.</p>
+      <p class="mt-4">From the origins of classic songs to world-record-breaking singles like Bing Crosby's "White Christmas," the holiday has left a massive mark on pop culture. If you think you're ready to show off your festive knowledge, <a href="/trivia-christmas" class="text-primary hover:text-primary/80 font-bold">take our Christmas traditions test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-christmas" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-red-400">Direct Link:</span> Jump Straight to the Christmas Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Festive Songs, Movies, and Legends</h2>
+      <p>True holiday scholars know that Christmas movies and songs are a genre of their own. Let's see if you know these legendary facts in our <strong>festive season quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Song:</strong> "Jingle Bells" was originally written for Thanksgiving.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Reindeer:</strong> A total of 9 reindeer drive Santa's sleigh, including Rudolph.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Ballet:</strong> "The Nutcracker" is the most widely performed classical ballet during the season.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Movie:</strong> The McCallister family travels to Paris in the classic movie "Home Alone".</li>
+      </ul>
+
+      <p>Don't be left out in the cold! Gather around the fire, test your knowledge, and see if you can earn the title of Santa Claus in our <strong>Christmas movies trivia</strong>!</p>
+    `
+  },
+  {
+    slug: 'thanksgiving-history-quiz',
+    title: 'Thanksgiving Quiz: How Well Do You Know the Harvest Holiday?',
+    metaDescription: 'Take the ultimate Thanksgiving quiz! Test your knowledge of the first feast, the Mayflower, Macy\'s Parade, and holiday history.',
+    date: '2026-06-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/thanksgiving.jpg',
+    keywords: ['Thanksgiving quiz', 'Thanksgiving trivia', 'history of Thanksgiving test', 'holiday traditions quiz', 'American history trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">As the autumn leaves fall and families gather around the dinner table, Thanksgiving remains one of America's most cherished holidays. From the Pilgrims' arrival on the Mayflower to the spectacular floats of the Macy's Thanksgiving Day Parade, the holiday is rich with history and tradition. Are you a true holiday historian? Pass the cranberry sauce and take our ultimate <strong>Thanksgiving quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-thanksgiving" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Thanksgiving Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Knowledge of the First Feast</h2>
+      <p>The story of Thanksgiving dates back to the early 17th century. Passing our <strong>Thanksgiving trivia</strong> challenge requires knowing more than just how to carve a turkey. Do you know which Native American figure helped the Pilgrims survive by teaching them agricultural techniques? Can you name the U.S. President who officially proclaimed Thanksgiving a national holiday during the Civil War? These details will separate the Master Carvers from the Dinner Guests.</p>
+      <p class="mt-4">From the year of the first harvest feast to modern traditions like the presidential turkey pardon, Thanksgiving is full of fascinating facts. If you think you're ready to show off at the dinner table, <a href="/trivia-thanksgiving" class="text-primary hover:text-primary/80 font-bold">take our history of Thanksgiving test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-thanksgiving" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-orange-400">Direct Link:</span> Jump Straight to the Thanksgiving Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Holiday Traditions and Presidential Acts</h2>
+      <p>True holiday scholars know that Thanksgiving traditions evolved over centuries. Let's see if you know these legendary facts in our <strong>holiday traditions quiz</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Date:</strong> Celebrated on the fourth Thursday of November.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Parade:</strong> The Macy's Thanksgiving Day Parade started in 1924 in New York City.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Ship:</strong> The Mayflower brought the Pilgrims to North America in 1620.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Pardon:</strong> George H.W. Bush formalized the turkey pardoning tradition in 1989.</li>
+      </ul>
+
+      <p>Don't be a turkey! Dive into the history, test your knowledge, and see if you can earn the title of Master Carver in our <strong>American history trivia</strong>!</p>
+    `
+  },
+  {
+    slug: 'world-cup-soccer-quiz',
+    title: 'World Cup Quiz: Can You Lift the Golden Trophy?',
+    metaDescription: 'Take the ultimate World Cup Soccer quiz! Test your knowledge of FIFA history, legendary players like Pele and Messi, and iconic tournament moments.',
+    date: '2026-06-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/world-cup.jpg',
+    keywords: ['World Cup quiz', 'soccer trivia', 'FIFA history test', 'football legends quiz', 'sports trivia challenge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Every four years, the world stops to watch the beautiful game. The FIFA World Cup is the pinnacle of global sports, bringing nations together for moments of heartbreak, triumph, and legendary athletic feats. From Diego Maradona's "Hand of God" to Lionel Messi's ultimate victory in Qatar, the tournament's history is written in gold. Are you a true football historian? Lace up your cleats and take the ultimate <strong>World Cup Soccer quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-world-cup" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the World Cup Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Knowledge of the Pitch</h2>
+      <p>The history of the World Cup spans nearly a century, beginning with the inaugural tournament in Uruguay in 1930. Passing our <strong>soccer trivia</strong> challenge requires a deep knowledge of the game's greatest players and teams. Do you know which nation has lifted the trophy the most times? Can you name the all-time leading goalscorer in World Cup history? These are the stats that separate the die-hard fans from the casual spectators.</p>
+      <p class="mt-4">From Just Fontaine's unbreakable goal-scoring record in 1958 to Morocco's historic semi-final run in 2022, every tournament leaves its mark. If you think you're ready for the big leagues, <a href="/trivia-world-cup" class="text-primary hover:text-primary/80 font-bold">take our FIFA history test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-world-cup" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-amber-400">Direct Link:</span> Jump Straight to the World Cup Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Iconic Moments and Football Legends</h2>
+      <p>True football fans know the history extends beyond just the scores. Let's see if you know these legendary facts in our <strong>sports trivia challenge</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Record:</strong> Just Fontaine scored 13 goals in a single tournament (1958).</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Original Trophy:</strong> The Jules Rimet Trophy was permanently awarded to Brazil in 1970.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Champions:</strong> Brazil holds the record with five World Cup victories.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Milestone:</strong> Morocco became the first African nation to reach the semi-finals in 2022.</li>
+      </ul>
+
+      <p>Don't stay on the bench! Step onto the pitch, test your knowledge, and see if you can earn the title of World Champion in our <strong>football legends quiz</strong>!</p>
+    `
+  },
+  {
+    slug: 'juneteenth-quiz',
+    title: 'Juneteenth Quiz: How Well Do You Know Freedom Day?',
+    metaDescription: 'Celebrate Freedom Day! Take our Juneteenth quiz and test your knowledge on Emancipation, General Order No. 3, and the history of this important American holiday.',
+    date: '2026-06-18',
+    author: 'Fandom Trivia Team',
+    image: '/images/juneteenth.jpg',
+    keywords: ['Juneteenth quiz', 'Juneteenth trivia', 'Freedom Day knowledge test', 'Emancipation history quiz', 'American holidays trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">On June 19, 1865, Major General Gordon Granger arrived in Galveston, Texas, and issued General Order No. 3, officially informing the people of Texas that all enslaved people were free. This historic day, known as Juneteenth, marks a profound milestone in American history. It's a time for reflection, education, and celebration. Are you a true scholar of American civil rights history? Test your memory and honor the legacy with the ultimate <strong>Juneteenth quiz</strong>.</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-juneteenth" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Juneteenth Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Honoring the History of Emancipation</h2>
+      <p>The story of Juneteenth is a crucial chapter in the journey toward equality. Passing our <strong>Juneteenth trivia</strong> challenge requires an understanding of the historical timeline and the key figures involved. Do you know which U.S. President issued the Emancipation Proclamation two and a half years earlier? Can you name the "Grandmother of Juneteenth" who passionately advocated for its recognition as a federal holiday? These are the details that separate casual participants from dedicated Freedom Scholars.</p>
+      <p class="mt-4">From local community celebrations to its official designation as a federal holiday in 2021, Juneteenth is a testament to resilience and hope. If you think your knowledge is sharp enough to ace this historic challenge, <a href="/trivia-juneteenth" class="text-primary hover:text-primary/80 font-bold">take our Emancipation history quiz now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-juneteenth" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Juneteenth Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">General Order No. 3 and the Path to the Federal Holiday</h2>
+      <p>True advocates know that Juneteenth has been celebrated in communities for over a century before it received national recognition. Let's see if you can handle these facts in our <strong>Freedom Day knowledge test</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Date:</strong> Juneteenth is celebrated annually on June 19th.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Order:</strong> General Order No. 3 declared that "all slaves are free" and established an "absolute equality of personal rights."</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Grandmother:</strong> Opal Lee famously walked from Fort Worth, Texas to Washington, D.C. to campaign for the holiday.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Recognition:</strong> It became the first new federal holiday since Martin Luther King Jr. Day was created in 1983.</li>
+      </ul>
+
+      <p>Don't stop learning! Educate yourself, share the history, and see if you can achieve the rank of Freedom Fighter in our <strong>American holidays trivia</strong>!</p>
+    `
+  },
+  {
     slug: 'coding-vibes-trivia',
     title: 'Coding & Vibes: Can You Ace the Ultimate Git, GitHub, and AI Vibe Coding Quiz?',
     metaDescription: 'Prompt the AI and check your git branches! Take our Coding & Vibes quiz to test your Git commands, GitHub knowledge, and modern AI Vibe Coding expertise.',
