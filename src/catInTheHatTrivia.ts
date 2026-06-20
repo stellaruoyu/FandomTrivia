@@ -3,10 +3,10 @@ import type { MCTriviaQuestion } from './constants';
 export const CAT_IN_THE_HAT_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: "Which actor portrayed the titular role of the Cat in the 2003 film?",
-    options: ["Alec Baldwin", "Mike Myers", "Bo Welch", "Spencer Breslin"],
-    answer: "Mike Myers",
-    evidence: "14 The Cat in the Hat Trivia Questions & Answers | Movies A-C - Question 3: The children met the Cat in the broom closet. The Cat helped the children to be perfect. Reference: Quiz: The Cat in the Hat.",
+    question: "What defining piece of clothing is the Cat famous for wearing?",
+    options: ["A red and white striped hat", "A black tuxedo", "A yellow raincoat", "A blue bow tie"],
+    answer: "A red and white striped hat",
+    evidence: "In-universe lore: The Cat is always seen wearing his iconic red and white striped hat.",
   },
   {
     id: 2,
@@ -129,17 +129,17 @@ export const CAT_IN_THE_HAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 19,
-    question: "Who served as the director of the 2003 live-action 'The Cat in the Hat'?",
-    options: ["Dr. Seuss", "Bo Welch", "Mike Myers", "Alec Baldwin"],
-    answer: "Bo Welch",
-    evidence: "14 The Cat in the Hat Trivia Questions & Answers | Movies A-C - Question 9: Who directed this film? Answer: Bo Welch. Bo Welch kept making mistakes and telling the cat to act out the wrong things. This was in the outakes on the special features.",
+    question: "What is the name of the vehicle the Cat uses to clean the house at the end of the story?",
+    options: ["The D.I.R.T.", "The Sweeper 3000", "The S.L.O.P.", "The Clean-O-Matic"],
+    answer: "The D.I.R.T.",
+    evidence: "In-universe lore: The Cat uses the Dynamic Industrial Renovating Tractormajigger (D.I.R.T.) to clean up the mess.",
   },
   {
     id: 20,
-    question: "What significant reaction did Dr. Seuss's widow have to the film's release?",
-    options: ["She commissioned a sequel", "She decided there would be no more on-screen live-action adaptations", "She requested Mike Myers play all future characters", "She sold the rights to a different studio"],
-    answer: "She decided there would be no more on-screen live-action adaptations",
-    evidence: "The Cat In The Hat Quiz! Movie Trivia - Quiz, Flashcards & Trivia - About This Quiz: Dr. Seuss's widow decided after that there would be no more on-screen adaptions of her husband's work.",
+    question: "What does the Cat say to the kids before he finally leaves their house?",
+    options: ["It's been fun!", "Vaya con Dios!", "Stay out of trouble!", "I'll be back!"],
+    answer: "It's been fun!",
+    evidence: "In-universe lore: The Cat leaves the children after successfully cleaning up.",
   },
   {
     id: 21,
