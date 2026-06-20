@@ -6689,6 +6689,83 @@ const AnimeSelector = () => {
   );
 };
 
+const HolidaysSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  
+  const holidays = [
+    { label: 'Independence Day', title: '4th of July', desc: '10 questions on the Declaration of Independence and fireworks', icon: '🎆', view: 'trivia-july-4th', gradient: 'from-blue-600/20 to-red-900/20', border: 'border-red-500/30 hover:border-blue-400/50' },
+    { label: 'Freedom Day', title: 'Juneteenth', desc: '10 questions on Emancipation and historical figures', icon: '✊🏿', view: 'trivia-juneteenth', gradient: 'from-emerald-600/20 to-red-900/20', border: 'border-emerald-500/30 hover:border-red-400/50' },
+    { label: 'Harvest Festival', title: 'Thanksgiving', desc: '10 questions on Pilgrims, the Mayflower, and turkey', icon: '🦃', view: 'trivia-thanksgiving', gradient: 'from-orange-600/20 to-amber-900/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
+    { label: 'Winter Holiday', title: 'Christmas', desc: '10 questions on Santa Claus, trees, and classic movies', icon: '🎄', view: 'trivia-christmas', gradient: 'from-red-600/20 to-green-900/20', border: 'border-red-500/30 hover:border-green-400/50' },
+    { label: 'Spooky Season', title: 'Halloween', desc: '10 questions on monsters, candy, and trick-or-treating', icon: '🎃', view: 'trivia-halloween', gradient: 'from-purple-600/20 to-orange-900/20', border: 'border-purple-500/30 hover:border-orange-400/50' },
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+            Welcome to the <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-rose-300 to-blue-200">Holidays</span>
+          </h1>
+          <Helmet>
+            <title>Holiday Quizzes & Trivia | Fandom Trivia</title>
+            <meta name="description" content="Test your holiday knowledge across Christmas, Halloween, Thanksgiving, Juneteenth, and the 4th of July." />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-holidays" />
+            <meta property="og:title" content="Holiday Quizzes & Trivia | Fandom Trivia" />
+            <meta property="og:description" content="Play the ultimate holiday trivia. Challenge yourself on Christmas, Thanksgiving, and more." />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.fandom-trivia.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Holidays", "item": "https://www.fandom-trivia.com/selector-holidays" }
+                ]
+              })}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a holiday to test your festive knowledge.</p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {holidays.map(show => (
+            <motion.button
+              key={show.title}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${show.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${show.gradient} border ${show.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+            >
+              <div className="space-y-4">
+                <div className="text-4xl">{show.icon}</div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-white bg-black/40 px-2.5 py-1 rounded-full border border-white/20">
+                    {show.label}
+                  </span>
+                  <h3 className="text-xl font-black text-white group-hover:text-emerald-300 transition-colors pt-2">{show.title}</h3>
+                  <p className="text-sm text-slate-400 leading-snug">{show.desc}</p>
+                </div>
+              </div>
+              
+              <div className="pt-4 flex items-center justify-between border-t border-white/5 w-full mt-4">
+                <span className="text-[11px] text-slate-500 font-bold">
+                  {formatCount(getQuizCount(show.view))}
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-black text-white group-hover:text-emerald-300 transition-colors">
+                  Play Quiz <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 const MINECRAFT_GRADES = [
   { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
   { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
@@ -9745,6 +9822,7 @@ export default function App() {
             <Route path="/selector-moana" element={<MoanaSelector />} />
             <Route path="/selector-disneyland" element={<DisneylandSelector />} />
             <Route path="/selector-anime" element={<AnimeSelector key="selector-anime" />} />
+            <Route path="/selector-holidays" element={<HolidaysSelector key="selector-holidays" />} />
             <Route path="/trivia-attack-on-titan" element={<MCQuizView key="trivia-attack-on-titan" questions={ATTACK_ON_TITAN_TRIVIA} title="Attack on Titan" scoreLabel="Attack on Titan" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-demon-slayer" element={<MCQuizView key="trivia-demon-slayer" questions={DEMON_SLAYER_TRIVIA} title="Demon Slayer" scoreLabel="Demon Slayer" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-jujutsu-kaisen" element={<MCQuizView key="trivia-jujutsu-kaisen" questions={JUJUTSU_KAISEN_TRIVIA} title="Jujutsu Kaisen" scoreLabel="Jujutsu Kaisen" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
