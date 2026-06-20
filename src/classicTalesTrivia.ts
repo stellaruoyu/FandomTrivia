@@ -26,16 +26,16 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The good witch is called Glinda."
   },
   {
-    "id": 3,
-    "question": "What is the color of the slippers Dorothy wears in the 1939 film?",
-    "options": [
+    id: 3,
+    question: "What is the color of the magical slippers Dorothy is given after arriving in Oz?",
+    options: [
       "Ruby red",
       "Silver",
       "Emerald green",
       "Golden yellow"
     ],
-    "answer": "Ruby red",
-    "evidence": "Dorothy wears ruby slippers in the 1939 film adaptation."
+    answer: "Ruby red",
+    evidence: "Dorothy is given the ruby slippers, which protect her on her journey."
   },
   {
     "id": 4,
@@ -134,16 +134,16 @@ export const WIZARD_OF_OZ_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The quote by The Wicked Witch of the West finishes with 'I'll give you Auntie Em'."
   },
   {
-    "id": 12,
-    "question": "This is one of the lines from the movie, please finish this line: Toto, I don't think we're _________.",
-    "options": [
+    id: 12,
+    question: "Complete Dorothy's famous quote to her dog: 'Toto, I don't think we're in _________ anymore.'",
+    options: [
       "welcomed here",
-      "in Kansas anymore",
+      "Kansas anymore",
       "home anymore",
       "in time for lunch"
     ],
-    "answer": "in Kansas anymore",
-    "evidence": "The line finishes with 'in Kansas anymore'."
+    answer: "Kansas anymore",
+    evidence: "Dorothy realizes they are in a magical land and says, 'Toto, I don't think we're in Kansas anymore.'"
   },
   {
     "id": 13,
@@ -611,16 +611,16 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The Magic Mirror reveals to the Queen that Snow White is still alive and living with the dwarfs."
   },
   {
-    "id": 6,
-    "question": "What was the fate of the Evil Queen at the end of the Disney movie 'Snow White and the Seven Dwarfs'?",
-    "options": [
-      "Crushed by boulder",
+    id: 6,
+    question: "What is the final fate of the Evil Queen after she flees from the dwarfs?",
+    options: [
+      "Fears off a cliff/crushed by a boulder",
       "Forced to dance in red-hot iron shoes",
       "Burned by magic",
       "Turned into a frog"
     ],
-    "answer": "Crushed by boulder",
-    "evidence": "The Queen's fate after tricking Snow White with the poisoned apple is being crushed by a boulder."
+    answer: "Fears off a cliff/crushed by a boulder",
+    evidence: "The Queen falls off a cliff and is crushed by a boulder while fleeing the dwarfs."
   },
   {
     "id": 7,
@@ -635,17 +635,16 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The Queen brews a potion of 'Sleeping Death' to dip the apple in."
   },
   {
-    "id": 8,
-    "question": "What did the Wicked Queen actually say to the mirror in the 1937 Disney film?",
-    "options": [
+    id: 8,
+    question: "What does the Wicked Queen say to the mirror when asking about the fairest of all?",
+    options: [
       "Magic mirror on the wall, who is the fairest one of all?",
       "Mirror, mirror on the wall, who is the fairest of them all?",
       "Magic mirror on the wall, who is the fairest of them all?",
-      "Mirror of magic on the wall, tell me who's the fairest of them all?",
-      "Magic mirror on the wall, who is the fairest one of all?"
+      "Mirror of magic on the wall, tell me who's the fairest of them all?"
     ],
-    "answer": "Magic mirror on the wall, who is the fairest one of all?",
-    "evidence": "The wicked Queen really said 'Magic mirror on the wall, who is the fairest one of all?'"
+    answer: "Magic mirror on the wall, who is the fairest one of all?",
+    evidence: "The Queen addresses the mirror: 'Magic mirror on the wall, who is the fairest one of all?'"
   },
   {
     "id": 9,
@@ -735,16 +734,16 @@ export const SNOW_WHITE_TRIVIA: MCTriviaQuestion[] = [
 
 export const CINDERELLA_TRIVIA: MCTriviaQuestion[] = [
   {
-    "id": 1,
-    "question": "Who are Cinderella's two wicked stepsisters in the Disney film?",
-    "options": [
+    id: 1,
+    question: "Who are Cinderella's two wicked stepsisters?",
+    options: [
       "Anastasia and Drizella",
       "Lucinda and Prudence",
       "Mary and Nora",
       "Clarissa and Beatrice"
     ],
-    "answer": "Anastasia and Drizella",
-    "evidence": "Cinderella's stepsisters are named Anastasia and Drizella."
+    answer: "Anastasia and Drizella",
+    evidence: "Cinderella's stepsisters are named Anastasia and Drizella."
   },
   {
     "id": 2,
@@ -930,28 +929,28 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "While Sherwood is famous, early ballads set events in the medieval forest of Barnsdale in Yorkshire, and Robin Hood identifies himself as 'Robin Hood of Barnesdale' in the ballad 'Robin Hood and Guy of Gisborne'."
   },
   {
-    "id": 2,
-    "question": "In the 1973 animated Disney film 'Robin Hood', what animal portrays the title character?",
-    "options": [
+    id: 2,
+    question: "In the classic animated version of the story, what kind of animal is Robin Hood?",
+    options: [
       "A bear",
       "A fox",
       "A hare",
       "A wolf"
     ],
-    "answer": "A fox",
-    "evidence": "In the 1973 animated Disney film, 'Robin Hood', the title character is an anthropomorphic vixen (female fox)/fox."
+    answer: "A fox",
+    evidence: "Robin Hood is depicted as an anthropomorphic fox."
   },
   {
-    "id": 3,
-    "question": "In the 1991 film 'Robin Hood: Prince of Thieves', which unusual character is added to the band of Merry Men?",
-    "options": [
-      "Friar Tuck",
-      "Azeem",
+    id: 3,
+    question: "Which member of Robin Hood's band is a skilled swordsman and second-in-command, often wearing red?",
+    options: [
       "Will Scarlet",
-      "Allen"
+      "Friar Tuck",
+      "Little John",
+      "Much the Miller's Son"
     ],
-    "answer": "Azeem",
-    "evidence": "Azeem, a Moor from the Holy Lands, is added to the band of Merry Men in the 1991 film version."
+    answer: "Will Scarlet",
+    evidence: "Will Scarlet is one of Robin Hood's primary Merry Men, known for wearing red and being a skilled fighter."
   },
   {
     "id": 4,
@@ -1095,7 +1094,7 @@ export const ROBIN_HOOD_TRIVIA: MCTriviaQuestion[] = [
       "He wanted to help the group change their ways."
     ],
     "answer": "He was expelled from Fountains Abbey for lack of respect for authority.",
-    "evidence": "According to the 'Tales of Robin Hood Trivia Game', Friar Tuck was expelled from Fountains Abbey due to his lack of respect for authority."
+    "evidence": "According to legendary tales, Friar Tuck was expelled from Fountains Abbey due to his lack of respect for authority."
   }
 ];
 
@@ -1125,16 +1124,16 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The original book emphasizes that the deck of cards in the Queen's kingdom is composed entirely of Hearts."
   },
   {
-    "id": 3,
-    "question": "What did Alice actually eat at the White Rabbit's house to shrink in the original book, compared to the Disney film?",
-    "options": [
+    id: 3,
+    question: "What does Alice eat at the White Rabbit's house to shrink after getting stuck in his room?",
+    options: [
       "Miniature cakes",
       "Magical carrots",
       "A shrinking potion",
       "A mushroom"
     ],
-    "answer": "Miniature cakes",
-    "evidence": "While the film shows Alice eating magical carrots, the original book states that she ate miniature cakes hidden around the White Rabbit's house."
+    answer: "Miniature cakes",
+    evidence: "Alice eats some small cakes that she finds in the White Rabbit's house, which cause her to shrink so she can escape."
   },
   {
     "id": 4,
@@ -1161,16 +1160,16 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "The Cheshire Cat is known for his ability to vanish, sometimes leaving just his wide smile behind."
   },
   {
-    "id": 6,
-    "question": "According to the 1951 Disney film, who is standing over Alice when she wakes up from her dream?",
-    "options": [
-      "Her au pair",
+    id: 6,
+    question: "Who is sitting next to Alice under the tree when she first wakes up from her dream of Wonderland?",
+    options: [
       "Her sister",
       "Her mother",
-      "The Queen of Hearts"
+      "Her nurse",
+      "The White Rabbit"
     ],
-    "answer": "Her au pair",
-    "evidence": "In the Disney film, Alice wakes up to find her au pair standing over her, whereas in the original book, she wakes up with her sister."
+    answer: "Her sister",
+    evidence: "Alice wakes up on the bank next to her sister, realizing her adventures in Wonderland were a dream."
   },
   {
     "id": 7,
@@ -1197,16 +1196,16 @@ export const ALICE_IN_WONDERLAND_TRIVIA: MCTriviaQuestion[] = [
     "evidence": "When playing croquet with the Queen of Hearts, the mallets are actually flamingoes and the balls are hedgehogs."
   },
   {
-    "id": 9,
-    "question": "In the book, who is the actual subject of the trial when Alice is in the courtroom?",
-    "options": [
+    id: 9,
+    question: "Who is the subject of the trial in the courtroom, accused of stealing the Queen's tarts?",
+    options: [
       "The Knave of Hearts",
       "The Cheshire Cat",
       "Alice",
       "The Mad Hatter"
     ],
-    "answer": "The Knave of Hearts",
-    "evidence": "Unlike the film where Alice is tried, the book features the Knave of Hearts as the subject of the trial."
+    answer: "The Knave of Hearts",
+    evidence: "The trial is held to determine if the Knave of Hearts stole the tarts made by the Queen."
   },
   {
     "id": 10,

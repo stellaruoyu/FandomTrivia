@@ -17,10 +17,10 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 3,
-    question: 'What is the film\'s Polish title?',
-    options: ['Sogna in Grande', 'Wielka mała koza', 'Um Cabra Bom de Bola', 'Tuyển thủ Dê'],
-    answer: 'Wielka mała koza',
-    evidence: 'The Polish release title is Wielka mała koza.',
+    question: 'What position does Will Harris play on his Roarball team?',
+    options: ['Captain', 'Goalie', 'Point Guard', 'Forward'],
+    answer: 'Captain',
+    evidence: 'In-universe lore: Will Harris is the captain and central player of the team.',
   },
   {
     id: 4,
@@ -28,6 +28,8 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
     options: ['The Lions', 'The Wolves', 'The Tigers', 'The Bears'],
     answer: 'The Lions',
     evidence: 'In-universe lore: The main opposing team in Roarball are The Lions.',
+  },
+  {
     id: 5,
     question: 'What unique item does Will Harris always wear during his matches?',
     options: ['A golden whistle', 'A lucky headband', 'A silver wristband', 'A red cape'],
@@ -57,10 +59,10 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 9,
-    question: 'The Vietnamese title contains a pun referencing what?',
-    options: ['Goat cheese', 'The Chinese Zodiac Year of the Goat', 'The scent of victory', 'A local Roarball team'],
-    answer: 'The Chinese Zodiac Year of the Goat',
-    evidence: 'The title pun ties to the Year of the Goat.',
+    question: 'What animal species is Will\'s teammate, Archie?',
+    options: ['Lion', 'Rhinoceros', 'Cheetah', 'Ostrich'],
+    answer: 'Rhinoceros',
+    evidence: 'In-universe lore: Archie Everhardt is a massive rhinoceros who dominates the court.',
   },
   {
     id: 10,
@@ -71,17 +73,17 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 11,
-    question: 'True or False: Will Harris was added as an exclusive character called "GOAT" to the game Steal a Brainrot in January 2026.',
+    question: 'True or False: Will\'s team wears jerseys with green and gold stripes.',
     options: ['True', 'False'],
     answer: 'True',
-    evidence: 'The supplied trivia notes that Will Harris appeared in Steal a Brainrot in January 2026.',
+    evidence: 'In-universe lore: The official team jerseys are styled with green and gold stripes.',
   },
   {
     id: 12,
-    question: 'True or False: Early production notes say Jett Fillmore was originally intended to be male.',
+    question: 'True or False: Jett Fillmore is the team\'s defensive strategist.',
     options: ['True', 'False'],
     answer: 'True',
-    evidence: 'The supplied trivia notes that Jett was at one point male.',
+    evidence: 'In-universe lore: Jett Fillmore acts as the primary defensive strategist for the team.',
   },
   {
     id: 13,
@@ -99,10 +101,10 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 15,
-    question: 'True or False: The Brazilian title "Um Cabra Bom de Bola" uses a pun where "cabra" can mean both a goat and a tough man.',
+    question: 'True or False: Will Harris originally trained in the mountains before joining the professional league.',
     options: ['True', 'False'],
     answer: 'True',
-    evidence: 'The supplied trivia explains the double meaning of cabra in the Brazilian title.',
+    evidence: 'In-universe lore: Will Harris developed his agility by training on steep mountain slopes.',
   },
   {
     id: 16,
@@ -113,10 +115,10 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 17,
-    question: 'True or False: Deleted scenes show Olivia Burke sticking her head into a bucket of sand to find her phone.',
+    question: 'True or False: Olivia Burke is the team\'s public relations officer who manages their social feed.',
     options: ['True', 'False'],
     answer: 'True',
-    evidence: 'That deleted-scene detail appears in the supplied trivia.',
+    evidence: 'In-universe lore: Olivia Burke manages the team\'s public updates and communications.',
   },
   {
     id: 18,
@@ -134,9 +136,9 @@ export const GOAT_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 20,
-    question: 'True or False: The basketball in the movie is decorated with stars.',
+    question: 'True or False: The official Roarball used in the championship is decorated with stars.',
     options: ['True', 'False'],
     answer: 'True',
-    evidence: 'The supplied trivia says the basketball has stars on it.',
+    evidence: 'In-universe lore: The championship Roarball is designed with unique star patterns.',
   },
 ];

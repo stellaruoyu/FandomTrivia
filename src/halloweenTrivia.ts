@@ -31,10 +31,10 @@ export const HALLOWEEN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 5,
-    question: "Which classic 1978 horror film directed by John Carpenter was originally titled 'The Babysitter Murders'?",
+    question: "Which classic 1978 horror story featuring Michael Myers was originally titled 'The Babysitter Murders'?",
     options: ["A Nightmare on Elm Street", "Friday the 13th", "Halloween", "Scream"],
     answer: "Halloween",
-    evidence: "John Carpenter's legendary slasher film 'Halloween' was originally conceptualized and pitched under the title 'The Babysitter Murders'."
+    evidence: "The story of Halloween was originally conceptualized and pitched under the title 'The Babysitter Murders'."
   },
   {
     id: 6,
@@ -52,9 +52,9 @@ export const HALLOWEEN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: "Which author wrote the classic gothic horror novel 'Frankenstein', first published in 1818?",
-    options: ["Bram Stoker", "Edgar Allan Poe", "Mary Shelley", "Shirley Jackson"],
-    answer: "Mary Shelley",
-    evidence: "Mary Shelley wrote the pioneering science fiction and horror novel 'Frankenstein; or, The Modern Prometheus' when she was just a teenager."
+    question: "In the classic gothic horror tale of Frankenstein, what is the name of the scientist who creates the monster?",
+    options: ["Victor Frankenstein", "Henry Clerval", "Bram Stoker", "Robert Walton"],
+    answer: "Victor Frankenstein",
+    evidence: "Victor Frankenstein is the scientist who discovers the secret of imparting life to dead matter and creates the monster."
   }
 ];

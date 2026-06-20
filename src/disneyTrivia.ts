@@ -51,13 +51,13 @@ export const LION_KING_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 9,
-    question: 'In the spin-off movie "The Lion King 1½", what is Timon\'s mother\'s name?',
+    question: 'In the spin-off story "The Lion King 1½", what is Timon\'s mother\'s name?',
     options: ['Ma', 'Lola', 'Gina', 'Bess'],
     answer: 'Ma'
   },
   {
     id: 10,
-    question: 'Who inherits the throne at the end of the first Lion King movie?',
+    question: 'Who inherits the throne at the end of the first Lion King story?',
     options: ['Simba', 'Kovu', 'Scar', 'Nala'],
     answer: 'Simba'
   }
@@ -225,7 +225,7 @@ export const LITTLE_MERMAID_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 4,
-    question: 'Who is Ursula\'s sister, the main antagonist of the sequel movie?',
+    question: 'Who is Ursula\'s sister, the main antagonist of the sequel story?',
     options: ['Morgana', 'Marina Del Rey', 'Zira', 'Yzma'],
     answer: 'Morgana'
   },
@@ -355,7 +355,7 @@ export const MULAN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 3,
-    question: 'Who is the ruthless leader of the invading Hun army in the 1998 film?',
+    question: 'Who is the ruthless leader of the invading Hun army in her story?',
     options: ['Shan Yu', 'Hayabusa', 'General Li', 'Chi-Fu'],
     answer: 'Shan Yu'
   },

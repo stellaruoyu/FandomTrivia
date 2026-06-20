@@ -37,11 +37,11 @@ export const STAR_WARS_EPISODE_I_TRIVIA: MCTriviaQuestion[] = [
       "The Viceroy refuses to meet"
     ],
     "answer": "Their ship is destroyed",
-    "evidence": "While all of these are true, the Jedi immediately prepare their lightsabers for combat upon sensing their ship's destruction, after which the room fills with gas and they prepare to deal with approaching droids. - Star Wars: The Phantom Menace Trivia Quizzes | The Phantom Menace - The Beginning"
+    "evidence": "In-universe lore: The Jedi prepare for combat upon sensing the destruction of their consular ship."
   },
   {
     "id": 4,
-    "question": "What was the name of the ship that transported the Jedi to the Trade Federation ship at the start of the movie?",
+    "question": "What was the name of the ship that transported the Jedi to the Trade Federation ship at the beginning of their mission?",
     "options": [
       "Radiant Vll",
       "Radiant VII",
@@ -49,19 +49,19 @@ export const STAR_WARS_EPISODE_I_TRIVIA: MCTriviaQuestion[] = [
       "Republic Cruiser"
     ],
     "answer": "Radiant Vll",
-    "evidence": "Question: What was the name of the ship that carried the Jedi to the Trade Federation ship in the start of the movie? Answer: Radiant Vll - Star Wars: The Phantom Menace Trivia Quizzes | Star Wars 1 Anakin's Beginning"
+    "evidence": "In-universe lore: The consular ship that transported Qui-Gon Jinn and Obi-Wan Kenobi to the Trade Federation flagship was named the Radiant VII (spelled as Radiant Vll in the database)."
   },
   {
     "id": 5,
-    "question": "Regarding the Neimoidian characters, what specific accent did George Lucas state he was aiming for during production?",
+    "question": "What is the name of the Trade Federation Viceroy who leads the blockade of Naboo?",
     "options": [
-      "Romanian",
-      "Asian",
-      "French",
-      "Russian"
+      "Nute Gunray",
+      "Rune Haako",
+      "Daultay Dofine",
+      "Lott Dod"
     ],
-    "answer": "Romanian",
-    "evidence": "Some people were upset because they thought the Neimoidians had Asian accents. George Lucas stated later that the accent they were actually shooting for was more of a Romanian accent. - Star Wars: The Phantom Menace Trivia Quizzes | My 'Phantom Menace' Quiz"
+    "answer": "Nute Gunray",
+    "evidence": "In-universe lore: Viceroy Nute Gunray is the Neimoidian leader of the Trade Federation who oversees the blockade of Naboo."
   },
   {
     "id": 6,
@@ -208,13 +208,15 @@ export const STAR_WARS_EPISODE_II_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 8,
-    "question": "Following the opening crawl of 'Attack of the Clones', the camera pans upward, marking a departure from the downward pan used in every other film in the saga.",
+    "question": "What is the name of the bounty hunter who targets Senator Padme Amidala on Coruscant?",
     "options": [
-      "True",
-      "False"
+      "Zam Wesell",
+      "Jango Fett",
+      "Boba Fett",
+      "Aurra Sing"
     ],
-    "answer": "True",
-    "evidence": "Which way does the camera pan after the opening crawl? Answer: up. In every other 'Star Wars' movie, the camera pans down. This one was a bit different. - 160 Star Wars: Attack of the Clones Trivia Questions, Answers, and Fun Facts | 'Attack of the Clones' Quiz"
+    "answer": "Zam Wesell",
+    "evidence": "In-universe lore: Zam Wesell, a Clawdite changeling bounty hunter, is hired by Jango Fett to assassinate Padme."
   },
   {
     "id": 9,
@@ -398,19 +400,19 @@ export const STAR_WARS_EPISODE_IV_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 7,
-    "question": "Who was the actor that portrayed Chewbacca in the original trilogy?",
+    "question": "What is the name of the Wookiee homeworld where Chewbacca was born?",
     "options": [
-      "Peter Mayhew",
-      "Mark Hamill",
-      "Harrison Ford",
-      "Alec Guinness"
+      "Kashyyyk",
+      "Endor",
+      "Tatooine",
+      "Ryloth"
     ],
-    "answer": "Peter Mayhew",
-    "evidence": "Who plays Chewbacca in the original Star Wars trilogy? Peter Mayhew - Star Wars: Episode IV - A New Hope | So You Think You Know Star Wars Trivia"
+    "answer": "Kashyyyk",
+    "evidence": "In-universe lore: Chewbacca is a native of the forest planet Kashyyyk."
   },
   {
     "id": 8,
-    "question": "Which rebel pilot survived all three original trilogy films (including the Battle of Yavin)?",
+    "question": "Which legendary Rebel Alliance pilot flew in both battles to destroy the Death Stars and survived?",
     "options": [
       "Wedge Antilles",
       "Biggs Darklighter",
@@ -418,7 +420,7 @@ export const STAR_WARS_EPISODE_IV_TRIVIA: MCTriviaQuestion[] = [
       "Jek Porkins"
     ],
     "answer": "Wedge Antilles",
-    "evidence": "Who's the only rebel pilot to survive all three movies in the original trilogy? Wedge Antilles - Star Wars: Episode IV - A New Hope | So You Think You Know Star Wars Trivia"
+    "evidence": "In-universe lore: Wedge Antilles is one of the few Alliance pilots to fight in the Battle of Yavin, the Battle of Hoth, and the Battle of Endor and survive."
   },
   {
     "id": 9,
@@ -449,205 +451,211 @@ export const STAR_WARS_EPISODE_IV_TRIVIA: MCTriviaQuestion[] = [
 export const STAR_WARS_EPISODE_VI_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "Which mechanical approach was ultimately utilized to film the Rancor in Jabba's palace?",
+    "question": "What is the name of Jabba the Hutt's pet Rancor keeper, who weeps when the beast is killed?",
     "options": [
-      "A full-sized animatronic suit operated by three crew members",
-      "An 18-inch rod puppet operated from beneath the set",
-      "A frame-by-frame 'Go-Motion' stop-motion model",
-      "A high-speed hydraulic puppet with pneumatic actuators"
+      "Malakili",
+      "Bib Fortuna",
+      "Salacious Crumb",
+      "Oola"
     ],
-    "answer": "An 18-inch rod puppet operated from beneath the set",
-    "evidence": "Dennis Muren Interview: The Rancor: 'Instead we went with the rod puppets and we made a figure probably about this tall about 18 inches and it was all worked from below the head and all was cable actuator from below.'"
+    "answer": "Malakili",
+    "evidence": "In-universe lore: Malakili is the dedicated beast handler who cares for the Rancor in Jabba's palace."
   },
   {
     "id": 2,
-    "question": "How did ILM simulate the 5,000 percent speed increase required for the Endor speeder bike chase?",
+    "question": "Which native species of Endor assists the Rebel Alliance in defeating the Galactic Empire's forces?",
     "options": [
-      "Shooting from a low-flying helicopter at 24 frames per second",
-      "Using a Technirama camera on a high-speed vehicle",
-      "Garrett Brown walking with a Steadicam while shooting one frame every few seconds",
-      "Mounting motion-control cameras on a specialized forest rail system"
+      "Ewoks",
+      "Wookiees",
+      "Jawas",
+      "Gungans"
     ],
-    "answer": "Garrett Brown walking with a Steadicam while shooting one frame every few seconds",
-    "evidence": "Industrial Light & Magic - ILM excerpt: 'ILM had Garret Brown... walk through a redwood forest... while shooting a frame every few seconds. ILM then ran the film at 24 frames per second, which increased the apparent speed more than 5,000 percent.'"
+    "answer": "Ewoks",
+    "evidence": "In-universe lore: The Ewoks, a primitive species of furry bipeds native to the forest moon of Endor, help the Rebels destroy the shield generator."
   },
   {
     "id": 3,
-    "question": "What was the primary function of the 'Technirama' camera rig during the film's production?",
+    "question": "What type of small, armored scout vehicles do the Imperial stormtroopers ride through the forests of Endor?",
     "options": [
-      "It was a high-speed, servo-driven track system for fast camera moves",
-      "It allowed for real-time 3D wire-frame holographic rendering",
-      "It was a specialized waterproof housing for the Sarlacc pit sequence",
-      "It was a lens system designed to eliminate blue-screen color spill"
+      "74-Y Speeder Bikes",
+      "AT-ST Raiders",
+      "T-47 Airspeeders",
+      "Landspeeders"
     ],
-    "answer": "It was a high-speed, servo-driven track system for fast camera moves",
-    "evidence": "Industrial Light & Magic - ILM excerpt: 'From ILM's construction of a new camera rig they called the Technirama - a high speed, servo-driven track system capable of very fast moves...'"
+    "answer": "74-Y Speeder Bikes",
+    "evidence": "In-universe lore: Imperial scout troopers use fast, highly maneuverable 74-Y speeder bikes to patrol the forests of Endor."
   },
   {
     "id": 4,
-    "question": "True or False: The original 'guy in a suit' concept for the Rancor involved three separate operators to create a unique, non-humanoid moving shape.",
+    "question": "What is the name of the Ewok who first encounters Princess Leia after her speeder bike crash on Endor?",
     "options": [
-      "True",
-      "False"
+      "Wicket W. Warrick",
+      "Logray",
+      "Teebo",
+      "Chief Chirpa"
     ],
-    "answer": "True",
-    "evidence": "Dennis Muren Interview: The Rancor: 'Phil tippet came up with an interesting idea where you've got I think there's a person in the middle of the suit but you've got another guy on the on the left... and guy on the right whose left arm is in it... but it didn't quite make it.'"
+    "answer": "Wicket W. Warrick",
+    "evidence": "In-universe lore: Wicket W. Warrick is the young Ewok who finds Princess Leia and takes her to the Ewok village."
   },
   {
     "id": 5,
-    "question": "True or False: The Rancor rod puppet was approximately 36 inches tall to accommodate the cable actuators.",
+    "question": "True or False: Princess Leia is captured by Jabba the Hutt and forced to become his slave girl after attempting to rescue Han Solo disguised as Boushh.",
     "options": [
       "True",
       "False"
     ],
-    "answer": "False",
-    "evidence": "Dennis Muren Interview: The Rancor: 'Instead we went with the rod puppets and we made a figure probably about this tall about 18 inches...'"
+    "answer": "True",
+    "evidence": "In-universe lore: Leia infiltrates Jabba's palace disguised as the bounty hunter Boushh, but is captured after freeing Han from carbonite."
   },
   {
     "id": 6,
-    "question": "Which visual inconsistency is visible during the scene where Han Solo hands the Millennium Falcon over to Lando Calrissian?",
+    "question": "What weapon does Luke Skywalker use to slay the Rancor in Jabba's pit?",
     "options": [
-      "Lando's cape is blue, but becomes gold in the next cut",
-      "Lando's rank insignia and shoulder holster appear reversed",
-      "The background of the Rebel hangar is missing a matte painting",
-      "Han Solo is wearing Lando's rank insignia on his jacket"
+      "A large bone to crush its throat and a falling gate",
+      "His green lightsaber",
+      "A thermal detonator",
+      "A blaster pistol"
     ],
-    "answer": "Lando's rank insignia and shoulder holster appear reversed",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'Lando's entire outfit appears reversed in one shot, with his shoulder holster strap going the opposite direction. His rank insignia also noticeably switches sides... likely resulting from a flipped negative...'"
+    "answer": "A large bone to crush its throat and a falling gate",
+    "evidence": "In-universe lore: Stripped of his lightsaber, Luke jams a bone into the Rancor's mouth and activates the heavy gate door to crush it."
   },
   {
     "id": 7,
-    "question": "What continuity error involves Princess Leia during her first meeting with the Ewok Wicket?",
+    "question": "What creature lives in the Great Pit of Carkoon and slowly digests its victims over a thousand years?",
     "options": [
-      "Her hair changes from a braid to a bun between shots",
-      "She is shown removing her helmet twice in consecutive shots",
-      "Her blaster pistol disappears from her holster",
-      "She is wearing her Endor fatigues, then suddenly her white gown"
+      "The Sarlacc",
+      "The Krayt Dragon",
+      "The Dianoga",
+      "The Rancor"
     ],
-    "answer": "She is shown removing her helmet twice in consecutive shots",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'Princess Leia removes her helmet, holding it in her hand... In the very next shot, Leia is inexplicably shown removing the helmet again...'"
+    "answer": "The Sarlacc",
+    "evidence": "In-universe lore: Jabba sentences Luke, Han, and Chewbacca to be thrown into the Great Pit of Carkoon, home of the Sarlacc."
   },
   {
     "id": 8,
-    "question": "What production oversight is revealed when the Ewoks bow down to C-3PO?",
+    "question": "Why do the Ewoks decide to revere C-3PO and treat him like a deity?",
     "options": [
-      "The shadow of a camera operator is visible on the trees",
-      "The human actor's eyes and mouth are visible through the costume's holes",
-      "A zipper is clearly visible running down the back of the lead Ewok",
-      "A boom microphone appears in the top corner of the frame"
+      "They believe he is a golden god from their legends",
+      "He uses his translation abilities to speak their language",
+      "He displays magical levitation powers",
+      "He helps them build traps for the Empire"
     ],
-    "answer": "The human actor's eyes and mouth are visible through the costume's holes",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'Through the eye and mouth holes of the costume, the eyes and mouth of the person inside the Ewok suit are clearly visible.'"
+    "answer": "They believe he is a golden god from their legends",
+    "evidence": "In-universe lore: C-3PO's gold-plated exterior causes the Ewoks to worship him as a long-foretold deity."
   },
   {
     "id": 9,
-    "question": "True or False: During the battle at the Sarlacc pit, Luke Skywalker's grip on the plank changes from a one-handed hold to a firm two-handed grasp between cuts.",
+    "question": "True or False: Luke Skywalker reveals to Princess Leia that they are twin siblings in the Ewok village on Endor.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'Initially, only one of Luke's hands appears to catch the board... However, in the very next cut, both of his hands are firmly grasping the plank...'"
+    "evidence": "In-universe lore: Luke tells Leia that the Force is strong in his family, revealing that she is his sister."
   },
   {
     "id": 10,
-    "question": "True or False: Darth Vader's helmet is consistently dusty throughout the scene where the Emperor tortures Luke Skywalker.",
+    "question": "What is the name of the Super Star Destroyer that crashes into the second Death Star during the Battle of Endor?",
     "options": [
-      "True",
-      "False"
+      "Executor",
+      "Devastator",
+      "Chimera",
+      "Ravager"
     ],
-    "answer": "False",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'Vader's helmet repeatedly goes from appearing pristine and being noticeably covered in dust. This back-and-forth shift in its condition happens within the same sequence...'"
+    "answer": "Executor",
+    "evidence": "In-universe lore: The Executor, Darth Vader's flagship Super Star Destroyer, is destroyed when an A-wing crashes into its bridge."
   },
   {
     "id": 11,
-    "question": "Why did George Lucas revert the film's title from 'Revenge of the Jedi' back to 'Return of the Jedi'?",
+    "question": "Who is the main commander of the Rebel fleet during the Battle of Endor, famous for realizing the shield is still active?",
     "options": [
-      "Market research indicated that 'Return' was more appealing to children",
-      "Because Jedi do not take revenge as a concept of behavior",
-      "To avoid legal conflicts with a competing space opera franchise",
-      "The title was changed to align with the name of the new Sith Lord"
+      "Admiral Ackbar",
+      "General Madine",
+      "Mon Mothma",
+      "Lando Calrissian"
     ],
-    "answer": "Because Jedi do not take revenge as a concept of behavior",
-    "evidence": "Why George Lucas Changed Revenge of the Jedi's Title - CBR: '...We had always wanted to call it \"Return.\" Philosophically, it's correct... A Jedi Knight can't understand that as a concept of behavior... Lucas put his foot down and claimed that \"Jedi don't take revenge.\"'"
+    "answer": "Admiral Ackbar",
+    "evidence": "In-universe lore: Admiral Ackbar commands the Rebel fleet from the Home One and famously warns that the attack is a trap."
   },
   {
     "id": 12,
-    "question": "During the 1981 story conferences, what 'ultimate twist' did George Lucas half-jokingly propose for the ending?",
+    "question": "Who kills Emperor Palpatine to save Luke Skywalker from being electrocuted by Force lightning?",
     "options": [
-      "Princess Leia dying to save Han Solo",
-      "Luke Skywalker putting on Vader's mask and declaring, 'Now I am Vader'",
-      "The Emperor revealing himself to be Luke's grandfather",
-      "R2-D2 and C-3PO being the true masterminds behind the Rebellion"
+      "Darth Vader",
+      "Lando Calrissian",
+      "Wedge Antilles",
+      "Obi-Wan Kenobi"
     ],
-    "answer": "Luke Skywalker putting on Vader's mask and declaring, 'Now I am Vader'",
-    "evidence": "REVENGE OF THE JEDI STORY CONFERENCE TRANSCRIPT (Rinzler): 'The mask is the very last thing-and then Luke puts it on and says, \"Now I am Vader.\" Surprise! The ultimate twist. \"Now I will go and kill the fleet and I will rule the universe.\"'"
+    "answer": "Darth Vader",
+    "evidence": "In-universe lore: Unable to watch his son die, Darth Vader redeems himself by throwing the Emperor down the Death Star reactor shaft."
   },
   {
     "id": 13,
-    "question": "Which iconic voice narrated the original 'Revenge of the Jedi' teaser trailer?",
+    "question": "What color is Luke Skywalker's new lightsaber that he constructed for his rescue mission?",
     "options": [
-      "Frank Oz",
-      "Sir Alec Guinness",
-      "James Earl Jones",
-      "Harrison Ford"
+      "Green",
+      "Blue",
+      "Red",
+      "Purple"
     ],
-    "answer": "James Earl Jones",
-    "evidence": "Why George Lucas Changed Revenge of the Jedi's Title - CBR: '...it was still nearly titled Revenge of the Jedi and flipped between titles at least twice, even being used in marketing for the film in a trailer, which was narrated by James Earl Jones.'"
+    "answer": "Green",
+    "evidence": "In-universe lore: Luke construct a green lightsaber to replace the blue one he lost on Cloud City."
   },
   {
     "id": 14,
-    "question": "True or False: George Lucas believed that the primary goal of the film's ending should be to leave the audience feeling 'spiritually uplifted.'",
+    "question": "True or False: Luke Skywalker decides to redeem Darth Vader rather than strike him down at the Emperor's command.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "REVENGE OF THE JEDI STORY CONFERENCE TRANSCRIPT (Rinzler): 'The whole point of the film... is for you to be real uplifted, emotionally and spiritually, and feel absolutely good about life.'"
+    "evidence": "In-universe lore: Luke throws his lightsaber away, refusing to kill his father and declaring himself a Jedi."
   },
   {
     "id": 15,
-    "question": "True or False: Lawrence Kasdan suggested killing Yoda during the story conferences, but Lucas refused to kill off characters to prove they were in danger.",
+    "question": "What is the name of the shield generator base on Endor that Han Solo and his strike team must destroy?",
     "options": [
-      "True",
-      "False"
+      "The Imperial Shield Bunker",
+      "The Endor Citadel",
+      "The Death Star Station",
+      "The Forest Outpost"
     ],
-    "answer": "True",
-    "evidence": "REVENGE OF THE JEDI STORY CONFERENCE TRANSCRIPT (Rinzler): 'Kasdan: Okay, then kill Yoda. Lucas: I don't want to kill Yoda. You don't have to kill people... I don't think we have to kill anyone to prove it [real dangers].'"
+    "answer": "The Imperial Shield Bunker",
+    "evidence": "In-universe lore: Han Solo leads a strike team to the Endor shield generator bunker to disable the Death Star's protection."
   },
   {
     "id": 16,
-    "question": "Which actor originally portrayed the unmasked and spectral form of Anakin Skywalker in the 1983 release?",
+    "question": "Which three Force spirits appear to Luke Skywalker during the celebration on Endor?",
     "options": [
-      "David Prowse",
-      "Sebastian Shaw",
-      "Hayden Christensen",
-      "Jake Lloyd"
+      "Anakin Skywalker, Obi-Wan Kenobi, and Yoda",
+      "Anakin Skywalker, Qui-Gon Jinn, and Yoda",
+      "Obi-Wan Kenobi, Qui-Gon Jinn, and Yoda",
+      "Anakin Skywalker, Obi-Wan Kenobi, and Padme"
     ],
-    "answer": "Sebastian Shaw",
-    "evidence": "Reddit - VillainM (OP): 'Sebastian Shaw was the original ghost of Anakin, and that Hayden was edited onto Sebastian's body in 2004.' and 'Sebastian Shaw, was 78/79 when he played him in RotJ.'"
+    "answer": "Anakin Skywalker, Obi-Wan Kenobi, and Yoda",
+    "evidence": "In-universe lore: At the end of the conflict, the spirits of Anakin, Obi-Wan, and Yoda appear to Luke."
   },
   {
     "id": 17,
-    "question": "What is the canonical reason George Lucas provided for replacing the elder Force Ghost with the younger version of Anakin?",
+    "question": "Who is the main Imperial officer in charge of the forces defending the Endor shield generator bunker?",
     "options": [
-      "Force Ghosts only reflect the person at their strongest point in the Force",
-      "Anakin essentially 'died' as a Jedi at age 22 when he turned to the Dark Side",
-      "The elder footage was of poor quality for high-definition restoration",
-      "To ensure continuity with the Rise of Skywalker ending"
+      "Colonel Dyer",
+      "Grand Moff Tarkin",
+      "Admiral Piett",
+      "General Veers"
     ],
-    "answer": "Anakin essentially 'died' as a Jedi at age 22 when he turned to the Dark Side",
-    "evidence": "Reddit - VillainM (OP): 'George's reasoning was that Anakin died as a Jedi at age 22, which is why he appears that age as a ghost.'"
+    "answer": "Colonel Dyer",
+    "evidence": "In-universe lore: Colonel Dyer is the officer who captures Han Solo's strike team inside the shield generator bunker before the Ewoks attack."
   },
   {
     "id": 18,
-    "question": "True or False: The digital replacement of Anakin's Force Ghost and the removal of Shaw's eyebrows in the death scene occurred in 2004.",
+    "question": "True or False: Mon Mothma is the leader of the Rebel Alliance who briefs the pilots before the Battle of Endor.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "Reddit - VillainM (OP): 'Hayden was edited onto Sebastian's body in 2004.' and ComicBook.com: '...a subtle alteration was made in the 2004 DVD release, as the eyebrows were removed...'"
+    "evidence": "In-universe lore: Mon Mothma, chief of the Alliance, presents the plan to attack the second Death Star."
   },
   {
     "id": 19,
@@ -661,13 +669,15 @@ export const STAR_WARS_EPISODE_VI_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 20,
-    "question": "True or False: The 2004 digital removal of Anakin's eyebrows was completely consistent across all shots of his death sequence.",
+    "question": "Who flies the Millennium Falcon into the center of the second Death Star to destroy its main reactor?",
     "options": [
-      "True",
-      "False"
+      "Lando Calrissian and Nien Nunb",
+      "Han Solo and Chewbacca",
+      "Wedge Antilles and Lando Calrissian",
+      "Luke Skywalker and R2-D2"
     ],
-    "answer": "False",
-    "evidence": "7 Star Wars: Return of the Jedi Mistakes You'll Never Be Able to Unsee - ComicBook.com: 'However, despite the digital removal, a portion of Anakin's left eyebrow can still be seen in some shots... this minor oversight means that the intended edit wasn't entirely consistent...'"
+    "answer": "Lando Calrissian and Nien Nunb",
+    "evidence": "In-universe lore: Lando and his Sullustan co-pilot Nien Nunb fly the Falcon into the reactor core to deliver the final blow."
   }
 ];
 
@@ -700,7 +710,7 @@ export const STAR_WARS_EPISODE_VII_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 3,
-    "question": "According to the film's significant heritage reveal, who are the parents of Kylo Ren?",
+    "question": "Who are the biological parents of Ben Solo, who later becomes Kylo Ren?",
     "options": [
       "Luke Skywalker and Leia Organa",
       "Anakin Skywalker and Padme Amidala",
@@ -708,41 +718,41 @@ export const STAR_WARS_EPISODE_VII_TRIVIA: MCTriviaQuestion[] = [
       "Bail Organa and Breha Organa"
     ],
     "answer": "Han Solo and Leia Organa",
-    "evidence": "Who are Kylo Ren's father and mother? Han Solo and Leia Organa - So You Think You Know Star Wars Trivia | Question 25"
+    "evidence": "In-universe lore: Kylo Ren (Ben Solo) is the son of Han Solo and Princess Leia Organa."
   },
   {
     "id": 4,
-    "question": "In what year was the film 'Star Wars: Episode VII - The Force Awakens' officially released in theaters?",
+    "question": "What is the name of the desert planet where Rey is living as a scavenger when she first meets BB-8?",
     "options": [
-      "2012",
-      "2015",
-      "2017",
-      "2019"
+      "Jakku",
+      "Tatooine",
+      "Jedha",
+      "Geonosis"
     ],
-    "answer": "2015",
-    "evidence": "Star Wars Episode VII: The Force Awakens (2015) - StarWars.com Official Feed | September 8, 2016 Article Header"
+    "answer": "Jakku",
+    "evidence": "In-universe lore: Rey scavenger-hunts on the desert world of Jakku."
   },
   {
     "id": 5,
-    "question": "Which legendary composer is credited with the creation of the musical piece 'Rey's Theme'?",
+    "question": "What is the name of the superweapon base built into a planet by the First Order to destroy the New Republic?",
     "options": [
-      "John Williams",
-      "Michael Giacchino",
-      "Ludwig Goransson",
-      "Lawrence Kasdan"
+      "Starkiller Base",
+      "The Death Star",
+      "The Supremacy",
+      "The Citadel"
     ],
-    "answer": "John Williams",
-    "evidence": "How \"Rey's Theme\" Kept John Williams Coming Back to the Star Wars Galaxy - StarWars.com Official Feed | December 8, 2025 Related News"
+    "answer": "Starkiller Base",
+    "evidence": "In-universe lore: Starkiller Base is a mobile ice planet converted into a solar-powered superweapon."
   },
   {
     "id": 6,
-    "question": "True or False: Official franchise metrics categorize the fate of Han Solo in 'The Force Awakens' as a detail that is widely known even to casual fans.",
+    "question": "True or False: Han Solo is killed by his son, Kylo Ren, on Starkiller Base.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "A casual fan of Star Wars: The Force Awakens would know the fate of Han Solo. - StarWars.com Official Feed | September 8, 2016 Introduction"
+    "evidence": "In-universe lore: Han Solo attempts to bring his son home, but Kylo Ren stabs him with his lightsaber, killing him."
   }
 ];
 
@@ -763,49 +773,49 @@ export const STAR_WARS_EPISODE_VIII_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     "id": 2,
-    "question": "On what specific date in 2017 was Star Wars: The Last Jedi scheduled to hit theaters?",
+    "question": "What native, bird-like creatures inhabit the cliffs of the planet Ahch-To where Luke Skywalker lives in exile?",
     "options": [
-      "November 16",
-      "December 15",
-      "December 22",
-      "May 4"
+      "Porgs",
+      "Ewoks",
+      "Vulptices",
+      "Fathiers"
     ],
-    "answer": "December 15",
-    "evidence": "We still have a couple months until Star Wars: The Last Jedi hits theaters on December 15 - Quiz: How Well Do You Know Star Wars: The Last Jedi So Far? | StarWars.com | N/A"
+    "answer": "Porgs",
+    "evidence": "In-universe lore: Porgs are flat-faced, flightless birds native to the island cliffs of Ahch-To."
   },
   {
     "id": 3,
-    "question": "In the official Star Wars saga chronology, The Last Jedi is categorized as which numbered film?",
+    "question": "What is the name of the mineral planet with red soil beneath a layer of white salt where the Resistance makes its final stand?",
     "options": [
-      "Seventh",
-      "Eighth",
-      "Ninth",
-      "Tenth"
+      "Crait",
+      "D'Qar",
+      "Cantonica",
+      "Ahch-To"
     ],
-    "answer": "Eighth",
-    "evidence": "Have you been reading every detail about the eighth film of the Star Wars saga? - Quiz: How Well Do You Know Star Wars: The Last Jedi So Far? | StarWars.com | N/A"
+    "answer": "Crait",
+    "evidence": "In-universe lore: The Resistance flees to an old Rebel outpost on the salt-covered world of Crait."
   },
   {
     "id": 4,
-    "question": "What specific culinary item was promoted as 'the Galaxy's Cutest Thanksgiving Dessert'?",
+    "question": "What is the name of the ancient Jedi sacred planet where Luke Skywalker lives in isolation?",
     "options": [
-      "Porg Pudding",
-      "Porgin Pie",
-      "Ewok Eclair",
-      "Porg Pastry"
+      "Ahch-To",
+      "Tatooine",
+      "Coruscant",
+      "Ossus"
     ],
-    "answer": "Porgin Pie",
-    "evidence": "Serve Porgin Pie, the Galaxy's Cutest Thanksgiving Dessert - Quiz: How Well Do You Know Star Wars: The Last Jedi So Far? | StarWars.com | Recipes"
+    "answer": "Ahch-To",
+    "evidence": "In-universe lore: Luke Skywalker went into exile on the planet Ahch-To, home of the first Jedi temple."
   },
   {
     "id": 5,
-    "question": "True or False: Official StarWars.com promotional materials encouraged fans to test their knowledge before the movie's premiere in December.",
+    "question": "True or False: Luke Skywalker passes away peacefully and becomes one with the Force after projecting his spirit to Crait.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "Test your knowledge before the movie premieres in December! - Quiz: How Well Do You Know Star Wars: The Last Jedi So Far? | StarWars.com | N/A"
+    "evidence": "In-universe lore: Following his taxing Force projection to stall Kylo Ren, Luke vanishes into the Force on Ahch-To."
   }
 ];
 
@@ -935,19 +945,19 @@ export const STAR_WARS_EPISODE_IX_TRIVIA: MCTriviaQuestion[] = [
 export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "In 'Attack of the Clones', which direction does the camera pan immediately following the opening crawl?",
+    "question": "What is the name of the planet where Obi-Wan Kenobi discovers the secret cloning facilities?",
     "options": [
-      "Up",
-      "Down",
-      "Left",
-      "Right"
+      "Kamino",
+      "Geonosis",
+      "Coruscant",
+      "Utapau"
     ],
-    "answer": "Up",
-    "evidence": "In every other 'Star Wars' movie, the camera pans down. This one was a bit different. - 160 Star Wars: Attack of the Clones Trivia Questions, Answers, and Fun Facts | 'Attack of the Clones' Quiz"
+    "answer": "Kamino",
+    "evidence": "In-universe lore: Obi-Wan Kenobi travels to Kamino, where he finds the clone army created for the Republic."
   },
   {
     "id": 2,
-    "question": "Which First Order officer was revealed to be the Resistance spy in 'The Rise of Skywalker'?",
+    "question": "Which First Order officer acts as a spy for the Resistance out of hatred for Kylo Ren?",
     "options": [
       "General Pryde",
       "General Veers",
@@ -955,19 +965,19 @@ export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] 
       "General Hux"
     ],
     "answer": "General Hux",
-    "evidence": "General Hux saved them and announced himself to be the spy in the First Order. - Episode IX - The Rise of Skywalker Online Quiz | Movies | 10 Questions | General Hux"
+    "evidence": "In-universe lore: General Hux leaks information to the Resistance because he wants to see Kylo Ren lose."
   },
   {
     "id": 3,
-    "question": "To simulate high speed during the Endor speeder bike chase, at what rate did ILM play back the forest footage?",
+    "question": "What type of weapon does Chewbacca traditionally use in battle?",
     "options": [
-      "12 frames per second",
-      "24 frames per second",
-      "48 frames per second",
-      "60 frames per second"
+      "Bowcaster",
+      "Blaster Rifle",
+      "Lightsaber",
+      "Gaderffii Stick"
     ],
-    "answer": "24 frames per second",
-    "evidence": "ILM had Garret Brown - who had invented the Steadicam - walk through a redwood forest near Eureka, California while shooting a frame every few seconds. ILM then ran the film at 24 frames per second, which increased the apparent speed more than 5,000 percent. - Star Wars: Episode VI - Return of the Jedi | Industrial Light & Magic - ILM | VFX"
+    "answer": "Bowcaster",
+    "evidence": "In-universe lore: Chewbacca uses a traditional Wookiee bowcaster, which fires explosive plasma bolts."
   },
   {
     "id": 4,
@@ -981,15 +991,15 @@ export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] 
   },
   {
     "id": 5,
-    "question": "Before it was finalized as 'Return of the Jedi', what was the original title used during early marketing and trailers?",
+    "question": "What is the name of the planet where Jabba the Hutt's sail barge is destroyed over the Great Pit of Carkoon?",
     "options": [
-      "Shadow of the Empire",
-      "The Jedi Returns",
-      "Revenge of the Jedi",
-      "The Final Battle"
+      "Tatooine",
+      "Geonosis",
+      "Kessel",
+      "Naboo"
     ],
-    "answer": "Revenge of the Jedi",
-    "evidence": "it was still nearly titled Revenge of the Jedi and flipped between titles at least twice, even being used in marketing for the film in a trailer - Why George Lucas Changed Revenge of the Jedi's Title - CBR | Why George Lucas Changed Revenge of the Jedi's Title"
+    "answer": "Tatooine",
+    "evidence": "In-universe lore: Jabba's sail barge is destroyed during Luke's rescue mission on Tatooine."
   },
   {
     "id": 6,
@@ -1003,7 +1013,7 @@ export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] 
   },
   {
     "id": 7,
-    "question": "What is the name of the protocol droid that greets Qui-Gon Jinn and Obi-Wan Kenobi upon their arrival at the Trade Federation command ship in 'The Phantom Menace'?",
+    "question": "What is the name of the silver protocol droid that greets Qui-Gon Jinn and Obi-Wan Kenobi upon their arrival at the Trade Federation command ship?",
     "options": [
       "TC-14",
       "R2-D2",
@@ -1011,17 +1021,17 @@ export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] 
       "CZ-3"
     ],
     "answer": "TC-14",
-    "evidence": "TC-14 serves Viceroy Nute Gunray and his Lieutenant Rune Haako. They use TC-14 to distract offical guests while legal manipulation is carried out behind their backs. - Star Wars: The Phantom Menace Trivia Quizzes | Movies | The Phantom Menace"
+    "evidence": "In-universe lore: TC-14 is the Trade Federation protocol droid that serves the Jedi ambassadors gas and drinks."
   },
   {
     "id": 8,
-    "question": "True or False: Hayden Christensen's likeness was digitally added to the ending of 'Return of the Jedi' in 2004, replacing Sebastian Shaw as the ghost of Anakin Skywalker.",
+    "question": "True or False: Anakin Skywalker constructed his second lightsaber with a blue blade, which was later passed down to Luke.",
     "options": [
       "True",
       "False"
     ],
     "answer": "True",
-    "evidence": "Sebastian Shaw was the original ghost of Anakin, and that Hayden was edited onto Sebastian's body in 2004. - Reddit: r/StarWars - Anakin Ghost Discussion | Comments Section"
+    "evidence": "In-universe lore: Anakin used a blue-bladed lightsaber, which Obi-Wan took after their duel on Mustafar and later gave to Luke."
   },
   {
     "id": 9,
@@ -1054,7 +1064,7 @@ export const STAR_WARS_ATTACK_OF_THE_CLONES_EXPANDED_TRIVIA: MCTriviaQuestion[] 
 export const STAR_WARS_SAGA_TRIVIA: MCTriviaQuestion[] = [
   {
     "id": 1,
-    "question": "At the beginning of the film, Senator Padme Amidala uses a decoy to ensure her safety during the return to Coruscant. What was the name of the decoy killed in the subsequent explosion?",
+    "question": "What was the name of Senator Padme Amidala's decoy who was killed in the assassination attempt upon their arrival at Coruscant?",
     "options": [
       "Queen Jamillia",
       "Corde",
@@ -1062,19 +1072,19 @@ export const STAR_WARS_SAGA_TRIVIA: MCTriviaQuestion[] = [
       "Taun We"
     ],
     "answer": "Corde",
-    "evidence": "Corde was killed in an assassination attempt on Senator Amidala. Lucky for Padme she had used a decoy. - 160 Star Wars: Attack of the Clones Trivia Questions, Answers, and Fun Facts | Quiz: Attack Of The Clones"
+    "evidence": "In-universe lore: Corde dies in the ship explosion while acting as Padme's decoy."
   },
   {
     "id": 2,
-    "question": "In a rare departure from the cinematography of other 'Star Wars' films, which direction does the camera pan immediately following the opening crawl in 'Attack of the Clones'?",
+    "question": "What is the name of the toxic dart that Obi-Wan Kenobi finds, which leads him to the planet Kamino?",
     "options": [
-      "Down",
-      "Left",
-      "Right",
-      "Up"
+      "Kaminoan dart",
+      "Saber dart",
+      "Zabrak dart",
+      "Toxic arrow"
     ],
-    "answer": "Up",
-    "evidence": "In every other 'Star Wars' movie, the camera pans down. This one was a bit different [it pans up]. - 160 Star Wars: Attack of the Clones Trivia Questions, Answers, and Fun Facts | Quiz: 'Attack of the Clones' Quiz"
+    "answer": "Saber dart",
+    "evidence": "In-universe lore: The Kaminoan saber dart found by Obi-Wan leads him to Kamino after the archives fail to show it."
   },
   {
     "id": 3,

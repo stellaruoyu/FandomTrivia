@@ -52,7 +52,7 @@ export const CHRISTMAS_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: "In the 1990 classic holiday movie 'Home Alone', what is the destination of the McCallister family's Christmas vacation?",
+    question: "In the classic holiday story 'Home Alone', what is the destination of the McCallister family's Christmas vacation?",
     options: ["London", "Paris", "Rome", "Miami"],
     answer: "Paris",
     evidence: "The McCallister family accidentally leaves Kevin behind when they rush to the airport for their Christmas vacation to Paris, France."

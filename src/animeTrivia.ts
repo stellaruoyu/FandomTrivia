@@ -3,9 +3,9 @@ import type { MCTriviaQuestion } from './constants';
 export const ATTACK_ON_TITAN_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: 'Who is the creator and mangaka of the original Attack on Titan series?',
-    options: ['Hajime Isayama', 'Kohei Horikoshi', 'Gege Akutami', 'Sui Ishida'],
-    answer: 'Hajime Isayama'
+    question: 'What is the name of the colossal wall that protects the outermost district of Shiganshina, which is breached in the first episode?',
+    options: ['Wall Maria', 'Wall Rose', 'Wall Sheena', 'Wall Paradis'],
+    answer: 'Wall Maria'
   },
   {
     id: 2,
@@ -72,9 +72,9 @@ export const DEMON_SLAYER_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 2,
-    question: 'Who is the author and illustrator of the Demon Slayer manga?',
-    options: ['Koyoharu Gotouge', 'Tite Kubo', 'Yoshihiro Togashi', 'Masashi Kishimoto'],
-    answer: 'Koyoharu Gotouge'
+    question: 'What is the name of Tanjiro\'s younger sister who survived the demon attack but was turned into a demon herself?',
+    options: ['Nezuko Kamado', 'Kanao Tsuyuri', 'Aoi Kanzaki', 'Tamayo'],
+    answer: 'Nezuko Kamado'
   },
   {
     id: 3,
@@ -141,9 +141,9 @@ export const JUJUTSU_KAISEN_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 3,
-    question: 'Who is the creator of the Jujutsu Kaisen manga?',
-    options: ['Gege Akutami', 'Tatsuki Fujimoto', 'Yusuke Murata', 'Kaiu Shirai'],
-    answer: 'Gege Akutami'
+    question: 'What is the name of the special grade cursed spirit born from humans\' fear of natural disasters, who fought Yuji and Nanami?',
+    options: ['Mahito', 'Hanami', 'Jogo', 'Dagon'],
+    answer: 'Mahito'
   },
   {
     id: 4,
@@ -192,9 +192,9 @@ export const JUJUTSU_KAISEN_TRIVIA: MCTriviaQuestion[] = [
 export const ONE_PIECE_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: 'Who is the creator and mangaka of the One Piece series?',
-    options: ['Eiichiro Oda', 'Akira Toriyama', 'Tite Kubo', 'Hiro Mashima'],
-    answer: 'Eiichiro Oda'
+    question: 'Which legendary pirate king left his treasure, the One Piece, at the end of the Grand Line?',
+    options: ['Gol D. Roger', 'Whitebeard', 'Shanks', 'Monkey D. Garp'],
+    answer: 'Gol D. Roger'
   },
   {
     id: 2,
@@ -255,9 +255,9 @@ export const ONE_PIECE_TRIVIA: MCTriviaQuestion[] = [
 export const NARUTO_TRIVIA: MCTriviaQuestion[] = [
   {
     id: 1,
-    question: 'Who is the creator and mangaka of the Naruto series?',
-    options: ['Masashi Kishimoto', 'Tite Kubo', 'Yoshihiro Togashi', 'Akira Toriyama'],
-    answer: 'Masashi Kishimoto'
+    question: 'Which ninja became the fifth Hokage and is renowned as one of the Legendary Sannin?',
+    options: ['Tsunade', 'Jiraiya', 'Orochimaru', 'Kakashi Hatake'],
+    answer: 'Tsunade'
   },
   {
     id: 2,
@@ -336,7 +336,7 @@ export const DEATH_NOTE_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 4,
-    question: 'What is the name of the model and actress who becomes the Second Kira?',
+    question: 'What is the name of the pop idol who becomes the Second Kira?',
     options: ['Misa Amane', 'Kiyomi Takada', 'Yuri', 'Sayu Yagami'],
     answer: 'Misa Amane'
   },
@@ -360,7 +360,7 @@ export const DEATH_NOTE_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 8,
-    question: 'Under the rules of the Death Note, how many seconds does the writer have to specify the cause of death?',
+    question: 'Under the rules of the Death Note, how many seconds does a person have to specify the cause of death after writing a name?',
     options: ['40 seconds', '60 seconds', '30 seconds', '120 seconds'],
     answer: '40 seconds'
   },
