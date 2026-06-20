@@ -6742,22 +6742,23 @@ const HolidaysSelector = () => {
             >
               <div className="space-y-4">
                 <div className="text-4xl">{show.icon}</div>
-                <div className="space-y-1">
-                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-white bg-black/40 px-2.5 py-1 rounded-full border border-white/20">
-                    {show.label}
-                  </span>
-                  <h3 className="text-xl font-black text-white group-hover:text-emerald-300 transition-colors pt-2">{show.title}</h3>
-                  <p className="text-sm text-slate-400 leading-snug">{show.desc}</p>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{show.label}</p>
+                  <h3 className="text-xl font-black text-white tracking-tight">{show.title}</h3>
+                  <p className="text-sm text-slate-400 font-medium mt-1 leading-relaxed">{show.desc}</p>
                 </div>
               </div>
-              
-              <div className="pt-4 flex items-center justify-between border-t border-white/5 w-full mt-4">
-                <span className="text-[11px] text-slate-500 font-bold">
-                  {formatCount(getQuizCount(show.view))}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs font-black text-white group-hover:text-emerald-300 transition-colors">
-                  Play Quiz <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
-                </span>
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Start Quiz <ArrowRight className="size-3" />
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                  <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(show.view))}</span>
+                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                  </div>
+                </div>
               </div>
             </motion.button>
           ))}
@@ -7779,13 +7780,6 @@ const LandingView = ({ setUser, onUnlockBadge }: {
   key?: string
 }) => {
   const navigate = useNavigate();
-  const [holidaySearch, setHolidaySearch] = useState('');
-  
-  const holidayUniverses = UNIVERSES.filter(u => 
-    u.tags.includes('Holiday') && 
-    (u.title.toLowerCase().includes(holidaySearch.toLowerCase()) || 
-     u.description.toLowerCase().includes(holidaySearch.toLowerCase()))
-  );
 
   return (
   <motion.div
@@ -7858,83 +7852,6 @@ const LandingView = ({ setUser, onUnlockBadge }: {
 
       <DailyMysteryChallenge />
 
-      {/* Holiday Grid */}
-      <section id="holidays" className="max-w-7xl mx-auto px-6 pb-20">
-        <div className="flex items-end justify-between mb-10">
-          <div className="space-y-2">
-            <h3 className="text-3xl font-extrabold text-white">Holiday Trivia</h3>
-            <p className="text-slate-400 font-medium">Celebrate the seasons with festive trivia and legends.</p>
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search holidays..."
-              value={holidaySearch}
-              onChange={(e) => setHolidaySearch(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-primary/50 transition-colors w-48 sm:w-64"
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {holidayUniverses.map((universe, i) => (
-            <motion.div
-              key={universe.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
-            >
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url("${universe.image}")` }}
-                role="img"
-                aria-label={universe.title + " Trivia Universe Background"}
-              ></div>
-              <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-colors duration-300"></div>
-              <div className="absolute bottom-0 left-0 p-8 space-y-4 w-full">
-                <div className="flex items-center gap-2">
-                  {universe.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-widest border border-white/20">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <h4 className="text-4xl font-extrabold text-white tracking-tight">
-                  {universe.title}
-                </h4>
-                <p className="text-slate-300 font-medium line-clamp-2">{universe.description}</p>
-                
-                <div className="flex items-center justify-between gap-4">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (universe.path) {
-                        navigate(universe.path);
-                        return;
-                      }
-                    }}
-                    className="flex-1 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl text-white font-bold transition-all"
-                  >
-                    {universe.buttonText}
-                  </button>
-                </div>
-              </div>
-              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                {universe.icon === 'Ghost' && <Ghost className="text-white/50 size-10" />}
-                {universe.icon === 'Sparkles' && <Sparkles className="text-white/50 size-10" />}
-              </div>
-            </motion.div>
-          ))}
-          {holidayUniverses.length === 0 && (
-            <div className="col-span-full text-center py-20 bg-white/5 rounded-2xl border border-white/10">
-              <p className="text-slate-400 font-medium">No holidays found matching "{holidaySearch}".</p>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* Universe Grid */}
 
       <section id="universes" className="max-w-7xl mx-auto px-6 pb-32">
@@ -7953,6 +7870,36 @@ const LandingView = ({ setUser, onUnlockBadge }: {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
+              onClick={() => {
+                if (universe.path) {
+                  navigate(universe.path);
+                  return;
+                }
+                if (universe.id === 'coding') navigate('/trivia-coding');
+                if (universe.id === 'twilight') navigate('/selector-twilight');
+                if (universe.id === 'kpop') navigate('/selector-kpop');
+                if (universe.id === 'usa-songs') navigate('/selector-usa-songs');
+                if (universe.id === 'harry-potter') navigate('/selector-harry-potter');
+                if (universe.id === 'star-wars') navigate('/selector-star-wars');
+                if (universe.id === 'three-body') navigate('/selector-three-body');
+                if (universe.id === 'zootopia') navigate('/selector-zootopia');
+                if (universe.id === 'despicable-me') navigate('/selector-despicable-me');
+                if (universe.id === 'frozen') navigate('/selector-frozen');
+                if (universe.id === 'moana') navigate('/selector-moana');
+                if (universe.id === 'cat-in-the-hat') navigate('/selector-cat-in-the-hat');
+                if (universe.id === 'how-to-train-your-dragon') navigate('/selector-how-to-train-your-dragon');
+                if (universe.id === 'avatar') navigate('/selector-avatar');
+                if (universe.id === 'minecraft') navigate('/selector-minecraft');
+                if (universe.id === 'super-mario') navigate('/selector-super-mario');
+                if (universe.id === 'pawpatrol') navigate('/selector-paw-patrol');
+                if (universe.id === 'kung-fu-panda') navigate('/selector-kung-fu-panda');
+                if (universe.id === 'toy-story') navigate('/selector-toy-story');
+                if (universe.id === 'shrek') navigate('/selector-shrek');
+                if (universe.id === 'bad-guys') navigate('/selector-bad-guys');
+                if (universe.id === 'dog-man') navigate('/selector-dog-man');
+                if (universe.id === 'hoppers') navigate('/selector-hoppers');
+                if (universe.id === 'wicked') navigate('/selector-wicked');
+              }}
               className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
             >
               <div
