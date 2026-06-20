@@ -136,7 +136,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Take the ultimate World Cup Soccer quiz! Test your knowledge of FIFA history, legendary players like Pele and Messi, and iconic tournament moments.',
     date: '2026-06-18',
     author: 'Fandom Trivia Team',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Messi_vs_Nigeria_2018.jpg/800px-Messi_vs_Nigeria_2018.jpg',
+    image: '/images/world-cup.jpg',
     keywords: ['World Cup quiz', 'soccer trivia', 'FIFA history test', 'soccer legends quiz', 'sports trivia challenge'],
     content: `
       <p class="lead text-xl text-slate-300 mb-6">Every four years, the world stops to watch the beautiful game. The FIFA World Cup is the pinnacle of global sports, bringing nations together for moments of heartbreak, triumph, and legendary athletic feats. From Diego Maradona's "Hand of God" to Lionel Messi's ultimate victory in Qatar, the tournament's history is written in gold. Are you a true soccer historian? Lace up your cleats and take the ultimate <strong>World Cup Soccer quiz</strong>.</p>
