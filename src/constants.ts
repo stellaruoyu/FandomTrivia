@@ -742,7 +742,7 @@ export const UNIVERSES = [
     title: 'World Cup Soccer',
     tags: ['Sports', 'Soccer', 'Global'],
     description: "Test your knowledge of the beautiful game! From legendary goals to historic upsets, see how well you know the FIFA World Cup.",
-    image: '/images/world-cup.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Messi_vs_Nigeria_2018.jpg/800px-Messi_vs_Nigeria_2018.jpg',
     seoAlt: 'Soccer ball on a stadium pitch during a World Cup match',
     buttonText: 'Start the Match',
     icon: 'Globe',

@@ -136,10 +136,10 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Take the ultimate World Cup Soccer quiz! Test your knowledge of FIFA history, legendary players like Pele and Messi, and iconic tournament moments.',
     date: '2026-06-18',
     author: 'Fandom Trivia Team',
-    image: '/images/world-cup.jpg',
-    keywords: ['World Cup quiz', 'soccer trivia', 'FIFA history test', 'football legends quiz', 'sports trivia challenge'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Messi_vs_Nigeria_2018.jpg/800px-Messi_vs_Nigeria_2018.jpg',
+    keywords: ['World Cup quiz', 'soccer trivia', 'FIFA history test', 'soccer legends quiz', 'sports trivia challenge'],
     content: `
-      <p class="lead text-xl text-slate-300 mb-6">Every four years, the world stops to watch the beautiful game. The FIFA World Cup is the pinnacle of global sports, bringing nations together for moments of heartbreak, triumph, and legendary athletic feats. From Diego Maradona's "Hand of God" to Lionel Messi's ultimate victory in Qatar, the tournament's history is written in gold. Are you a true football historian? Lace up your cleats and take the ultimate <strong>World Cup Soccer quiz</strong>.</p>
+      <p class="lead text-xl text-slate-300 mb-6">Every four years, the world stops to watch the beautiful game. The FIFA World Cup is the pinnacle of global sports, bringing nations together for moments of heartbreak, triumph, and legendary athletic feats. From Diego Maradona's "Hand of God" to Lionel Messi's ultimate victory in Qatar, the tournament's history is written in gold. Are you a true soccer historian? Lace up your cleats and take the ultimate <strong>World Cup Soccer quiz</strong>.</p>
 
       <div class="my-8 text-center">
         <a href="/trivia-world-cup" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
@@ -157,8 +157,8 @@ export const BLOG_POSTS: BlogPost[] = [
         </a>
       </div>
 
-      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Iconic Moments and Football Legends</h2>
-      <p>True football fans know the history extends beyond just the scores. Let's see if you know these legendary facts in our <strong>sports trivia challenge</strong>:</p>
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Iconic Moments and Soccer Legends</h2>
+      <p>True soccer fans know the history extends beyond just the scores. Let's see if you know these legendary facts in our <strong>sports trivia challenge</strong>:</p>
 
       <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Record:</strong> Just Fontaine scored 13 goals in a single tournament (1958).</li>
@@ -167,7 +167,7 @@ export const BLOG_POSTS: BlogPost[] = [
         <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Milestone:</strong> Morocco became the first African nation to reach the semi-finals in 2022.</li>
       </ul>
 
-      <p>Don't stay on the bench! Step onto the pitch, test your knowledge, and see if you can earn the title of World Champion in our <strong>football legends quiz</strong>!</p>
+      <p>Don't stay on the bench! Step onto the pitch, test your knowledge, and see if you can earn the title of World Champion in our <strong>soccer legends quiz</strong>!</p>
     `
   },
   {
