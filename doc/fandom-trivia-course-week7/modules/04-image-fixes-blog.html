@@ -1,0 +1,241 @@
+<section class="module" id="module-4">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Image Fixes &amp; Blog Posts</h1>
+      <p class="module-subtitle">Broken images from Wikipedia were replaced with local copies, and new blog content was added for SEO.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">The Image Problem</h2>
+      <p class="animate-in">
+        Many trivia cards used images from Wikimedia Commons — the free image repository. There's just one problem: Wikimedia URLs expire or change, and the site can't control them. When the images go down, the cards look broken.
+      </p>
+      <p class="animate-in">
+        This week, all Wikimedia-hosted images were replaced with <strong>local copies</strong> stored in the project's <code>/public/images/</code> directory. This is a classic <span class="term" data-definition="A dependency is anything your code relies on that you don't control — like an external website, API, or library. Reducing external dependencies makes your app more reliable.">external dependency</span> cleanup: bringing assets in-house so they never break unexpectedly.
+      </p>
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">🔌</div>
+        <div class="callout-content">
+          <strong class="callout-title">The Rule of External Dependencies</strong>
+          <p>Whenever you link to something you don't control (an image URL, an API, a CDN), you're accepting the risk that it goes away. The fix is always the same: <strong>own your assets</strong>. Copy them locally and serve them yourself.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Badge list showing image changes -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Images That Were Fixed</h2>
+      <p class="animate-in">
+        Here are the images that changed from external Wikimedia URLs to local paths this week:
+      </p>
+      <div class="badge-list animate-in">
+        <div class="badge-item">
+          <code class="badge-code">/images/world-cup.jpg</code>
+          <span class="badge-desc">New local image for World Cup trivia cards</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/thanksgiving.jpg</code>
+          <span class="badge-desc">Holiday-specific image for Thanksgiving quiz results</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/christmas.jpg</code>
+          <span class="badge-desc">Winter holiday image used in Christmas grade cards</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/halloween.jpg</code>
+          <span class="badge-desc">Spooky-themed image for Halloween trivia results</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/july-4th.jpg</code>
+          <span class="badge-desc">Patriotic imagery for Independence Day quizzes</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/holidays.jpg</code>
+          <span class="badge-desc">Hero image for the Holidays universe card on the homepage</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English — before/after image paths -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Before &amp; After: Image Paths</h2>
+      <p class="animate-in">
+        The change is simple but impactful. Instead of linking to Wikipedia, images now reference a local file:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">BEFORE</span>
+          <pre><code>
+<span class="code-line"><span class="code-comment">// Wikimedia URL (external — can break)</span></span>
+<span class="code-line">image: <span class="code-string">'https://upload.wikimedia.org/</span></span>
+<span class="code-line"><span class="code-string">  wikipedia/en/3/3d/</span></span>
+<span class="code-line"><span class="code-string">  The_Lion_King_poster.jpg'</span></span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">AFTER</span>
+          <div class="translation-lines">
+            <p class="tl"><span class="code-comment">// Local file (we control it)</span></p>
+            <p class="tl">image: <strong>'/images/holidays.jpg'</strong></p>
+            <p class="tl"></p>
+            <p class="tl" style="margin-top: 8px; color: var(--color-success);">Instead of a long URL pointing to someone else's server, the path now points to a file in our own <strong>/public/images/</strong> folder. Shipped with the app, always available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: New Blog Posts -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">New Blog Posts</h2>
+      <p class="animate-in">
+        Alongside the image fixes, two new blog posts were added to <code>src/blogPosts.ts</code>. These serve a dual purpose: keeping the site fresh for returning visitors and improving <span class="term" data-definition="SEO (Search Engine Optimization) is the practice of making your site rank higher in Google results. More content + better keywords + clean URLs = more visitors from search.">SEO</span>:
+      </p>
+      <div class="icon-rows animate-in">
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-1)">🌍</div>
+          <div>
+            <strong>World Cup Fever Is Here!</strong>
+            <p>A celebratory post announcing the new World Cup trivia collection. Indexed by Google to drive organic traffic from sports fans.</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-2)">🎄</div>
+          <div>
+            <strong>Holiday Trivia Is Live!</strong>
+            <p>Announces the entire Holidays universe with links to each quiz. Creates SEO landing pages for seasonal searches.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">📈</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why Blog Posts Matter</strong>
+          <p>Every blog post is a new page that search engines can index. "World Cup trivia" and "Christmas quiz" are high-volume search terms. By publishing content around these topics, the site attracts visitors who wouldn't have found it otherwise — a classic SEO growth play.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: Blog post structure -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">How a Blog Post Works</h2>
+      <p class="animate-in">
+        Blog posts live in <code>src/blogPosts.ts</code> as data objects, not separate HTML files. Each post has a slug (the URL), a title, a date, a short preview, and the full content:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  slug: <span class="code-string">'holiday-trivia-is-live'</span>,</span>
+<span class="code-line">  title: <span class="code-string">'Holiday Trivia Is Live!'</span>,</span>
+<span class="code-line">  date: <span class="code-string">'June 18, 2026'</span>,</span>
+<span class="code-line">  preview: <span class="code-string">'Celebrate the seasons with 5</span></span>
+<span class="code-line"><span class="code-string">    new holiday trivia quizzes...'</span>,</span>
+<span class="code-line">  content: <span class="code-string">'We are thrilled to announce</span></span>
+<span class="code-line"><span class="code-string">    the launch of our Holidays universe!'</span></span>
+<span class="code-line">}</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">Each blog post is a data object — a simple bundle of fields.</p>
+            <p class="tl">The slug determines the URL: /blog/holiday-trivia-is-live.</p>
+            <p class="tl">The title, date, and preview show up on the blog listing page.</p>
+            <p class="tl">The preview is what users see in the blog card before clicking...</p>
+            <p class="tl">...and the full content is the article body.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Check Your Understanding</h2>
+      <div class="quiz-container animate-in" id="quiz-module4">
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="Exactly! External URLs (like Wikimedia) can change or break at any time. Local images in /public/images/ are bundled with the app and always available. This is about reliability."
+             data-explanation-wrong="Think about reliability. What happens when a website you don't control goes down or reorganizes its files? That's the core problem being solved here.">
+          <h3 class="quiz-question">Why move images from Wikimedia URLs to local /public/images/ files?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Local images load faster on mobile</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Wikimedia requires payment for commercial use</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>External URLs can break — local files are reliable and under our control</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Local images are automatically optimized for different screen sizes</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Yes! Each blog post becomes a new page that search engines can index. 'World Cup trivia' and 'holiday quiz' are search terms with high volume. More indexed pages = more organic traffic."
+             data-explanation-wrong="Think about what happens when Google crawls the site. Each blog post is a unique URL with its own content. How does having more unique pages help the site?">
+          <h3 class="quiz-question">What's the main non-user-facing benefit of adding blog posts?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They add color to the homepage layout</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Each post creates a new SEO-indexed page for search engines</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They serve as backup documentation</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They're required by the image license terms</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="Correct! The slug is what goes in the URL: /blog/holiday-trivia-is-live. If you change the slug, all existing links and search engine references to the old URL break."
+             data-explanation-wrong="Consider what determines the URL of a blog post. Which field in the blog post data object creates the web address? Changing it would break existing links.">
+          <h3 class="quiz-question">After publishing a blog post, which field should you NEVER change (otherwise existing links break)?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>slug</code> — it determines the URL</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>date</code> — it affects chronological ordering</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>title</code> — it affects the blog listing page</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>content</code> — it affects the reading experience</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section>

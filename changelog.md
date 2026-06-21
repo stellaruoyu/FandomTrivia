@@ -39,6 +39,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Dashboard Updates**: The "Live Leaderboard" sidebar now displays both score and time for top players.
 - **UI Consistency**: Integrated `formatTime` helper and updated entry layouts across Dashboard, Rankings, and History.
 
+## [2026-06-19] - Holidays Universe, Meta-Knowledge Purge & Week 7 Course
+### Added
+- **Holidays Universe**: 5 new holiday trivia categories — 4th of July, Juneteenth, Thanksgiving, Christmas, Halloween — with themed grading tiers (Grinch → Santa Claus).
+- **World Cup Trivia**: New standalone sports trivia category with graded ranking characters.
+- **Blog Posts**: 2 new SEO blog posts ("World Cup Fever Is Here!" and "Holiday Trivia Is Live!").
+- **AGENTS.md**: Project rules file with meta-knowledge constraint for AI assistants.
+- **Week 7 Interactive Course**: `doc/fandom-trivia-course-week7/` — 4-module interactive HTML course covering the week's changes.
+
+### Changed
+- **Meta-Knowledge Purge**: Systematically replaced all out-of-universe questions (actors, directors, production details) across Star Wars, Twilight, Harry Potter, Percy Jackson, and Disney quizzes with in-universe lore questions.
+- **Image Fixes**: Replaced all Wikimedia Commons external image URLs with local copies in `/public/images/` for reliability.
+- **Group Card Pattern**: Holidays selector page follows the same three-layer architecture (config + component + route) as Disneyland, Anime, and other grouped universes.
+
 ## [Unreleased]
 ### Added
 - Comprehensive strategic documentation: `agent.md`, `changelog.md`, and `vision.md`, incorporating insights from `ROADMAP.md` and `TASK_BREAKDOWN.md`.

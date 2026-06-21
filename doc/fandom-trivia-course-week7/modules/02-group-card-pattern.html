@@ -1,0 +1,231 @@
+<section class="module" id="module-2">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Group Card Pattern</h1>
+      <p class="module-subtitle">The Holidays page isn't special — it follows a reusable blueprint that every "group" of quizzes shares.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Pattern Recognition</h2>
+      <p class="animate-in">
+        If you visited the site last week, you might have noticed the <strong>Disneyland</strong> page — a "selector" screen listing all Disney movie quizzes with fancy cards. This week's Holidays page uses <em>the exact same pattern</em>.
+      </p>
+      <p class="animate-in">
+        The <span class="term" data-definition="A design pattern is a reusable solution to a common problem. Instead of writing new code for every similar feature, engineers reuse the same blueprint over and over.">design pattern</span> is called a <strong>Group Card</strong>: a universe that contains multiple individual quizzes, each shown as a clickable card. The pattern has three layers: the <strong>universe group</strong> definition (in constants.ts), the <strong>selector component</strong> (in App.tsx), and the <strong>route</strong> connecting them.
+      </p>
+    </div>
+
+    <!-- SCREEN 2: Static flow diagram -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">The Three Layers</h2>
+      <div class="flow-steps animate-in">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <p>Universe defined in constants.ts</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <p>Selector component renders cards in App.tsx</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <p>Router navigates to /selector-{universe-name}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <p>User picks a quiz → individual trivia page</p>
+        </div>
+      </div>
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">Good To Know</strong>
+          <p>This pattern is why you can tell AI "add a new universe group like the Holidays one" and it knows exactly what to do. The pattern is so consistent that adding a new 6-quiz universe is almost copy-paste work.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English — the HolidaysSelector component -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Inside the Selector Component</h2>
+      <p class="animate-in">
+        The <code>HolidaysSelector</code> component lives inside <code>src/App.tsx</code> alongside selectors for Disneyland, Anime, and other grouped universes. Each selector follows the same format:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> HolidaysSelector = <span class="code-function">() =></span> {</span>
+<span class="code-line">  <span class="code-keyword">const</span> <span class="code-function">navigate</span> = <span class="code-function">useNavigate</span>();</span>
+<span class="code-line">  <span class="code-keyword">const</span> holidays = [</span>
+<span class="code-line">    { label: <span class="code-string">'Independence Day'</span>,</span>
+<span class="code-line">      title: <span class="code-string">'4th of July'</span>,</span>
+<span class="code-line">      desc: <span class="code-string">'10 questions on the Declaration & fireworks'</span>,</span>
+<span class="code-line">      icon: <span class="code-string">'🎆'</span>,</span>
+<span class="code-line">      view: <span class="code-string">'trivia-july-4th'</span>,</span>
+<span class="code-line">      gradient: <span class="code-string">'from-blue-600/20 to-red-900/20'</span> },</span>
+<span class="code-line">    <span class="code-comment">// ... 4 more holidays</span></span>
+<span class="code-line">  ];</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">The selector is a React component — a self-contained building block for the UI.</p>
+            <p class="tl">useNavigate is the hook that lets users click and jump to a different page.</p>
+            <p class="tl">Inside the component, we define a list of holiday quizzes...</p>
+            <p class="tl">...each with a display label, title, short description...</p>
+            <p class="tl">...an emoji icon, the route name it links to...</p>
+            <p class="tl">...and a color gradient for the card's background.</p>
+            <p class="tl">The array is just data — the rendering code loops over it to create the visual cards.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Data flow animation -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Tracing the Click</h2>
+      <p class="animate-in">
+        Here's what happens in slow motion when you click "Celebrate Now" on the Holidays card:
+      </p>
+      <div class="flow-animation animate-in" data-steps='[
+        {"highlight":"flow-actor-1","label":"1. User clicks the Holidays group card on the homepage"},
+        {"highlight":"flow-actor-2","label":"2. React Router reads the path: /selector-holidays"},
+        {"highlight":"flow-actor-3","label":"3. App.tsx renders the HolidaysSelector component"},
+        {"highlight":"flow-actor-3","label":"4. User sees 5 holiday quiz cards (Christmas, Halloween, etc.)"},
+        {"highlight":"flow-actor-4","label":"5. User clicks a specific holiday card → Router navigates to trivia page"},
+        {"highlight":"flow-actor-5","label":"6. The trivia component loads the question data and starts the quiz"}
+      ]'>
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">🏠</div>
+            <span>Homepage</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">🧭</div>
+            <span>Router</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🎄</div>
+            <span>Selector</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📝</div>
+            <span>Quiz Page</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-5">
+            <div class="flow-actor-icon">📊</div>
+            <span>Score Engine</span>
+          </div>
+        </div>
+
+        <div class="flow-packet" id="flow-packet"></div>
+
+        <div class="flow-step-label" id="flow-label">Click "Next Step" to trace the flow</div>
+
+        <div class="flow-controls">
+          <button class="btn flow-next-btn">Next Step</button>
+          <button class="btn flow-reset-btn">Restart</button>
+          <span class="flow-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: The HEAD constant and group order -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">What About the Head?</h2>
+      <p class="animate-in">
+        Each selector page also includes a <span class="term" data-definition="Helmet (react-helmet-async) is a library that lets React components modify the HTML <head> tag — the part of the page with the title, meta description, and SEO keywords.">Helmet</span> section that sets the page title, meta description, and SEO tags. This is critical for showing up in Google searches:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line">&lt;<span class="code-tag">Helmet</span>&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">title</span>&gt;Holiday Quizzes | Fandom Trivia&lt;/<span class="code-tag">title</span>&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">meta</span> <span class="code-attr">name</span>=<span class="code-string">"description"</span></span>
+<span class="code-line">    <span class="code-attr">content</span>=<span class="code-string">"Test your holiday knowledge..."</span> /&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">link</span> <span class="code-attr">rel</span>=<span class="code-string">"canonical"</span></span>
+<span class="code-line">    <span class="code-attr">href</span>=<span class="code-string">"https://www.fandom-trivia.com/selector-holidays"</span> /&gt;</span>
+<span class="code-line">&lt;/<span class="code-tag">Helmet</span>&gt;</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">The Helmet component injects a title into the browser tab.</p>
+            <p class="tl">It also adds a meta description — the snippet Google shows in search results.</p>
+            <p class="tl">And a canonical link tells search engines this is the official URL for this page, preventing duplicate content penalties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Check Your Understanding</h2>
+      <div class="quiz-container animate-in" id="quiz-module2">
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="Exactly! The Group Card pattern is a reusable blueprint. Both Disneyland and Holidays use the same selector component structure with the same three layers: config, component, route."
+             data-explanation-wrong="Not quite. The pattern is about architecture, not about visuals or file naming. Ask yourself: what structural elements do Disneyland and Holidays share?">
+          <h3 class="quiz-question">The Disneyland and Holidays pages use the same pattern. What makes them "the same"?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They share the same image file format</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Both have "selector" in the filename</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Both follow the same three-layer structure: config + component + route</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They use the same CSS gradient patterns</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Yes! The Helmet component injects a <title>, <meta name='description'>, and <link rel='canonical'>. Without it, the page would have no title and no search snippet — making it invisible to search engines."
+             data-explanation-wrong="Think about what makes a page show up in Google search results. Which component specifically sets the page title and meta description?">
+          <h3 class="quiz-question">Your new Holidays page isn't showing up in Google. What's most likely missing?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The image file /images/holidays.jpg is too large</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The Helmet component with proper title and meta description</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The universe group entry in constants.ts</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The trivia data files aren't imported correctly</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section>

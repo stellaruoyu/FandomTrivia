@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fandom Trivia - Week 7: Holidays &amp; Cleanup</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-accent:       #2D8B55;
+      --color-accent-hover: #226B41;
+      --color-accent-light: #E8F5EE;
+      --color-accent-muted: #5AAD7A;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">Fandom Trivia - Week 7: Holidays &amp; Cleanup</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="New Holidays Universe" role="tab" aria-label="Module 1: New Holidays Universe"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="Group Card Pattern" role="tab" aria-label="Module 2: Group Card Pattern"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="Meta-Knowledge Purge" role="tab" aria-label="Module 3: Meta-Knowledge Purge"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="Image Fixes &amp; Blog" role="tab" aria-label="Module 4: Image Fixes &amp; Blog"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh --><section class="module" id="module-1">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">New Holidays Universe</h1>
+      <p class="module-subtitle">Five holiday categories + World Cup trivia landed this week. Here's how trivia data is baked into the code.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">The Big Picture</h2>
+      <p class="animate-in">
+        This week's single biggest change: an entirely new <span class="term" data-definition="A universe is a themed category that groups related trivia quizzes together — like 'Holidays', 'Disney', or 'Anime'.">universe</span> called <strong>Holidays</strong>, containing five quizzes spanning 4th of July, Juneteenth, Thanksgiving, Christmas, and Halloween. Plus a standalone <strong>World Cup</strong> trivia category was added.
+      </p>
+      <p class="animate-in">
+        That's <strong>6 new trivia files</strong> and over 60 brand-new questions. If you've ever wondered how a new quiz category makes it onto the homepage, this module traces the entire journey.
+      </p>
+    </div>
+
+    <!-- SCREEN 2: Icon-rows to show the new files -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">What Got Added</h2>
+      <div class="icon-rows animate-in">
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-1)">🎄</div>
+          <div>
+            <strong>christmasTrivia.ts</strong>
+            <p>10 questions about Santa Claus, classic movies, and cookie traditions</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-2)">🎃</div>
+          <div>
+            <strong>halloweenTrivia.ts</strong>
+            <p>10 questions on monsters, candy, and the history of trick-or-treating</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-3)">🦃</div>
+          <div>
+            <strong>thanksgivingTrivia.ts</strong>
+            <p>10 questions about Pilgrims, the Mayflower, and Thanksgiving traditions</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-4)">🎆</div>
+          <div>
+            <strong>july4thTrivia.ts + juneteenthTrivia.ts</strong>
+            <p>Independence Day and Juneteenth — American history from two angles</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-5)">🏆</div>
+          <div>
+            <strong>worldCupTrivia.ts</strong>
+            <p>Standalone category: football history, legends, and iconic moments</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English translation — structure of a trivia file -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Under the Hood: A Trivia File</h2>
+      <p class="animate-in">
+        Every quiz is a TypeScript file that exports an array of question objects. Here's the exact pattern from <code>src/christmasTrivia.ts</code>:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line"><span class="code-keyword">import</span> <span class="code-keyword">type</span> { MCTriviaQuestion } <span class="code-keyword">from</span> <span class="code-string">'./constants'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">const</span> <span class="code-class">CHRISTMAS_TRIVIA</span>: MCTriviaQuestion[] = [</span>
+<span class="code-line">  {</span>
+<span class="code-line">    id: <span class="code-number">1</span>,</span>
+<span class="code-line">    question: <span class="code-string">"In which modern-day country was Saint Nicholas born?"</span>,</span>
+<span class="code-line">    options: [<span class="code-string">"Germany"</span>, <span class="code-string">"Norway"</span>, <span class="code-string">"Turkey"</span>, <span class="code-string">"Finland"</span>],</span>
+<span class="code-line">    answer: <span class="code-string">"Turkey"</span>,</span>
+<span class="code-line">    evidence: <span class="code-string">"Saint Nicholas was born in Patara, a city in Lycia..."</span></span>
+<span class="code-line">  },</span>
+<span class="code-line">  <span class="code-comment">// ... 9 more questions</span></span>
+<span class="code-line">];</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">First, we import the question type — a blueprint saying every question must have certain fields.</p>
+            <p class="tl">Then we create a list of questions called CHRISTMAS_TRIVIA.</p>
+            <p class="tl">Each question has a unique ID number...</p>
+            <p class="tl">...the question text (what the player sees)...</p>
+            <p class="tl">...four multiple-choice options...</p>
+            <p class="tl">...the correct answer...</p>
+            <p class="tl">...and a citation or evidence explaining the answer.</p>
+            <p class="tl">The bracket closes the list. Simple, right?</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">Key Insight</strong>
+          <p>Every trivia file follows <em>exactly</em> this pattern — question, options, answer, evidence. If you wanted to add a new quiz, you'd create a new file that looks almost identical to this one. The <span class="term" data-definition="A type is a blueprint that tells the code what shape data should have — what fields exist and what kinds of values they can hold.">type</span> system enforces it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Registration in constants.ts -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Hooking It Up: Registration</h2>
+      <p class="animate-in">
+        A trivia file doesn't automatically appear on the site. It has to be <strong>registered</strong> in <code>src/constants.ts</code> — the master configuration file that defines every category, universe, and quiz on the platform.
+      </p>
+      <p class="animate-in">
+        The Holidays universe is defined as a group entry alongside Disneyland, Anime, and others:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  id: <span class="code-string">'holidays'</span>,</span>
+<span class="code-line">  title: <span class="code-string">'Holidays'</span>,</span>
+<span class="code-line">  tags: [<span class="code-string">'Festive'</span>, <span class="code-string">'History'</span>, <span class="code-string">'Celebration'</span>],</span>
+<span class="code-line">  description: <span class="code-string">'Celebrate the seasons! Test your knowledge...'</span>,</span>
+<span class="code-line">  image: <span class="code-string">'/images/holidays.jpg'</span>,</span>
+<span class="code-line">  buttonText: <span class="code-string">'Celebrate Now'</span>,</span>
+<span class="code-line">  icon: <span class="code-string">'Sparkles'</span>,</span>
+<span class="code-line">  path: <span class="code-string">'/selector-holidays'</span></span>
+<span class="code-line">}</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">Each universe entry is a config object with an internal ID, display title, and tags for filtering.</p>
+            <p class="tl">The description appears on the homepage card.</p>
+            <p class="tl">The image, button text, and icon control what the card looks like.</p>
+            <p class="tl">The path tells the app which page to navigate to when clicked — in this case, the Holidays selector page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: Group Chat between actors -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">How a New Quiz Comes to Life</h2>
+      <p class="animate-in">
+        Adding a new quiz category takes three actors working together. Here they are in conversation:
+      </p>
+      <div class="chat-window animate-in" id="chat-holidays">
+        <div class="chat-messages">
+          <div class="chat-message" data-msg="0" data-sender="designer" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🎨</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Designer</span>
+              <p>We need a Holidays universe with Christmas, Halloween, Thanksgiving, and more.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="1" data-sender="dev" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Data Engineer</span>
+              <p>Got it. I'll write the trivia files: christmasTrivia.ts, thanksgivingTrivia.ts, and so on. Each one exports a clean array of questions.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="2" data-sender="dev" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Data Engineer</span>
+              <p>Each question follows the MCTriviaQuestion type — id, text, options, answer, evidence. Five files, 10 questions each.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="3" data-sender="config" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">⚙️</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">Config Manager</span>
+              <p>I'll add the Holidays universe to the groups list in constants.ts. Also register each individual quiz so the router knows about them.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="4" data-sender="ui" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">🖥️</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">UI Builder</span>
+              <p>And I'll build the HolidaysSelector page — a beautiful card-based layout showing all 5 holiday options.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="5" data-sender="designer" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">🎨</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Designer</span>
+              <p>So everyone sees the questions on the site. Perfect, ship it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-typing" id="chat-holidays-typing" style="display:none">
+          <div class="chat-avatar" id="chat-holidays-typing-avatar">?</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn chat-next-btn">Next Message</button>
+          <button class="btn chat-all-btn">Play All</button>
+          <button class="btn chat-reset-btn">Replay</button>
+          <span class="chat-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Grading system callout -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Bonus: Grading Tiers</h2>
+      <p class="animate-in">
+        Each holiday category also got its own <strong>grading system</strong> — funny themed ranks based on your score. For Christmas, you might be a "Grinch" (0-50%), a "Carol Singer" (50-70%), an "Elf on the Shelf" (70-90%), or "Santa Claus" (90%+). Each rank comes with a unique character description.
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> CHRISTMAS_GRADES = [</span>
+<span class="code-line">  { threshold: <span class="code-number">90</span>, label: <span class="code-string">'Santa Claus'</span>,</span>
+<span class="code-line">    character: { name: <span class="code-string">'Christmas Historian'</span>,</span>
+<span class="code-line">      image: <span class="code-string">'/images/christmas.jpg'</span>,</span>
+<span class="code-line">      desc: <span class="code-string">'You are a true master of Christmas trivia!'</span> }},</span>
+<span class="code-line">  { threshold: <span class="code-number">70</span>, label: <span class="code-string">'Elf on the Shelf'</span>, ... },</span>
+<span class="code-line">  { threshold: <span class="code-number">50</span>, label: <span class="code-string">'Carol Singer'</span>, ... },</span>
+<span class="code-line">  { threshold: <span class="code-number">0</span>, label: <span class="code-string">'Grinch'</span>, ... }</span>
+<span class="code-line">];</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">Each grade has a minimum score (threshold) and a label.</p>
+            <p class="tl">90%+ earns you the top rank — Santa Claus.</p>
+            <p class="tl">70-89% is Elf on the Shelf — still excellent.</p>
+            <p class="tl">50-69% is Carol Singer — decent effort.</p>
+            <p class="tl">Below 50% gets the Grinch rank — time to study!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 7: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Your Turn</h2>
+      <div class="quiz-container animate-in" id="quiz-module1">
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Each trivia file exports a typed array of MCTriviaQuestion objects. The type ensures every question has the required fields: id, question, options, answer, and evidence."
+             data-explanation-wrong="Think about the pattern you saw: each trivia file has a specific structure defined by a 'type'. It's not the text styling or the import path — it's the data shape that guarantees consistency.">
+          <h3 class="quiz-question">What enforces that every trivia question has the right fields (question, options, answer, evidence)?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The linter checks question formatting</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>A TypeScript <strong>type</strong> called MCTriviaQuestion</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The import statement from './constants'</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The className styling on each trivia card</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="The path '/selector-holidays' tells the router which React component to render. When the user clicks the Holidays card, React navigates to this route and the HolidaysSelector component appears."
+             data-explanation-wrong="Not quite — the image field controls visuals, not routing. Look at the field in the universe config that starts with a forward slash. That's what determines where clicking the card takes you.">
+          <h3 class="quiz-question">When a user clicks the "Holidays" card on the homepage, what tells the app to show the Holidays selector page?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>path</code> field in the universe config</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>image</code> field linking to holidays.jpg</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>tags</code> array filters the quizzes</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>id</code> field matches the trivia file name</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section><section class="module" id="module-2">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Group Card Pattern</h1>
+      <p class="module-subtitle">The Holidays page isn't special — it follows a reusable blueprint that every "group" of quizzes shares.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Pattern Recognition</h2>
+      <p class="animate-in">
+        If you visited the site last week, you might have noticed the <strong>Disneyland</strong> page — a "selector" screen listing all Disney movie quizzes with fancy cards. This week's Holidays page uses <em>the exact same pattern</em>.
+      </p>
+      <p class="animate-in">
+        The <span class="term" data-definition="A design pattern is a reusable solution to a common problem. Instead of writing new code for every similar feature, engineers reuse the same blueprint over and over.">design pattern</span> is called a <strong>Group Card</strong>: a universe that contains multiple individual quizzes, each shown as a clickable card. The pattern has three layers: the <strong>universe group</strong> definition (in constants.ts), the <strong>selector component</strong> (in App.tsx), and the <strong>route</strong> connecting them.
+      </p>
+    </div>
+
+    <!-- SCREEN 2: Static flow diagram -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">The Three Layers</h2>
+      <div class="flow-steps animate-in">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <p>Universe defined in constants.ts</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <p>Selector component renders cards in App.tsx</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <p>Router navigates to /selector-{universe-name}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <p>User picks a quiz → individual trivia page</p>
+        </div>
+      </div>
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">Good To Know</strong>
+          <p>This pattern is why you can tell AI "add a new universe group like the Holidays one" and it knows exactly what to do. The pattern is so consistent that adding a new 6-quiz universe is almost copy-paste work.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English — the HolidaysSelector component -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Inside the Selector Component</h2>
+      <p class="animate-in">
+        The <code>HolidaysSelector</code> component lives inside <code>src/App.tsx</code> alongside selectors for Disneyland, Anime, and other grouped universes. Each selector follows the same format:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> HolidaysSelector = <span class="code-function">() =></span> {</span>
+<span class="code-line">  <span class="code-keyword">const</span> <span class="code-function">navigate</span> = <span class="code-function">useNavigate</span>();</span>
+<span class="code-line">  <span class="code-keyword">const</span> holidays = [</span>
+<span class="code-line">    { label: <span class="code-string">'Independence Day'</span>,</span>
+<span class="code-line">      title: <span class="code-string">'4th of July'</span>,</span>
+<span class="code-line">      desc: <span class="code-string">'10 questions on the Declaration & fireworks'</span>,</span>
+<span class="code-line">      icon: <span class="code-string">'🎆'</span>,</span>
+<span class="code-line">      view: <span class="code-string">'trivia-july-4th'</span>,</span>
+<span class="code-line">      gradient: <span class="code-string">'from-blue-600/20 to-red-900/20'</span> },</span>
+<span class="code-line">    <span class="code-comment">// ... 4 more holidays</span></span>
+<span class="code-line">  ];</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">The selector is a React component — a self-contained building block for the UI.</p>
+            <p class="tl">useNavigate is the hook that lets users click and jump to a different page.</p>
+            <p class="tl">Inside the component, we define a list of holiday quizzes...</p>
+            <p class="tl">...each with a display label, title, short description...</p>
+            <p class="tl">...an emoji icon, the route name it links to...</p>
+            <p class="tl">...and a color gradient for the card's background.</p>
+            <p class="tl">The array is just data — the rendering code loops over it to create the visual cards.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Data flow animation -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Tracing the Click</h2>
+      <p class="animate-in">
+        Here's what happens in slow motion when you click "Celebrate Now" on the Holidays card:
+      </p>
+      <div class="flow-animation animate-in" data-steps='[
+        {"highlight":"flow-actor-1","label":"1. User clicks the Holidays group card on the homepage"},
+        {"highlight":"flow-actor-2","label":"2. React Router reads the path: /selector-holidays"},
+        {"highlight":"flow-actor-3","label":"3. App.tsx renders the HolidaysSelector component"},
+        {"highlight":"flow-actor-3","label":"4. User sees 5 holiday quiz cards (Christmas, Halloween, etc.)"},
+        {"highlight":"flow-actor-4","label":"5. User clicks a specific holiday card → Router navigates to trivia page"},
+        {"highlight":"flow-actor-5","label":"6. The trivia component loads the question data and starts the quiz"}
+      ]'>
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon">🏠</div>
+            <span>Homepage</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon">🧭</div>
+            <span>Router</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon">🎄</div>
+            <span>Selector</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon">📝</div>
+            <span>Quiz Page</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-5">
+            <div class="flow-actor-icon">📊</div>
+            <span>Score Engine</span>
+          </div>
+        </div>
+
+        <div class="flow-packet" id="flow-packet"></div>
+
+        <div class="flow-step-label" id="flow-label">Click "Next Step" to trace the flow</div>
+
+        <div class="flow-controls">
+          <button class="btn flow-next-btn">Next Step</button>
+          <button class="btn flow-reset-btn">Restart</button>
+          <span class="flow-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: The HEAD constant and group order -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">What About the Head?</h2>
+      <p class="animate-in">
+        Each selector page also includes a <span class="term" data-definition="Helmet (react-helmet-async) is a library that lets React components modify the HTML <head> tag — the part of the page with the title, meta description, and SEO keywords.">Helmet</span> section that sets the page title, meta description, and SEO tags. This is critical for showing up in Google searches:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line">&lt;<span class="code-tag">Helmet</span>&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">title</span>&gt;Holiday Quizzes | Fandom Trivia&lt;/<span class="code-tag">title</span>&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">meta</span> <span class="code-attr">name</span>=<span class="code-string">"description"</span></span>
+<span class="code-line">    <span class="code-attr">content</span>=<span class="code-string">"Test your holiday knowledge..."</span> /&gt;</span>
+<span class="code-line">  &lt;<span class="code-tag">link</span> <span class="code-attr">rel</span>=<span class="code-string">"canonical"</span></span>
+<span class="code-line">    <span class="code-attr">href</span>=<span class="code-string">"https://www.fandom-trivia.com/selector-holidays"</span> /&gt;</span>
+<span class="code-line">&lt;/<span class="code-tag">Helmet</span>&gt;</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">The Helmet component injects a title into the browser tab.</p>
+            <p class="tl">It also adds a meta description — the snippet Google shows in search results.</p>
+            <p class="tl">And a canonical link tells search engines this is the official URL for this page, preventing duplicate content penalties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Check Your Understanding</h2>
+      <div class="quiz-container animate-in" id="quiz-module2">
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="Exactly! The Group Card pattern is a reusable blueprint. Both Disneyland and Holidays use the same selector component structure with the same three layers: config, component, route."
+             data-explanation-wrong="Not quite. The pattern is about architecture, not about visuals or file naming. Ask yourself: what structural elements do Disneyland and Holidays share?">
+          <h3 class="quiz-question">The Disneyland and Holidays pages use the same pattern. What makes them "the same"?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They share the same image file format</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Both have "selector" in the filename</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Both follow the same three-layer structure: config + component + route</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They use the same CSS gradient patterns</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Yes! The Helmet component injects a <title>, <meta name='description'>, and <link rel='canonical'>. Without it, the page would have no title and no search snippet — making it invisible to search engines."
+             data-explanation-wrong="Think about what makes a page show up in Google search results. Which component specifically sets the page title and meta description?">
+          <h3 class="quiz-question">Your new Holidays page isn't showing up in Google. What's most likely missing?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The image file /images/holidays.jpg is too large</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The Helmet component with proper title and meta description</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The universe group entry in constants.ts</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The trivia data files aren't imported correctly</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section><section class="module" id="module-3">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">Meta-Knowledge Purge</h1>
+      <p class="module-subtitle">Every question about actors, directors, and behind-the-scenes trivia was systematically removed. Here's why — and how.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">What Is Meta-Knowledge?</h2>
+      <p class="animate-in">
+        <strong>Meta-knowledge</strong> is information <em>about</em> a piece of fiction, not <em>from inside</em> it. If you're doing a Star Wars quiz, a meta-knowledge question would be "Who played Chewbacca?" The in-universe version would be "What is the name of the Wookiee homeworld?"
+      </p>
+      <p class="animate-in">
+        This week, every trivia file was audited and every meta-knowledge question was rewritten. The rule is now a hard constraint, enforced by the project's <span class="term" data-definition="AGENTS.md is a file that tells AI coding assistants the rules and conventions of a project so they don't make the same mistake twice.">AI rules file</span>:
+      </p>
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">📜</div>
+        <div class="callout-content">
+          <strong class="callout-title">The New Rule</strong>
+          <p><em>"For all quizzes in this project, there should be 0 questions about out-of-universe meta-knowledge, such as who acted in a role, where a movie/show was filmed, who directed it, etc. Quizzes must focus strictly on in-universe lore and story details."</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Pattern cards showing affected quizzes -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Scope of the Purge</h2>
+      <p class="animate-in">
+        The meta-knowledge cleanup touched quizzes across the entire site. Here are the universes that got reworked:
+      </p>
+      <div class="pattern-cards animate-in">
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+          <div class="pattern-icon" style="background: var(--color-actor-1)">🚀</div>
+          <h4 class="pattern-title">Star Wars</h4>
+          <p class="pattern-desc">Questions about actors' accents, camera directions, and production details were replaced with character and planet lore.</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">🌙</div>
+          <h4 class="pattern-title">Twilight</h4>
+          <p class="pattern-desc">Meta questions about casting and film locations swapped for vampire biology and werewolf pack history.</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+          <div class="pattern-icon" style="background: var(--color-actor-3)">⛰️</div>
+          <h4 class="pattern-title">Percy Jackson</h4>
+          <p class="pattern-desc">Behind-the-scenes trivia replaced with Greek mythology and demigod abilities.</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+          <div class="pattern-icon" style="background: var(--color-actor-4)">🦸</div>
+          <h4 class="pattern-title">Harry Potter</h4>
+          <p class="pattern-desc">Actor names and film trivia swapped for spell lore and wizarding world history.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English — a question transformation -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Before vs After: A Real Example</h2>
+      <p class="animate-in">
+        Here's an actual question from Star Wars Episode IV trivia that was rewritten. The <strong>before</strong> is meta-knowledge (about the actor), and the <strong>after</strong> is in-universe lore (about the character):
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">BEFORE (META)</span>
+          <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  id: <span class="code-number">7</span>,</span>
+<span class="code-line">  question: <span class="code-string">"Who was the actor</span></span>
+<span class="code-line"><span class="code-string">    that portrayed Chewbacca</span></span>
+<span class="code-line"><span class="code-string">    in the original trilogy?"</span>,</span>
+<span class="code-line">  options: [<span class="code-string">"Peter Mayhew"</span>,</span>
+<span class="code-line">    <span class="code-string">"Mark Hamill"</span>,</span>
+<span class="code-line">    <span class="code-string">"Harrison Ford"</span>,</span>
+<span class="code-line">    <span class="code-string">"Alec Guinness"</span>],</span>
+<span class="code-line">  answer: <span class="code-string">"Peter Mayhew"</span></span>
+<span class="code-line">}</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">AFTER (IN-UNIVERSE)</span>
+          <div class="translation-lines">
+            <p class="tl"><strong>{</strong></p>
+            <p class="tl"><strong>question:</strong> "What is the name of the Wookiee homeworld where Chewbacca was born?"</p>
+            <p class="tl"><strong>options:</strong> ["Kashyyyk", "Endor", "Tatooine", "Dagobah"]</p>
+            <p class="tl"><strong>answer:</strong> "Kashyyyk"</p>
+            <p class="tl"><strong>}</strong></p>
+            <p class="tl" style="margin-top: 8px; color: var(--color-success);">Same character (Chewbacca), but now the question tests <em>story knowledge</em> — the Wookiee homeworld — instead of actor trivia.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">🎯</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why This Matters</strong>
+          <p>A fan of Star Wars knows Kashyyyk. A casual movie-goer might know Peter Mayhew played Chewbacca. The new questions reward <em>fandom</em>, not IMDb browsing. This is a deliberate product decision that makes the site more appealing to dedicated fans.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Group Chat — the purge in action -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">How the Purge Unfolded</h2>
+      <p class="animate-in">
+        This wasn't a single edit — it was a systematic sweep across multiple files. Here's the conversation it generated:
+      </p>
+      <div class="chat-window animate-in" id="chat-purge">
+        <div class="chat-messages">
+          <div class="chat-message" data-msg="0" data-sender="reviewer" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">Reviewer</span>
+              <p>I found a problem: the Star Wars quiz asks about the actor behind Chewbacca. That's not lore — that's IMDb trivia.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="1" data-sender="pm" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">📋</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Product Manager</span>
+              <p>Good catch. Let's audit every trivia file. Replace all meta-questions with in-universe ones. New rule: every quiz tests fandom knowledge, not movie production trivia.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="2" data-sender="dev" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Editor</span>
+              <p>Star Wars Episode IV: swapped "who played Chewbacca" → "what's the Wookiee homeworld". Also fixed Episode I questions about the Neimoidian accent and the Radiant VII.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="3" data-sender="dev" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">Editor</span>
+              <p>Twilight, Harry Potter, Percy Jackson, and Disney quizzes also cleaned up. About 40 questions rewritten total.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="4" data-sender="pm" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">📋</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">Product Manager</span>
+              <p>Let's lock this in. Add the rule to AGENTS.md so the AI never generates meta-knowledge questions again.</p>
+            </div>
+          </div>
+          <div class="chat-message" data-msg="5" data-sender="reviewer" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">🔍</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">Reviewer</span>
+              <p>Done. AGENTS.md now has a zero-tolerance policy for meta-knowledge questions. Future AI-generated quizzes will follow the rule automatically.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-typing" id="chat-purge-typing" style="display:none">
+          <div class="chat-avatar" id="chat-purge-typing-avatar">?</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn chat-next-btn">Next Message</button>
+          <button class="btn chat-all-btn">Play All</button>
+          <button class="btn chat-reset-btn">Replay</button>
+          <span class="chat-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: The AGENTS.md rule -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Locking It In: AGENTS.md</h2>
+      <p class="animate-in">
+        The meta-knowledge rule was written into <code>.agents/AGENTS.md</code> — the project's custom rules file for AI assistants. This is a newly created file this week:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line"><span class="code-comment"># FandomTrivia Custom Rules</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">- **Quiz Content Constraints**: For all quizzes</span></span>
+<span class="code-line"><span class="code-comment">  in this project, there should be 0 questions</span></span>
+<span class="code-line"><span class="code-comment">  about out-of-universe meta-knowledge, such</span></span>
+<span class="code-line"><span class="code-comment">  as who acted in a role, where a movie/show</span></span>
+<span class="code-line"><span class="code-comment">  was filmed, who directed it, etc.</span></span>
+<span class="code-line"><span class="code-comment">  Quizzes must focus strictly on in-universe</span></span>
+<span class="code-line"><span class="code-comment">  lore and story details.</span></span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">AGENTS.md is like a permanent memo to every AI assistant that works on this project.</p>
+            <p class="tl">It says: no questions about actors, directors, or production trivia.</p>
+            <p class="tl">Every quiz must test what you know about the fictional world itself — the story, characters, and lore.</p>
+            <p class="tl">This ensures consistency whether a human or an AI writes the next quiz.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">🔒</div>
+        <div class="callout-content">
+          <strong class="callout-title">Engineering Best Practice</strong>
+          <p>This is a textbook example of "automating policy." Instead of manually reviewing every future quiz, the team baked the rule into the AI's instructions. Now every AI-generated question is automatically constrained to in-universe lore — no reviews needed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Spot the Meta-Question</h2>
+      <p class="animate-in">
+        Can you tell which of these questions is a meta-knowledge question that would have been purged?
+      </p>
+      <div class="quiz-container animate-in" id="quiz-module3">
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Exactly! 'Which studio produced the Harry Potter films?' is about the real-world film production — not the wizarding world. In the new rule, this would be replaced with something like 'What magical creature guards the Sorcerer's Stone?'."
+             data-explanation-wrong="Look for the question that's about the real-world production of a movie or show, not about the story itself. Which one mentions a company or person from our world?">
+          <h3 class="quiz-question">Which of these questions would be flagged as "meta-knowledge" under the new rule?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>"What is the name of Harry Potter's pet owl?"</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>"Which studio produced the Harry Potter films?"</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>"What is Dumbledore's full name?"</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>"Which house is Harry sorted into at Hogwarts?"</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="Correct! Once the rule is in AGENTS.md, any AI working on this project reads the file on startup and is constrained by the rule. It's like leaving instructions for a co-worker who's about to start their first day."
+             data-explanation-wrong="Think about how the rule gets enforced going forward. Is it a manual audit process, or is there a file that tells the AI what to do automatically?">
+          <h3 class="quiz-question">How does the project ensure future AI-generated quizzes also follow the meta-knowledge rule?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Every new quiz goes through a human reviewer</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The trivia file type enforces it</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The rule is written in .agents/AGENTS.md, read by the AI on every session</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>A linter script scans all trivia files after every commit</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section><section class="module" id="module-4">
+  <div class="module-content">
+    <div class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Image Fixes &amp; Blog Posts</h1>
+      <p class="module-subtitle">Broken images from Wikipedia were replaced with local copies, and new blog content was added for SEO.</p>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">The Image Problem</h2>
+      <p class="animate-in">
+        Many trivia cards used images from Wikimedia Commons — the free image repository. There's just one problem: Wikimedia URLs expire or change, and the site can't control them. When the images go down, the cards look broken.
+      </p>
+      <p class="animate-in">
+        This week, all Wikimedia-hosted images were replaced with <strong>local copies</strong> stored in the project's <code>/public/images/</code> directory. This is a classic <span class="term" data-definition="A dependency is anything your code relies on that you don't control — like an external website, API, or library. Reducing external dependencies makes your app more reliable.">external dependency</span> cleanup: bringing assets in-house so they never break unexpectedly.
+      </p>
+      <div class="callout callout-accent animate-in">
+        <div class="callout-icon">🔌</div>
+        <div class="callout-content">
+          <strong class="callout-title">The Rule of External Dependencies</strong>
+          <p>Whenever you link to something you don't control (an image URL, an API, a CDN), you're accepting the risk that it goes away. The fix is always the same: <strong>own your assets</strong>. Copy them locally and serve them yourself.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Badge list showing image changes -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Images That Were Fixed</h2>
+      <p class="animate-in">
+        Here are the images that changed from external Wikimedia URLs to local paths this week:
+      </p>
+      <div class="badge-list animate-in">
+        <div class="badge-item">
+          <code class="badge-code">/images/world-cup.jpg</code>
+          <span class="badge-desc">New local image for World Cup trivia cards</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/thanksgiving.jpg</code>
+          <span class="badge-desc">Holiday-specific image for Thanksgiving quiz results</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/christmas.jpg</code>
+          <span class="badge-desc">Winter holiday image used in Christmas grade cards</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/halloween.jpg</code>
+          <span class="badge-desc">Spooky-themed image for Halloween trivia results</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/july-4th.jpg</code>
+          <span class="badge-desc">Patriotic imagery for Independence Day quizzes</span>
+        </div>
+        <div class="badge-item">
+          <code class="badge-code">/images/holidays.jpg</code>
+          <span class="badge-desc">Hero image for the Holidays universe card on the homepage</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Code ↔ English — before/after image paths -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Before &amp; After: Image Paths</h2>
+      <p class="animate-in">
+        The change is simple but impactful. Instead of linking to Wikipedia, images now reference a local file:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">BEFORE</span>
+          <pre><code>
+<span class="code-line"><span class="code-comment">// Wikimedia URL (external — can break)</span></span>
+<span class="code-line">image: <span class="code-string">'https://upload.wikimedia.org/</span></span>
+<span class="code-line"><span class="code-string">  wikipedia/en/3/3d/</span></span>
+<span class="code-line"><span class="code-string">  The_Lion_King_poster.jpg'</span></span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">AFTER</span>
+          <div class="translation-lines">
+            <p class="tl"><span class="code-comment">// Local file (we control it)</span></p>
+            <p class="tl">image: <strong>'/images/holidays.jpg'</strong></p>
+            <p class="tl"></p>
+            <p class="tl" style="margin-top: 8px; color: var(--color-success);">Instead of a long URL pointing to someone else's server, the path now points to a file in our own <strong>/public/images/</strong> folder. Shipped with the app, always available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: New Blog Posts -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">New Blog Posts</h2>
+      <p class="animate-in">
+        Alongside the image fixes, two new blog posts were added to <code>src/blogPosts.ts</code>. These serve a dual purpose: keeping the site fresh for returning visitors and improving <span class="term" data-definition="SEO (Search Engine Optimization) is the practice of making your site rank higher in Google results. More content + better keywords + clean URLs = more visitors from search.">SEO</span>:
+      </p>
+      <div class="icon-rows animate-in">
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-1)">🌍</div>
+          <div>
+            <strong>World Cup Fever Is Here!</strong>
+            <p>A celebratory post announcing the new World Cup trivia collection. Indexed by Google to drive organic traffic from sports fans.</p>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-circle" style="background: var(--color-actor-2)">🎄</div>
+          <div>
+            <strong>Holiday Trivia Is Live!</strong>
+            <p>Announces the entire Holidays universe with links to each quiz. Creates SEO landing pages for seasonal searches.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info animate-in">
+        <div class="callout-icon">📈</div>
+        <div class="callout-content">
+          <strong class="callout-title">Why Blog Posts Matter</strong>
+          <p>Every blog post is a new page that search engines can index. "World Cup trivia" and "Christmas quiz" are high-volume search terms. By publishing content around these topics, the site attracts visitors who wouldn't have found it otherwise — a classic SEO growth play.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: Blog post structure -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">How a Blog Post Works</h2>
+      <p class="animate-in">
+        Blog posts live in <code>src/blogPosts.ts</code> as data objects, not separate HTML files. Each post has a slug (the URL), a title, a date, a short preview, and the full content:
+      </p>
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+          <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  slug: <span class="code-string">'holiday-trivia-is-live'</span>,</span>
+<span class="code-line">  title: <span class="code-string">'Holiday Trivia Is Live!'</span>,</span>
+<span class="code-line">  date: <span class="code-string">'June 18, 2026'</span>,</span>
+<span class="code-line">  preview: <span class="code-string">'Celebrate the seasons with 5</span></span>
+<span class="code-line"><span class="code-string">    new holiday trivia quizzes...'</span>,</span>
+<span class="code-line">  content: <span class="code-string">'We are thrilled to announce</span></span>
+<span class="code-line"><span class="code-string">    the launch of our Holidays universe!'</span></span>
+<span class="code-line">}</span>
+          </code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">PLAIN ENGLISH</span>
+          <div class="translation-lines">
+            <p class="tl">Each blog post is a data object — a simple bundle of fields.</p>
+            <p class="tl">The slug determines the URL: /blog/holiday-trivia-is-live.</p>
+            <p class="tl">The title, date, and preview show up on the blog listing page.</p>
+            <p class="tl">The preview is what users see in the blog card before clicking...</p>
+            <p class="tl">...and the full content is the article body.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: Quiz -->
+    <div class="screen">
+      <h2 class="screen-heading animate-in">Check Your Understanding</h2>
+      <div class="quiz-container animate-in" id="quiz-module4">
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="Exactly! External URLs (like Wikimedia) can change or break at any time. Local images in /public/images/ are bundled with the app and always available. This is about reliability."
+             data-explanation-wrong="Think about reliability. What happens when a website you don't control goes down or reorganizes its files? That's the core problem being solved here.">
+          <h3 class="quiz-question">Why move images from Wikimedia URLs to local /public/images/ files?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Local images load faster on mobile</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Wikimedia requires payment for commercial use</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>External URLs can break — local files are reliable and under our control</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Local images are automatically optimized for different screen sizes</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="Yes! Each blog post becomes a new page that search engines can index. 'World Cup trivia' and 'holiday quiz' are search terms with high volume. More indexed pages = more organic traffic."
+             data-explanation-wrong="Think about what happens when Google crawls the site. Each blog post is a unique URL with its own content. How does having more unique pages help the site?">
+          <h3 class="quiz-question">What's the main non-user-facing benefit of adding blog posts?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They add color to the homepage layout</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>Each post creates a new SEO-indexed page for search engines</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They serve as backup documentation</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>They're required by the image license terms</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="Correct! The slug is what goes in the URL: /blog/holiday-trivia-is-live. If you change the slug, all existing links and search engine references to the old URL break."
+             data-explanation-wrong="Consider what determines the URL of a blog post. Which field in the blog post data object creates the web address? Changing it would break existing links.">
+          <h3 class="quiz-question">After publishing a blog post, which field should you NEVER change (otherwise existing links break)?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>slug</code> — it determines the URL</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>date</code> — it affects chronological ordering</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>title</code> — it affects the blog listing page</span>
+            </button>
+            <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>The <code>content</code> — it affects the reading experience</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+      </div>
+    </div>
+  </div>
+</section>  </main>
+
+</body>
+</html>
