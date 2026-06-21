@@ -1,0 +1,176 @@
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">What Is Fandom Trivia?</h1>
+      <p class="module-subtitle">Meet the app — a trivia battleground where fandoms collide.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The Big Picture -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A Trivia App for Superfans</h2>
+        <p>Fandom Trivia is a single-page web app where you test your knowledge of your favorite universes — Twilight, Harry Potter, K-Pop, The Three-Body Problem, and Zootopia. Pick a fandom, answer multiple-choice questions, earn <span class="glossary-term" data-term="badge">badges</span>, and climb the leaderboard.</p>
+        <p>It's built with modern web tech: <span class="glossary-term" data-term="React">React</span> 19 + <span class="glossary-term" data-term="TypeScript">TypeScript</span> for the UI, <span class="glossary-term" data-term="Supabase">Supabase</span> for the database and login system, and <span class="glossary-term" data-term="Tailwind CSS">Tailwind CSS</span> for styling. Everything runs in your browser — no installs needed.</p>
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> Even though this is "just a quiz app," it uses the same architecture as production web apps used by millions. Authentication, databases, UI state management, animations — every concept here scales to real-world products.
+        </div>
+      </section>
+
+      <!-- Screen 2: The Universes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Five Worlds, One App</h2>
+        <p>Each fandom is a "universe" — a bundle of questions, a theme, and a personality. The app treats them all the same way internally, which is why adding a new fandom is just a matter of adding data.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">🧛</div>
+            <h4>Twilight</h4>
+            <p>30 questions about Forks, Cullens, and Quileute legends. Volume I chapters 1–8.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">⚡</div>
+            <h4>Harry Potter</h4>
+            <p>Wizarding World questions spanning Sorcerer's Stone through Deathly Hallows.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🎤</div>
+            <h4>K-Pop: Demon Hunters</h4>
+            <p>13 questions about the Saja Boys, Rumi, Jinu, and the Huntr/x agency.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🌌</div>
+            <h4>Three-Body Problem</h4>
+            <p>Sci-fi questions about the Dark Forest, Trisolaran crisis, and higher dimensions.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🐰</div>
+            <h4>Zootopia</h4>
+            <p>Urban jungle mysteries with Judy Hopps, Nick Wilde, and conspiracy cases.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What a Universe Looks Like in Code</h2>
+        <p>Each universe is just a JavaScript object in a file called <code style="font-family: var(--font-mono);">constants.ts</code>. Here's the actual code for the Twilight universe — every field powers what you see on screen.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">id</span>: <span class="code-string">'twilight'</span>,</span>
+<span class="code-line">  <span class="code-property">title</span>: <span class="code-string">'Twilight'</span>,</span>
+<span class="code-line">  <span class="code-property">tags</span>: [<span class="code-string">'Fantasy'</span>, <span class="code-string">'Mystery'</span>],</span>
+<span class="code-line">  <span class="code-property">description</span>: <span class="code-string">'Misty forests &amp; eternal secrets.'</span>,</span>
+<span class="code-line">  <span class="code-property">buttonText</span>: <span class="code-string">'Enter Forks'</span>,</span>
+<span class="code-line">  <span class="code-property">icon</span>: <span class="code-string">'Droplets'</span>,</span>
+<span class="code-line">  <span class="code-property">image</span>: <span class="code-string">'/images/Cullen Family.jpg'</span></span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A "universe" object starts here.</p>
+              <p class="tl">Internal ID — used to look up questions for this fandom.</p>
+              <p class="tl">The big title you see on the card.</p>
+              <p class="tl">Tags are like genre labels (Fantasy, Mystery) shown on the landing page.</p>
+              <p class="tl">The short tagline that appears below the title.</p>
+              <p class="tl">The text on the button ("Enter Forks") — it's different for each universe!</p>
+              <p class="tl">Lucide icon name — tells the app which icon to draw.</p>
+              <p class="tl">Background image path for the card.</p>
+              <p class="tl">Close of the object.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout-box">
+          <strong>💡 Key insight:</strong> Because each universe is just data in an <span class="glossary-term" data-term="array">array</span>, adding "Star Wars" or "Marvel" only means adding one more object — zero new code required. That's the power of <span class="glossary-term" data-term="data-driven design">data-driven design</span>.
+        </div>
+      </section>
+
+      <!-- Screen 4: What You Can Do -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">More Than Just Questions</h2>
+        <p>The app has four main areas. Together they turn a simple quiz into a full <span class="glossary-term" data-term="gamified">gamified</span> experience.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">📝</div>
+            <h4>Quiz</h4>
+            <p>Multiple-choice questions with instant feedback, answer evidence, and a progress tracker. The heart of the app.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🏆</div>
+            <h4>Rankings</h4>
+            <p>Global leaderboard showing top scorers across all universes. Pulled live from Supabase.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">⭐</div>
+            <h4>Badges</h4>
+            <p>Unlockable achievements like "Forks Resident" (complete a Twilight quiz) or "Perfectionist" (100% on any quiz).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">📊</div>
+            <h4>Dashboard</h4>
+            <p>"Pro Hub" with live leaderboard, active tournaments, and stats. The competitive layer.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly! Since each universe is just an object in the UNIVERSES array and a collection of questions in constants.ts, adding a new one means adding data — not rewriting code. That's the beauty of data-driven design."
+               data-explanation-wrong="Not quite. The key insight is that universes are data, not code. The app already has a generic quiz engine — it doesn't care which universe the questions come from. So all you need is to add data (a universe entry and question array), not create new components or screens.">
+            <h3 class="quiz-question">Your friend wants to add a "Star Wars" universe to Fandom Trivia. Based on what we learned, what do they need to create?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A new React component for Star Wars questions</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A new entry in the UNIVERSES array and a new questions array</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A separate HTML page for the Star Wars quiz</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Right! The icon field in each universe object tells the app which Lucide icon to display. The icon is just a string — the app handles the rendering."
+               data-explanation-wrong="Almost! The icon is specified as a string field in the universe object (like icon: 'Droplets' for Twilight). The app maps these strings to actual icon components. You wouldn't write CSS for an icon — you'd just update the data.">
+            <h3 class="quiz-question">The Twilight universe card shows a droplet icon. Where is that icon chosen?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the icon field of the Twilight universe object in constants.ts</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the CSS stylesheet under the .twilight-icon class</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the HTML template for the landing page</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,385 @@
+<section class="module" id="module-6" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">When Things Break</h1>
+      <p class="module-subtitle">Error handling, edge cases, loading states, and graceful degradation.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The Three States -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Every UI Has Three Faces</h2>
+        <p>Throughout Fandom Trivia, every piece of dynamic data follows a pattern you'll see in almost every modern app: the <span class="glossary-term" data-term="Loading State">loading state</span>, the success state, and the <span class="glossary-term" data-term="Error State">error state</span>.</p>
+
+        <p>The <code style="font-family: var(--font-mono);">HistoryModal</code> component demonstrates this pattern clearly — it starts every data fetch with the same boilerplate:</p>
+
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> [history, setHistory] = useState&lt;any[]&gt;([]);</span>
+<span class="code-line"><span class="code-keyword">const</span> [loading, setLoading] = useState(<span class="code-keyword">true</span>);</span>
+<span class="code-line"><span class="code-keyword">const</span> [error, setError] = useState&lt;string | <span class="code-keyword">null</span>&gt;(<span class="code-keyword">null</span>);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">State #1: Storage for the actual data (starts empty).</p>
+              <p class="tl">State #2: Is it still fetching? (starts as "yes, loading").</p>
+              <p class="tl">State #3: Did something go wrong? (starts as "no error").</p>
+            </div>
+          </div>
+        </div>
+
+        <p>And it's rendered as a three-way branch:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">{loading ? (</span>
+<span class="code-line">  &lt;div&gt;Loading history...&lt;/div&gt;</span>
+<span class="code-line">) : error ? (</span>
+<span class="code-line">  &lt;div&gt;Error: {error}&lt;/div&gt;</span>
+<span class="code-line">) : (</span>
+<span class="code-line">  &lt;div&gt;{/* render the data */}&lt;/div&gt;</span>
+<span class="code-line">)}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If still loading... show a spinner or pulsing text.</p>
+              <p class="tl"></p>
+              <p class="tl">If there was an error... show a red error message.</p>
+              <p class="tl"></p>
+              <p class="tl">Otherwise (success!)...</p>
+              <p class="tl">show the actual content.</p>
+              <p class="tl"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> This three-state pattern (<code style="font-family: var(--font-mono);">loading → error → data</code>) is the backbone of every data-fetching UI. As a vibe coder, always think: "What does my user see while waiting? What if the network fails? What does success look like?" If you don't handle all three, the UI can freeze or show broken data silently.
+        </div>
+      </section>
+
+      <!-- Screen 2: Empty states and not found -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Empty State</h2>
+        <p>What happens if nobody has taken a quiz yet? The leaderboard gracefully handles zero data:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">) : scores.length === 0 ? (</span>
+<span class="code-line">  &lt;div className="text-center py-20 text-slate-400 font-bold"&gt;</span>
+<span class="code-line">    No scores recorded yet. Be the first!</span>
+<span class="code-line">  &lt;/div&gt;</span>
+<span class="code-line">) : (</span>
+<span class="code-line">  &lt;div&gt;{/* render rankings table */}&lt;/div&gt;</span>
+<span class="code-line">)}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If the scores list is empty...</p>
+              <p class="tl">show an encouraging message instead of a blank page.</p>
+              <p class="tl">"No scores recorded yet. Be the first!"</p>
+              <p class="tl">invites engagement rather than confusing the user.</p>
+              <p class="tl">Otherwise (scores exist!)...</p>
+              <p class="tl">show the full leaderboard.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🟡</div>
+            <h4>Loading → Pulse</h4>
+            <p>"Loading top scores..." with <code style="font-family: var(--font-mono);">animate-pulse</code> CSS — a gentle breathing animation that signals activity without a spinner.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🔴</div>
+            <h4>Error → Red Text</h4>
+            <p>"Failed to load rankings: {error}" in <code style="font-family: var(--font-mono);">text-red-400</code>. Shows the actual error message so developers (or observant users) know what broke.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">⚪</div>
+            <h4>Empty → Encouragement</h4>
+            <p>"No scores recorded yet. Be the first!" — turns a negative (no data) into a call to action.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Graceful error handling -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Graceful Degradation Everywhere</h2>
+        <p>Fandom Trivia is full of quiet failsafes — features that don't crash the app even when they fail individually:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">// Sound: wrapped in try/catch</span></span>
+<span class="code-line"><span class="code-keyword">const</span> playCorrectSound = () => {</span>
+<span class="code-line">  <span class="code-keyword">try</span> {</span>
+<span class="code-line">    <span class="code-keyword">const</span> AudioContext = <span class="code-keyword">window</span>.AudioContext</span>
+<span class="code-line">      || (<span class="code-keyword">window</span> <span class="code-keyword">as any</span>).webkitAudioContext;</span>
+<span class="code-line">    <span class="code-keyword">if</span> (!AudioContext) <span class="code-keyword">return</span>; <span class="code-comment">// silents fail silently</span></span>
+<span class="code-line">    <span class="code-comment">// ...build and play the tone...</span></span>
+<span class="code-line">  } <span class="code-keyword">catch</span> (e) {</span>
+<span class="code-line">    console.<span class="code-function">error</span>(<span class="code-string">'Audio playback failed:'</span>, e);</span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">// Share: checks browser support first</span></span>
+<span class="code-line"><span class="code-keyword">if</span> (navigator.share) {</span>
+<span class="code-line">  <span class="code-keyword">await</span> navigator.share({ title, text });</span>
+<span class="code-line">} <span class="code-keyword">else</span> <span class="code-keyword">if</span> (navigator.clipboard) {</span>
+<span class="code-line">  <span class="code-keyword">await</span> navigator.clipboard.writeText(text);</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-comment">// If neither works, nothing crashes</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Sound effects are inside a safety net — if audio fails, the app keeps working.</p>
+              <p class="tl">Check if the browser even supports the Web Audio API.</p>
+              <p class="tl">(Older browsers use a different prefix: webkitAudioContext).</p>
+              <p class="tl">If audio isn't supported at all → just exit silently. No crash.</p>
+              <p class="tl"></p>
+              <p class="tl">If any step of audio creation throws an error → log it, don't crash.</p>
+              <p class="tl"></p>
+              <p class="tl"></p>
+              <p class="tl">Sharing uses "feature detection":</p>
+              <p class="tl">Can this browser use the native Share API?</p>
+              <p class="tl">No? Can it copy to clipboard?</p>
+              <p class="tl">No? Just do nothing — no error required.</p>
+              <p class="tl">The user may need to manually share the link.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Username validation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Edge Case: Username Validation</h2>
+        <p>When a user sets their username, the app validates <em>before</em> sending data to the server. This is called <span class="glossary-term" data-term="Validation">frontend validation</span> — catching errors early so the user doesn't wait for a network round-trip.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">if</span> (username.length &lt; <span class="code-number">3</span>) {</span>
+<span class="code-line">  <span class="code-function">setError</span>(<span class="code-string">'Username must be at least 3 characters'</span>);</span>
+<span class="code-line">  <span class="code-keyword">return</span>;</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-comment">// ... send to Supabase ...</span></span>
+<span class="code-line"><span class="code-keyword">if</span> (upsertError.message.includes(<span class="code-string">'duplicate'</span>)) {</span>
+<span class="code-line">  <span class="code-function">setError</span>(<span class="code-string">'Username already taken'</span>);</span>
+<span class="code-line">} <span class="code-keyword">else</span> {</span>
+<span class="code-line">  <span class="code-function">setError</span>(upsertError.message);</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Check #1: Is the username at least 3 letters?</p>
+              <p class="tl">No? Show an error instantly — don't even contact the server.</p>
+              <p class="tl">Stop here until the user fixes it.</p>
+              <p class="tl"></p>
+              <p class="tl">Check #2 (server-side): Is this username already taken?</p>
+              <p class="tl">Supabase returns a "duplicate" error code (23505).</p>
+              <p class="tl">Show a friendly "already taken" message instead of a cryptic error.</p>
+              <p class="tl">For any other server error, show the raw message.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 Layered validation:</strong> Client-side checks are fast and friendly (no network needed). Server-side checks are authoritative (they enforce the database rules). Good apps use both — catch what you can on the frontend, but never trust the frontend as your only gate.
+        </div>
+      </section>
+
+      <!-- Screen 5: The "???" Answer (Fun Edge Case) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Mystery Question (A Deliberate Edge Case)</h2>
+        <p>Some trivia questions don't have a known answer — marked with <code style="font-family: var(--font-mono);">answer: '???'</code>. The app handles this as a special case: if the answer is unknown, <em>any</em> selection is marked correct, because there's no wrong answer to a question nobody's confirmed.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleSelect = (option: string) => {</span>
+<span class="code-line">  <span class="code-keyword">if</span> (selected) <span class="code-keyword">return</span>; <span class="code-comment">// already answered — ignore click</span></span>
+<span class="code-line">  <span class="code-function">setSelected</span>(option);</span>
+<span class="code-line">  <span class="code-keyword">if</span> (isUnknown) {</span>
+<span class="code-line">    <span class="code-comment">// No known answer — auto-mark correct (fun mode)</span></span>
+<span class="code-line">    <span class="code-function">setScores</span>(prev => ({ ...prev, [currentQ]: <span class="code-string">'correct'</span> }));</span>
+<span class="code-line">    <span class="code-function">playCorrectSound</span>();</span>
+<span class="code-line">  } <span class="code-keyword">else</span> {</span>
+<span class="code-line">    <span class="code-keyword">const</span> isCorrect = option.toLowerCase()</span>
+<span class="code-line">      === q.answer.toLowerCase();</span>
+<span class="code-line">    <span class="code-comment">// ...mark correct or incorrect...</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If the user already picked an answer → ignore the click (prevents double-answering).</p>
+              <p class="tl">Record the selected option for highlighting.</p>
+              <p class="tl">If this is a mystery question (answer is "???")...</p>
+              <p class="tl">nobody actually knows the right answer!</p>
+              <p class="tl">So any choice gets a point — it's just for fun.</p>
+              <p class="tl">Play the happy sound anyway.</p>
+              <p class="tl"></p>
+              <p class="tl">Normal question: compare</p>
+              <p class="tl">the chosen answer to the correct one</p>
+              <p class="tl">(case-insensitive, so "BELLA" matches "bella").</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6: App crash prevention -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Defensive Patterns: The Real Story</h2>
+        <p>The Fandom Trivia codebase uses several <strong>defensive patterns</strong> to prevent the entire app from crashing when something unexpected happens. Here's the full toolkit:</p>
+
+        <div class="visual-list" style="margin-top: var(--space-6);">
+          <div class="visual-list-item">
+            <div class="visual-list-number">1</div>
+            <div class="visual-list-content">
+              <strong>Every try/catch has a fallback</strong>
+              <p>Sound fails? Log and ignore. Sharing fails? Silently catch. Profile fetch fails? Set <code style="font-family: var(--font-mono);">setUser(null)</code> — the login button re-appears gracefully.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">2</div>
+            <div class="visual-list-content">
+              <strong>Feature detection before API calls</strong>
+              <p><code style="font-family: var(--font-mono);">if (navigator.share)</code>, <code style="font-family: var(--font-mono);">if (navigator.clipboard)</code>, <code style="font-family: var(--font-mono);">if (!AudioContext) return</code> — the browser tells you what it can do.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">3</div>
+            <div class="visual-list-content">
+              <strong>Default fallback values</strong>
+              <p><code style="font-family: var(--font-mono);">||</code> chains everywhere: <code style="font-family: var(--font-mono);">data.display_name || data.name || ''</code> — if one field is missing, try the next.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">4</div>
+            <div class="visual-list-content">
+              <strong>Rendering guards</strong>
+              <p><code style="font-family: var(--font-mono);">scores.length === 0</code> check before rendering the leaderboard prevents <code style="font-family: var(--font-mono);">.map()</code> on an undefined array.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">5</div>
+            <div class="visual-list-content">
+              <strong>Modals only render when triggered</strong>
+              <p>Username modal, history modal, badges modal — all conditionally rendered (<code style="font-family: var(--font-mono);">{showUsernameModal && &lt;UsernameModal ...&gt;}</code>). They don't exist in the DOM until needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What You've Learned</h2>
+        <div class="summary-cards">
+          <div class="summary-card">
+            <h4>Module 1</h4>
+            <p>Fandom Trivia is a React SPA with 5 universes and a quiz engine that rewards fans.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 2</h4>
+            <p>The app is built from components — views, modals, navbar, particle canvas — all orchestrated by React Router.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 3</h4>
+            <p>The quiz engine uses a state machine pattern: select → evaluate → advance → finish. Data lives in constants.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 4</h4>
+            <p>Supabase provides the database and auth. Users log in with Google, scores persist in the cloud.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 5</h4>
+            <p>Particle effects on Canvas, synthesized audio via Web Audio API, animations with Framer Motion, and a badge reward system.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 6</h4>
+            <p>Every data fetch handles three states: loading, error, and empty. try/catch blocks prevent crashes. Feature detection keeps the app working on older browsers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Final Check</h2>
+        <div class="quiz-container" id="quiz-module6">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Correct! Every data-fetching component uses a three-way conditional: loading → show a pulse animation, error → show in red text, success → render the data. This ensures the user is never staring at a frozen screen."
+               data-explanation-wrong="Not quite. The pattern used in Fandom Trivia is: loading state (pulsing text) → error state (red error message) → data rendering. This is the classic 'three states of any UI' pattern from React best practices. Empty data is handled as a sub-case of the data rendering (showing an encouraging message).">
+            <h3 class="quiz-question">What pattern does Fandom Trivia use for every data-fetching component?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Try the fetch, and if it fails, show a generic "Something went wrong" page</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>loading → error → data: a three-way conditional that handles every state</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Everything runs synchronously — if it breaks, the page reloads</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Exactly! The '???' answer means nobody has confirmed the correct answer. Instead of penalizing the user for a question even the developers aren't sure about, the app treats any selection as correct — turning a potential frustration into a fun mystery moment."
+               data-explanation-wrong="Actually, '???' questions are a deliberate design choice — they're trivia questions where the true answer hasn't been confirmed. Rather than forcing the user to guess wrong, the app auto-marks any answer as correct. If the user selected an option and it was already marked correct, don't worry — you didn't miss anything, the app intentionally made every answer count.">
+            <h3 class="quiz-question">Why does the app auto-mark questions with <code style='font-family: var(--font-mono);'>answer: '???'</code> as correct?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It's a deliberate edge case — no confirmed answer exists, so any choice gets a point</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It's a bug that hasn't been fixed yet — the developer forgot to mark correct answers</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The app treats it as a trick question and expects the user to type "I don't know"</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

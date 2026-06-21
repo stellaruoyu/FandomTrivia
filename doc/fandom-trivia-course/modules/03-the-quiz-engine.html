@@ -1,0 +1,273 @@
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">The Quiz Engine</h1>
+      <p class="module-subtitle">Follow a question from the data file to your screen.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: Where Questions Live -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Question Vault</h2>
+        <p>Every question lives in <code style="font-family: var(--font-mono);">src/constants.ts</code> as structured data. Here's what one looks like:</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">const</span> KPOP_TRIVIA: MCTriviaQuestion[] = [</span>
+<span class="code-line">  {</span>
+<span class="code-line">    <span class="code-property">id</span>: <span class="code-number">1</span>,</span>
+<span class="code-line">    <span class="code-property">question</span>: <span class="code-string">"What was the name of the singing</span></span>
+<span class="code-line"><span class="code-string">      (and demon-hunting) group that Celine was part of?"</span>,</span>
+<span class="code-line">    <span class="code-property">options</span>: [</span>
+<span class="code-line">      <span class="code-string">"Moonlight Maidens"</span>,</span>
+<span class="code-line">      <span class="code-string">"Sunlight Sisters"</span>,</span>
+<span class="code-line">      <span class="code-string">"Starlight Songbirds"</span>,</span>
+<span class="code-line">      <span class="code-string">"Twilight Trio"</span></span>
+<span class="code-line">    ],</span>
+<span class="code-line">    <span class="code-property">answer</span>: <span class="code-string">"Sunlight Sisters"</span>,</span>
+<span class="code-line">    <span class="code-property">evidence</span>: <span class="code-string">"From the opening scene..."</span>,</span>
+<span class="code-line">  },</span>
+<span class="code-line">];</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Export a constant named KPOP_TRIVIA that is an array of questions.</p>
+              <p class="tl">Each question is an object with these fields:</p>
+              <p class="tl">A number to identify this question.</p>
+              <p class="tl">The question text — what the user reads.</p>
+              <p class="tl">(continuation of question text — code wraps naturally)</p>
+              <p class="tl">The answer choices shown as buttons.</p>
+              <p class="tl">Wrong answer option 1.</p>
+              <p class="tl">The correct answer.</p>
+              <p class="tl">Wrong answer option 3.</p>
+              <p class="tl">Wrong answer option 4.</p>
+              <p class="tl">Close the options array.</p>
+              <p class="tl">The correct answer — the app compares this to what the user clicked.</p>
+              <p class="tl">An optional citation showing where this info comes from.</p>
+              <p class="tl">End of this question object.</p>
+              <p class="tl">End of the array (more questions would follow).</p>
+            </div>
+          </div>
+        </div>
+        <p>There are <strong>hundreds</strong> of questions across all universes — all stored in this same file, in the same format. The quiz component doesn't care which fandom the questions are from; it just receives an array and renders it.</p>
+      </section>
+
+      <!-- Screen 2: The State Machine -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How a Quiz Flows</h2>
+        <p>Every quiz follows the same three phases. The app tracks where you are with <span class="glossary-term" data-term="React state">React state</span> — variables that remember what's happening right now.</p>
+
+        <!-- Flow Diagram -->
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-number">1</div>
+            <h4>Active</h4>
+            <p>You see the question and options. Nothing selected yet.</p>
+            <p class="flow-step-state">state: <code>selected = null</code></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-number">2</div>
+            <h4>Answered</h4>
+            <p>You pick an option. The app instantly shows correct/incorrect feedback.</p>
+            <p class="flow-step-state">state: <code>selected = "Sunlight Sisters"</code></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-number">3</div>
+            <h4>Finished</h4>
+            <p>All questions answered. Results screen with score, grade, and character.</p>
+            <p class="flow-step-state">state: <code>finished = true</code></p>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> This "state machine" pattern — <em>idle → active → done</em> — is everywhere in software. Wizards, checkout flows, multi-step forms — they all track where you are the same way. Once you recognize this pattern, you can debug any multi-step feature by asking: "What state is it in right now?"
+        </div>
+      </section>
+
+      <!-- Screen 3: The Scoring Logic -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What Happens When You Tap an Answer</h2>
+        <p>Here's the actual code that runs the instant you select an answer option. This is from <code style="font-family: var(--font-mono);">MCQuizView</code> in <code style="font-family: var(--font-mono);">App.tsx</code>.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleSelect = <span class="code-function">(option</span>: string) => {</span>
+<span class="code-line">  <span class="code-keyword">if</span> (selected) <span class="code-keyword">return</span>;</span>
+<span class="code-line">  setSelected(option);</span>
+<span class="code-line">  <span class="code-keyword">const</span> isCorrect = option.toLowerCase()</span>
+<span class="code-line">    === q.answer.toLowerCase();</span>
+<span class="code-line">  setScores(prev => ({</span>
+<span class="code-line">    ...prev,</span>
+<span class="code-line">    [currentQ]: isCorrect ? <span class="code-string">'correct'</span></span>
+<span class="code-line">      : <span class="code-string">'incorrect'</span></span>
+<span class="code-line">  }));</span>
+<span class="code-line">  <span class="code-keyword">if</span> (isCorrect) {</span>
+<span class="code-line">    playCorrectSound();</span>
+<span class="code-line">  } <span class="code-keyword">else</span> {</span>
+<span class="code-line">    playIncorrectSound();</span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">This function runs when you tap an answer option.</p>
+              <p class="tl">If you already answered this question, ignore the tap (prevent double-answering).</p>
+              <p class="tl">Remember the option you picked (so the UI can highlight it).</p>
+              <p class="tl">Check: does your answer match the correct answer?</p>
+              <p class="tl">(comparing both in lowercase so "a" matches "A").</p>
+              <p class="tl">Save the result for this question number...</p>
+              <p class="tl">(keeping all previous scores intact via the spread operator)...</p>
+              <p class="tl">marking this one as 'correct' if you got it right...</p>
+              <p class="tl">or 'incorrect' if you got it wrong.</p>
+              <p class="tl">If you were right...</p>
+              <p class="tl">play the cheerful "da-ding!" sound.</p>
+              <p class="tl">Otherwise...</p>
+              <p class="tl">play the low "dong" sound.</p>
+              <p class="tl">End of the function.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Badges -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Badges: The Achievement System</h2>
+        <p>After each quiz, the app checks if you've earned any new <span class="glossary-term" data-term="badge">badges</span>. Here's the badge-checking logic — it runs right after the quiz complete screen appears.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> evaluateBadges = <span class="code-function">(</span></span>
+<span class="code-line">  quizId: string, scorePct: number</span>
+<span class="code-line">) => {</span>
+<span class="code-line">  BADGES.forEach(<span class="code-function">badge</span> => {</span>
+<span class="code-line">    <span class="code-keyword">if</span> (unlockedBadgeIds</span>
+<span class="code-line">      .includes(badge.id)) <span class="code-keyword">return</span>;</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">if</span> (badge.id === <span class="code-string">'perfect_score'</span></span>
+<span class="code-line">      && scorePct === <span class="code-number">100</span>) {</span>
+<span class="code-line">      unlocked = <span class="code-keyword">true</span>;</span>
+<span class="code-line">    }</span>
+<span class="code-line">    <span class="code-keyword">if</span> (badge.targetQuiz) {</span>
+<span class="code-line">      <span class="code-keyword">const</span> titleLower = quizId</span>
+<span class="code-line">        .toLowerCase();</span>
+<span class="code-line">      <span class="code-keyword">if</span> (titleLower</span>
+<span class="code-line">        .includes(badge.targetQuiz)) {</span>
+<span class="code-line">        unlocked = <span class="code-keyword">true</span>;</span>
+<span class="code-line">      }</span>
+<span class="code-line">    }</span>
+<span class="code-line">  });</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">This function runs after every quiz completion.</p>
+              <p class="tl">It receives the quiz name and your percentage score.</p>
+              <p class="tl"></p>
+              <p class="tl">Look at every badge defined in the system.</p>
+              <p class="tl">Skip if you already unlocked this badge.</p>
+              <p class="tl">(no duplicate badges!)</p>
+              <p class="tl"></p>
+              <p class="tl">Special case: "Perfectionist" badge.</p>
+              <p class="tl">Only unlock if you got 100%.</p>
+              <p class="tl">Mark as unlocked.</p>
+              <p class="tl"></p>
+              <p class="tl">For universe-specific badges (e.g., "Forks Resident"):</p>
+              <p class="tl">Normalize the quiz name to lowercase...</p>
+              <p class="tl">(to handle case differences).</p>
+              <p class="tl">Does the quiz title contain</p>
+              <p class="tl">the badge's target fandom name?</p>
+              <p class="tl">If yes, you earn it!</p>
+              <p class="tl">(Complete a Twilight quiz → get the Twilight badge)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Data Flow Animation -->
+      <section class="screen animate-in" style="text-align: center;">
+        <h2 class="screen-heading">The Question's Journey</h2>
+        <p>Here's what happens from the moment you select a fandom to the moment you see your score.</p>
+
+        <div class="flow-animation" data-steps='[
+          {"label": "1. constants.ts", "desc": "Questions load from a data file"},
+          {"label": "2. MCQuizView", "desc": "React renders the first question"},
+          {"label": "3. You tap", "desc": "handleSelect() checks answer"},
+          {"label": "4. Sound plays", "desc": "Web Audio API beeps correct/wrong"},
+          {"label": "5. Score updates", "desc": "React state tracks results"},
+          {"label": "6. Quiz done", "desc": "Results screen with grade + badges"}
+        ]' style="margin: var(--space-8) auto; max-width: 600px;">
+          <div class="flow-animation-header">📦 Data Flow</div>
+          <div class="flow-animation-steps"></div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Precisely! The app first checks if you already have the badge (avoiding duplicates), then checks conditions: did you get 100%? Did you complete this fandom's quiz? The evaluateBadges function runs after every quiz completion."
+               data-explanation-wrong="Not quite. The app does check for duplicates (it skips badges you already have), and it evaluates all possible badges at once after each quiz. The evaluateBadges function runs on quiz completion — not incrementally after each question.">
+            <h3 class="quiz-question">After completing a Harry Potter quiz with 90%, which badges could you earn?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Only Hogwarts Student (universe badge), because 90% isn't 100%</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>First Blood (if it's your first quiz) AND Hogwarts Student (universe badge)</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Only First Blood, because you need 100% for universe badges</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Correct! The if (selected) return; check at the top of handleSelect prevents multiple answers. The selected state variable is set immediately, and the function exists immediately on subsequent taps — a simple but effective guard."
+               data-explanation-wrong="Actually, there's no timer at all. The guard is simpler: once you tap an option, the selected state variable is set, and handleSelect() returns immediately on subsequent taps because of the if (selected) return; check. Try clicking an option — then try clicking another — nothing happens until you press 'Next Question'.">
+            <h3 class="quiz-question">You notice you can't change your answer after tapping an option. What prevents double-answering in the code?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A 2-second timer that disables the options</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The options are physically removed from the DOM</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>An `if (selected) return;` guard at the top of handleSelect()</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

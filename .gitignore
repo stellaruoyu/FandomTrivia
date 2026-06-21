@@ -8,3 +8,6 @@ coverage/
 !.env.example
 .vercel
 .env*.local
+
+# macOS Apple Double metadata files
+._*

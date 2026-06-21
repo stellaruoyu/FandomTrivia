@@ -1,0 +1,271 @@
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Data &amp; Users</h1>
+      <p class="module-subtitle">How the app remembers you and your scores.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: What is Supabase -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Invisible Backend</h2>
+        <p>Fandom Trivia doesn't run its own server. Instead, it uses <span class="glossary-term" data-term="Supabase">Supabase</span> — a cloud platform that provides both a <span class="glossary-term" data-term="database">database</span> and a login system out of the box. Think of it like renting a storage unit: you don't build the building, you just get a key.</p>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> Most modern apps don't write their own server code — they use services like Supabase, Firebase, or Clerk. Understanding this pattern helps you evaluate costs and capabilities: "Can we do X with Supabase, or do we need a custom backend?"
+        </div>
+
+        <p>The connection to Supabase is just six lines of code:</p>
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">import</span> { createClient } <span class="code-keyword">from</span></span>
+<span class="code-line">  <span class="code-string">'@supabase/supabase-js'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">const</span> supabaseUrl = import.meta.env</span>
+<span class="code-line">  .VITE_SUPABASE_URL;</span>
+<span class="code-line"><span class="code-keyword">const</span> supabaseAnonKey = import.meta.env</span>
+<span class="code-line">  .VITE_SUPABASE_ANON_KEY;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">const</span> supabase = <span class="code-function">createClient</span>(</span>
+<span class="code-line">  supabaseUrl, supabaseAnonKey</span>
+<span class="code-line">);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Import the Supabase client library — the toolbox for talking to our database.</p>
+              <p class="tl"></p>
+              <p class="tl"></p>
+              <p class="tl">Read the database URL from environment variables</p>
+              <p class="tl">(set in .env.local, never committed to GitHub).</p>
+              <p class="tl">Read the anonymous API key — it's not secret,</p>
+              <p class="tl">but it's locked down to only allow certain operations.</p>
+              <p class="tl"></p>
+              <p class="tl">Create the client and export it</p>
+              <p class="tl">so any component can import and use it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Authentication -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Bouncer at the Door</h2>
+        <p>When you click "Login," the app calls Supabase's <span class="glossary-term" data-term="OAuth">OAuth</span> flow — it redirects you to a Google login page, then brings you back with a verified identity. No passwords are stored in the app.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleLogin = <span class="code-keyword">async</span> () => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> { error } = <span class="code-keyword">await</span> supabase.auth</span>
+<span class="code-line">    .signInWithOAuth({</span>
+<span class="code-line">      <span class="code-property">provider</span>: <span class="code-string">'google'</span>,</span>
+<span class="code-line">      <span class="code-property">options</span>: {</span>
+<span class="code-line">        <span class="code-property">redirectTo</span>: <span class="code-string">window.location.origin</span>,</span>
+<span class="code-line">      },</span>
+<span class="code-line">    });</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">An async function — it takes time because we're talking to Google's servers.</p>
+              <p class="tl">Call Supabase's authentication service...</p>
+              <p class="tl">and ask to sign in using OAuth (delegated login).</p>
+              <p class="tl">Use Google as the identity provider.</p>
+              <p class="tl">After successful login,</p>
+              <p class="tl">come back to the same page we started on.</p>
+              <p class="tl"></p>
+              <p class="tl">End of configuration block.</p>
+              <p class="tl">End of the function call.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 Key insight:</strong> The app never sees your password. Google handles the authentication, then sends a <span class="glossary-term" data-term="token">token</span> to Supabase saying "this user is who they say they are." This is called <span class="glossary-term" data-term="OAuth">OAuth</span> — and it's the same system used by "Login with Google" on essentially every major website.
+        </div>
+      </section>
+
+      <!-- Screen 3: Rankings Persistence -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How Scores Survive Page Reloads</h2>
+        <p>When you finish a quiz, your score is saved to a Supabase table called <code style="font-family: var(--font-mono);">scores</code>. This is why the leaderboard doesn't reset when you refresh — it's stored in the cloud.</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">💾</div>
+            <h4>Saving</h4>
+            <p>After quiz complete, MCQuizView calls <code>.insert()</code> to add a row to the <code>scores</code> table with your user ID, quiz name, score, and total.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">📡</div>
+            <h4>Reading</h4>
+            <p>RankingsView calls <code>.select().order('score', 'desc')</code> to fetch top scores, grouped by quiz. Only the top 10 per quiz are shown.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">👤</div>
+            <h4>User Identity</h4>
+            <p>Each score is linked to a <code>user_id</code>. When fetched, it joins with the <code>profiles</code> table to get the username.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Fetching the Leaderboard</h2>
+        <p>Here's the actual code from <code style="font-family: var(--font-mono);">RankingsView</code> that pulls scores from the database.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> { data, error } = <span class="code-keyword">await</span> supabase</span>
+<span class="code-line">  .from(<span class="code-string">'scores'</span>)</span>
+<span class="code-line">  .select(`</span>
+<span class="code-line">    id, score, total, quiz_id,</span>
+<span class="code-line">    created_at, user_id,</span>
+<span class="code-line">    profiles(username)</span>
+<span class="code-line">  `)</span>
+<span class="code-line">  .order(<span class="code-string">'score'</span>, { <span class="code-property">ascending</span>: <span class="code-keyword">false</span> });</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Ask Supabase for data (await = wait for the network).</p>
+              <p class="tl">From the "scores" table (like a spreadsheet tab).</p>
+              <p class="tl">Request these columns (fields):</p>
+              <p class="tl">unique row ID, numeric score, max total, quiz name.</p>
+              <p class="tl">timestamp, user ID (foreign key)...</p>
+              <p class="tl">and the username from the linked profiles table.</p>
+              <p class="tl">Close the column selection.</p>
+              <p class="tl">Sort by score, highest first (descending).</p>
+              <p class="tl">The #1 scorer is the first row returned.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Group Chat - App ↔ Supabase -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Conversation Behind the Scenes</h2>
+        <p>Here's what happens between the app and Supabase when a user takes a quiz.</p>
+
+        <div class="chat-container" id="chat-supabase">
+          <div class="chat-header">☁️ App ↔ Supabase</div>
+          <div class="chat-messages">
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Hey Supabase, this user wants to log in with Google."
+              </div>
+              <span class="chat-timestamp">handleLogin()</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Got it. Redirecting to Google's login page..."
+              </div>
+              <span class="chat-timestamp">OAuth redirect</span>
+            </div>
+            <div class="chat-message actor-4">
+              <div class="chat-bubble">
+                <strong>Google:</strong> "User verified. Here's their identity token."
+              </div>
+              <span class="chat-timestamp">Callback</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Token received. User session active."
+              </div>
+              <span class="chat-timestamp">session created</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Quiz done! Save score: 8/10, Harry Potter."
+              </div>
+              <span class="chat-timestamp">supabase.from('scores').insert()</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Score saved. Row ID: abc123."
+              </div>
+              <span class="chat-timestamp">201 Created</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Show me the leaderboard, highest scores first."
+              </div>
+              <span class="chat-timestamp">.order('score', {ascending: false})</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Here are the top scores, joined with usernames."
+              </div>
+              <span class="chat-timestamp">JSON response</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly! The app uses Supabase's OAuth — it delegates authentication to Google, so the app never handles passwords at all. The user clicks 'Login', gets redirected to Google, and comes back with a verified token."
+               data-explanation-wrong="Not quite. The app uses Supabase Auth with Google as the provider. Users never create an app-specific password — they authenticate through Google, and Supabase handles the token verification. Think of it as 'Login with Google' — the same pattern used everywhere.">
+            <h3 class="quiz-question">When a user logs into Fandom Trivia, where does the password verification happen?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Inside App.tsx — the app checks a local user database</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Supabase stores the passwords and checks them directly</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Google handles the login — Supabase only verifies the returned token</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Correct! The VITE_ prefix tells Vite to expose them to the browser. They're set in .env.local and read via import.meta.env.VITE_SUPABASE_URL. The 'anon' key is safe to expose because Row Level Security on Supabase restricts what anonymous clients can do."
+               data-explanation-wrong="Actually, Supabase uses a client-friendly design: the 'anon key' is meant to be public and is safe in the frontend. What protects the data is Row Level Security (RLS) policies on the database — the key alone isn't enough to do damage. The VITE_ prefix is required by Vite for environment variables that should be exposed to the browser.">
+            <h3 class="quiz-question">The supabaseClient.ts file exposes the database URL and anon key in the browser. Why is this safe?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Row Level Security (RLS) on Supabase restricts what the anon key can do</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The keys are hashed and can't be read by users</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>They're encrypted at build time by Vite</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 4 — Content Expansion & Routing | FandomTrivia</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.7; padding: 2rem; }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 2.2rem; background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  .meta { color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid #1e293b; padding-bottom: 1rem; }
+  h2 { color: #a78bfa; margin: 2rem 0 0.8rem; font-size: 1.4rem; }
+  h3 { color: #c084fc; margin: 1.5rem 0 0.5rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  code { background: #1e293b; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; color: #c084fc; }
+  pre { background: #1e293b; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border: 1px solid #334155; }
+  pre code { background: none; padding: 0; color: #e2e8f0; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+  .card h3 { margin-top: 0; }
+  .tag { display: inline-block; background: #4c1d95; color: #c084fc; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; margin: 0.2rem; }
+  .commit { color: #94a3b8; font-size: 0.85rem; font-family: monospace; margin-bottom: 0.3rem; }
+  .commit::before { content: "› "; color: #22d3ee; }
+  .nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .nav a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid #334155; }
+  .nav a:hover { background: #334155; color: #e2e8f0; }
+  .highlight { border-left: 3px solid #a78bfa; padding-left: 1rem; background: #1e293b80; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .diagram { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-family: monospace; white-space: pre; overflow-x: auto; color: #94a3b8; }
+  @media (max-width: 600px) { body { padding: 1rem; } h1 { font-size: 1.6rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <a href="weekly.md">← Weekly Log</a>
+    <a href="week-01.html">Week 1</a>
+    <a href="week-02.html">Week 2</a>
+    <a href="week-03.html">Week 3</a>
+    <a href="week-04.html">Week 4</a>
+    <a href="week-05.html">Week 5</a>
+    <a href="week-06.html">Week 6</a>
+  </div>
+
+  <h1>Week 4 &mdash; Content Expansion &amp; Routing</h1>
+  <div class="meta">February 25&ndash;28, 2026 &middot; 4 commits &middot; <span class="tag">Routing</span> <span class="tag">Three-Body</span> <span class="tag">Leaderboard</span> <span class="tag">Game Logic</span></div>
+
+  <p>Week 4 was about <strong>breadth</strong>: more content, proper navigation, leaderboards, and core game logic. The Three-Body Problem series joined the roster, and the app started to feel like a real trivia platform with multiple screens and a scoreboard.</p>
+
+  <h2>Key Concepts</h2>
+
+  <div class="card">
+    <h3>React Router &amp; Navigation</h3>
+    <p>Navigation links were added for multiple pages: Home, Quiz, Leaderboard, Profile. React Router handled client-side routing:</p>
+    <pre><code>import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Navbar /&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/quiz/:universe" element={&lt;QuizPage /&gt;} /&gt;
+        &lt;Route path="/leaderboard" element={&lt;Leaderboard /&gt;} /&gt;
+        &lt;Route path="/profile" element={&lt;Profile /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</code></pre>
+    <p>The <code>/quiz/:universe</code> dynamic route allowed adding new quizzes without new route definitions &mdash; just new data in constants.</p>
+  </div>
+
+  <div class="card">
+    <h3>Universe Data Structure</h3>
+    <p>Each fandom was modeled as a universe with metadata and questions:</p>
+    <pre><code>interface Universe {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  color: string;
+  questions: Question[];
+}
+
+const UNIVERSES: Universe[] = [
+  {
+    id: 'twilight',
+    name: 'Twilight',
+    description: 'Test your knowledge of Forks, Washington...',
+    image: '/images/twilight.jpg',
+    color: '#8B0000',
+    questions: twilightQuestions,
+  },
+  // ... Harry Potter, K-Pop, Three-Body, Zootopia
+];</code></pre>
+    <p>This data-driven approach meant the Home page could render universe cards by mapping over <code>UNIVERSES</code>, and the Quiz page could look up the right questions by URL parameter.</p>
+  </div>
+
+  <div class="card">
+    <h3>Leaderboard Logic</h3>
+    <p>The leaderboard read from Supabase, ordering by score descending:</p>
+    <pre><code>const { data: scores } = await supabase
+  .from('scores')
+  .select('username, score, universe')
+  .order('score', { ascending: false })
+  .limit(20);</code></pre>
+    <p>Key considerations:</p>
+    <ul>
+      <li><strong>Pagination</strong> &mdash; limit to top 20 to keep the UI clean</li>
+      <li><strong>Real-time updates</strong> &mdash; after each quiz completion, refetch</li>
+      <li><strong>Per-universe</strong> filtering &mdash; optional <code>.eq('universe', id)</code> filter</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Three-Body Problem Content</h3>
+    <p>The Three-Body Problem series (Liu Cixin) demanded a different kind of question &mdash; hard sci-fi with physics concepts:</p>
+    <pre><code>{
+  question: "What is the 'Sophon'?",
+  choices: [
+    "A proton unfolded into multiple dimensions",
+    "A type of spaceship engine",
+    "An alien communication device",
+    "A biological weapon"
+  ],
+  correct: 0,
+  source: "Three-Body Problem, Ch. 22"
+}</code></pre>
+    <p>This was also the week an image asset (<code>threebody.jpg</code>) was committed, adding visual identity to the universe.</p>
+  </div>
+
+  <h2>Game Logic: Score Tracking</h2>
+  <p>The quiz game logic started taking shape:</p>
+  <ul>
+    <li><strong>Question selection</strong> &mdash; random subset from the universe's question pool</li>
+    <li><strong>Scoring</strong> &mdash; correct answer = 1 point, no negative marking</li>
+    <li><strong>Progress tracking</strong> &mdash; current question index, answered state</li>
+    <li><strong>Completion</strong> &mdash; show final score, save to Supabase, offer "play again"</li>
+  </ul>
+
+  <h2>Commits This Week</h2>
+  <div class="commit">feat: Add initial application structure, navigation links, universe data, leaderboard functions, and Twilight trivia questions.</div>
+  <div class="commit">feat: implement the core Fandom Trivia application, including user authentication, routing, and game logic.</div>
+  <div class="commit">feat: Initialize Fandom Trivia application and add comprehensive trivia content for Twilight and Three-Body Problem series.</div>
+  <div class="commit">feat: Add threebody.jpg image.</div>
+
+  <h2>Reflection</h2>
+  <p>Week 4 was when the app structure stabilized. The <code>UNIVERSES</code> data array became the single source of truth for all trivia content. Adding a new universe was now just: 1) write questions, 2) add an entry to <code>UNIVERSES</code>, 3) add an image. No routing changes, no new components. This data-driven architecture paid dividends in later weeks when more content was added.</p>
+</div>
+</body>
+</html>

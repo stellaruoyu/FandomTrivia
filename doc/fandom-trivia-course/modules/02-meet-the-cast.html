@@ -1,0 +1,221 @@
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Cast</h1>
+      <p class="module-subtitle">The components that bring Fandom Trivia to life.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: One Big File -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A Blockbuster in One Script</h2>
+        <p>Here's a surprise: <strong>almost the entire app lives in a single file</strong> — <code style="font-family: var(--font-mono);">src/App.tsx</code>, about 2,300 lines. That's like an entire movie shot in one room. It's unusual for a production app, but it makes the code easy to explore.</p>
+        <p>Inside that file are several <span class="glossary-term" data-term="component">components</span> — think of them as actors in a play. Each one handles a different "scene" in the app.</p>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> When you tell an AI coding tool "add a new view" or "change the quiz layout," knowing which component does what helps you give precise instructions. Instead of "change the quiz page," you can say "modify the <code style="font-family: var(--font-mono);">MCQuizView</code> component to add a timer."
+        </div>
+      </section>
+
+      <!-- Screen 2: The Component Family -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Main Characters</h2>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">🏠</div>
+            <h4>LandingView</h4>
+            <p>The front door. Shows universe cards, hero section, and feature highlights. Users pick a fandom here.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">📋</div>
+            <h4>MCQuizView</h4>
+            <p>The quiz master. Handles question display, answer selection, scoring, progress tracking, and saving results.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">📊</div>
+            <h4>DashboardView</h4>
+            <p>"Pro Hub" — live leaderboard, active tournaments, stats feed. The competitive social layer.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🏅</div>
+            <h4>RankingsView</h4>
+            <p>Global leaderboard page. Pulls top scores from Supabase and displays them with gradient styling.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #F5EEF7; color: #7B2D8E;">✨</div>
+            <h4>ParticleCanvas</h4>
+            <p>Background animations. Creates floating particles (ambient mode) and celebratory confetti (when you finish a quiz).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">👤</div>
+            <h4>Navbar + Modals</h4>
+            <p>The top navigation bar, plus popups for quiz history, badges, username setup, and info screens.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: How They Talk -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How They Talk to Each Other</h2>
+        <p>The components don't call each other directly. Instead, the <span class="glossary-term" data-term="React Router">React Router</span> decides which one to show based on the URL. Think of it like TV channels — each route is a channel, and App.tsx is the remote control.</p>
+
+        <!-- Group Chat Animation -->
+        <div class="chat-container" id="chat-components" style="margin-top: var(--space-6);">
+          <div class="chat-header">📱 Inside App.tsx — The Conversation</div>
+          <div class="chat-messages">
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>LandingView:</strong> "User just landed! Show them the universe cards."
+              </div>
+              <span class="chat-timestamp">Route: /</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>MCQuizView:</strong> "They picked Harry Potter. Loading questions from constants.ts..."
+              </div>
+              <span class="chat-timestamp">Route: /trivia-harry-potter</span>
+            </div>
+            <div class="chat-message actor-3">
+              <div class="chat-bubble">
+                <strong>ParticleCanvas:</strong> "I'll set up ambient floating particles while they play."
+              </div>
+              <span class="chat-timestamp">Mode: ambient</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>MCQuizView:</strong> "Quiz complete! They got 8/10. Time to save the score."
+              </div>
+              <span class="chat-timestamp">Score: 80%</span>
+            </div>
+            <div class="chat-message actor-3">
+              <div class="chat-bubble">
+                <strong>ParticleCanvas:</strong> "Celebration mode! Confetti time! 🎉"
+              </div>
+              <span class="chat-timestamp">Mode: celebration</span>
+            </div>
+            <div class="chat-message actor-4">
+              <div class="chat-bubble">
+                <strong>DashboardView:</strong> "New score saved to Supabase. Updating leaderboard..."
+              </div>
+              <span class="chat-timestamp">Route: /dashboard</span>
+            </div>
+            <div class="chat-message actor-5">
+              <div class="chat-bubble">
+                <strong>Navbar:</strong> "User checks their badges. Opening BadgesModal..."
+              </div>
+              <span class="chat-timestamp">Action: click</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The "Remote Control" in Code</h2>
+        <p>Here's the actual code from <code style="font-family: var(--font-mono);">App.tsx</code> that decides which component to show based on the URL.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">import</span> { Routes, Route } <span class="code-keyword">from</span> <span class="code-string">'react-router-dom'</span>;</span>
+<span class="code-line"><span class="code-keyword">import</span> ParticleCanvas <span class="code-keyword">from</span> <span class="code-string">'./ParticleCanvas'</span>;</span>
+<span class="code-line"><span class="code-keyword">import</span> { supabase } <span class="code-keyword">from</span> <span class="code-string">'./supabaseClient'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">const</span> App = () => {</span>
+<span class="code-line">  <span class="code-keyword">return</span> (</span>
+<span class="code-line">    <span class="code-tag">&lt;Routes&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/"</span> <span class="code-attr">element=</span><span class="code-value">{&lt;LandingView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/trivia-harry-potter"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;MCQuizView ... /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/rankings"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;RankingsView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/dashboard"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;DashboardView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">    <span class="code-tag">&lt;/Routes&gt;</span></span>
+<span class="code-line">  );</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Import the routing system — think of this as the TV channel switcher.</p>
+              <p class="tl">Import the particle animation component (it floats in the background).</p>
+              <p class="tl">Import the database connection (for login and saving scores).</p>
+              <p class="tl"></p>
+              <p class="tl">The App component — the main container for everything.</p>
+              <p class="tl">It returns (renders) this JSX — a mix of HTML and JavaScript.</p>
+              <p class="tl">The router container — only ONE route shows at a time.</p>
+              <p class="tl">When URL is "/", show the LandingView (homepage with universe cards).</p>
+              <p class="tl">When URL is "/trivia-harry-potter"...</p>
+              <p class="tl">...show the quiz view with Harry Potter questions.</p>
+              <p class="tl">When URL is "/rankings"...</p>
+              <p class="tl">...show the global leaderboard.</p>
+              <p class="tl">When URL is "/dashboard"...</p>
+              <p class="tl">...show the Pro Hub with tournaments and stats.</p>
+              <p class="tl">Close the router container.</p>
+              <p class="tl">End of the component's output.</p>
+              <p class="tl">End of the App function.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Correct! MCQuizView handles the entire quiz experience — displaying questions, handling answers, showing results, and saving scores. It's a self-contained quiz machine."
+               data-explanation-wrong="Not quite. LandingView is the homepage with universe cards (you'd click a card there to start a quiz). MCQuizView is the actual quiz engine — it handles questions, answers, scoring, and saving results. Think of LandingView as the menu and MCQuizView as the game.">
+            <h3 class="quiz-question">You want to change how answer feedback is displayed (e.g., show a checkmark or X after each question). Which component do you modify?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>MCQuizView — it handles all quiz interactions</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>LandingView — it controls the main page layout</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>constants.ts — where the answer data is stored</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly! ParticleCanvas is a separate file imported into App.tsx. It runs on a &lt;canvas&gt; element and renders particles independently of React — using requestAnimationFrame for smooth 60fps performance."
+               data-explanation-wrong="Not quite. While all views are defined inside App.tsx, ParticleCanvas is actually in its own file (src/ParticleCanvas.tsx). It's imported into App.tsx but lives independently — which makes sense because canvas animation is a different kind of programming than UI components.">
+            <h3 class="quiz-question">Where does ParticleCanvas live in the codebase?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Inside App.tsx along with all other views</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In its own file: src/ParticleCanvas.tsx</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In a separate npm package called react-particles</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

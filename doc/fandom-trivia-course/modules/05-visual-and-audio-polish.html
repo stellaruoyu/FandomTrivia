@@ -1,0 +1,262 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Visual &amp; Audio Polish</h1>
+      <p class="module-subtitle">The particle effects, sounds, and animations that make it feel alive.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: ParticleCanvas -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Floating Magic</h2>
+        <p>You know those subtle floating dots that drift across the landing page? That's a <span class="glossary-term" data-term="Canvas">HTML Canvas</span> — a pixel-level drawing board that React doesn't control. It's implemented as a separate component called <code style="font-family: var(--font-mono);">ParticleCanvas</code>.</p>
+
+        <p>It has two <strong>modes</strong>:</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🌫️</div>
+            <h4>Ambient Mode</h4>
+            <p>35 tiny glowing circles drift upward, fading in and out with a twinkle effect. Used on the landing page behind the hero section (<code style="font-family: var(--font-mono);">ParticleCanvas mode="ambient"</code>).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🎉</div>
+            <h4>Celebration Mode</h4>
+            <p>100 confetti-style particles burst from center, affected by simulated gravity, drag, and rotation. Used after a quiz is completed. The confetti colors change per universe — blue/silver for Twilight, neon pink/purple for K-Pop.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: How particles work -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Inside a Particle</h2>
+        <p>Each particle is just a JavaScript object with properties like <code style="font-family: var(--font-mono);">x</code>, <code style="font-family: var(--font-mono);">y</code>, <code style="font-family: var(--font-mono);">vx</code> (velocity X), and <code style="font-family: var(--font-mono);">life</code>. Every frame, a loop updates every particle and redraws the canvas.</p>
+
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">interface</span> Particle {</span>
+<span class="code-line">  x: number;       <span class="code-comment">// horizontal position</span></span>
+<span class="code-line">  y: number;       <span class="code-comment">// vertical position</span></span>
+<span class="code-line">  vx: number;      <span class="code-comment">// speed on X axis</span></span>
+<span class="code-line">  vy: number;      <span class="code-comment">// speed on Y axis</span></span>
+<span class="code-line">  size: number;    <span class="code-comment">// how big (radius in pixels)</span></span>
+<span class="code-line">  opacity: number; <span class="code-comment">// how visible</span></span>
+<span class="code-line">  color: string;   <span class="code-comment">// color prefix (e.g. 'rgba(255,215,0,')</span></span>
+<span class="code-line">  life: number;    <span class="code-comment">// how many frames it's been alive</span></span>
+<span class="code-line">  maxLife: number; <span class="code-comment">// when it should disappear</span></span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Think of a particle as a firefly:</p>
+              <p class="tl">where it is on the screen.</p>
+              <p class="tl">which direction it's drifting.</p>
+              <p class="tl">how fast it's moving sideways/up.</p>
+              <p class="tl">how big it appears.</p>
+              <p class="tl">how bright / faded it is.</p>
+              <p class="tl">what color it glows.</p>
+              <p class="tl">how long it has existed (in frames at 60fps).</p>
+              <p class="tl">total lifespan before it "dies" and respawns.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why Canvas and not React?</strong> React is great for UI, but updating hundreds of particles every <sup>1</sup>/<sub>60</sub> of a second would slow it down. Canvas draws directly to the screen — no React overhead. The component uses <code style="font-family: var(--font-mono);">useRef</code> to hold the canvas and particles, <code style="font-family: var(--font-mono);">useEffect</code> to run the animation loop, and <code style="font-family: var(--font-mono);">cancelAnimationFrame</code> to clean up when the component unmounts.
+        </div>
+      </section>
+
+      <!-- Screen 3: Sound Effects -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The "Da-Ding" and the "Dong"</h2>
+        <p>Fandom Trivia creates sound effects without any audio files — it uses the <span class="glossary-term" data-term="Web Audio API">Web Audio API</span> to synthesize tones in real time. Two functions handle the sounds:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> playCorrectSound = () => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> ctx = <span class="code-keyword">new</span> AudioContext();</span>
+<span class="code-line">  <span class="code-keyword">const</span> osc = ctx.<span class="code-function">createOscillator</span>();</span>
+<span class="code-line">  <span class="code-keyword">const</span> gain = ctx.<span class="code-function">createGain</span>();</span>
+<span class="code-line">  osc.<span class="code-function">connect</span>(gain);</span>
+<span class="code-line">  gain.<span class="code-function">connect</span>(ctx.destination);</span>
+<span class="code-line">  osc.type = <span class="code-string">'sine'</span>;</span>
+<span class="code-line">  <span class="code-comment">// "da-ding!" ascending tones</span></span>
+<span class="code-line">  osc.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">523.25</span>, ctx.currentTime);       <span class="code-comment">// C5</span></span>
+<span class="code-line">  osc.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">659.25</span>, ctx.currentTime + <span class="code-number">0.1</span>); <span class="code-comment">// E5</span></span>
+<span class="code-line">  gain.gain.<span class="code-function">linearRampToValueAtTime</span>(<span class="code-number">0.1</span>, ctx.currentTime + <span class="code-number">0.05</span>);</span>
+<span class="code-line">  osc.<span class="code-function">start</span>(ctx.currentTime);</span>
+<span class="code-line">  osc.<span class="code-function">stop</span>(ctx.currentTime + <span class="code-number">0.3</span>);</span>
+<span class="code-line">};</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">// For incorrect: single low A3 tone (220Hz)</span></span>
+<span class="code-line"><span class="code-comment">// slower decay, deeper "dong" feeling</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Create an audio processing context (like a mini mixing board).</p>
+              <p class="tl">Create an oscillator — the thing that makes a tone.</p>
+              <p class="tl">Create a gain node — controls volume.</p>
+              <p class="tl">Wire them together: oscillator → volume → speakers.</p>
+              <p class="tl">Use a clean sine wave (no harsh harmonics).</p>
+              <p class="tl"></p>
+              <p class="tl">Play C5 (523Hz), then 0.1s later jump to E5 (659Hz) —</p>
+              <p class="tl">that rising interval makes the "correct!" feeling.</p>
+              <p class="tl">Fade in smoothly to 10% volume over 0.05s.</p>
+              <p class="tl">Start playing now.</p>
+              <p class="tl">Stop after 0.3 seconds.</p>
+              <p class="tl"></p>
+              <p class="tl">Incorrect uses a single low A3 (220Hz)</p>
+              <p class="tl">with a long 0.8s decay — the "wrong" dong.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 No audio files needed!</strong> This is a neat trick for vibe coders: you can create feedback sounds entirely in code. The Web Audio API is supported in all modern browsers. No loading MP3s, no file management, just ~30 lines of code per sound.
+        </div>
+      </section>
+
+      <!-- Screen 4: Framer Motion -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Secret Sauce: Framer Motion</h2>
+        <p>Fandom Trivia uses <span class="glossary-term" data-term="Framer Motion">Framer Motion</span> (now part of <span class="glossary-term" data-term="Motion">Motion</span>) for nearly every animation. Instead of writing CSS keyframes manually, the app uses React-friendly animation components.</p>
+
+        <p>The three most common patterns:</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🚪</div>
+            <h4>Page Transitions</h4>
+            <p>Every view wraps in <code style="font-family: var(--font-mono);">&lt;motion.div initial=&#123;{ opacity: 0 }} animate=&#123;{ opacity: 1 }} exit=&#123;{ opacity: 0 }}&gt;</code> — pages fade in when they mount and fade out when they leave.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🖱️</div>
+            <h4>Hover Effects</h4>
+            <p>Universe cards use <code style="font-family: var(--font-mono);">whileHover={{ scale: 1.03, y: -4 }}</code> and <code style="font-family: var(--font-mono);">whileTap={{ scale: 0.98 }}</code> — cards subtly lift when you hover and press down when clicked.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🎯</div>
+            <h4>Spring Animations</h4>
+            <p>Results screen uses <code style="font-family: var(--font-mono);">transition=&#123;{ type: 'spring', stiffness: 200, damping: 20 }}</code> — a bouncy, natural-feeling scale-in for the quiz complete card.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Badge Evaluation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Badges: The Reward System</h2>
+        <p>When a user finishes a quiz, the app runs <code style="font-family: var(--font-mono);">evaluateBadges()</code>. This function checks three things to award special titles:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> evaluateBadges = (</span>
+<span class="code-line">  quizId: string,</span>
+<span class="code-line">  correctCount: number,</span>
+<span class="code-line">  total: number</span>
+<span class="code-line">) => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> badges = [];</span>
+<span class="code-line">  <span class="code-keyword">if</span> (correctCount === total)</span>
+<span class="code-line">    badges.<span class="code-function">push</span>({ <span class="code-property">type</span>: <span class="code-string">'perfect'</span>, });</span>
+<span class="code-line">  <span class="code-keyword">const</span> universeBadge = BADGES</span>
+<span class="code-line">    .<span class="code-function">find</span>(b => quizId</span>
+<span class="code-line">      .<span class="code-function">toLowerCase</span>()</span>
+<span class="code-line">      .<span class="code-function">includes</span>(b.universe));</span>
+<span class="code-line">  <span class="code-keyword">if</span> (universeBadge)</span>
+<span class="code-line">    badges.<span class="code-function">push</span>(universeBadge);</span>
+<span class="code-line">  <span class="code-keyword">return</span> badges;</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A function that checks if the player earned special rewards.</p>
+              <p class="tl">Which quiz was taken.</p>
+              <p class="tl">How many they got right.</p>
+              <p class="tl">Total questions.</p>
+              <p class="tl"></p>
+              <p class="tl">If they got EVERY question right → plus a "Perfect Score!" badge.</p>
+              <p class="tl">No duplicates allowed.</p>
+              <p class="tl">Look up the badge config for this universe...</p>
+              <p class="tl">(e.g., "Twilight" → vampire badge).</p>
+              <p class="tl"></p>
+              <p class="tl">If a matching badge exists → add it.</p>
+              <p class="tl">Return the collection of earned badges.</p>
+              <p class="tl">These display on the quiz complete screen.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🎮 Game design pattern:</strong> Badges are a simple but powerful motivation tool. This pattern — check conditions, award a title, display it — is the same logic used by Xbox Achievements, Duolingo streaks, and GitHub contribution badges. As a vibe coder, you can copy this pattern into any app that needs a reward system.
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Correct! While React updates DOM elements efficiently, redrawing hundreds of particles 60 times per second triggers too many React reconciliations. Canvas bypasses React entirely and paints pixels directly — much faster for this use case."
+               data-explanation-wrong="Not quite. The animation loop (<code style='font-family: var(--font-mono);'>requestAnimationFrame</code>) runs 60 times per second. If each particle was a React component, that would mean hundreds of state updates per frame. Canvas draws directly to pixels, skipping React entirely.">
+            <h3 class="quiz-question">Why does ParticleCanvas use HTML Canvas instead of rendering particle effects with React components?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>React can't draw circles — only Canvas can</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Canvas avoids React's reconciliation overhead for 60fps animation loops</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Framer Motion doesn't support particle effects</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly right! The 'correct' sound is two ascending notes (C5→E5) creating a rising 'da-ding!' interval, while 'incorrect' is a single lower note (A3) with a long decay — the classic 'dong.' The app synthesizes these tones in real time using the Web Audio API, no audio files needed."
+               data-explanation-wrong="Not quite. The sounds are generated with oscillators (tone generators), not pre-recorded files. The correct sound uses two ascending frequencies that create a cheerful rising interval. The wrong sound is a single low frequency with a longer decay. Both are synthesized in real-time by the browser.">
+            <h3 class="quiz-question">How does Fandom Trivia create its correct/incorrect sound effects?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It loads short MP3 files from the /sounds folder</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It uses CSS audio keyframes</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It synthesizes tones with the Web Audio API — oscillators and gain nodes</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Fandom Trivia Works</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --color-accent:       #D4A843;
+      --color-accent-hover: #BF9530;
+      --color-accent-light: #FDF5E0;
+      --color-accent-muted: #E0C070;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">How Fandom Trivia Works</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="What Is Fandom Trivia?" role="tab" aria-label="Module 1: What Is Fandom Trivia?"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="Meet the Cast" role="tab" aria-label="Module 2: Meet the Cast"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="The Quiz Engine" role="tab" aria-label="Module 3: The Quiz Engine"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="Data &amp; Users" role="tab" aria-label="Module 4: Data & Users"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="Visual &amp; Audio Polish" role="tab" aria-label="Module 5: Visual & Audio Polish"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="When Things Break" role="tab" aria-label="Module 6: When Things Break"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">What Is Fandom Trivia?</h1>
+      <p class="module-subtitle">Meet the app — a trivia battleground where fandoms collide.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The Big Picture -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A Trivia App for Superfans</h2>
+        <p>Fandom Trivia is a single-page web app where you test your knowledge of your favorite universes — Twilight, Harry Potter, K-Pop, The Three-Body Problem, and Zootopia. Pick a fandom, answer multiple-choice questions, earn <span class="glossary-term" data-term="badge">badges</span>, and climb the leaderboard.</p>
+        <p>It's built with modern web tech: <span class="glossary-term" data-term="React">React</span> 19 + <span class="glossary-term" data-term="TypeScript">TypeScript</span> for the UI, <span class="glossary-term" data-term="Supabase">Supabase</span> for the database and login system, and <span class="glossary-term" data-term="Tailwind CSS">Tailwind CSS</span> for styling. Everything runs in your browser — no installs needed.</p>
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> Even though this is "just a quiz app," it uses the same architecture as production web apps used by millions. Authentication, databases, UI state management, animations — every concept here scales to real-world products.
+        </div>
+      </section>
+
+      <!-- Screen 2: The Universes -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Five Worlds, One App</h2>
+        <p>Each fandom is a "universe" — a bundle of questions, a theme, and a personality. The app treats them all the same way internally, which is why adding a new fandom is just a matter of adding data.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">🧛</div>
+            <h4>Twilight</h4>
+            <p>30 questions about Forks, Cullens, and Quileute legends. Volume I chapters 1–8.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">⚡</div>
+            <h4>Harry Potter</h4>
+            <p>Wizarding World questions spanning Sorcerer's Stone through Deathly Hallows.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🎤</div>
+            <h4>K-Pop: Demon Hunters</h4>
+            <p>13 questions about the Saja Boys, Rumi, Jinu, and the Huntr/x agency.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🌌</div>
+            <h4>Three-Body Problem</h4>
+            <p>Sci-fi questions about the Dark Forest, Trisolaran crisis, and higher dimensions.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🐰</div>
+            <h4>Zootopia</h4>
+            <p>Urban jungle mysteries with Judy Hopps, Nick Wilde, and conspiracy cases.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What a Universe Looks Like in Code</h2>
+        <p>Each universe is just a JavaScript object in a file called <code style="font-family: var(--font-mono);">constants.ts</code>. Here's the actual code for the Twilight universe — every field powers what you see on screen.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">id</span>: <span class="code-string">'twilight'</span>,</span>
+<span class="code-line">  <span class="code-property">title</span>: <span class="code-string">'Twilight'</span>,</span>
+<span class="code-line">  <span class="code-property">tags</span>: [<span class="code-string">'Fantasy'</span>, <span class="code-string">'Mystery'</span>],</span>
+<span class="code-line">  <span class="code-property">description</span>: <span class="code-string">'Misty forests &amp; eternal secrets.'</span>,</span>
+<span class="code-line">  <span class="code-property">buttonText</span>: <span class="code-string">'Enter Forks'</span>,</span>
+<span class="code-line">  <span class="code-property">icon</span>: <span class="code-string">'Droplets'</span>,</span>
+<span class="code-line">  <span class="code-property">image</span>: <span class="code-string">'/images/Cullen Family.jpg'</span></span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A "universe" object starts here.</p>
+              <p class="tl">Internal ID — used to look up questions for this fandom.</p>
+              <p class="tl">The big title you see on the card.</p>
+              <p class="tl">Tags are like genre labels (Fantasy, Mystery) shown on the landing page.</p>
+              <p class="tl">The short tagline that appears below the title.</p>
+              <p class="tl">The text on the button ("Enter Forks") — it's different for each universe!</p>
+              <p class="tl">Lucide icon name — tells the app which icon to draw.</p>
+              <p class="tl">Background image path for the card.</p>
+              <p class="tl">Close of the object.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout-box">
+          <strong>💡 Key insight:</strong> Because each universe is just data in an <span class="glossary-term" data-term="array">array</span>, adding "Star Wars" or "Marvel" only means adding one more object — zero new code required. That's the power of <span class="glossary-term" data-term="data-driven design">data-driven design</span>.
+        </div>
+      </section>
+
+      <!-- Screen 4: What You Can Do -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">More Than Just Questions</h2>
+        <p>The app has four main areas. Together they turn a simple quiz into a full <span class="glossary-term" data-term="gamified">gamified</span> experience.</p>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">📝</div>
+            <h4>Quiz</h4>
+            <p>Multiple-choice questions with instant feedback, answer evidence, and a progress tracker. The heart of the app.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🏆</div>
+            <h4>Rankings</h4>
+            <p>Global leaderboard showing top scorers across all universes. Pulled live from Supabase.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">⭐</div>
+            <h4>Badges</h4>
+            <p>Unlockable achievements like "Forks Resident" (complete a Twilight quiz) or "Perfectionist" (100% on any quiz).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">📊</div>
+            <h4>Dashboard</h4>
+            <p>"Pro Hub" with live leaderboard, active tournaments, and stats. The competitive layer.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly! Since each universe is just an object in the UNIVERSES array and a collection of questions in constants.ts, adding a new one means adding data — not rewriting code. That's the beauty of data-driven design."
+               data-explanation-wrong="Not quite. The key insight is that universes are data, not code. The app already has a generic quiz engine — it doesn't care which universe the questions come from. So all you need is to add data (a universe entry and question array), not create new components or screens.">
+            <h3 class="quiz-question">Your friend wants to add a "Star Wars" universe to Fandom Trivia. Based on what we learned, what do they need to create?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A new React component for Star Wars questions</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A new entry in the UNIVERSES array and a new questions array</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A separate HTML page for the Star Wars quiz</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Right! The icon field in each universe object tells the app which Lucide icon to display. The icon is just a string — the app handles the rendering."
+               data-explanation-wrong="Almost! The icon is specified as a string field in the universe object (like icon: 'Droplets' for Twilight). The app maps these strings to actual icon components. You wouldn't write CSS for an icon — you'd just update the data.">
+            <h3 class="quiz-question">The Twilight universe card shows a droplet icon. Where is that icon chosen?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the icon field of the Twilight universe object in constants.ts</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the CSS stylesheet under the .twilight-icon class</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In the HTML template for the landing page</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Cast</h1>
+      <p class="module-subtitle">The components that bring Fandom Trivia to life.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: One Big File -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A Blockbuster in One Script</h2>
+        <p>Here's a surprise: <strong>almost the entire app lives in a single file</strong> — <code style="font-family: var(--font-mono);">src/App.tsx</code>, about 2,300 lines. That's like an entire movie shot in one room. It's unusual for a production app, but it makes the code easy to explore.</p>
+        <p>Inside that file are several <span class="glossary-term" data-term="component">components</span> — think of them as actors in a play. Each one handles a different "scene" in the app.</p>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> When you tell an AI coding tool "add a new view" or "change the quiz layout," knowing which component does what helps you give precise instructions. Instead of "change the quiz page," you can say "modify the <code style="font-family: var(--font-mono);">MCQuizView</code> component to add a timer."
+        </div>
+      </section>
+
+      <!-- Screen 2: The Component Family -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Main Characters</h2>
+        <div class="pattern-cards">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">🏠</div>
+            <h4>LandingView</h4>
+            <p>The front door. Shows universe cards, hero section, and feature highlights. Users pick a fandom here.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">📋</div>
+            <h4>MCQuizView</h4>
+            <p>The quiz master. Handles question display, answer selection, scoring, progress tracking, and saving results.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">📊</div>
+            <h4>DashboardView</h4>
+            <p>"Pro Hub" — live leaderboard, active tournaments, stats feed. The competitive social layer.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🏅</div>
+            <h4>RankingsView</h4>
+            <p>Global leaderboard page. Pulls top scores from Supabase and displays them with gradient styling.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #F5EEF7; color: #7B2D8E;">✨</div>
+            <h4>ParticleCanvas</h4>
+            <p>Background animations. Creates floating particles (ambient mode) and celebratory confetti (when you finish a quiz).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-accent-light); color: var(--color-accent);">👤</div>
+            <h4>Navbar + Modals</h4>
+            <p>The top navigation bar, plus popups for quiz history, badges, username setup, and info screens.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: How They Talk -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How They Talk to Each Other</h2>
+        <p>The components don't call each other directly. Instead, the <span class="glossary-term" data-term="React Router">React Router</span> decides which one to show based on the URL. Think of it like TV channels — each route is a channel, and App.tsx is the remote control.</p>
+
+        <!-- Group Chat Animation -->
+        <div class="chat-container" id="chat-components" style="margin-top: var(--space-6);">
+          <div class="chat-header">📱 Inside App.tsx — The Conversation</div>
+          <div class="chat-messages">
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>LandingView:</strong> "User just landed! Show them the universe cards."
+              </div>
+              <span class="chat-timestamp">Route: /</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>MCQuizView:</strong> "They picked Harry Potter. Loading questions from constants.ts..."
+              </div>
+              <span class="chat-timestamp">Route: /trivia-harry-potter</span>
+            </div>
+            <div class="chat-message actor-3">
+              <div class="chat-bubble">
+                <strong>ParticleCanvas:</strong> "I'll set up ambient floating particles while they play."
+              </div>
+              <span class="chat-timestamp">Mode: ambient</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>MCQuizView:</strong> "Quiz complete! They got 8/10. Time to save the score."
+              </div>
+              <span class="chat-timestamp">Score: 80%</span>
+            </div>
+            <div class="chat-message actor-3">
+              <div class="chat-bubble">
+                <strong>ParticleCanvas:</strong> "Celebration mode! Confetti time! 🎉"
+              </div>
+              <span class="chat-timestamp">Mode: celebration</span>
+            </div>
+            <div class="chat-message actor-4">
+              <div class="chat-bubble">
+                <strong>DashboardView:</strong> "New score saved to Supabase. Updating leaderboard..."
+              </div>
+              <span class="chat-timestamp">Route: /dashboard</span>
+            </div>
+            <div class="chat-message actor-5">
+              <div class="chat-bubble">
+                <strong>Navbar:</strong> "User checks their badges. Opening BadgesModal..."
+              </div>
+              <span class="chat-timestamp">Action: click</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The "Remote Control" in Code</h2>
+        <p>Here's the actual code from <code style="font-family: var(--font-mono);">App.tsx</code> that decides which component to show based on the URL.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">import</span> { Routes, Route } <span class="code-keyword">from</span> <span class="code-string">'react-router-dom'</span>;</span>
+<span class="code-line"><span class="code-keyword">import</span> ParticleCanvas <span class="code-keyword">from</span> <span class="code-string">'./ParticleCanvas'</span>;</span>
+<span class="code-line"><span class="code-keyword">import</span> { supabase } <span class="code-keyword">from</span> <span class="code-string">'./supabaseClient'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">const</span> App = () => {</span>
+<span class="code-line">  <span class="code-keyword">return</span> (</span>
+<span class="code-line">    <span class="code-tag">&lt;Routes&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/"</span> <span class="code-attr">element=</span><span class="code-value">{&lt;LandingView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/trivia-harry-potter"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;MCQuizView ... /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/rankings"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;RankingsView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">      <span class="code-tag">&lt;Route</span> <span class="code-attr">path=</span><span class="code-value">"/dashboard"</span></span>
+<span class="code-line">        <span class="code-attr">element=</span><span class="code-value">{&lt;DashboardView /&gt;}</span> <span class="code-tag">/&gt;</span></span>
+<span class="code-line">    <span class="code-tag">&lt;/Routes&gt;</span></span>
+<span class="code-line">  );</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Import the routing system — think of this as the TV channel switcher.</p>
+              <p class="tl">Import the particle animation component (it floats in the background).</p>
+              <p class="tl">Import the database connection (for login and saving scores).</p>
+              <p class="tl"></p>
+              <p class="tl">The App component — the main container for everything.</p>
+              <p class="tl">It returns (renders) this JSX — a mix of HTML and JavaScript.</p>
+              <p class="tl">The router container — only ONE route shows at a time.</p>
+              <p class="tl">When URL is "/", show the LandingView (homepage with universe cards).</p>
+              <p class="tl">When URL is "/trivia-harry-potter"...</p>
+              <p class="tl">...show the quiz view with Harry Potter questions.</p>
+              <p class="tl">When URL is "/rankings"...</p>
+              <p class="tl">...show the global leaderboard.</p>
+              <p class="tl">When URL is "/dashboard"...</p>
+              <p class="tl">...show the Pro Hub with tournaments and stats.</p>
+              <p class="tl">Close the router container.</p>
+              <p class="tl">End of the component's output.</p>
+              <p class="tl">End of the App function.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Correct! MCQuizView handles the entire quiz experience — displaying questions, handling answers, showing results, and saving scores. It's a self-contained quiz machine."
+               data-explanation-wrong="Not quite. LandingView is the homepage with universe cards (you'd click a card there to start a quiz). MCQuizView is the actual quiz engine — it handles questions, answers, scoring, and saving results. Think of LandingView as the menu and MCQuizView as the game.">
+            <h3 class="quiz-question">You want to change how answer feedback is displayed (e.g., show a checkmark or X after each question). Which component do you modify?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>MCQuizView — it handles all quiz interactions</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>LandingView — it controls the main page layout</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>constants.ts — where the answer data is stored</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly! ParticleCanvas is a separate file imported into App.tsx. It runs on a &lt;canvas&gt; element and renders particles independently of React — using requestAnimationFrame for smooth 60fps performance."
+               data-explanation-wrong="Not quite. While all views are defined inside App.tsx, ParticleCanvas is actually in its own file (src/ParticleCanvas.tsx). It's imported into App.tsx but lives independently — which makes sense because canvas animation is a different kind of programming than UI components.">
+            <h3 class="quiz-question">Where does ParticleCanvas live in the codebase?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Inside App.tsx along with all other views</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In its own file: src/ParticleCanvas.tsx</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>In a separate npm package called react-particles</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">The Quiz Engine</h1>
+      <p class="module-subtitle">Follow a question from the data file to your screen.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: Where Questions Live -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Question Vault</h2>
+        <p>Every question lives in <code style="font-family: var(--font-mono);">src/constants.ts</code> as structured data. Here's what one looks like:</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">const</span> KPOP_TRIVIA: MCTriviaQuestion[] = [</span>
+<span class="code-line">  {</span>
+<span class="code-line">    <span class="code-property">id</span>: <span class="code-number">1</span>,</span>
+<span class="code-line">    <span class="code-property">question</span>: <span class="code-string">"What was the name of the singing</span></span>
+<span class="code-line"><span class="code-string">      (and demon-hunting) group that Celine was part of?"</span>,</span>
+<span class="code-line">    <span class="code-property">options</span>: [</span>
+<span class="code-line">      <span class="code-string">"Moonlight Maidens"</span>,</span>
+<span class="code-line">      <span class="code-string">"Sunlight Sisters"</span>,</span>
+<span class="code-line">      <span class="code-string">"Starlight Songbirds"</span>,</span>
+<span class="code-line">      <span class="code-string">"Twilight Trio"</span></span>
+<span class="code-line">    ],</span>
+<span class="code-line">    <span class="code-property">answer</span>: <span class="code-string">"Sunlight Sisters"</span>,</span>
+<span class="code-line">    <span class="code-property">evidence</span>: <span class="code-string">"From the opening scene..."</span>,</span>
+<span class="code-line">  },</span>
+<span class="code-line">];</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Export a constant named KPOP_TRIVIA that is an array of questions.</p>
+              <p class="tl">Each question is an object with these fields:</p>
+              <p class="tl">A number to identify this question.</p>
+              <p class="tl">The question text — what the user reads.</p>
+              <p class="tl">(continuation of question text — code wraps naturally)</p>
+              <p class="tl">The answer choices shown as buttons.</p>
+              <p class="tl">Wrong answer option 1.</p>
+              <p class="tl">The correct answer.</p>
+              <p class="tl">Wrong answer option 3.</p>
+              <p class="tl">Wrong answer option 4.</p>
+              <p class="tl">Close the options array.</p>
+              <p class="tl">The correct answer — the app compares this to what the user clicked.</p>
+              <p class="tl">An optional citation showing where this info comes from.</p>
+              <p class="tl">End of this question object.</p>
+              <p class="tl">End of the array (more questions would follow).</p>
+            </div>
+          </div>
+        </div>
+        <p>There are <strong>hundreds</strong> of questions across all universes — all stored in this same file, in the same format. The quiz component doesn't care which fandom the questions are from; it just receives an array and renders it.</p>
+      </section>
+
+      <!-- Screen 2: The State Machine -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How a Quiz Flows</h2>
+        <p>Every quiz follows the same three phases. The app tracks where you are with <span class="glossary-term" data-term="React state">React state</span> — variables that remember what's happening right now.</p>
+
+        <!-- Flow Diagram -->
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-number">1</div>
+            <h4>Active</h4>
+            <p>You see the question and options. Nothing selected yet.</p>
+            <p class="flow-step-state">state: <code>selected = null</code></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-number">2</div>
+            <h4>Answered</h4>
+            <p>You pick an option. The app instantly shows correct/incorrect feedback.</p>
+            <p class="flow-step-state">state: <code>selected = "Sunlight Sisters"</code></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-number">3</div>
+            <h4>Finished</h4>
+            <p>All questions answered. Results screen with score, grade, and character.</p>
+            <p class="flow-step-state">state: <code>finished = true</code></p>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> This "state machine" pattern — <em>idle → active → done</em> — is everywhere in software. Wizards, checkout flows, multi-step forms — they all track where you are the same way. Once you recognize this pattern, you can debug any multi-step feature by asking: "What state is it in right now?"
+        </div>
+      </section>
+
+      <!-- Screen 3: The Scoring Logic -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What Happens When You Tap an Answer</h2>
+        <p>Here's the actual code that runs the instant you select an answer option. This is from <code style="font-family: var(--font-mono);">MCQuizView</code> in <code style="font-family: var(--font-mono);">App.tsx</code>.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleSelect = <span class="code-function">(option</span>: string) => {</span>
+<span class="code-line">  <span class="code-keyword">if</span> (selected) <span class="code-keyword">return</span>;</span>
+<span class="code-line">  setSelected(option);</span>
+<span class="code-line">  <span class="code-keyword">const</span> isCorrect = option.toLowerCase()</span>
+<span class="code-line">    === q.answer.toLowerCase();</span>
+<span class="code-line">  setScores(prev => ({</span>
+<span class="code-line">    ...prev,</span>
+<span class="code-line">    [currentQ]: isCorrect ? <span class="code-string">'correct'</span></span>
+<span class="code-line">      : <span class="code-string">'incorrect'</span></span>
+<span class="code-line">  }));</span>
+<span class="code-line">  <span class="code-keyword">if</span> (isCorrect) {</span>
+<span class="code-line">    playCorrectSound();</span>
+<span class="code-line">  } <span class="code-keyword">else</span> {</span>
+<span class="code-line">    playIncorrectSound();</span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">This function runs when you tap an answer option.</p>
+              <p class="tl">If you already answered this question, ignore the tap (prevent double-answering).</p>
+              <p class="tl">Remember the option you picked (so the UI can highlight it).</p>
+              <p class="tl">Check: does your answer match the correct answer?</p>
+              <p class="tl">(comparing both in lowercase so "a" matches "A").</p>
+              <p class="tl">Save the result for this question number...</p>
+              <p class="tl">(keeping all previous scores intact via the spread operator)...</p>
+              <p class="tl">marking this one as 'correct' if you got it right...</p>
+              <p class="tl">or 'incorrect' if you got it wrong.</p>
+              <p class="tl">If you were right...</p>
+              <p class="tl">play the cheerful "da-ding!" sound.</p>
+              <p class="tl">Otherwise...</p>
+              <p class="tl">play the low "dong" sound.</p>
+              <p class="tl">End of the function.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Badges -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Badges: The Achievement System</h2>
+        <p>After each quiz, the app checks if you've earned any new <span class="glossary-term" data-term="badge">badges</span>. Here's the badge-checking logic — it runs right after the quiz complete screen appears.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> evaluateBadges = <span class="code-function">(</span></span>
+<span class="code-line">  quizId: string, scorePct: number</span>
+<span class="code-line">) => {</span>
+<span class="code-line">  BADGES.forEach(<span class="code-function">badge</span> => {</span>
+<span class="code-line">    <span class="code-keyword">if</span> (unlockedBadgeIds</span>
+<span class="code-line">      .includes(badge.id)) <span class="code-keyword">return</span>;</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">if</span> (badge.id === <span class="code-string">'perfect_score'</span></span>
+<span class="code-line">      && scorePct === <span class="code-number">100</span>) {</span>
+<span class="code-line">      unlocked = <span class="code-keyword">true</span>;</span>
+<span class="code-line">    }</span>
+<span class="code-line">    <span class="code-keyword">if</span> (badge.targetQuiz) {</span>
+<span class="code-line">      <span class="code-keyword">const</span> titleLower = quizId</span>
+<span class="code-line">        .toLowerCase();</span>
+<span class="code-line">      <span class="code-keyword">if</span> (titleLower</span>
+<span class="code-line">        .includes(badge.targetQuiz)) {</span>
+<span class="code-line">        unlocked = <span class="code-keyword">true</span>;</span>
+<span class="code-line">      }</span>
+<span class="code-line">    }</span>
+<span class="code-line">  });</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">This function runs after every quiz completion.</p>
+              <p class="tl">It receives the quiz name and your percentage score.</p>
+              <p class="tl"></p>
+              <p class="tl">Look at every badge defined in the system.</p>
+              <p class="tl">Skip if you already unlocked this badge.</p>
+              <p class="tl">(no duplicate badges!)</p>
+              <p class="tl"></p>
+              <p class="tl">Special case: "Perfectionist" badge.</p>
+              <p class="tl">Only unlock if you got 100%.</p>
+              <p class="tl">Mark as unlocked.</p>
+              <p class="tl"></p>
+              <p class="tl">For universe-specific badges (e.g., "Forks Resident"):</p>
+              <p class="tl">Normalize the quiz name to lowercase...</p>
+              <p class="tl">(to handle case differences).</p>
+              <p class="tl">Does the quiz title contain</p>
+              <p class="tl">the badge's target fandom name?</p>
+              <p class="tl">If yes, you earn it!</p>
+              <p class="tl">(Complete a Twilight quiz → get the Twilight badge)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Data Flow Animation -->
+      <section class="screen animate-in" style="text-align: center;">
+        <h2 class="screen-heading">The Question's Journey</h2>
+        <p>Here's what happens from the moment you select a fandom to the moment you see your score.</p>
+
+        <div class="flow-animation" data-steps='[
+          {"label": "1. constants.ts", "desc": "Questions load from a data file"},
+          {"label": "2. MCQuizView", "desc": "React renders the first question"},
+          {"label": "3. You tap", "desc": "handleSelect() checks answer"},
+          {"label": "4. Sound plays", "desc": "Web Audio API beeps correct/wrong"},
+          {"label": "5. Score updates", "desc": "React state tracks results"},
+          {"label": "6. Quiz done", "desc": "Results screen with grade + badges"}
+        ]' style="margin: var(--space-8) auto; max-width: 600px;">
+          <div class="flow-animation-header">📦 Data Flow</div>
+          <div class="flow-animation-steps"></div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Precisely! The app first checks if you already have the badge (avoiding duplicates), then checks conditions: did you get 100%? Did you complete this fandom's quiz? The evaluateBadges function runs after every quiz completion."
+               data-explanation-wrong="Not quite. The app does check for duplicates (it skips badges you already have), and it evaluates all possible badges at once after each quiz. The evaluateBadges function runs on quiz completion — not incrementally after each question.">
+            <h3 class="quiz-question">After completing a Harry Potter quiz with 90%, which badges could you earn?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Only Hogwarts Student (universe badge), because 90% isn't 100%</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>First Blood (if it's your first quiz) AND Hogwarts Student (universe badge)</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Only First Blood, because you need 100% for universe badges</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Correct! The if (selected) return; check at the top of handleSelect prevents multiple answers. The selected state variable is set immediately, and the function exists immediately on subsequent taps — a simple but effective guard."
+               data-explanation-wrong="Actually, there's no timer at all. The guard is simpler: once you tap an option, the selected state variable is set, and handleSelect() returns immediately on subsequent taps because of the if (selected) return; check. Try clicking an option — then try clicking another — nothing happens until you press 'Next Question'.">
+            <h3 class="quiz-question">You notice you can't change your answer after tapping an option. What prevents double-answering in the code?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A 2-second timer that disables the options</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The options are physically removed from the DOM</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>An `if (selected) return;` guard at the top of handleSelect()</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Data &amp; Users</h1>
+      <p class="module-subtitle">How the app remembers you and your scores.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: What is Supabase -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Invisible Backend</h2>
+        <p>Fandom Trivia doesn't run its own server. Instead, it uses <span class="glossary-term" data-term="Supabase">Supabase</span> — a cloud platform that provides both a <span class="glossary-term" data-term="database">database</span> and a login system out of the box. Think of it like renting a storage unit: you don't build the building, you just get a key.</p>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> Most modern apps don't write their own server code — they use services like Supabase, Firebase, or Clerk. Understanding this pattern helps you evaluate costs and capabilities: "Can we do X with Supabase, or do we need a custom backend?"
+        </div>
+
+        <p>The connection to Supabase is just six lines of code:</p>
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">import</span> { createClient } <span class="code-keyword">from</span></span>
+<span class="code-line">  <span class="code-string">'@supabase/supabase-js'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">const</span> supabaseUrl = import.meta.env</span>
+<span class="code-line">  .VITE_SUPABASE_URL;</span>
+<span class="code-line"><span class="code-keyword">const</span> supabaseAnonKey = import.meta.env</span>
+<span class="code-line">  .VITE_SUPABASE_ANON_KEY;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">const</span> supabase = <span class="code-function">createClient</span>(</span>
+<span class="code-line">  supabaseUrl, supabaseAnonKey</span>
+<span class="code-line">);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Import the Supabase client library — the toolbox for talking to our database.</p>
+              <p class="tl"></p>
+              <p class="tl"></p>
+              <p class="tl">Read the database URL from environment variables</p>
+              <p class="tl">(set in .env.local, never committed to GitHub).</p>
+              <p class="tl">Read the anonymous API key — it's not secret,</p>
+              <p class="tl">but it's locked down to only allow certain operations.</p>
+              <p class="tl"></p>
+              <p class="tl">Create the client and export it</p>
+              <p class="tl">so any component can import and use it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Authentication -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Bouncer at the Door</h2>
+        <p>When you click "Login," the app calls Supabase's <span class="glossary-term" data-term="OAuth">OAuth</span> flow — it redirects you to a Google login page, then brings you back with a verified identity. No passwords are stored in the app.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleLogin = <span class="code-keyword">async</span> () => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> { error } = <span class="code-keyword">await</span> supabase.auth</span>
+<span class="code-line">    .signInWithOAuth({</span>
+<span class="code-line">      <span class="code-property">provider</span>: <span class="code-string">'google'</span>,</span>
+<span class="code-line">      <span class="code-property">options</span>: {</span>
+<span class="code-line">        <span class="code-property">redirectTo</span>: <span class="code-string">window.location.origin</span>,</span>
+<span class="code-line">      },</span>
+<span class="code-line">    });</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">An async function — it takes time because we're talking to Google's servers.</p>
+              <p class="tl">Call Supabase's authentication service...</p>
+              <p class="tl">and ask to sign in using OAuth (delegated login).</p>
+              <p class="tl">Use Google as the identity provider.</p>
+              <p class="tl">After successful login,</p>
+              <p class="tl">come back to the same page we started on.</p>
+              <p class="tl"></p>
+              <p class="tl">End of configuration block.</p>
+              <p class="tl">End of the function call.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 Key insight:</strong> The app never sees your password. Google handles the authentication, then sends a <span class="glossary-term" data-term="token">token</span> to Supabase saying "this user is who they say they are." This is called <span class="glossary-term" data-term="OAuth">OAuth</span> — and it's the same system used by "Login with Google" on essentially every major website.
+        </div>
+      </section>
+
+      <!-- Screen 3: Rankings Persistence -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How Scores Survive Page Reloads</h2>
+        <p>When you finish a quiz, your score is saved to a Supabase table called <code style="font-family: var(--font-mono);">scores</code>. This is why the leaderboard doesn't reset when you refresh — it's stored in the cloud.</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">💾</div>
+            <h4>Saving</h4>
+            <p>After quiz complete, MCQuizView calls <code>.insert()</code> to add a row to the <code>scores</code> table with your user ID, quiz name, score, and total.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">📡</div>
+            <h4>Reading</h4>
+            <p>RankingsView calls <code>.select().order('score', 'desc')</code> to fetch top scores, grouped by quiz. Only the top 10 per quiz are shown.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">👤</div>
+            <h4>User Identity</h4>
+            <p>Each score is linked to a <code>user_id</code>. When fetched, it joins with the <code>profiles</code> table to get the username.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Code Translation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Fetching the Leaderboard</h2>
+        <p>Here's the actual code from <code style="font-family: var(--font-mono);">RankingsView</code> that pulls scores from the database.</p>
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> { data, error } = <span class="code-keyword">await</span> supabase</span>
+<span class="code-line">  .from(<span class="code-string">'scores'</span>)</span>
+<span class="code-line">  .select(`</span>
+<span class="code-line">    id, score, total, quiz_id,</span>
+<span class="code-line">    created_at, user_id,</span>
+<span class="code-line">    profiles(username)</span>
+<span class="code-line">  `)</span>
+<span class="code-line">  .order(<span class="code-string">'score'</span>, { <span class="code-property">ascending</span>: <span class="code-keyword">false</span> });</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Ask Supabase for data (await = wait for the network).</p>
+              <p class="tl">From the "scores" table (like a spreadsheet tab).</p>
+              <p class="tl">Request these columns (fields):</p>
+              <p class="tl">unique row ID, numeric score, max total, quiz name.</p>
+              <p class="tl">timestamp, user ID (foreign key)...</p>
+              <p class="tl">and the username from the linked profiles table.</p>
+              <p class="tl">Close the column selection.</p>
+              <p class="tl">Sort by score, highest first (descending).</p>
+              <p class="tl">The #1 scorer is the first row returned.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Group Chat - App ↔ Supabase -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Conversation Behind the Scenes</h2>
+        <p>Here's what happens between the app and Supabase when a user takes a quiz.</p>
+
+        <div class="chat-container" id="chat-supabase">
+          <div class="chat-header">☁️ App ↔ Supabase</div>
+          <div class="chat-messages">
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Hey Supabase, this user wants to log in with Google."
+              </div>
+              <span class="chat-timestamp">handleLogin()</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Got it. Redirecting to Google's login page..."
+              </div>
+              <span class="chat-timestamp">OAuth redirect</span>
+            </div>
+            <div class="chat-message actor-4">
+              <div class="chat-bubble">
+                <strong>Google:</strong> "User verified. Here's their identity token."
+              </div>
+              <span class="chat-timestamp">Callback</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Token received. User session active."
+              </div>
+              <span class="chat-timestamp">session created</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Quiz done! Save score: 8/10, Harry Potter."
+              </div>
+              <span class="chat-timestamp">supabase.from('scores').insert()</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Score saved. Row ID: abc123."
+              </div>
+              <span class="chat-timestamp">201 Created</span>
+            </div>
+            <div class="chat-message actor-2">
+              <div class="chat-bubble">
+                <strong>App:</strong> "Show me the leaderboard, highest scores first."
+              </div>
+              <span class="chat-timestamp">.order('score', {ascending: false})</span>
+            </div>
+            <div class="chat-message actor-1">
+              <div class="chat-bubble">
+                <strong>Supabase:</strong> "Here are the top scores, joined with usernames."
+              </div>
+              <span class="chat-timestamp">JSON response</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly! The app uses Supabase's OAuth — it delegates authentication to Google, so the app never handles passwords at all. The user clicks 'Login', gets redirected to Google, and comes back with a verified token."
+               data-explanation-wrong="Not quite. The app uses Supabase Auth with Google as the provider. Users never create an app-specific password — they authenticate through Google, and Supabase handles the token verification. Think of it as 'Login with Google' — the same pattern used everywhere.">
+            <h3 class="quiz-question">When a user logs into Fandom Trivia, where does the password verification happen?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Inside App.tsx — the app checks a local user database</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Supabase stores the passwords and checks them directly</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Google handles the login — Supabase only verifies the returned token</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Correct! The VITE_ prefix tells Vite to expose them to the browser. They're set in .env.local and read via import.meta.env.VITE_SUPABASE_URL. The 'anon' key is safe to expose because Row Level Security on Supabase restricts what anonymous clients can do."
+               data-explanation-wrong="Actually, Supabase uses a client-friendly design: the 'anon key' is meant to be public and is safe in the frontend. What protects the data is Row Level Security (RLS) policies on the database — the key alone isn't enough to do damage. The VITE_ prefix is required by Vite for environment variables that should be exposed to the browser.">
+            <h3 class="quiz-question">The supabaseClient.ts file exposes the database URL and anon key in the browser. Why is this safe?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Row Level Security (RLS) on Supabase restricts what the anon key can do</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The keys are hashed and can't be read by users</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>They're encrypted at build time by Vite</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">Visual &amp; Audio Polish</h1>
+      <p class="module-subtitle">The particle effects, sounds, and animations that make it feel alive.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: ParticleCanvas -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Floating Magic</h2>
+        <p>You know those subtle floating dots that drift across the landing page? That's a <span class="glossary-term" data-term="Canvas">HTML Canvas</span> — a pixel-level drawing board that React doesn't control. It's implemented as a separate component called <code style="font-family: var(--font-mono);">ParticleCanvas</code>.</p>
+
+        <p>It has two <strong>modes</strong>:</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🌫️</div>
+            <h4>Ambient Mode</h4>
+            <p>35 tiny glowing circles drift upward, fading in and out with a twinkle effect. Used on the landing page behind the hero section (<code style="font-family: var(--font-mono);">ParticleCanvas mode="ambient"</code>).</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🎉</div>
+            <h4>Celebration Mode</h4>
+            <p>100 confetti-style particles burst from center, affected by simulated gravity, drag, and rotation. Used after a quiz is completed. The confetti colors change per universe — blue/silver for Twilight, neon pink/purple for K-Pop.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: How particles work -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Inside a Particle</h2>
+        <p>Each particle is just a JavaScript object with properties like <code style="font-family: var(--font-mono);">x</code>, <code style="font-family: var(--font-mono);">y</code>, <code style="font-family: var(--font-mono);">vx</code> (velocity X), and <code style="font-family: var(--font-mono);">life</code>. Every frame, a loop updates every particle and redraws the canvas.</p>
+
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">interface</span> Particle {</span>
+<span class="code-line">  x: number;       <span class="code-comment">// horizontal position</span></span>
+<span class="code-line">  y: number;       <span class="code-comment">// vertical position</span></span>
+<span class="code-line">  vx: number;      <span class="code-comment">// speed on X axis</span></span>
+<span class="code-line">  vy: number;      <span class="code-comment">// speed on Y axis</span></span>
+<span class="code-line">  size: number;    <span class="code-comment">// how big (radius in pixels)</span></span>
+<span class="code-line">  opacity: number; <span class="code-comment">// how visible</span></span>
+<span class="code-line">  color: string;   <span class="code-comment">// color prefix (e.g. 'rgba(255,215,0,')</span></span>
+<span class="code-line">  life: number;    <span class="code-comment">// how many frames it's been alive</span></span>
+<span class="code-line">  maxLife: number; <span class="code-comment">// when it should disappear</span></span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Think of a particle as a firefly:</p>
+              <p class="tl">where it is on the screen.</p>
+              <p class="tl">which direction it's drifting.</p>
+              <p class="tl">how fast it's moving sideways/up.</p>
+              <p class="tl">how big it appears.</p>
+              <p class="tl">how bright / faded it is.</p>
+              <p class="tl">what color it glows.</p>
+              <p class="tl">how long it has existed (in frames at 60fps).</p>
+              <p class="tl">total lifespan before it "dies" and respawns.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why Canvas and not React?</strong> React is great for UI, but updating hundreds of particles every <sup>1</sup>/<sub>60</sub> of a second would slow it down. Canvas draws directly to the screen — no React overhead. The component uses <code style="font-family: var(--font-mono);">useRef</code> to hold the canvas and particles, <code style="font-family: var(--font-mono);">useEffect</code> to run the animation loop, and <code style="font-family: var(--font-mono);">cancelAnimationFrame</code> to clean up when the component unmounts.
+        </div>
+      </section>
+
+      <!-- Screen 3: Sound Effects -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The "Da-Ding" and the "Dong"</h2>
+        <p>Fandom Trivia creates sound effects without any audio files — it uses the <span class="glossary-term" data-term="Web Audio API">Web Audio API</span> to synthesize tones in real time. Two functions handle the sounds:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> playCorrectSound = () => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> ctx = <span class="code-keyword">new</span> AudioContext();</span>
+<span class="code-line">  <span class="code-keyword">const</span> osc = ctx.<span class="code-function">createOscillator</span>();</span>
+<span class="code-line">  <span class="code-keyword">const</span> gain = ctx.<span class="code-function">createGain</span>();</span>
+<span class="code-line">  osc.<span class="code-function">connect</span>(gain);</span>
+<span class="code-line">  gain.<span class="code-function">connect</span>(ctx.destination);</span>
+<span class="code-line">  osc.type = <span class="code-string">'sine'</span>;</span>
+<span class="code-line">  <span class="code-comment">// "da-ding!" ascending tones</span></span>
+<span class="code-line">  osc.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">523.25</span>, ctx.currentTime);       <span class="code-comment">// C5</span></span>
+<span class="code-line">  osc.frequency.<span class="code-function">setValueAtTime</span>(<span class="code-number">659.25</span>, ctx.currentTime + <span class="code-number">0.1</span>); <span class="code-comment">// E5</span></span>
+<span class="code-line">  gain.gain.<span class="code-function">linearRampToValueAtTime</span>(<span class="code-number">0.1</span>, ctx.currentTime + <span class="code-number">0.05</span>);</span>
+<span class="code-line">  osc.<span class="code-function">start</span>(ctx.currentTime);</span>
+<span class="code-line">  osc.<span class="code-function">stop</span>(ctx.currentTime + <span class="code-number">0.3</span>);</span>
+<span class="code-line">};</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">// For incorrect: single low A3 tone (220Hz)</span></span>
+<span class="code-line"><span class="code-comment">// slower decay, deeper "dong" feeling</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Create an audio processing context (like a mini mixing board).</p>
+              <p class="tl">Create an oscillator — the thing that makes a tone.</p>
+              <p class="tl">Create a gain node — controls volume.</p>
+              <p class="tl">Wire them together: oscillator → volume → speakers.</p>
+              <p class="tl">Use a clean sine wave (no harsh harmonics).</p>
+              <p class="tl"></p>
+              <p class="tl">Play C5 (523Hz), then 0.1s later jump to E5 (659Hz) —</p>
+              <p class="tl">that rising interval makes the "correct!" feeling.</p>
+              <p class="tl">Fade in smoothly to 10% volume over 0.05s.</p>
+              <p class="tl">Start playing now.</p>
+              <p class="tl">Stop after 0.3 seconds.</p>
+              <p class="tl"></p>
+              <p class="tl">Incorrect uses a single low A3 (220Hz)</p>
+              <p class="tl">with a long 0.8s decay — the "wrong" dong.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 No audio files needed!</strong> This is a neat trick for vibe coders: you can create feedback sounds entirely in code. The Web Audio API is supported in all modern browsers. No loading MP3s, no file management, just ~30 lines of code per sound.
+        </div>
+      </section>
+
+      <!-- Screen 4: Framer Motion -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Secret Sauce: Framer Motion</h2>
+        <p>Fandom Trivia uses <span class="glossary-term" data-term="Framer Motion">Framer Motion</span> (now part of <span class="glossary-term" data-term="Motion">Motion</span>) for nearly every animation. Instead of writing CSS keyframes manually, the app uses React-friendly animation components.</p>
+
+        <p>The three most common patterns:</p>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🚪</div>
+            <h4>Page Transitions</h4>
+            <p>Every view wraps in <code style="font-family: var(--font-mono);">&lt;motion.div initial=&#123;{ opacity: 0 }} animate=&#123;{ opacity: 1 }} exit=&#123;{ opacity: 0 }}&gt;</code> — pages fade in when they mount and fade out when they leave.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🖱️</div>
+            <h4>Hover Effects</h4>
+            <p>Universe cards use <code style="font-family: var(--font-mono);">whileHover={{ scale: 1.03, y: -4 }}</code> and <code style="font-family: var(--font-mono);">whileTap={{ scale: 0.98 }}</code> — cards subtly lift when you hover and press down when clicked.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">🎯</div>
+            <h4>Spring Animations</h4>
+            <p>Results screen uses <code style="font-family: var(--font-mono);">transition=&#123;{ type: 'spring', stiffness: 200, damping: 20 }}</code> — a bouncy, natural-feeling scale-in for the quiz complete card.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Badge Evaluation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Badges: The Reward System</h2>
+        <p>When a user finishes a quiz, the app runs <code style="font-family: var(--font-mono);">evaluateBadges()</code>. This function checks three things to award special titles:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> evaluateBadges = (</span>
+<span class="code-line">  quizId: string,</span>
+<span class="code-line">  correctCount: number,</span>
+<span class="code-line">  total: number</span>
+<span class="code-line">) => {</span>
+<span class="code-line">  <span class="code-keyword">const</span> badges = [];</span>
+<span class="code-line">  <span class="code-keyword">if</span> (correctCount === total)</span>
+<span class="code-line">    badges.<span class="code-function">push</span>({ <span class="code-property">type</span>: <span class="code-string">'perfect'</span>, });</span>
+<span class="code-line">  <span class="code-keyword">const</span> universeBadge = BADGES</span>
+<span class="code-line">    .<span class="code-function">find</span>(b => quizId</span>
+<span class="code-line">      .<span class="code-function">toLowerCase</span>()</span>
+<span class="code-line">      .<span class="code-function">includes</span>(b.universe));</span>
+<span class="code-line">  <span class="code-keyword">if</span> (universeBadge)</span>
+<span class="code-line">    badges.<span class="code-function">push</span>(universeBadge);</span>
+<span class="code-line">  <span class="code-keyword">return</span> badges;</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">A function that checks if the player earned special rewards.</p>
+              <p class="tl">Which quiz was taken.</p>
+              <p class="tl">How many they got right.</p>
+              <p class="tl">Total questions.</p>
+              <p class="tl"></p>
+              <p class="tl">If they got EVERY question right → plus a "Perfect Score!" badge.</p>
+              <p class="tl">No duplicates allowed.</p>
+              <p class="tl">Look up the badge config for this universe...</p>
+              <p class="tl">(e.g., "Twilight" → vampire badge).</p>
+              <p class="tl"></p>
+              <p class="tl">If a matching badge exists → add it.</p>
+              <p class="tl">Return the collection of earned badges.</p>
+              <p class="tl">These display on the quiz complete screen.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🎮 Game design pattern:</strong> Badges are a simple but powerful motivation tool. This pattern — check conditions, award a title, display it — is the same logic used by Xbox Achievements, Duolingo streaks, and GitHub contribution badges. As a vibe coder, you can copy this pattern into any app that needs a reward system.
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check Your Understanding</h2>
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Correct! While React updates DOM elements efficiently, redrawing hundreds of particles 60 times per second triggers too many React reconciliations. Canvas bypasses React entirely and paints pixels directly — much faster for this use case."
+               data-explanation-wrong="Not quite. The animation loop (<code style='font-family: var(--font-mono);'>requestAnimationFrame</code>) runs 60 times per second. If each particle was a React component, that would mean hundreds of state updates per frame. Canvas draws directly to pixels, skipping React entirely.">
+            <h3 class="quiz-question">Why does ParticleCanvas use HTML Canvas instead of rendering particle effects with React components?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>React can't draw circles — only Canvas can</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Canvas avoids React's reconciliation overhead for 60fps animation loops</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Framer Motion doesn't support particle effects</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly right! The 'correct' sound is two ascending notes (C5→E5) creating a rising 'da-ding!' interval, while 'incorrect' is a single lower note (A3) with a long decay — the classic 'dong.' The app synthesizes these tones in real time using the Web Audio API, no audio files needed."
+               data-explanation-wrong="Not quite. The sounds are generated with oscillators (tone generators), not pre-recorded files. The correct sound uses two ascending frequencies that create a cheerful rising interval. The wrong sound is a single low frequency with a longer decay. Both are synthesized in real-time by the browser.">
+            <h3 class="quiz-question">How does Fandom Trivia create its correct/incorrect sound effects?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It loads short MP3 files from the /sounds folder</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It uses CSS audio keyframes</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It synthesizes tones with the Web Audio API — oscillators and gain nodes</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-6" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">When Things Break</h1>
+      <p class="module-subtitle">Error handling, edge cases, loading states, and graceful degradation.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The Three States -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Every UI Has Three Faces</h2>
+        <p>Throughout Fandom Trivia, every piece of dynamic data follows a pattern you'll see in almost every modern app: the <span class="glossary-term" data-term="Loading State">loading state</span>, the success state, and the <span class="glossary-term" data-term="Error State">error state</span>.</p>
+
+        <p>The <code style="font-family: var(--font-mono);">HistoryModal</code> component demonstrates this pattern clearly — it starts every data fetch with the same boilerplate:</p>
+
+        <div class="translation-block animate-in" style="margin-top: var(--space-4);">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> [history, setHistory] = useState&lt;any[]&gt;([]);</span>
+<span class="code-line"><span class="code-keyword">const</span> [loading, setLoading] = useState(<span class="code-keyword">true</span>);</span>
+<span class="code-line"><span class="code-keyword">const</span> [error, setError] = useState&lt;string | <span class="code-keyword">null</span>&gt;(<span class="code-keyword">null</span>);</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">State #1: Storage for the actual data (starts empty).</p>
+              <p class="tl">State #2: Is it still fetching? (starts as "yes, loading").</p>
+              <p class="tl">State #3: Did something go wrong? (starts as "no error").</p>
+            </div>
+          </div>
+        </div>
+
+        <p>And it's rendered as a three-way branch:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">{loading ? (</span>
+<span class="code-line">  &lt;div&gt;Loading history...&lt;/div&gt;</span>
+<span class="code-line">) : error ? (</span>
+<span class="code-line">  &lt;div&gt;Error: {error}&lt;/div&gt;</span>
+<span class="code-line">) : (</span>
+<span class="code-line">  &lt;div&gt;{/* render the data */}&lt;/div&gt;</span>
+<span class="code-line">)}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If still loading... show a spinner or pulsing text.</p>
+              <p class="tl"></p>
+              <p class="tl">If there was an error... show a red error message.</p>
+              <p class="tl"></p>
+              <p class="tl">Otherwise (success!)...</p>
+              <p class="tl">show the actual content.</p>
+              <p class="tl"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>🧠 Why this matters:</strong> This three-state pattern (<code style="font-family: var(--font-mono);">loading → error → data</code>) is the backbone of every data-fetching UI. As a vibe coder, always think: "What does my user see while waiting? What if the network fails? What does success look like?" If you don't handle all three, the UI can freeze or show broken data silently.
+        </div>
+      </section>
+
+      <!-- Screen 2: Empty states and not found -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Empty State</h2>
+        <p>What happens if nobody has taken a quiz yet? The leaderboard gracefully handles zero data:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line">) : scores.length === 0 ? (</span>
+<span class="code-line">  &lt;div className="text-center py-20 text-slate-400 font-bold"&gt;</span>
+<span class="code-line">    No scores recorded yet. Be the first!</span>
+<span class="code-line">  &lt;/div&gt;</span>
+<span class="code-line">) : (</span>
+<span class="code-line">  &lt;div&gt;{/* render rankings table */}&lt;/div&gt;</span>
+<span class="code-line">)}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If the scores list is empty...</p>
+              <p class="tl">show an encouraging message instead of a blank page.</p>
+              <p class="tl">"No scores recorded yet. Be the first!"</p>
+              <p class="tl">invites engagement rather than confusing the user.</p>
+              <p class="tl">Otherwise (scores exist!)...</p>
+              <p class="tl">show the full leaderboard.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-cards" style="margin-top: var(--space-6);">
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-info-light); color: var(--color-info);">🟡</div>
+            <h4>Loading → Pulse</h4>
+            <p>"Loading top scores..." with <code style="font-family: var(--font-mono);">animate-pulse</code> CSS — a gentle breathing animation that signals activity without a spinner.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: #FDF5E0; color: #D4A843;">🔴</div>
+            <h4>Error → Red Text</h4>
+            <p>"Failed to load rankings: {error}" in <code style="font-family: var(--font-mono);">text-red-400</code>. Shows the actual error message so developers (or observant users) know what broke.</p>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-card-icon" style="background: var(--color-success-light); color: var(--color-success);">⚪</div>
+            <h4>Empty → Encouragement</h4>
+            <p>"No scores recorded yet. Be the first!" — turns a negative (no data) into a call to action.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Graceful error handling -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Graceful Degradation Everywhere</h2>
+        <p>Fandom Trivia is full of quiet failsafes — features that don't crash the app even when they fail individually:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">// Sound: wrapped in try/catch</span></span>
+<span class="code-line"><span class="code-keyword">const</span> playCorrectSound = () => {</span>
+<span class="code-line">  <span class="code-keyword">try</span> {</span>
+<span class="code-line">    <span class="code-keyword">const</span> AudioContext = <span class="code-keyword">window</span>.AudioContext</span>
+<span class="code-line">      || (<span class="code-keyword">window</span> <span class="code-keyword">as any</span>).webkitAudioContext;</span>
+<span class="code-line">    <span class="code-keyword">if</span> (!AudioContext) <span class="code-keyword">return</span>; <span class="code-comment">// silents fail silently</span></span>
+<span class="code-line">    <span class="code-comment">// ...build and play the tone...</span></span>
+<span class="code-line">  } <span class="code-keyword">catch</span> (e) {</span>
+<span class="code-line">    console.<span class="code-function">error</span>(<span class="code-string">'Audio playback failed:'</span>, e);</span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">// Share: checks browser support first</span></span>
+<span class="code-line"><span class="code-keyword">if</span> (navigator.share) {</span>
+<span class="code-line">  <span class="code-keyword">await</span> navigator.share({ title, text });</span>
+<span class="code-line">} <span class="code-keyword">else</span> <span class="code-keyword">if</span> (navigator.clipboard) {</span>
+<span class="code-line">  <span class="code-keyword">await</span> navigator.clipboard.writeText(text);</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-comment">// If neither works, nothing crashes</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Sound effects are inside a safety net — if audio fails, the app keeps working.</p>
+              <p class="tl">Check if the browser even supports the Web Audio API.</p>
+              <p class="tl">(Older browsers use a different prefix: webkitAudioContext).</p>
+              <p class="tl">If audio isn't supported at all → just exit silently. No crash.</p>
+              <p class="tl"></p>
+              <p class="tl">If any step of audio creation throws an error → log it, don't crash.</p>
+              <p class="tl"></p>
+              <p class="tl"></p>
+              <p class="tl">Sharing uses "feature detection":</p>
+              <p class="tl">Can this browser use the native Share API?</p>
+              <p class="tl">No? Can it copy to clipboard?</p>
+              <p class="tl">No? Just do nothing — no error required.</p>
+              <p class="tl">The user may need to manually share the link.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Username validation -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Edge Case: Username Validation</h2>
+        <p>When a user sets their username, the app validates <em>before</em> sending data to the server. This is called <span class="glossary-term" data-term="Validation">frontend validation</span> — catching errors early so the user doesn't wait for a network round-trip.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">if</span> (username.length &lt; <span class="code-number">3</span>) {</span>
+<span class="code-line">  <span class="code-function">setError</span>(<span class="code-string">'Username must be at least 3 characters'</span>);</span>
+<span class="code-line">  <span class="code-keyword">return</span>;</span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-comment">// ... send to Supabase ...</span></span>
+<span class="code-line"><span class="code-keyword">if</span> (upsertError.message.includes(<span class="code-string">'duplicate'</span>)) {</span>
+<span class="code-line">  <span class="code-function">setError</span>(<span class="code-string">'Username already taken'</span>);</span>
+<span class="code-line">} <span class="code-keyword">else</span> {</span>
+<span class="code-line">  <span class="code-function">setError</span>(upsertError.message);</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Check #1: Is the username at least 3 letters?</p>
+              <p class="tl">No? Show an error instantly — don't even contact the server.</p>
+              <p class="tl">Stop here until the user fixes it.</p>
+              <p class="tl"></p>
+              <p class="tl">Check #2 (server-side): Is this username already taken?</p>
+              <p class="tl">Supabase returns a "duplicate" error code (23505).</p>
+              <p class="tl">Show a friendly "already taken" message instead of a cryptic error.</p>
+              <p class="tl">For any other server error, show the raw message.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-box">
+          <strong>💡 Layered validation:</strong> Client-side checks are fast and friendly (no network needed). Server-side checks are authoritative (they enforce the database rules). Good apps use both — catch what you can on the frontend, but never trust the frontend as your only gate.
+        </div>
+      </section>
+
+      <!-- Screen 5: The "???" Answer (Fun Edge Case) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The Mystery Question (A Deliberate Edge Case)</h2>
+        <p>Some trivia questions don't have a known answer — marked with <code style="font-family: var(--font-mono);">answer: '???'</code>. The app handles this as a special case: if the answer is unknown, <em>any</em> selection is marked correct, because there's no wrong answer to a question nobody's confirmed.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code>
+<span class="code-line"><span class="code-keyword">const</span> handleSelect = (option: string) => {</span>
+<span class="code-line">  <span class="code-keyword">if</span> (selected) <span class="code-keyword">return</span>; <span class="code-comment">// already answered — ignore click</span></span>
+<span class="code-line">  <span class="code-function">setSelected</span>(option);</span>
+<span class="code-line">  <span class="code-keyword">if</span> (isUnknown) {</span>
+<span class="code-line">    <span class="code-comment">// No known answer — auto-mark correct (fun mode)</span></span>
+<span class="code-line">    <span class="code-function">setScores</span>(prev => ({ ...prev, [currentQ]: <span class="code-string">'correct'</span> }));</span>
+<span class="code-line">    <span class="code-function">playCorrectSound</span>();</span>
+<span class="code-line">  } <span class="code-keyword">else</span> {</span>
+<span class="code-line">    <span class="code-keyword">const</span> isCorrect = option.toLowerCase()</span>
+<span class="code-line">      === q.answer.toLowerCase();</span>
+<span class="code-line">    <span class="code-comment">// ...mark correct or incorrect...</span></span>
+<span class="code-line">  }</span>
+<span class="code-line">};</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">If the user already picked an answer → ignore the click (prevents double-answering).</p>
+              <p class="tl">Record the selected option for highlighting.</p>
+              <p class="tl">If this is a mystery question (answer is "???")...</p>
+              <p class="tl">nobody actually knows the right answer!</p>
+              <p class="tl">So any choice gets a point — it's just for fun.</p>
+              <p class="tl">Play the happy sound anyway.</p>
+              <p class="tl"></p>
+              <p class="tl">Normal question: compare</p>
+              <p class="tl">the chosen answer to the correct one</p>
+              <p class="tl">(case-insensitive, so "BELLA" matches "bella").</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6: App crash prevention -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Defensive Patterns: The Real Story</h2>
+        <p>The Fandom Trivia codebase uses several <strong>defensive patterns</strong> to prevent the entire app from crashing when something unexpected happens. Here's the full toolkit:</p>
+
+        <div class="visual-list" style="margin-top: var(--space-6);">
+          <div class="visual-list-item">
+            <div class="visual-list-number">1</div>
+            <div class="visual-list-content">
+              <strong>Every try/catch has a fallback</strong>
+              <p>Sound fails? Log and ignore. Sharing fails? Silently catch. Profile fetch fails? Set <code style="font-family: var(--font-mono);">setUser(null)</code> — the login button re-appears gracefully.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">2</div>
+            <div class="visual-list-content">
+              <strong>Feature detection before API calls</strong>
+              <p><code style="font-family: var(--font-mono);">if (navigator.share)</code>, <code style="font-family: var(--font-mono);">if (navigator.clipboard)</code>, <code style="font-family: var(--font-mono);">if (!AudioContext) return</code> — the browser tells you what it can do.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">3</div>
+            <div class="visual-list-content">
+              <strong>Default fallback values</strong>
+              <p><code style="font-family: var(--font-mono);">||</code> chains everywhere: <code style="font-family: var(--font-mono);">data.display_name || data.name || ''</code> — if one field is missing, try the next.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">4</div>
+            <div class="visual-list-content">
+              <strong>Rendering guards</strong>
+              <p><code style="font-family: var(--font-mono);">scores.length === 0</code> check before rendering the leaderboard prevents <code style="font-family: var(--font-mono);">.map()</code> on an undefined array.</p>
+            </div>
+          </div>
+          <div class="visual-list-item">
+            <div class="visual-list-number">5</div>
+            <div class="visual-list-content">
+              <strong>Modals only render when triggered</strong>
+              <p>Username modal, history modal, badges modal — all conditionally rendered (<code style="font-family: var(--font-mono);">{showUsernameModal && &lt;UsernameModal ...&gt;}</code>). They don't exist in the DOM until needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What You've Learned</h2>
+        <div class="summary-cards">
+          <div class="summary-card">
+            <h4>Module 1</h4>
+            <p>Fandom Trivia is a React SPA with 5 universes and a quiz engine that rewards fans.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 2</h4>
+            <p>The app is built from components — views, modals, navbar, particle canvas — all orchestrated by React Router.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 3</h4>
+            <p>The quiz engine uses a state machine pattern: select → evaluate → advance → finish. Data lives in constants.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 4</h4>
+            <p>Supabase provides the database and auth. Users log in with Google, scores persist in the cloud.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 5</h4>
+            <p>Particle effects on Canvas, synthesized audio via Web Audio API, animations with Framer Motion, and a badge reward system.</p>
+          </div>
+          <div class="summary-card">
+            <h4>Module 6</h4>
+            <p>Every data fetch handles three states: loading, error, and empty. try/catch blocks prevent crashes. Feature detection keeps the app working on older browsers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Final Check</h2>
+        <div class="quiz-container" id="quiz-module6">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Correct! Every data-fetching component uses a three-way conditional: loading → show a pulse animation, error → show in red text, success → render the data. This ensures the user is never staring at a frozen screen."
+               data-explanation-wrong="Not quite. The pattern used in Fandom Trivia is: loading state (pulsing text) → error state (red error message) → data rendering. This is the classic 'three states of any UI' pattern from React best practices. Empty data is handled as a sub-case of the data rendering (showing an encouraging message).">
+            <h3 class="quiz-question">What pattern does Fandom Trivia use for every data-fetching component?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Try the fetch, and if it fails, show a generic "Something went wrong" page</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>loading → error → data: a three-way conditional that handles every state</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Everything runs synchronously — if it breaks, the page reloads</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Exactly! The '???' answer means nobody has confirmed the correct answer. Instead of penalizing the user for a question even the developers aren't sure about, the app treats any selection as correct — turning a potential frustration into a fun mystery moment."
+               data-explanation-wrong="Actually, '???' questions are a deliberate design choice — they're trivia questions where the true answer hasn't been confirmed. Rather than forcing the user to guess wrong, the app auto-marks any answer as correct. If the user selected an option and it was already marked correct, don't worry — you didn't miss anything, the app intentionally made every answer count.">
+            <h3 class="quiz-question">Why does the app auto-mark questions with <code style='font-family: var(--font-mono);'>answer: '???'</code> as correct?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It's a deliberate edge case — no confirmed answer exists, so any choice gets a point</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It's a bug that hasn't been fixed yet — the developer forgot to mark correct answers</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The app treats it as a trick question and expects the user to type "I don't know"</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

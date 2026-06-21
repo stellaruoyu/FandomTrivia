@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 — Quiz Content & UI Polish | FandomTrivia</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.7; padding: 2rem; }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 2.2rem; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  .meta { color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid #1e293b; padding-bottom: 1rem; }
+  h2 { color: #f59e0b; margin: 2rem 0 0.8rem; font-size: 1.4rem; }
+  h3 { color: #fbbf24; margin: 1.5rem 0 0.5rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  code { background: #1e293b; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; color: #fbbf24; }
+  pre { background: #1e293b; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border: 1px solid #334155; }
+  pre code { background: none; padding: 0; color: #e2e8f0; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+  .card h3 { margin-top: 0; }
+  .tag { display: inline-block; background: #78350f; color: #fbbf24; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; margin: 0.2rem; }
+  .commit { color: #94a3b8; font-size: 0.85rem; font-family: monospace; margin-bottom: 0.3rem; }
+  .commit::before { content: "› "; color: #22d3ee; }
+  .nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .nav a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid #334155; }
+  .nav a:hover { background: #334155; color: #e2e8f0; }
+  .highlight { border-left: 3px solid #f59e0b; padding-left: 1rem; background: #1e293b80; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .diagram { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-family: monospace; white-space: pre; overflow-x: auto; color: #94a3b8; }
+  @media (max-width: 600px) { body { padding: 1rem; } h1 { font-size: 1.6rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <a href="weekly.md">← Weekly Log</a>
+    <a href="week-01.html">Week 1</a>
+    <a href="week-02.html">Week 2</a>
+    <a href="week-03.html">Week 3</a>
+    <a href="week-04.html">Week 4</a>
+    <a href="week-05.html">Week 5</a>
+    <a href="week-06.html">Week 6</a>
+  </div>
+
+  <h1>Week 2 &mdash; Quiz Content &amp; UI Polish</h1>
+  <div class="meta">February 22&ndash;23, 2026 &middot; 6 commits &middot; <span class="tag">MC Quiz</span> <span class="tag">Components</span> <span class="tag">UI/UX</span> <span class="tag">Content</span></div>
+
+  <p>With the scaffold in place, Week 2 focused on what makes a trivia app worth using: <strong>great questions</strong> and <strong>polished UI</strong>. This week saw the creation of the <code>MCQuizView</code> component &mdash; the single most reused piece of UI in the app.</p>
+
+  <h2>Key Concepts</h2>
+
+  <div class="card">
+    <h3>Generic Multiple-Choice Quiz Component</h3>
+    <p>The <code>MCQuizView</code> was designed as a <strong>generic, reusable component</strong>. Instead of hardcoding each quiz, the component accepts a questions array and handles all interaction logic.</p>
+    <pre><code>interface MCQuizViewProps {
+  questions: Question[];
+  onComplete: (score: number, total: number) => void;
+}
+
+function MCQuizView({ questions, onComplete }: MCQuizViewProps) {
+  const [current, setCurrent] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+
+  const handleAnswer = (index: number) => {
+    if (answered) return;
+    if (index === questions[current].correct) setScore(s => s + 1);
+    setAnswered(true);
+  };
+
+  const next = () => {
+    if (current >= questions.length - 1) {
+      onComplete(score, questions.length);
+    } else {
+      setCurrent(c => c + 1);
+      setAnswered(false);
+    }
+  };
+  // ... render question, choices, feedback
+}</code></pre>
+    <div class="highlight">
+      <strong>Pattern:</strong> Generic <code>MCQuizView</code> receives data via props, manages internal state (current question, score, answered), and calls <code>onComplete</code> when done. This meant every new fandom could get a quiz by just passing different data.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Trivia Content Sourcing</h3>
+    <p>Each quiz question was sourced with evidence. For example, the Twilight quiz cited specific book passages:</p>
+    <pre><code>{
+  question: "What is the name of the vampire clan that rules Volterra?",
+  choices: ["The Volturi", "The Denali Coven", "The Amazon Coven", "The Egyptian Coven"],
+  correct: 0,
+  source: "Twilight, Chapter 15"
+}</code></pre>
+    <p>This source citation pattern became a standard across all universes. It adds credibility and lets curious players verify answers.</p>
+  </div>
+
+  <div class="card">
+    <h3>UI Polish: Smooth Scroll, Carousel, Leaderboard</h3>
+    <p>Several UI features were added to improve the user experience:</p>
+    <ul>
+      <li><strong>Smooth scroll</strong> &mdash; <code>scroll-behavior: smooth</code> for anchor links</li>
+      <li><strong>Branding</strong> &mdash; Consistent color palette, logo, typography</li>
+      <li><strong>Carousel</strong> &mdash; Horizontal scrollable card list for universe selection</li>
+      <li><strong>Leaderboard</strong> &mdash; Real score display from SQLite</li>
+      <li><strong>Image fixes</strong> &mdash; Proper sizing and fallbacks for universe images</li>
+    </ul>
+    <p>The carousel was a CSS-only implementation using <code>overflow-x: auto</code> and <code>scroll-snap-type: x mandatory</code> &mdash; no JS library needed.</p>
+    <pre><code>.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+}
+.carousel > * {
+  scroll-snap-align: start;
+  flex: 0 0 280px;
+}</code></pre>
+  </div>
+
+  <h2>Content Added</h2>
+  <ul>
+    <li><strong>K-Pop Demon Hunters</strong> &mdash; 13 questions. A fan-made universe blending K-pop with supernatural themes.</li>
+    <li><strong>Twilight Vol I &amp; II</strong> &mdash; 10 questions each. Book-accurate questions with source citations.</li>
+    <li><strong>Harry Potter Book 1 &amp; 2</strong> &mdash; Trivia covering Philosopher's Stone and Chamber of Secrets.</li>
+  </ul>
+
+  <h2>Architecture: Data Flow</h2>
+  <div class="diagram">constants.ts  ──►  MCQuizView  ──►  Score  ──►  Leaderboard
+    (questions)       (component)         (state)       (SQLite)</div>
+
+  <h2>Commits This Week</h2>
+  <div class="commit">UI improvements: branding, smooth scroll, real leaderboard, carousel, fix images</div>
+  <div class="commit">Add K-Pop Demon Hunters multiple-choice quiz (13 questions)</div>
+  <div class="commit">Add Twilight Vol. II multiple-choice quiz (10 questions, refactor MCQuizView generic)</div>
+  <div class="commit">Replace Twilight Vol I with MC quiz, add source evidence, rename to Vol I</div>
+  <div class="commit">feat: add HP Book 1 &amp; Book 2 trivia, fix K-Pop quiz answers</div>
+  <div class="commit">feat: Implement initial app with core UI, navigation, and user authentication</div>
+
+  <h2>Reflection</h2>
+  <p>This week taught the value of <strong>generic components</strong>. By making <code>MCQuizView</code> data-driven early, adding new trivia content became a matter of writing JSON rather than new UI. The UI polish (carousel, smooth scroll, leaderboard) transformed the app from "works" to "feels good." The source citation pattern added a layer of quality that sets this trivia app apart.</p>
+</div>
+</body>
+</html>
