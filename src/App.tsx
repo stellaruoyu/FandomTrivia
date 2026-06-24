@@ -82,6 +82,12 @@ import {
   WORLD_CUP_2010_TRIVIA, WORLD_CUP_2014_TRIVIA, WORLD_CUP_2018_TRIVIA,
   WORLD_CUP_2022_TRIVIA
 } from './worldCupTrivia';
+import {
+  INSIDE_OUT_1_TRIVIA,
+  INSIDE_OUT_2_TRIVIA,
+  INSIDE_OUT_MIXED_TRIVIA,
+  INSIDE_OUT_GRADES
+} from './insideOutTrivia';
 import { THANKSGIVING_TRIVIA } from './thanksgivingTrivia';
 import { CHRISTMAS_TRIVIA } from './christmasTrivia';
 import { HALLOWEEN_TRIVIA } from './halloweenTrivia';
@@ -6874,6 +6880,83 @@ const WorldCupSelector = () => {
     </motion.div>
   );
 };
+
+const InsideOutSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+
+  const options = [
+    { label: "Pixar 2015", title: "Inside Out 1", desc: "10 questions on Joy, Sadness, Bing Bong, and Riley's childhood mind", icon: "🎈", view: 'trivia-inside-out-1', gradient: 'from-yellow-600/20 to-blue-900/20', border: 'border-yellow-500/30 hover:border-blue-400/50' },
+    { label: "Pixar 2024", title: "Inside Out 2", desc: "10 questions on Anxiety, Ennui, Lance Slashblade, and the Belief System", icon: "🧡", view: 'trivia-inside-out-2', gradient: 'from-orange-600/20 to-teal-950/20', border: 'border-orange-500/30 hover:border-teal-400/50' },
+    { label: "Full Challenge", title: "Mixed Mind Trivia", desc: "10 questions covering mind rules, Headquarters, and both movies", icon: "🧠", view: 'trivia-inside-out-mixed', gradient: 'from-purple-600/20 to-pink-900/20', border: 'border-purple-500/30 hover:border-pink-400/50' }
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-teal-300">Inside Out</span>
+          </h1>
+          <Helmet>
+            <title>Inside Out Quizzes & Trivia | Fandom Trivia</title>
+            <meta name="description" content="Test your Pixar Inside Out knowledge! From Riley's childhood core memories to teenage emotions like Anxiety. Play the ultimate mind quiz!" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-inside-out" />
+            <meta property="og:title" content="Inside Out Quizzes & Trivia | Fandom Trivia" />
+            <meta property="og:description" content="Play the ultimate Inside Out trivia series. Challenge yourself on Inside Out 1, Inside Out 2, and the mixed mind quiz." />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.fandom-trivia.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Inside Out", "item": "https://www.fandom-trivia.com/selector-inside-out" }
+                ]
+              })}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a category to test your knowledge of Riley's emotions and mind.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {options.map(show => (
+            <motion.button
+              key={show.title}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${show.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${show.gradient} border ${show.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+            >
+              <div className="space-y-4">
+                <div className="text-4xl">{show.icon}</div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{show.label}</p>
+                  <h3 className="text-xl font-black text-white tracking-tight">{show.title}</h3>
+                  <p className="text-sm text-slate-400 font-medium mt-1 leading-relaxed">{show.desc}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Enter Console <ArrowRight className="size-3" />
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                  <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(show.view))}</span>
+                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                  </div>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 const MINECRAFT_GRADES = [
   { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
   { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
@@ -9715,6 +9798,9 @@ export default function App() {
             <Route path="/trivia-world-cup-2014" element={<MCQuizView key="trivia-world-cup-2014" questions={WORLD_CUP_2014_TRIVIA} title="2014 World Cup Trivia" scoreLabel="2014 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-world-cup-2018" element={<MCQuizView key="trivia-world-cup-2018" questions={WORLD_CUP_2018_TRIVIA} title="2018 World Cup Trivia" scoreLabel="2018 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-world-cup-2022" element={<MCQuizView key="trivia-world-cup-2022" questions={WORLD_CUP_2022_TRIVIA} title="2022 World Cup Trivia" scoreLabel="2022 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-inside-out-1" element={<MCQuizView key="trivia-inside-out-1" questions={INSIDE_OUT_1_TRIVIA} title="Inside Out 1 Trivia" scoreLabel="Inside Out 1 Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-inside-out-2" element={<MCQuizView key="trivia-inside-out-2" questions={INSIDE_OUT_2_TRIVIA} title="Inside Out 2 Trivia" scoreLabel="Inside Out 2 Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-inside-out-mixed" element={<MCQuizView key="trivia-inside-out-mixed" questions={INSIDE_OUT_MIXED_TRIVIA} title="Inside Out Mixed Trivia" scoreLabel="Inside Out Mixed Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-thanksgiving" element={<MCQuizView key="trivia-thanksgiving" questions={THANKSGIVING_TRIVIA} title="Thanksgiving Trivia" scoreLabel="Thanksgiving Trivia" grades={THANKSGIVING_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-christmas" element={<MCQuizView key="trivia-christmas" questions={CHRISTMAS_TRIVIA} title="Christmas Trivia" scoreLabel="Christmas Trivia" grades={CHRISTMAS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-halloween" element={<MCQuizView key="trivia-halloween" questions={HALLOWEEN_TRIVIA} title="Halloween Trivia" scoreLabel="Halloween Trivia" grades={HALLOWEEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -9900,6 +9986,7 @@ export default function App() {
             <Route path="/selector-anime" element={<AnimeSelector key="selector-anime" />} />
             <Route path="/selector-holidays" element={<HolidaysSelector key="selector-holidays" />} />
             <Route path="/selector-world-cup" element={<WorldCupSelector key="selector-world-cup" />} />
+            <Route path="/selector-inside-out" element={<InsideOutSelector key="selector-inside-out" />} />
             <Route path="/trivia-attack-on-titan" element={<MCQuizView key="trivia-attack-on-titan" questions={ATTACK_ON_TITAN_TRIVIA} title="Attack on Titan" scoreLabel="Attack on Titan" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-demon-slayer" element={<MCQuizView key="trivia-demon-slayer" questions={DEMON_SLAYER_TRIVIA} title="Demon Slayer" scoreLabel="Demon Slayer" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-jujutsu-kaisen" element={<MCQuizView key="trivia-jujutsu-kaisen" questions={JUJUTSU_KAISEN_TRIVIA} title="Jujutsu Kaisen" scoreLabel="Jujutsu Kaisen" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

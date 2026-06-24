@@ -304,6 +304,14 @@ export const BADGES: Badge[] = [
     icon: 'Sparkles',
     color: 'text-yellow-400',
     targetQuiz: 'coding'
+  },
+  {
+    id: 'inside-out-sage',
+    name: 'Emotion Coordinator',
+    description: 'Complete any Inside Out trivia challenge.',
+    icon: 'Sparkles',
+    color: 'text-yellow-300',
+    targetQuiz: 'inside-out'
   }
 ];
 
@@ -747,6 +755,53 @@ export const UNIVERSES = [
     buttonText: 'Select Tournament',
     icon: 'Globe',
     path: '/selector-world-cup'
+  },
+  {
+    id: 'inside-out',
+    title: 'Inside Out',
+    tags: ['Pixar', 'Animation', 'Disney'],
+    description: "Explore the mind of Riley! Test your knowledge on Joy, Sadness, Anger, Fear, Disgust, and the new teenage emotions from Inside Out 1 & 2.",
+    image: '/images/inside-out.jpg',
+    seoAlt: 'Stylized Inside Out emotion characters standing inside the mind controls',
+    buttonText: 'Enter Riley\'s Mind',
+    icon: 'Sparkles',
+    path: '/selector-inside-out'
+  },
+  {
+    id: 'inside-out-1',
+    hideOnHomepage: true,
+    title: 'Inside Out 1',
+    tags: ['Pixar', 'Animation', 'Disney'],
+    description: "Test your memory of Joy, Sadness, Bing Bong, and Riley's childhood core memories.",
+    image: '/images/inside-out.jpg',
+    seoAlt: 'Stylized Inside Out characters in the mind controls',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-inside-out-1'
+  },
+  {
+    id: 'inside-out-2',
+    hideOnHomepage: true,
+    title: 'Inside Out 2',
+    tags: ['Pixar', 'Animation', 'Disney'],
+    description: "Test your knowledge on Anxiety, Ennui, Lance Slashblade, and the teenage Belief System.",
+    image: '/images/inside-out.jpg',
+    seoAlt: 'Stylized Inside Out 2 emotions in the mind controls',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-inside-out-2'
+  },
+  {
+    id: 'inside-out-mixed',
+    hideOnHomepage: true,
+    title: 'Inside Out Mixed',
+    tags: ['Pixar', 'Animation', 'Disney'],
+    description: "Test your knowledge of Riley's overall mind rules, emotions, and both movies.",
+    image: '/images/inside-out.jpg',
+    seoAlt: 'Stylized Inside Out characters in the mind controls',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-inside-out-mixed'
   },
   {
     id: 'thanksgiving',

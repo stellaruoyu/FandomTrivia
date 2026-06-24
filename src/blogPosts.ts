@@ -2509,5 +2509,125 @@ export const BLOG_POSTS: BlogPost[] = [
         </a>
       </div>
     `
+  },
+  {
+    slug: 'inside-out-1-quiz',
+    title: 'Inside Out Quiz: Test Your Core Memories of the First Movie!',
+    metaDescription: 'Take our ultimate Inside Out 1 trivia challenge! Test your knowledge on Joy, Sadness, Bing Bong, the Personality Islands, and Riley\'s mind.',
+    date: '2026-06-23',
+    author: 'Fandom Trivia Team',
+    image: '/images/inside-out.jpg',
+    keywords: ['Inside Out quiz', 'Inside Out 1 trivia', 'Bing Bong test', 'Pixar mind challenge', 'emotions trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Welcome to Riley's mind! Pixar's 2015 masterpiece 'Inside Out' took us on a spectacular journey through the human brain, showing us how our emotions work, how core memories are stored, and how we grow up. Guided by Joy, Sadness, Anger, Fear, and Disgust, the film is packed with clever psychological concepts and beautiful lore. Are you a true emotion coordinator or are you feeling a bit lost in the Memory Dump? Take our ultimate <strong>Inside Out 1 trivia</strong> challenge and test your knowledge!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-inside-out-1" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Inside Out 1 Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Explore the Sections of Riley's Mind</h2>
+      <p>Inside Out's depiction of the human brain is full of ingenious places. From the towering shelves of Long-Term Memory to the wacky stages of Dream Productions and the dusty depths of the Subconscious, the movie builds a complete, logical world. Passing our <strong>Pixar mind challenge</strong> requires a deep understanding of these areas. Do you know what transportation Joy and Sadness used, or what powers it? These are the core details that make the difference!</p>
+      <p class="mt-4">And who could forget Bing Bong? The pink, cotton-candy imaginary friend is one of Pixar's most heartwarming and tragic creations. If you think you're ready to show off your knowledge of Riley's childhood and her brain's operations, <a href="/trivia-inside-out-1" class="text-primary hover:text-primary/80 font-bold">take our Inside Out 1 test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-inside-out-1" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-yellow-400">Direct Link:</span> Jump Straight to the Inside Out 1 Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Fascinating Inside Out Lore Facts</h2>
+      <p> Riley's brain has strict rules and structures. Here are a few key facts you might encounter in our <strong>emotions trivia</strong> challenge:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Origin:</strong> Riley's childhood was happily spent in Minnesota before her family relocated to San Francisco.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Friend:</strong> Bing Bong is part elephant, part cat, and made of cotton candy, and he cries tears of candy.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Transport:</strong> The Train of Thought travels throughout Riley's mind carrying concepts and memories.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Islands:</strong> Riley's main personality aspects are powered by five Personality Islands, including Goofball and Hockey.</li>
+      </ul>
+
+      <p>Can you unlock all of your core memories? Take the test, share your score, and see if Joy would be proud of your emotional intelligence!</p>
+    `
+  },
+  {
+    slug: 'inside-out-2-quiz',
+    title: 'Inside Out 2 Quiz: How Well Do You Know the New Emotions?',
+    metaDescription: 'Test your knowledge of Riley\'s teenage mind! Take our Inside Out 2 trivia and answer questions about Anxiety, Ennui, Lance Slashblade, and the Belief System.',
+    date: '2026-06-23',
+    author: 'Fandom Trivia Team',
+    image: '/images/inside-out.jpg',
+    keywords: ['Inside Out 2 quiz', 'Inside Out 2 trivia', 'Anxiety emotion test', 'Belief System quiz', 'Lance Slashblade trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Growing up is a complicated business! In 'Inside Out 2', Riley turns 13, triggering the sudden arrival of the Puberty Alarm and a major console renovation. Suddenly, Joy and the original crew find themselves facing brand-new teenage emotions: Anxiety, Envy, Embarrassment, and Ennui. Are you prepared to navigate the storm of high school and help Riley find her true Sense of Self? Challenge yourself with our <strong>Inside Out 2 trivia</strong>!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-inside-out-2" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Inside Out 2 Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Inside the Mind of a Teenager</h2>
+      <p>With puberty comes a completely new set of mental structures. Inside Out 2 introduces the Belief System, where Riley's core memories grow glowing light lines to form her identity and core phrases like 'I am a good person'. But when Anxiety takes over, she bottles up the original emotions and sends them to the Vault. To pass our <strong>Anxiety emotion test</strong>, you need to know who else was locked in that vault and how the emotions escaped!</p>
+      <p class="mt-4">From the summer ice hockey camp at Foghorn to the console controls run by Ennui's mobile app, this movie takes Riley's mind to a whole new level of depth. Prove you're a true fan of the sequel by taking our <a href="/trivia-inside-out-2" class="text-primary hover:text-primary/80 font-bold">Belief System quiz now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-inside-out-2" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-orange-400">Direct Link:</span> Jump Straight to the Inside Out 2 Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Teenage Mind Trivia Highlights</h2>
+      <p>Inside Out 2 expands the rules of Riley's mind in surprising ways. Test your knowledge of these highlights in our <strong>Lance Slashblade trivia</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Alarm:</strong> The Puberty Alarm rings at Headquarters, bringing construction workers to rebuild the console.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Hero:</strong> Lance Slashblade is a pixelated video game fighter whom Riley has a secret crush on, locked in the Vault.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The App:</strong> Ennui operates the Headquarters console using a mobile phone app called 'Console'.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Secret:</strong> Riley's Deep Dark Secret is a giant, purple, hooded character who resides in the Vault.</li>
+      </ul>
+
+      <p>Are you feeling the pressure? Don't let Anxiety take over the controls! Take the quiz, relax, and help Riley build a healthy, complete Sense of Self!</p>
+    `
+  },
+  {
+    slug: 'inside-out-mixed-quiz',
+    title: 'Inside Out Mixed Trivia: The Ultimate Mind Challenge!',
+    metaDescription: 'Think you know Riley\'s mind inside and out? Try our mixed Inside Out trivia challenge covering the rules of the mind, Headquarters, and both films.',
+    date: '2026-06-23',
+    author: 'Fandom Trivia Team',
+    image: '/images/inside-out.jpg',
+    keywords: ['Inside Out mixed quiz', 'Inside Out general trivia', 'Headquarters rules test', 'emotions general quiz', 'Riley\'s mind trivia'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Headquarters is home to some of the most memorable characters in animation history. Across both 'Inside Out' films, we see the complex rules, mechanisms, and colors that keep Riley's personality functioning. Do you know the colors of every emotion's memory spheres, the names of the worker groups, and how the brain processes forgotten data? Put your knowledge to the test in our <strong>Inside Out mixed quiz</strong>!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-inside-out-mixed" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Inside Out Mixed Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Mastering the Rules of the Brain</h2>
+      <p>Riley's mind has its own physics and departments. The Forgetters handle vacuuming old memories, the Subconscious Guards lock away fears, and the Dream Directors shoot nightly films. Knowing the colors of memory spheres—yellow for Joy, blue for Sadness, red for Anger, orange for Anxiety, and pink for Embarrassment—is essential. Our <strong>Headquarters rules test</strong> will push your memory to the absolute limit!</p>
+      <p class="mt-4">From the annoying TripleDent Gum commercial jingle that plays on repeat, to the blue dog puppet Bloofy from Riley's preschool days, the mind has many layers. If you think you have what it takes, <a href="/trivia-inside-out-mixed" class="text-primary hover:text-primary/80 font-bold">test your memory of Riley's mind now</a>!</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-inside-out-mixed" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Mixed Quiz
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Emotions and Mind Functions</h2>
+      <p>Prove your understanding of Riley's internal world with these key concepts from our <strong>Riley's mind trivia</strong>:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Joy's Hair:</strong> Joy is yellow but has blue hair, symbolizing that happiness and sadness are closely linked.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Forgetters:</strong> These workers clean out old phone numbers, but love sending up the TripleDent Gum commercial.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Bloofy:</strong> A blue puppet dog from Riley's childhood show who talks to the screen, locked in the Vault.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Core Spheres:</strong> Riley's Core Memories reside in the circular Core Memory Holder at the center of Headquarters.</li>
+      </ul>
+
+      <p>Are you feeling Joyous, Sad, or maybe a little bit Anxious? No matter your current emotion, let's see where you rank on our Fandom Trivia scoreboard. Play now and lock in your score!</p>
+    `
   }
 ];
