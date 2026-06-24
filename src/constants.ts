@@ -744,9 +744,9 @@ export const UNIVERSES = [
     description: "Test your knowledge of the beautiful game! From legendary goals to historic upsets, see how well you know the FIFA World Cup.",
     image: '/images/world-cup.jpg',
     seoAlt: 'Soccer ball on a stadium pitch during a World Cup match',
-    buttonText: 'Start the Match',
+    buttonText: 'Select Tournament',
     icon: 'Globe',
-    path: '/trivia-world-cup'
+    path: '/selector-world-cup'
   },
   {
     id: 'thanksgiving',

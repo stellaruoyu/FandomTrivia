@@ -71,7 +71,17 @@ import {
 import { USA_SONGS_TRIVIA } from './usaSongsTrivia';
 import { JULY_4TH_TRIVIA } from './july4thTrivia';
 import { JUNETEENTH_TRIVIA } from './juneteenthTrivia';
-import { WORLD_CUP_TRIVIA } from './worldCupTrivia';
+import {
+  WORLD_CUP_TRIVIA,
+  WORLD_CUP_1930_TRIVIA, WORLD_CUP_1934_TRIVIA, WORLD_CUP_1938_TRIVIA,
+  WORLD_CUP_1950_TRIVIA, WORLD_CUP_1954_TRIVIA, WORLD_CUP_1958_TRIVIA,
+  WORLD_CUP_1962_TRIVIA, WORLD_CUP_1966_TRIVIA, WORLD_CUP_1970_TRIVIA,
+  WORLD_CUP_1974_TRIVIA, WORLD_CUP_1978_TRIVIA, WORLD_CUP_1982_TRIVIA,
+  WORLD_CUP_1986_TRIVIA, WORLD_CUP_1990_TRIVIA, WORLD_CUP_1994_TRIVIA,
+  WORLD_CUP_1998_TRIVIA, WORLD_CUP_2002_TRIVIA, WORLD_CUP_2006_TRIVIA,
+  WORLD_CUP_2010_TRIVIA, WORLD_CUP_2014_TRIVIA, WORLD_CUP_2018_TRIVIA,
+  WORLD_CUP_2022_TRIVIA
+} from './worldCupTrivia';
 import { THANKSGIVING_TRIVIA } from './thanksgivingTrivia';
 import { CHRISTMAS_TRIVIA } from './christmasTrivia';
 import { HALLOWEEN_TRIVIA } from './halloweenTrivia';
@@ -6767,6 +6777,103 @@ const HolidaysSelector = () => {
     </motion.div>
   );
 };
+
+const WorldCupSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+
+  const tournaments = [
+    { label: "Classic", title: "General Trivia", desc: "Test your overall knowledge of World Cup history", icon: "🏆", view: 'trivia-world-cup', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+    { label: "1930", title: "Uruguay", desc: "The inaugural tournament with 13 teams", icon: "🇺🇾", view: 'trivia-world-cup-1930', gradient: 'from-sky-600/20 to-blue-900/20', border: 'border-sky-500/30 hover:border-blue-400/50' },
+    { label: "1934", title: "Italy", desc: "The host nation fights to qualify and win", icon: "🇮🇹", view: 'trivia-world-cup-1934', gradient: 'from-emerald-600/20 to-red-900/20', border: 'border-emerald-500/30 hover:border-red-400/50' },
+    { label: "1938", title: "France", desc: "Italy defends their title in pre-war Europe", icon: "🇫🇷", view: 'trivia-world-cup-1938', gradient: 'from-blue-600/20 to-red-900/20', border: 'border-blue-500/30 hover:border-red-400/50' },
+    { label: "1950", title: "Brazil", desc: "Uruguay shocks the hosts in the Maracanazo", icon: "🇧🇷", view: 'trivia-world-cup-1950', gradient: 'from-yellow-600/20 to-green-900/20', border: 'border-yellow-500/30 hover:border-green-400/50' },
+    { label: "1954", title: "Switzerland", desc: "The Miracle of Bern beats the Mighty Magyars", icon: "🇨🇭", view: 'trivia-world-cup-1954', gradient: 'from-red-600/20 to-red-900/20', border: 'border-red-500/30 hover:border-red-400/50' },
+    { label: "1958", title: "Sweden", desc: "A 17-year-old Pele takes the stage", icon: "🇸🇪", view: 'trivia-world-cup-1958', gradient: 'from-blue-600/20 to-yellow-900/20', border: 'border-blue-500/30 hover:border-yellow-400/50' },
+    { label: "1962", title: "Chile", desc: "Brazil defends their crown without injured Pele", icon: "🇨🇱", view: 'trivia-world-cup-1962', gradient: 'from-red-600/20 to-blue-900/20', border: 'border-red-500/30 hover:border-blue-400/50' },
+    { label: "1966", title: "England", desc: "England wins at home; Pickles finds the cup", icon: "⚽", view: 'trivia-world-cup-1966', gradient: 'from-red-600/20 to-white/10', border: 'border-red-500/30 hover:border-white/30' },
+    { label: "1970", title: "Mexico", desc: "Pele's final triumph in the Game of the Century", icon: "🇲🇽", view: 'trivia-world-cup-1970', gradient: 'from-green-600/20 to-red-900/20', border: 'border-green-500/30 hover:border-red-400/50' },
+    { label: "1974", title: "West Germany", desc: "Total Football vs. German determination", icon: "🇩🇪", view: 'trivia-world-cup-1974', gradient: 'from-neutral-600/20 to-neutral-900/20', border: 'border-neutral-500/30 hover:border-neutral-400/50' },
+    { label: "1978", title: "Argentina", desc: "Mario Kempes shines amidst political tension", icon: "🇦🇷", view: 'trivia-world-cup-1978', gradient: 'from-sky-600/20 to-yellow-900/20', border: 'border-sky-500/30 hover:border-yellow-400/50' },
+    { label: "1982", title: "Spain", desc: "Paolo Rossi leads Italy back to the top", icon: "🇪🇸", view: 'trivia-world-cup-1982', gradient: 'from-red-600/20 to-yellow-900/20', border: 'border-red-500/30 hover:border-yellow-400/50' },
+    { label: "1986", title: "Mexico", desc: "Maradona's Hand of God and Goal of the Century", icon: "🇲🇽", view: 'trivia-world-cup-1986', gradient: 'from-green-600/20 to-red-900/20', border: 'border-green-500/30 hover:border-red-400/50' },
+    { label: "1990", title: "Italy", desc: "West Germany wins a low-scoring tournament", icon: "🇮🇹", view: 'trivia-world-cup-1990', gradient: 'from-emerald-600/20 to-red-900/20', border: 'border-emerald-500/30 hover:border-red-400/50' },
+    { label: "1994", title: "USA", desc: "Baggio's miss and Brazil's penalty triumph", icon: "🇺🇸", view: 'trivia-world-cup-1994', gradient: 'from-blue-600/20 to-red-900/20', border: 'border-blue-500/30 hover:border-red-400/50' },
+    { label: "1998", title: "France", desc: "Zidane's headers bring glory to Les Bleus", icon: "🇫🇷", view: 'trivia-world-cup-1998', gradient: 'from-blue-600/20 to-red-900/20', border: 'border-blue-500/30 hover:border-red-400/50' },
+    { label: "2002", title: "Korea & Japan", desc: "Ronaldo's redemption haircut and 8 goals", icon: "🇯🇵", view: 'trivia-world-cup-2002', gradient: 'from-red-600/20 to-blue-900/20', border: 'border-red-500/30 hover:border-blue-400/50' },
+    { label: "2006", title: "Germany", desc: "Zidane's headbutt and Italy's penalty win", icon: "🇩🇪", view: 'trivia-world-cup-2006', gradient: 'from-neutral-600/20 to-neutral-900/20', border: 'border-neutral-500/30 hover:border-neutral-400/50' },
+    { label: "2010", title: "South Africa", desc: "Iniesta's extra-time volley makes Spain kings", icon: "🇿🇦", view: 'trivia-world-cup-2010', gradient: 'from-yellow-600/20 to-green-900/20', border: 'border-yellow-500/30 hover:border-green-400/50' },
+    { label: "2014", title: "Brazil", desc: "Germany's 7-1 shocker and Gotze's volley", icon: "🇧🇷", view: 'trivia-world-cup-2014', gradient: 'from-yellow-600/20 to-green-900/20', border: 'border-yellow-500/30 hover:border-green-400/50' },
+    { label: "2018", title: "Russia", desc: "Mbappe bursts forth; France wins a classic", icon: "🇷🇺", view: 'trivia-world-cup-2018', gradient: 'from-blue-600/20 to-red-900/20', border: 'border-blue-500/30 hover:border-red-400/50' },
+    { label: "2022", title: "Qatar", desc: "Messi's ultimate crown in a thriller vs. France", icon: "🇶🇦", view: 'trivia-world-cup-2022', gradient: 'from-amber-600/20 to-sky-900/20', border: 'border-amber-500/30 hover:border-sky-400/50' }
+  ];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+      <div className="max-w-6xl mx-auto space-y-10">
+        <div className="text-center space-y-3">
+          <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+            <ArrowLeft className="size-4" /> Back to Universes
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-green-400">World Cup Soccer</span>
+          </h1>
+          <Helmet>
+            <title>FIFA World Cup Quizzes & Trivia | Fandom Trivia</title>
+            <meta name="description" content="Test your soccer knowledge across all FIFA World Cup tournaments from 1930 to 2022. Select a tournament and kick off!" />
+            <link rel="canonical" href="https://www.fandom-trivia.com/selector-world-cup" />
+            <meta property="og:title" content="FIFA World Cup Quizzes & Trivia | Fandom Trivia" />
+            <meta property="og:description" content="Play the ultimate World Cup trivia. Challenge yourself on every World Cup tournament from Uruguay 1930 to Qatar 2022." />
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.fandom-trivia.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "World Cup Soccer", "item": "https://www.fandom-trivia.com/selector-world-cup" }
+                ]
+              })}
+            </script>
+          </Helmet>
+          <p className="text-slate-400 font-medium">Select a tournament year to play or challenge yourself with general trivia.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          {tournaments.map(show => (
+            <motion.button
+              key={show.title + show.label}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate(`/${show.view}`)}
+              className={`text-left p-6 rounded-2xl bg-gradient-to-br ${show.gradient} border ${show.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+            >
+              <div className="space-y-4">
+                <div className="text-4xl">{show.icon}</div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{show.label}</p>
+                  <h3 className="text-xl font-black text-white tracking-tight">{show.title}</h3>
+                  <p className="text-sm text-slate-400 font-medium mt-1 leading-relaxed">{show.desc}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Kick Off <ArrowRight className="size-3" />
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                  <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(show.view))}</span>
+                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                  </div>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 const MINECRAFT_GRADES = [
   { threshold: 90, label: 'Master Builder', color: 'text-emerald-400', character: { name: 'Steve', image: '/images/minecraft.jpg', desc: 'You know the Overworld, the movie lore, and the block-by-block details.' } },
   { threshold: 70, label: 'Overworld Explorer', color: 'text-amber-300', character: { name: 'Garrett Garrison', image: '/images/minecraft.jpg', desc: 'Strong run. You handled the portals, piglins, and movie moments well.' } },
@@ -9586,6 +9693,28 @@ export default function App() {
             <Route path="/trivia-july-4th" element={<MCQuizView key="trivia-july-4th" questions={JULY_4TH_TRIVIA} title="4th of July Trivia" scoreLabel="4th of July Trivia" grades={JULY_4TH_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-juneteenth" element={<MCQuizView key="trivia-juneteenth" questions={JUNETEENTH_TRIVIA} title="Juneteenth Trivia" scoreLabel="Juneteenth Trivia" grades={JUNETEENTH_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-world-cup" element={<MCQuizView key="trivia-world-cup" questions={WORLD_CUP_TRIVIA} title="World Cup Soccer Trivia" scoreLabel="World Cup Soccer Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1930" element={<MCQuizView key="trivia-world-cup-1930" questions={WORLD_CUP_1930_TRIVIA} title="1930 World Cup Trivia" scoreLabel="1930 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1934" element={<MCQuizView key="trivia-world-cup-1934" questions={WORLD_CUP_1934_TRIVIA} title="1934 World Cup Trivia" scoreLabel="1934 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1938" element={<MCQuizView key="trivia-world-cup-1938" questions={WORLD_CUP_1938_TRIVIA} title="1938 World Cup Trivia" scoreLabel="1938 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1950" element={<MCQuizView key="trivia-world-cup-1950" questions={WORLD_CUP_1950_TRIVIA} title="1950 World Cup Trivia" scoreLabel="1950 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1954" element={<MCQuizView key="trivia-world-cup-1954" questions={WORLD_CUP_1954_TRIVIA} title="1954 World Cup Trivia" scoreLabel="1954 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1958" element={<MCQuizView key="trivia-world-cup-1958" questions={WORLD_CUP_1958_TRIVIA} title="1958 World Cup Trivia" scoreLabel="1958 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1962" element={<MCQuizView key="trivia-world-cup-1962" questions={WORLD_CUP_1962_TRIVIA} title="1962 World Cup Trivia" scoreLabel="1962 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1966" element={<MCQuizView key="trivia-world-cup-1966" questions={WORLD_CUP_1966_TRIVIA} title="1966 World Cup Trivia" scoreLabel="1966 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1970" element={<MCQuizView key="trivia-world-cup-1970" questions={WORLD_CUP_1970_TRIVIA} title="1970 World Cup Trivia" scoreLabel="1970 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1974" element={<MCQuizView key="trivia-world-cup-1974" questions={WORLD_CUP_1974_TRIVIA} title="1974 World Cup Trivia" scoreLabel="1974 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1978" element={<MCQuizView key="trivia-world-cup-1978" questions={WORLD_CUP_1978_TRIVIA} title="1978 World Cup Trivia" scoreLabel="1978 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1982" element={<MCQuizView key="trivia-world-cup-1982" questions={WORLD_CUP_1982_TRIVIA} title="1982 World Cup Trivia" scoreLabel="1982 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1986" element={<MCQuizView key="trivia-world-cup-1986" questions={WORLD_CUP_1986_TRIVIA} title="1986 World Cup Trivia" scoreLabel="1986 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1990" element={<MCQuizView key="trivia-world-cup-1990" questions={WORLD_CUP_1990_TRIVIA} title="1990 World Cup Trivia" scoreLabel="1990 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1994" element={<MCQuizView key="trivia-world-cup-1994" questions={WORLD_CUP_1994_TRIVIA} title="1994 World Cup Trivia" scoreLabel="1994 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-1998" element={<MCQuizView key="trivia-world-cup-1998" questions={WORLD_CUP_1998_TRIVIA} title="1998 World Cup Trivia" scoreLabel="1998 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2002" element={<MCQuizView key="trivia-world-cup-2002" questions={WORLD_CUP_2002_TRIVIA} title="2002 World Cup Trivia" scoreLabel="2002 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2006" element={<MCQuizView key="trivia-world-cup-2006" questions={WORLD_CUP_2006_TRIVIA} title="2006 World Cup Trivia" scoreLabel="2006 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2010" element={<MCQuizView key="trivia-world-cup-2010" questions={WORLD_CUP_2010_TRIVIA} title="2010 World Cup Trivia" scoreLabel="2010 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2014" element={<MCQuizView key="trivia-world-cup-2014" questions={WORLD_CUP_2014_TRIVIA} title="2014 World Cup Trivia" scoreLabel="2014 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2018" element={<MCQuizView key="trivia-world-cup-2018" questions={WORLD_CUP_2018_TRIVIA} title="2018 World Cup Trivia" scoreLabel="2018 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-world-cup-2022" element={<MCQuizView key="trivia-world-cup-2022" questions={WORLD_CUP_2022_TRIVIA} title="2022 World Cup Trivia" scoreLabel="2022 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-thanksgiving" element={<MCQuizView key="trivia-thanksgiving" questions={THANKSGIVING_TRIVIA} title="Thanksgiving Trivia" scoreLabel="Thanksgiving Trivia" grades={THANKSGIVING_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-christmas" element={<MCQuizView key="trivia-christmas" questions={CHRISTMAS_TRIVIA} title="Christmas Trivia" scoreLabel="Christmas Trivia" grades={CHRISTMAS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-halloween" element={<MCQuizView key="trivia-halloween" questions={HALLOWEEN_TRIVIA} title="Halloween Trivia" scoreLabel="Halloween Trivia" grades={HALLOWEEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -9770,6 +9899,7 @@ export default function App() {
             <Route path="/selector-disneyland" element={<DisneylandSelector />} />
             <Route path="/selector-anime" element={<AnimeSelector key="selector-anime" />} />
             <Route path="/selector-holidays" element={<HolidaysSelector key="selector-holidays" />} />
+            <Route path="/selector-world-cup" element={<WorldCupSelector key="selector-world-cup" />} />
             <Route path="/trivia-attack-on-titan" element={<MCQuizView key="trivia-attack-on-titan" questions={ATTACK_ON_TITAN_TRIVIA} title="Attack on Titan" scoreLabel="Attack on Titan" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-demon-slayer" element={<MCQuizView key="trivia-demon-slayer" questions={DEMON_SLAYER_TRIVIA} title="Demon Slayer" scoreLabel="Demon Slayer" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-jujutsu-kaisen" element={<MCQuizView key="trivia-jujutsu-kaisen" questions={JUJUTSU_KAISEN_TRIVIA} title="Jujutsu Kaisen" scoreLabel="Jujutsu Kaisen" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
