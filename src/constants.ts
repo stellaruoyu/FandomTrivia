@@ -488,7 +488,7 @@ export const UNIVERSES = [
     hideOnHomepage: true,
     title: 'Toy Story',
     tags: ['Animation', 'Disney', 'PIXAR'],
-    description: 'To infinity and beyond. Play the ultimate Toy Story franchise trivia across all four cinematic milestones, from the playroom to the antique mall.',
+    description: 'To infinity and beyond. Play the ultimate Toy Story franchise trivia across all five cinematic milestones, from the playroom to the digital tablet.',
     image: '/images/toystory.jpg',
     seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
     buttonText: 'Start the Quiz',
@@ -544,11 +544,23 @@ export const UNIVERSES = [
     path: '/trivia-toy-story-4'
   },
   {
+    id: 'toy-story-5',
+    hideOnHomepage: true,
+    title: 'Toy Story 5',
+    tags: ['Animation', 'Disney', 'PIXAR'],
+    description: '15 questions on Jessie, Lilypad, and the digital era.',
+    image: '/images/toystory.jpg',
+    seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
+    buttonText: 'Start the Quiz',
+    icon: 'Sparkles',
+    path: '/trivia-toy-story-5'
+  },
+  {
     id: 'toy-story-random',
     hideOnHomepage: true,
     title: 'Toy Story Mixed Challenge',
     tags: ['Animation', 'Disney', 'PIXAR'],
-    description: '20 random questions from all four Toy Story films.',
+    description: '20 random questions from all five Toy Story films.',
     image: '/images/toystory.jpg',
     seoAlt: 'Woody, Buzz Lightyear, and Bo Peep in the antique store from Toy Story 4',
     buttonText: 'Start the Quiz',
@@ -790,18 +802,6 @@ export const UNIVERSES = [
     buttonText: 'Start the Quiz',
     icon: 'Sparkles',
     path: '/trivia-inside-out-2'
-  },
-  {
-    id: 'inside-out-mixed',
-    hideOnHomepage: true,
-    title: 'Inside Out Mixed',
-    tags: ['Pixar', 'Animation', 'Disney'],
-    description: "Test your knowledge of Riley's overall mind rules, emotions, and both movies.",
-    image: '/images/inside-out.jpg',
-    seoAlt: 'Stylized Inside Out characters in the mind controls',
-    buttonText: 'Start the Quiz',
-    icon: 'Sparkles',
-    path: '/trivia-inside-out-mixed'
   },
   {
     id: 'thanksgiving',
@@ -7182,11 +7182,120 @@ export const TOY_STORY_4_TRIVIA: MCTriviaQuestion[] = [
   }
 ];
 
+export const TOY_STORY_5_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "Who directed Toy Story 5, making their series directorial debut after co-writing all previous Toy Story films?",
+    options: ["Andrew Stanton", "John Lasseter", "Lee Unkrich", "Josh Cooley"],
+    answer: "Andrew Stanton",
+    evidence: "Source: Toy Story 5 - Wikipedia - Production. \"The film is directed by Andrew Stanton, who makes his series directorial debut after co-writing the previous four films.\""
+  },
+  {
+    id: 2,
+    question: "What is the name of the new frog-themed digital tablet that becomes Bonnie's primary obsession in Toy Story 5?",
+    options: ["Lilypad", "LeapFrog", "Ribbit", "FroggyTech"],
+    answer: "Lilypad",
+    evidence: "Source: Toy Story 5 - Wikipedia - Plot. \"Bonnie becomes obsessed with Lilypad, a new frog-themed tablet, causing her to neglect her traditional toys.\""
+  },
+  {
+    id: 3,
+    question: "Which actress provides the voice for Lilypad, the digital tablet that threatens to make the toys obsolete?",
+    options: ["Greta Lee", "Awkwafina", "Ali Wong", "Constance Wu"],
+    answer: "Greta Lee",
+    evidence: "Source: Toy Story 5 - Wikipedia - Cast. \"Greta Lee voices Lilypad, the tablet that captures Bonnie's attention.\""
+  },
+  {
+    id: 4,
+    question: "How old is Bonnie in Toy Story 5, which is set two years after the events of Toy Story 4?",
+    options: ["6", "7", "8", "9"],
+    answer: "8",
+    evidence: "Source: Toy Story 5 - Wikipedia - Plot. \"Set two years after the previous film, Bonnie is now eight years old and drifting away from traditional playtime.\""
+  },
+  {
+    id: 5,
+    question: "Which new character does Jessie try to unite Bonnie with, who happens to live in Jessie's original childhood home?",
+    options: ["Blaze", "Emily Jr.", "Gaby", "Riley"],
+    answer: "Blaze",
+    evidence: "Source: Toy Story 5 - Roger Ebert Review - Plot Summary. \"Jessie attempts to bring Bonnie together with Blaze, a new friend who lives in Jessie's former home.\""
+  },
+  {
+    id: 6,
+    question: "Which actor voices Atlas, the GPS hippo toy introduced in Toy Story 5?",
+    options: ["Craig Robinson", "Matty Matheson", "Keegan-Michael Key", "Jordan Peele"],
+    answer: "Craig Robinson",
+    evidence: "Source: Toy Story 5 - Cast List - Cast. \"Craig Robinson voices Atlas, a GPS hippo toy.\""
+  },
+  {
+    id: 7,
+    question: "In Toy Story 5, Buzz Lightyear finally confesses his feelings for Jessie, and they officially become a couple.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Source: Toy Story 5 - Collider Review - Character Relationships. \"Buzz Lightyear and Jessie finally become a couple after Buzz confesses his feelings.\""
+  },
+  {
+    id: 8,
+    question: "What is the name of the camera toy voiced by Shelby Rabara in Toy Story 5?",
+    options: ["Snappy", "Shutter", "Flash", "Clicky"],
+    answer: "Snappy",
+    evidence: "Source: Toy Story 5 - Wikipedia - Cast. \"Shelby Rabara plays Snappy, a camera toy.\""
+  },
+  {
+    id: 9,
+    question: "What rendering software engine did Pixar utilize to bring the high-fidelity visual effects of Toy Story 5 to the screen?",
+    options: ["RenderMan XPU", "Unreal Engine 5", "Arnold Renderer", "Cycles Engine"],
+    answer: "RenderMan XPU",
+    evidence: "Source: Toy Story 5 Technical Highlights - Production. \"Pixar utilized RenderMan XPU to enhance the rendering speed and lighting effects for Toy Story 5.\""
+  },
+  {
+    id: 10,
+    question: "By the end of the film, Lilypad is thrown in the trash, showing that traditional toys are completely superior to modern screen technology.",
+    options: ["True", "False"],
+    answer: "False",
+    evidence: "Source: Toy Story 5 - Ending Explained - Climax. \"The film ends on a message of coexistence, with Lilypad and the traditional toys learning to live together and share Bonnie's time.\""
+  },
+  {
+    id: 11,
+    question: "Which legacy toy acts as the central protagonist of Toy Story 5, dealing with deep fears of abandonment reminiscent of their backstory?",
+    options: ["Jessie", "Woody", "Buzz Lightyear", "Bo Peep"],
+    answer: "Jessie",
+    evidence: "Source: Toy Story 5 - Roger Ebert Review - Character Focus. \"The film places a heavy narrative focus on Jessie as she deals with her recurring abandonment fears while Bonnie grows obsessed with a tablet.\""
+  },
+  {
+    id: 12,
+    question: "Who co-wrote the screenplay for Toy Story 5 alongside director Andrew Stanton?",
+    options: ["Kenna Harris", "Josh Cooley", "Pete Docter", "Rashida Jones"],
+    answer: "Kenna Harris",
+    evidence: "Source: Toy Story 5 - Credits - Writing. \"The screenplay was written by Andrew Stanton and Kenna Harris.\""
+  },
+  {
+    id: 13,
+    question: "Having lived as a 'lost toy' since Toy Story 4, Woody is called back into action to help his playroom friends navigate the challenges of the digital age.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Source: Toy Story 5 - Synopsis - Plot. \"Woody returns from his journey with the lost toys to help Buzz, Jessie, and the rest of the gang face the tech threat.\""
+  },
+  {
+    id: 14,
+    question: "Which character is voiced by chef and actor Matty Matheson in Toy Story 5?",
+    options: ["Dr. Nutcase", "Atlas", "Snappy", "Mr. Pricklepants"],
+    answer: "Dr. Nutcase",
+    evidence: "Source: Toy Story 5 - Cast Credits - Cast. \"Matty Matheson voices the eccentric toy Dr. Nutcase.\""
+  },
+  {
+    id: 15,
+    question: "Toy Story 5 was released in theatres in the United States on June 19, 2026.",
+    options: ["True", "False"],
+    answer: "True",
+    evidence: "Source: Toy Story 5 - Box Office - Release. \"Toy Story 5 debuted in US theatres on June 19, 2026.\""
+  }
+];
+
 export const TOY_STORY_RANDOM_TRIVIA: MCTriviaQuestion[] = [
   ...TOY_STORY_1_TRIVIA,
   ...TOY_STORY_2_TRIVIA,
   ...TOY_STORY_3_TRIVIA,
   ...TOY_STORY_4_TRIVIA,
+  ...TOY_STORY_5_TRIVIA,
 ].sort(() => 0.5 - Math.random()).slice(0, 15);
 
 export const TOY_STORY_GRADES = [

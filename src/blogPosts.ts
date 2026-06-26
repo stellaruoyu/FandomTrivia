@@ -1938,6 +1938,57 @@ export const BLOG_POSTS: BlogPost[] = [
     `
   },
   {
+    slug: 'toy-story-5-quiz',
+    title: 'Toy Story 5 Quiz: How Well Do You Know the Playroom\'s Clash With the Digital Era?',
+    metaDescription: 'Take the ultimate Toy Story 5 trivia quiz and see if you remember Bonnie\'s frog tablet Lilypad, Woody\'s return, and Jessie\'s search for Blaze.',
+    date: '2026-06-25',
+    author: 'Fandom Trivia Team',
+    image: '/images/toystory.jpg',
+    keywords: ['Toy Story 5 quiz', 'Toy Story 5 trivia', 'Lilypad tablet', 'Buzz and Jessie relationship', 'Andrew Stanton director', 'Bonnie screen time', 'toy story questions'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6"><strong>Toy Story 5</strong> takes the legendary Pixar playroom into uncharted territory. With Bonnie now eight years old and increasingly glued to her frog-themed tablet, <strong>Lilypad</strong>, the toys face their greatest existential crisis yet: competing with the allure of screen time. Directed by Andrew Stanton in his series directorial debut, this installment brings back Woody, Buzz, and a heavily featured Jessie to navigate the reality of digital age obsolescence. Are you a true Toy Story scholar, or will you end up lost in the app store? Take the quiz and find out!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-toy-story-5" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Take the Toy Story 5 Quiz Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">A Playroom Divided: Screens vs. Classic Play</h2>
+      <p>Pixar has never shied away from the pain of growing up. In Toy Story 5, the threat isn't a greedy collector or a dictatorial daycare bear; it's the sleek, bright allure of Bonnie's new tablet. Voiced by <strong>Greta Lee</strong>, Lilypad becomes the center of Bonnie's world, leaving traditional toys feeling like artifacts of a bygone era. <strong>Jessie</strong>, haunted by her past memories of abandonment by Emily, takes it upon herself to bridge the gap by trying to unite Bonnie with a new friend, <strong>Blaze</strong>, who lives in Jessie's original childhood home.</p>
+      <p class="mt-4">Meanwhile, Woody returns from his travels as a lost toy to help his old friends face this modern threat, leading to a climax that teaches everyone about coexistence rather than conflict.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">New Friends and Big Milestones</h2>
+      <p>Toy Story 5 introduces a new generation of characters while giving legacy toys massive milestones:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Lilypad:</strong> The frog-themed tablet voiced by Greta Lee who rules playtime but learns that even tech eventually becomes obsolete.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Atlas:</strong> A hilarious GPS-enabled hippo toy voiced by the brilliant Craig Robinson.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Buzz & Jessie:</strong> A major relationship milestone as Buzz finally confesses his feelings, and they officially become a couple.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Snappy:</strong> A quick-witted camera toy voiced by Shelby Rabara who joins the adventure.</li>
+      </ul>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-toy-story-5" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-primary">Challenge:</span> Test your Toy Story 5 memory
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Are You Ready for the Tech Era Quiz?</h2>
+      <p>Do you know who co-wrote the screenplay alongside Andrew Stanton? Can you name the software Pixar used to render the film's beautiful visual effects? The details are fresh, the movie has just hit the theaters, and only the most observant fans will get a perfect score on our <strong>Toy Story 5 trivia</strong>.</p>
+
+      <div class="mt-16 p-10 rounded-[2rem] bg-gradient-to-br from-emerald-500/20 via-teal-900/40 to-black border border-emerald-500/30 text-center relative overflow-hidden">
+        <h4 class="text-4xl font-black italic uppercase mb-6 text-white tracking-tight">Time to Face the Screen!</h4>
+        <p class="text-slate-300 mb-10 max-w-xl mx-auto text-lg">See if you have what it takes to beat the digital tablet and score a perfect 100% on the new <strong>Toy Story 5 quiz</strong>.</p>
+        <a href="/trivia-toy-story-5" class="inline-block bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white px-12 py-6 rounded-2xl font-black text-lg uppercase tracking-widest transition-transform shadow-[0_0_40px_rgba(16,185,129,0.35)] hover:scale-105 hover:shadow-[0_0_60px_rgba(20,184,166,0.45)]">
+          Play the Toy Story 5 Quiz
+        </a>
+      </div>
+
+      <p class="mt-12 text-slate-500 italic text-sm text-center">With Andrew Stanton directing and a fresh cast of digital and physical toys, Toy Story 5 is an instant classic. Prove you know the details now!</p>
+    `
+  },
+  {
     slug: 'avatar-3-quiz',
     title: 'Avatar 3 Quiz: Can You Conquer Fire and Ash Before the Ash People Do?',
     metaDescription: 'Take the Avatar 3 quiz and prove your Fire and Ash knowledge. Test Varang, Neytiri, Spider, Kiri, and Pandora lore now.',
@@ -2511,46 +2562,6 @@ export const BLOG_POSTS: BlogPost[] = [
     `
   },
   {
-    slug: 'inside-out-1-quiz',
-    title: 'Inside Out Quiz: Test Your Core Memories of the First Movie!',
-    metaDescription: 'Take our ultimate Inside Out 1 trivia challenge! Test your knowledge on Joy, Sadness, Bing Bong, the Personality Islands, and Riley\'s mind.',
-    date: '2026-06-23',
-    author: 'Fandom Trivia Team',
-    image: '/images/inside-out.jpg',
-    keywords: ['Inside Out quiz', 'Inside Out 1 trivia', 'Bing Bong test', 'Pixar mind challenge', 'emotions trivia'],
-    content: `
-      <p class="lead text-xl text-slate-300 mb-6">Welcome to Riley's mind! Pixar's 2015 masterpiece 'Inside Out' took us on a spectacular journey through the human brain, showing us how our emotions work, how core memories are stored, and how we grow up. Guided by Joy, Sadness, Anger, Fear, and Disgust, the film is packed with clever psychological concepts and beautiful lore. Are you a true emotion coordinator or are you feeling a bit lost in the Memory Dump? Take our ultimate <strong>Inside Out 1 trivia</strong> challenge and test your knowledge!</p>
-
-      <div class="my-8 text-center">
-        <a href="/trivia-inside-out-1" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
-          Play the Inside Out 1 Trivia Now
-        </a>
-      </div>
-
-      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Explore the Sections of Riley's Mind</h2>
-      <p>Inside Out's depiction of the human brain is full of ingenious places. From the towering shelves of Long-Term Memory to the wacky stages of Dream Productions and the dusty depths of the Subconscious, the movie builds a complete, logical world. Passing our <strong>Pixar mind challenge</strong> requires a deep understanding of these areas. Do you know what transportation Joy and Sadness used, or what powers it? These are the core details that make the difference!</p>
-      <p class="mt-4">And who could forget Bing Bong? The pink, cotton-candy imaginary friend is one of Pixar's most heartwarming and tragic creations. If you think you're ready to show off your knowledge of Riley's childhood and her brain's operations, <a href="/trivia-inside-out-1" class="text-primary hover:text-primary/80 font-bold">take our Inside Out 1 test now</a>.</p>
-
-      <div class="my-10 text-center">
-        <a href="/trivia-inside-out-1" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
-          <span class="text-yellow-400">Direct Link:</span> Jump Straight to the Inside Out 1 Quiz
-        </a>
-      </div>
-
-      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Fascinating Inside Out Lore Facts</h2>
-      <p> Riley's brain has strict rules and structures. Here are a few key facts you might encounter in our <strong>emotions trivia</strong> challenge:</p>
-
-      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Origin:</strong> Riley's childhood was happily spent in Minnesota before her family relocated to San Francisco.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Friend:</strong> Bing Bong is part elephant, part cat, and made of cotton candy, and he cries tears of candy.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Transport:</strong> The Train of Thought travels throughout Riley's mind carrying concepts and memories.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Islands:</strong> Riley's main personality aspects are powered by five Personality Islands, including Goofball and Hockey.</li>
-      </ul>
-
-      <p>Can you unlock all of your core memories? Take the test, share your score, and see if Joy would be proud of your emotional intelligence!</p>
-    `
-  },
-  {
     slug: 'inside-out-2-quiz',
     title: 'Inside Out 2 Quiz: How Well Do You Know the New Emotions?',
     metaDescription: 'Test your knowledge of Riley\'s teenage mind! Take our Inside Out 2 trivia and answer questions about Anxiety, Ennui, Lance Slashblade, and the Belief System.',
@@ -2588,46 +2599,6 @@ export const BLOG_POSTS: BlogPost[] = [
       </ul>
 
       <p>Are you feeling the pressure? Don't let Anxiety take over the controls! Take the quiz, relax, and help Riley build a healthy, complete Sense of Self!</p>
-    `
-  },
-  {
-    slug: 'inside-out-mixed-quiz',
-    title: 'Inside Out Mixed Trivia: The Ultimate Mind Challenge!',
-    metaDescription: 'Think you know Riley\'s mind inside and out? Try our mixed Inside Out trivia challenge covering the rules of the mind, Headquarters, and both films.',
-    date: '2026-06-23',
-    author: 'Fandom Trivia Team',
-    image: '/images/inside-out.jpg',
-    keywords: ['Inside Out mixed quiz', 'Inside Out general trivia', 'Headquarters rules test', 'emotions general quiz', 'Riley\'s mind trivia'],
-    content: `
-      <p class="lead text-xl text-slate-300 mb-6">Headquarters is home to some of the most memorable characters in animation history. Across both 'Inside Out' films, we see the complex rules, mechanisms, and colors that keep Riley's personality functioning. Do you know the colors of every emotion's memory spheres, the names of the worker groups, and how the brain processes forgotten data? Put your knowledge to the test in our <strong>Inside Out mixed quiz</strong>!</p>
-
-      <div class="my-8 text-center">
-        <a href="/trivia-inside-out-mixed" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
-          Play the Inside Out Mixed Trivia Now
-        </a>
-      </div>
-
-      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Mastering the Rules of the Brain</h2>
-      <p>Riley's mind has its own physics and departments. The Forgetters handle vacuuming old memories, the Subconscious Guards lock away fears, and the Dream Directors shoot nightly films. Knowing the colors of memory spheres—yellow for Joy, blue for Sadness, red for Anger, orange for Anxiety, and pink for Embarrassment—is essential. Our <strong>Headquarters rules test</strong> will push your memory to the absolute limit!</p>
-      <p class="mt-4">From the annoying TripleDent Gum commercial jingle that plays on repeat, to the blue dog puppet Bloofy from Riley's preschool days, the mind has many layers. If you think you have what it takes, <a href="/trivia-inside-out-mixed" class="text-primary hover:text-primary/80 font-bold">test your memory of Riley's mind now</a>!</p>
-
-      <div class="my-10 text-center">
-        <a href="/trivia-inside-out-mixed" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
-          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Mixed Quiz
-        </a>
-      </div>
-
-      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Emotions and Mind Functions</h2>
-      <p>Prove your understanding of Riley's internal world with these key concepts from our <strong>Riley's mind trivia</strong>:</p>
-
-      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Joy's Hair:</strong> Joy is yellow but has blue hair, symbolizing that happiness and sadness are closely linked.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Forgetters:</strong> These workers clean out old phone numbers, but love sending up the TripleDent Gum commercial.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>Bloofy:</strong> A blue puppet dog from Riley's childhood show who talks to the screen, locked in the Vault.</li>
-        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Core Spheres:</strong> Riley's Core Memories reside in the circular Core Memory Holder at the center of Headquarters.</li>
-      </ul>
-
-      <p>Are you feeling Joyous, Sad, or maybe a little bit Anxious? No matter your current emotion, let's see where you rank on our Fandom Trivia scoreboard. Play now and lock in your score!</p>
     `
   }
 ];

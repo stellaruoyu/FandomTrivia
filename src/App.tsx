@@ -30,7 +30,7 @@ import {
   MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
   PAW_PATROL_TRIVIA,
   KUNG_FU_PANDA_1_TRIVIA, KUNG_FU_PANDA_2_TRIVIA, KUNG_FU_PANDA_3_TRIVIA, KUNG_FU_PANDA_4_TRIVIA, KUNG_FU_PANDA_RANDOM_TRIVIA,
-  TOY_STORY_1_TRIVIA, TOY_STORY_2_TRIVIA, TOY_STORY_3_TRIVIA, TOY_STORY_4_TRIVIA, TOY_STORY_RANDOM_TRIVIA, TOY_STORY_GRADES,
+  TOY_STORY_1_TRIVIA, TOY_STORY_2_TRIVIA, TOY_STORY_3_TRIVIA, TOY_STORY_4_TRIVIA, TOY_STORY_5_TRIVIA, TOY_STORY_RANDOM_TRIVIA, TOY_STORY_GRADES,
   SHREK_1_TRIVIA, SHREK_2_TRIVIA, SHREK_3_TRIVIA, SHREK_4_TRIVIA, SHREK_GRADES,
   DOG_MAN_TRIVIA_BOOK1, DOG_MAN_TRIVIA_BOOK2, DOG_MAN_TRIVIA_BOOK3, DOG_MAN_TRIVIA_BOOK4, DOG_MAN_TRIVIA_BOOK5, DOG_MAN_TRIVIA_BOOK6, DOG_MAN_TRIVIA_BOOK7, DOG_MAN_TRIVIA_BOOK8, DOG_MAN_TRIVIA_BOOK9, DOG_MAN_TRIVIA_BOOK10, DOG_MAN_TRIVIA_BOOK11, DOG_MAN_TRIVIA_BOOK12, DOG_MAN_TRIVIA_BOOK13, DOG_MAN_TRIVIA_BOOK14, DOG_MAN_GRADES,
   MCTriviaQuestion, BADGES, Badge, CODING_TRIVIA
@@ -85,7 +85,6 @@ import {
 import {
   INSIDE_OUT_1_TRIVIA,
   INSIDE_OUT_2_TRIVIA,
-  INSIDE_OUT_MIXED_TRIVIA,
   INSIDE_OUT_GRADES
 } from './insideOutTrivia';
 import { THANKSGIVING_TRIVIA } from './thanksgivingTrivia';
@@ -230,6 +229,7 @@ const getQuizTitle = (quizId: string): string => {
     'toy-story-2': 'Toy Story 2',
     'toy-story-3': 'Toy Story 3',
     'toy-story-4': 'Toy Story 4',
+    'toy-story-5': 'Toy Story 5',
     'toy-story-random': 'The Ultimate Toy Box',
     'wicked-part-1': 'Wicked: Part 1',
     'wicked-for-good': 'Wicked: For Good',
@@ -6549,10 +6549,11 @@ const DisneylandSelector = () => {
     { label: 'Classic 6', title: 'Snow White', desc: `${(SNOW_WHITE_TRIVIA || []).length} questions on the magic mirror`, icon: '🍎', view: 'trivia-snow-white', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50', isExternal: false },
     { label: 'Classic 7', title: 'Cinderella', desc: `${(CINDERELLA_TRIVIA || []).length} questions on the glass slipper`, icon: '🏰', view: 'trivia-cinderella', gradient: 'from-indigo-600/20 to-purple-600/20', border: 'border-indigo-500/30 hover:border-indigo-400/50', isExternal: false },
     // Existing Quizzes
-    { label: 'Pixar Classic', title: 'Toy Story Series', desc: 'Trivia across all four milestone films', icon: '🤠', view: 'selector-toy-story', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50', isExternal: true },
+    { label: 'Pixar Classic', title: 'Toy Story Series', desc: 'Trivia across all five milestone films', icon: '🤠', view: 'selector-toy-story', gradient: 'from-blue-600/20 to-sky-600/20', border: 'border-blue-500/30 hover:border-blue-400/50', isExternal: true },
     { label: 'Modern Classic', title: 'Frozen Universe', desc: 'Trivia on Elsa, Anna, and Arendelle', icon: '❄️', view: 'selector-frozen', gradient: 'from-sky-600/20 to-blue-600/20', border: 'border-sky-500/30 hover:border-sky-400/50', isExternal: true },
     { label: 'Modern Classic', title: 'Moana Voyage', desc: 'Trivia on Maui, wayfinding, and Motunui', icon: '⛵', view: 'selector-moana', gradient: 'from-cyan-600/20 to-teal-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50', isExternal: true },
     { label: 'Modern Classic', title: 'Zootopia Case Files', desc: 'Trivia on Judy, Nick, and the city crimes', icon: '🦊', view: 'selector-zootopia', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50', isExternal: true },
+    { label: 'Pixar Classic', title: 'Inside Out', desc: 'Trivia on Riley\'s emotions and mind rules', icon: '🧠', view: 'selector-inside-out', gradient: 'from-purple-600/20 to-pink-900/20', border: 'border-purple-500/30 hover:border-pink-400/50', isExternal: true },
     { label: 'Pixar Future', title: 'Hoppers Pond', desc: 'Trivia on Pixar\'s mind-casting animal world', icon: '🦦', view: 'selector-hoppers', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50', isExternal: true },
   ];
 
@@ -6887,8 +6888,7 @@ const InsideOutSelector = () => {
 
   const options = [
     { label: "Pixar 2015", title: "Inside Out 1", desc: "10 questions on Joy, Sadness, Bing Bong, and Riley's childhood mind", icon: "🎈", view: 'trivia-inside-out-1', gradient: 'from-yellow-600/20 to-blue-900/20', border: 'border-yellow-500/30 hover:border-blue-400/50' },
-    { label: "Pixar 2024", title: "Inside Out 2", desc: "10 questions on Anxiety, Ennui, Lance Slashblade, and the Belief System", icon: "🧡", view: 'trivia-inside-out-2', gradient: 'from-orange-600/20 to-teal-950/20', border: 'border-orange-500/30 hover:border-teal-400/50' },
-    { label: "Full Challenge", title: "Mixed Mind Trivia", desc: "10 questions covering mind rules, Headquarters, and both movies", icon: "🧠", view: 'trivia-inside-out-mixed', gradient: 'from-purple-600/20 to-pink-900/20', border: 'border-purple-500/30 hover:border-pink-400/50' }
+    { label: "Pixar 2024", title: "Inside Out 2", desc: "10 questions on Anxiety, Ennui, Lance Slashblade, and the Belief System", icon: "🧡", view: 'trivia-inside-out-2', gradient: 'from-orange-600/20 to-teal-950/20', border: 'border-orange-500/30 hover:border-teal-400/50' }
   ];
 
   return (
@@ -6906,7 +6906,7 @@ const InsideOutSelector = () => {
             <meta name="description" content="Test your Pixar Inside Out knowledge! From Riley's childhood core memories to teenage emotions like Anxiety. Play the ultimate mind quiz!" />
             <link rel="canonical" href="https://www.fandom-trivia.com/selector-inside-out" />
             <meta property="og:title" content="Inside Out Quizzes & Trivia | Fandom Trivia" />
-            <meta property="og:description" content="Play the ultimate Inside Out trivia series. Challenge yourself on Inside Out 1, Inside Out 2, and the mixed mind quiz." />
+            <meta property="og:description" content="Play the ultimate Inside Out trivia series. Challenge yourself on Inside Out 1 and Inside Out 2." />
             <script type="application/ld+json">
               {JSON.stringify({
                 "@context": "https://schema.org",
@@ -6921,7 +6921,7 @@ const InsideOutSelector = () => {
           <p className="text-slate-400 font-medium">Select a category to test your knowledge of Riley's emotions and mind.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
           {options.map(show => (
             <motion.button
               key={show.title}
@@ -8919,10 +8919,10 @@ const ToyStorySelector = () => {
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-amber-300">Film</span></h1>
           <Helmet>
             <title>Toy Story Trivia & Movie Quizzes | Fandom Trivia</title>
-            <meta name="description" content="Test your Toy Story knowledge across all four films. From Andy's room to Bonnie's adventures, see if you belong in the toy box." />
+            <meta name="description" content="Test your Toy Story knowledge across all five films. From Andy's room to Bonnie's digital tablet, see if you belong in the toy box." />
             <link rel="canonical" href="https://www.fandom-trivia.com/selector-toy-story" />
             <meta property="og:title" content="Toy Story Trivia & Movie Quizzes | Fandom Trivia" />
-            <meta property="og:description" content="Play Toy Story quizzes across all four films and prove you know every toy in the box." />
+            <meta property="og:description" content="Play Toy Story quizzes across all five films and prove you know every toy in the box." />
             <script type="application/ld+json">
               {getBreadcrumbSchema([
                 { name: "Home", item: "https://www.fandom-trivia.com/" },
@@ -8938,7 +8938,8 @@ const ToyStorySelector = () => {
             { label: "Film 2", title: "Toy Story 2", desc: "20 questions on Woody, Jessie, and Al's Toy Barn", icon: "\u2B50", view: 'trivia-toy-story-2', gradient: 'from-red-600/20 to-orange-600/20', border: 'border-red-500/30 hover:border-red-400/50' },
             { label: "Film 3", title: "Toy Story 3", desc: "20 questions on Sunnyside and the great escape", icon: "\u{1F9F8}", view: 'trivia-toy-story-3', gradient: 'from-amber-600/20 to-yellow-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
             { label: "Film 4", title: "Toy Story 4", desc: "20 questions on Forky, Bo Peep, and the carnival", icon: "\u{1FA80}", view: 'trivia-toy-story-4', gradient: 'from-purple-600/20 to-pink-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
-            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "\u{1F3B2}", view: 'trivia-toy-story-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+            { label: "Film 5", title: "Toy Story 5", desc: "15 questions on Jessie, Lilypad, and the digital era", icon: "\u{1F438}", view: 'trivia-toy-story-5', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+            { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 5 films", icon: "\u{1F3B2}", view: 'trivia-toy-story-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
           ].map(film => (
             <motion.button
               key={film.label}
@@ -9372,7 +9373,7 @@ export default function App() {
   []);
 
   const toyStoryRandomQuestions = useMemo(() => 
-    [...(TOY_STORY_1_TRIVIA || []), ...(TOY_STORY_2_TRIVIA || []), ...(TOY_STORY_3_TRIVIA || []), ...(TOY_STORY_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(TOY_STORY_1_TRIVIA || []), ...(TOY_STORY_2_TRIVIA || []), ...(TOY_STORY_3_TRIVIA || []), ...(TOY_STORY_4_TRIVIA || []), ...(TOY_STORY_5_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const shrekRandomQuestions = useMemo(() => 
@@ -9800,7 +9801,6 @@ export default function App() {
             <Route path="/trivia-world-cup-2022" element={<MCQuizView key="trivia-world-cup-2022" questions={WORLD_CUP_2022_TRIVIA} title="2022 World Cup Trivia" scoreLabel="2022 World Cup Trivia" grades={WORLD_CUP_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-inside-out-1" element={<MCQuizView key="trivia-inside-out-1" questions={INSIDE_OUT_1_TRIVIA} title="Inside Out 1 Trivia" scoreLabel="Inside Out 1 Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-inside-out-2" element={<MCQuizView key="trivia-inside-out-2" questions={INSIDE_OUT_2_TRIVIA} title="Inside Out 2 Trivia" scoreLabel="Inside Out 2 Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
-            <Route path="/trivia-inside-out-mixed" element={<MCQuizView key="trivia-inside-out-mixed" questions={INSIDE_OUT_MIXED_TRIVIA} title="Inside Out Mixed Trivia" scoreLabel="Inside Out Mixed Trivia" grades={INSIDE_OUT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-thanksgiving" element={<MCQuizView key="trivia-thanksgiving" questions={THANKSGIVING_TRIVIA} title="Thanksgiving Trivia" scoreLabel="Thanksgiving Trivia" grades={THANKSGIVING_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-christmas" element={<MCQuizView key="trivia-christmas" questions={CHRISTMAS_TRIVIA} title="Christmas Trivia" scoreLabel="Christmas Trivia" grades={CHRISTMAS_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-halloween" element={<MCQuizView key="trivia-halloween" questions={HALLOWEEN_TRIVIA} title="Halloween Trivia" scoreLabel="Halloween Trivia" grades={HALLOWEEN_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
@@ -10025,6 +10025,7 @@ export default function App() {
             <Route path="/trivia-toy-story-2" element={<MCQuizView user={user} questions={TOY_STORY_2_TRIVIA} title="Toy Story 2" scoreLabel="Toy Story 2" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-toy-story-3" element={<MCQuizView user={user} questions={TOY_STORY_3_TRIVIA} title="Toy Story 3" scoreLabel="Toy Story 3" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-toy-story-4" element={<MCQuizView user={user} questions={TOY_STORY_4_TRIVIA} title="Toy Story 4" scoreLabel="Toy Story 4" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-toy-story-5" element={<MCQuizView user={user} questions={TOY_STORY_5_TRIVIA} title="Toy Story 5" scoreLabel="Toy Story 5" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-toy-story-random" element={<MCQuizView user={user} questions={toyStoryRandomQuestions} title="Toy Story Mixed Challenge" scoreLabel="Toy Story Mixed Challenge" grades={TOY_STORY_GRADES} onQuizComplete={evaluateBadges} />} />
             
             {/* Dog Man Universe */}
