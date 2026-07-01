@@ -2600,5 +2600,47 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Are you feeling the pressure? Don't let Anxiety take over the controls! Take the quiz, relax, and help Riley build a healthy, complete Sense of Self!</p>
     `
+  },
+  {
+    slug: 'gabbys-dollhouse-new-releases-guide',
+    title: "Gabby's Dollhouse: Inside the Movie and Season 13 Fairylandia!",
+    metaDescription: "Explore the magical world of Gabby's Dollhouse! Learn about Gabby's Dollhouse: The Movie and Season 13's Fairylandia, and test your knowledge with our ultimate trivia challenges.",
+    date: '2026-06-30',
+    author: 'Fandom Trivia Team',
+    image: '/images/gabby.jpg',
+    keywords: ["Gabby's Dollhouse quiz", "Gabby's Dollhouse trivia", "Fairylandia Season 13 challenge", "Gabby's Dollhouse Movie test", "Pandy Paws cat games"],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">A-meow-zing news for dollhouse fans! <em>Gabby's Dollhouse</em> has expanded in massive new ways with the release of <strong>Gabby's Dollhouse: The Movie</strong> and the magical <strong>Season 13: Fairylandia</strong>. From a wild road trip to Cat Francisco to a secret kingdom hidden inside a Cotton Candy Tree, there is so much new lore to explore. Grab your magical cat ears, shrink down, and get ready to test your knowledge with our ultimate <strong>Gabby's Dollhouse trivia</strong>!</p>
+
+      <div class="my-8 text-center flex flex-wrap justify-center gap-4">
+        <a href="/trivia-gabby-movie" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Movie Trivia
+        </a>
+        <a href="/trivia-gabby-s13" class="inline-block bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          Play Season 13 Trivia
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Gabby's First Big Screen Adventure</h2>
+      <p>In the landmark release <em>Gabby's Dollhouse: The Movie</em>, Gabby and her grandmother, Grandma Gigi (played by the legendary Gloria Estefan), set off on a road trip to the beautiful city of Cat Francisco. But disaster strikes when Vera (Kristen Wiig), an eccentric and cat-obsessed collector, swipes the dollhouse! To rescue Pandy Paws, Cakey Cat, and the rest of the Gabby Cats, Gabby must navigate the real world, bringing Vera's childhood toy cat, Chumsley, to life with her dollhouse magic. Can you rescue the dollhouse? <a href="/trivia-gabby-movie" class="text-primary hover:text-primary/80 font-bold">Take our movie trivia challenge now!</a></p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-gabby" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-pink-400">Direct Link:</span> Go to the Gabby's Dollhouse Selector Page
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Welcome to Fairylandia!</h2>
+      <p>Season 13 brings us inside a brand new magical setting: Fairylandia! Located inside the beautiful Cotton Candy Tree, this secret world is filled with flying fairies, tea parties, and exciting new creatures. Let's see if you know these new features from the latest episodes:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Loss:</strong> Kitty Fairy loses her wings on Fairy Appreciation Day after one of MerCat's potions goes awry.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Tea Party:</strong> The Gabby Cats host a tea party where they decorate stuffed "Kitty Bears."</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Transformation:</strong> Pandy befriends a "Kitty-Pillar" who eats fruits and veggies to become a "Kitty-Butterfly."</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Opposite:</strong> The "Opposite Cat" toy turns up into down and big into small inside the dollhouse.</li>
+      </ul>
+
+      <p>Are you ready to show off your growth mindset? Put on your cat ears, challenge your friends, and see if you can become a certified Dollhouse Master in our <strong>Fairylandia Season 13 challenge</strong>!</p>
+    `
   }
 ];

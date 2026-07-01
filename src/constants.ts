@@ -176,6 +176,14 @@ export const BADGES: Badge[] = [
     targetQuiz: 'pawpatrol'
   },
   {
+    id: 'gabby-dollhouse-hero',
+    name: 'A-Meow-Zing Friend',
+    description: "Complete any Gabby's Dollhouse trivia challenge.",
+    icon: 'Sparkles',
+    color: 'text-pink-400',
+    targetQuiz: 'gabby'
+  },
+  {
     id: 'dragon-warrior',
     name: 'Dragon Warrior',
     description: 'Master the art of Kung Fu in any Panda quiz.',
@@ -1181,6 +1189,17 @@ export const UNIVERSES = [
     buttonText: 'Start the Quiz',
     icon: 'Sparkles',
     path: '/trivia-alice-in-wonderland'
+  },
+  {
+    id: 'gabby',
+    title: "Gabby's Dollhouse",
+    tags: ['Animation', 'Magic', 'Kids'],
+    description: "Get ready for a dollhouse delivery! Step inside the magical world of Gabby, Pandy Paws, and the Gabby Cats. Explore Fairylandia and the Movie adventures!",
+    image: '/images/gabby.jpg',
+    seoAlt: "Gabby wearing her magical cat ears and smiling with Pandy Paws in the dollhouse",
+    buttonText: 'A-Meow-Zing Trivia',
+    icon: 'Sparkles',
+    path: '/selector-gabby'
   },
   {
     id: 'coding',
