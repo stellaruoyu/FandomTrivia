@@ -56,6 +56,7 @@ import {
 } from './siteMeta';
 import { MOANA_1_TRIVIA, MOANA_2_TRIVIA } from './moanaTrivia';
 import { GABBY_MOVIE_TRIVIA, GABBY_S13_TRIVIA, GABBY_RANDOM_TRIVIA, GABBY_GRADES } from './gabbyTrivia';
+import { WILD_ROBOT_1_TRIVIA, WILD_ROBOT_2_TRIVIA, WILD_ROBOT_3_TRIVIA, WILD_ROBOT_RANDOM_TRIVIA, WILD_ROBOT_GRADES } from './wildRobotTrivia';
 import { CAT_IN_THE_HAT_TRIVIA } from './catInTheHatTrivia';
 import { HTTYD_1_TRIVIA, HTTYD_2_TRIVIA, HTTYD_3_TRIVIA } from './httydTrivia';
 import { AVATAR_1_TRIVIA, AVATAR_2_TRIVIA, AVATAR_3_TRIVIA, AVATAR_RANDOM_TRIVIA } from './avatarTrivia';
@@ -6456,6 +6457,76 @@ const FrozenSelector = () => {
 
 // --- Mario Movie Selector ---
 
+// --- The Wild Robot Selector ---
+
+const WildRobotSelector = () => {
+  const navigate = useNavigate();
+  const { getQuizCount, formatCount } = useQuizStats();
+  return (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-28 pb-20 px-6">
+    <div className="max-w-3xl mx-auto space-y-10">
+      <div className="text-center space-y-3">
+        <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors font-bold mb-4">
+          <ArrowLeft className="size-4" /> Back to Universes
+        </button>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">Survival Challenge</span></h1>
+        <Helmet>
+          <title>The Wild Robot Trivia & Quizzes | Fandom Trivia</title>
+          <meta name="description" content="Test your knowledge on The Wild Robot trilogy. From Roz ROZZUM 7134 and Brightbill to Fink, Hilltop Farm, and the poison tide, prove your wilderness skills." />
+          <link rel="canonical" href="https://www.fandom-trivia.com/selector-wild-robot" />
+          <meta property="og:title" content="The Wild Robot Trivia & Quizzes | Fandom Trivia" />
+          <meta property="og:description" content="Enter the wilderness with Roz and Brightbill in the ultimate Wild Robot trivia challenge." />
+          <script type="application/ld+json">
+            {getBreadcrumbSchema([
+              { name: "Home", item: "https://www.fandom-trivia.com/" },
+              { name: "The Wild Robot Universe", item: "https://www.fandom-trivia.com/selector-wild-robot" }
+            ])}
+          </script>
+        </Helmet>
+        <p className="text-slate-400 font-medium">Select a book or film challenge to test your survival skills, or try a random mix of all three!</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {[
+          { label: 'Book 1', title: 'The Wild Robot (Original)', desc: `${WILD_ROBOT_1_TRIVIA.length} questions on the island survival`, icon: "🤖", view: 'trivia-wild-robot-1', gradient: 'from-emerald-600/20 to-teal-600/20', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
+          { label: 'Book 2', title: 'The Wild Robot Escapes', desc: `${WILD_ROBOT_2_TRIVIA.length} questions on Hilltop Farm`, icon: "🚜", view: 'trivia-wild-robot-2', gradient: 'from-amber-600/20 to-orange-600/20', border: 'border-amber-500/30 hover:border-amber-400/50' },
+          { label: 'Book 3', title: 'The Wild Robot Protects', desc: `${WILD_ROBOT_3_TRIVIA.length} questions on the poison tide`, icon: "🌊", view: 'trivia-wild-robot-3', gradient: 'from-cyan-600/20 to-blue-600/20', border: 'border-cyan-500/30 hover:border-cyan-400/50' },
+          { label: 'Random', title: 'Mixed Challenge', desc: '15 random questions from all three books', icon: "🎲", view: 'trivia-wild-robot-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+        ].map(film => (
+          <motion.button
+            key={film.title}
+            whileHover={{ scale: 1.03, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate(`/${film.view}`)}
+            className={`text-left p-6 rounded-2xl bg-gradient-to-br ${film.gradient} border ${film.border} transition-all duration-300 space-y-4 group flex flex-col justify-between`}
+          >
+            <div className="space-y-4">
+              <div className="text-4xl">{film.icon}</div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{film.label}</p>
+                <h3 className="text-lg font-black text-white tracking-tight leading-snug">{film.title}</h3>
+                <p className="text-xs text-slate-400 font-medium mt-1 leading-relaxed">{film.desc}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mt-6">
+              <div className="flex items-center gap-2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Play Now <ArrowRight className="size-3" />
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[8px] uppercase tracking-widest text-slate-400 font-bold mb-0.5">see description</span>
+                <div className="flex items-center gap-1.5 bg-black/20 border border-white/5 px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] font-black text-white">{formatCount(getQuizCount(film.view))}</span>
+                  <span className="text-[9px] font-black uppercase text-slate-500 tracking-tighter ml-0.5">takes</span>
+                </div>
+              </div>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+  );
+};
+
 // --- Gabby's Dollhouse Selector ---
 
 const GabbySelector = () => {
@@ -8159,6 +8230,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                 if (universe.id === 'dog-man') navigate('/selector-dog-man');
                 if (universe.id === 'hoppers') navigate('/selector-hoppers');
                 if (universe.id === 'gabby') navigate('/selector-gabby');
+                if (universe.id === 'wild-robot') navigate('/selector-wild-robot');
                 if (universe.id === 'wicked') navigate('/selector-wicked');
               }}
               className="fandom-card group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 shadow-2xl"
@@ -8217,6 +8289,7 @@ const LandingView = ({ setUser, onUnlockBadge }: {
                       if (universe.id === 'dog-man') navigate('/selector-dog-man');
                       if (universe.id === 'hoppers') navigate('/selector-hoppers');
                       if (universe.id === 'gabby') navigate('/selector-gabby');
+                      if (universe.id === 'wild-robot') navigate('/selector-wild-robot');
                       if (universe.id === 'wicked') navigate('/selector-wicked');
                     }}
                     className={`flex-1 py-3 ${universe.isSpecial ? 'bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20' : 'bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20'} rounded-xl text-white font-bold transition-all`}
@@ -9967,6 +10040,11 @@ export default function App() {
             <Route path="/trivia-gabby-movie" element={<MCQuizView key="trivia-gabby-movie" questions={GABBY_MOVIE_TRIVIA} title="Gabby's Dollhouse: The Movie" scoreLabel="Gabby's Dollhouse: The Movie" grades={GABBY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-gabby-s13" element={<MCQuizView key="trivia-gabby-s13" questions={GABBY_S13_TRIVIA} title="Gabby's Dollhouse: Season 13" scoreLabel="Gabby's Dollhouse: Season 13" grades={GABBY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-gabby-random" element={<MCQuizView key="trivia-gabby-random" questions={GABBY_RANDOM_TRIVIA} title="Gabby's Dollhouse Mixed Challenge" scoreLabel="Gabby's Dollhouse Mixed Challenge" grades={GABBY_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/selector-wild-robot" element={<WildRobotSelector />} />
+            <Route path="/trivia-wild-robot-1" element={<MCQuizView key="trivia-wild-robot-1" questions={WILD_ROBOT_1_TRIVIA} title="The Wild Robot (Book 1)" scoreLabel="The Wild Robot" grades={WILD_ROBOT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wild-robot-2" element={<MCQuizView key="trivia-wild-robot-2" questions={WILD_ROBOT_2_TRIVIA} title="The Wild Robot Escapes" scoreLabel="The Wild Robot Escapes" grades={WILD_ROBOT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wild-robot-3" element={<MCQuizView key="trivia-wild-robot-3" questions={WILD_ROBOT_3_TRIVIA} title="The Wild Robot Protects" scoreLabel="The Wild Robot Protects" grades={WILD_ROBOT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-wild-robot-random" element={<MCQuizView key="trivia-wild-robot-random" questions={WILD_ROBOT_RANDOM_TRIVIA} title="The Wild Robot Mixed Challenge" scoreLabel="The Wild Robot Mixed Challenge" grades={WILD_ROBOT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-cat-in-the-hat" element={<MCQuizView key="trivia-cat-in-the-hat" questions={CAT_IN_THE_HAT_TRIVIA} title="The Cat in the Hat (2003)" scoreLabel="The Cat in the Hat (2003)" grades={CAT_IN_THE_HAT_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-httyd-1" element={<MCQuizView key="trivia-httyd-1" questions={HTTYD_1_TRIVIA} title="How to Train Your Dragon" scoreLabel="How to Train Your Dragon" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-httyd-2" element={<MCQuizView key="trivia-httyd-2" questions={HTTYD_2_TRIVIA} title="How to Train Your Dragon 2" scoreLabel="How to Train Your Dragon 2" grades={HTTYD_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

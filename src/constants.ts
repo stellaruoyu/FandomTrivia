@@ -184,6 +184,14 @@ export const BADGES: Badge[] = [
     targetQuiz: 'gabby'
   },
   {
+    id: 'wild-robot-hero',
+    name: 'Wilderness Protector',
+    description: "Complete any The Wild Robot trivia challenge.",
+    icon: 'Sparkles',
+    color: 'text-emerald-400',
+    targetQuiz: 'wild-robot'
+  },
+  {
     id: 'dragon-warrior',
     name: 'Dragon Warrior',
     description: 'Master the art of Kung Fu in any Panda quiz.',
@@ -1200,6 +1208,17 @@ export const UNIVERSES = [
     buttonText: 'A-Meow-Zing Trivia',
     icon: 'Sparkles',
     path: '/selector-gabby'
+  },
+  {
+    id: 'wild-robot',
+    title: "The Wild Robot",
+    tags: ['Animation', 'Nature', 'Sci-Fi'],
+    description: "Can a robot survive in the wilderness? Test your knowledge on Roz, Brightbill, Fink, and the incredible book and film trilogy!",
+    image: '/images/wildrobot.jpg',
+    seoAlt: "Roz the robot sitting on a cliff overlooking a forest with animals",
+    buttonText: 'Enter the Wild',
+    icon: 'Sparkles',
+    path: '/selector-wild-robot'
   },
   {
     id: 'coding',

@@ -2642,5 +2642,50 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Are you ready to show off your growth mindset? Put on your cat ears, challenge your friends, and see if you can become a certified Dollhouse Master in our <strong>Fairylandia Season 13 challenge</strong>!</p>
     `
+  },
+  {
+    slug: 'the-wild-robot-trilogy-guide',
+    title: "The Wild Robot: Journey from the Island to the Farm and Deep Ocean!",
+    metaDescription: "Dive into Peter Brown's bestselling series The Wild Robot! Explore the books, the 2024 animated movie, and test your knowledge with our three ultimate trivia challenges.",
+    date: '2026-06-30',
+    author: 'Fandom Trivia Team',
+    image: '/images/wildrobot.jpg',
+    keywords: ["The Wild Robot quiz", "The Wild Robot trivia", "Roz ROZZUM 7134 test", "Brightbill goose challenge", "The Wild Robot Escapes game"],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">Can a robot survive in the wilderness and learn to love? Peter Brown's bestselling trilogy <em>The Wild Robot</em> has captured the hearts of readers and viewers worldwide, culminating in the critically acclaimed 2024 DreamWorks animated movie. Following the adventures of ROZZUM unit 7134 (Roz) and her adopted gosling son Brightbill, the series is a beautiful exploration of nature, technology, and motherhood. Test your survival instincts with our ultimate <strong>The Wild Robot trivia</strong>!</p>
+
+      <div class="my-8 text-center flex flex-wrap justify-center gap-4">
+        <a href="/trivia-wild-robot-1" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play Book 1 / Movie Trivia
+        </a>
+        <a href="/trivia-wild-robot-2" class="inline-block bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          Play Book 2 (Escapes) Trivia
+        </a>
+        <a href="/trivia-wild-robot-3" class="inline-block bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          Play Book 3 (Protects) Trivia
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Roz's Awakening in the Wilderness</h2>
+      <p>In the first book and the 2024 film adaptation, Roz wakes up on a remote, wild island after a cargo ship sinks in a hurricane. She has no memory or instructions, but she quickly learns to adapt by observing the island's animals. When she accidentally causes a rock slide that kills a goose family, she adopts the only surviving egg—raising the gosling, Brightbill, as her own. Along the way, Mr. Beaver helps her build "The Nest," and Fink the fox becomes a trusted friend. Do you think you can survive the island? <a href="/trivia-wild-robot-1" class="text-primary hover:text-primary/80 font-bold">Take the first book & movie quiz now!</a></p>
+
+      <div class="my-10 text-center">
+        <a href="/selector-wild-robot" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Go to the Wild Robot Selector Page
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Escaping Hilltop Farm and Protecting the Island</h2>
+      <p>The sequel novels expand Roz's universe. In <em>The Wild Robot Escapes</em>, Roz is sent to work at Hilltop Farm but longs for her home and Brightbill. With the help of the Shareef children, Jaya and Jad, she flees back to the forest while evading hostile RECO robots. In the final installment, <em>The Wild Robot Protects</em>, Roz must walk on the ocean floor to stop a toxic poison tide threatening the island. Let's see if you know these highlights from her journey:</p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Escape:</strong> Roz receives help from Coral the whale to cross the ocean during her escape.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Warning:</strong> The seal Glimmer first warns the island of the approaching toxic poison tide.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Choice:</strong> Roz chooses a peaceful resolution over violent retaliation at the human pollution station.</li>
+        <li class="p-5 rounded-2xl bg-slate-800/50 border border-slate-700"><strong>The Guide:</strong> The Ancient Shark informs Roz of the source of the poison tide.</li>
+      </ul>
+
+      <p>Are you a true wilderness protector? Put on your thinking cap, challenge your family, and see if you can earn the rank of Wilderness Sentinel in our <strong>Roz ROZZUM 7134 test</strong>!</p>
+    `
   }
 ];
