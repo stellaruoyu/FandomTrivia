@@ -66,10 +66,10 @@ export const WILD_ROBOT_1_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 10,
-    question: "True or False: Lupita Nyong'o is the voice actress for Roz in the 2024 DreamWorks animated movie.",
-    options: ["True", "False"],
-    answer: "True",
-    evidence: "Lupita Nyong'o voices Roz in the 2024 film adaptation."
+    question: "What is the name of the giant grizzly bear on the island who is initially hostile towards Roz?",
+    options: ["Thorn", "Nettle", "Thud", "Bramble"],
+    answer: "Thorn",
+    evidence: "Thorn is the giant grizzly bear who lives on the island and initially dislikes Roz."
   }
 ];
 

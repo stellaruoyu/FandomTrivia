@@ -6,14 +6,14 @@ export const GABBY_MOVIE_TRIVIA: MCTriviaQuestion[] = [
     question: "What is the name of Gabby's grandmother who accompanies her on the road trip?",
     options: ["Grandma Gigi", "Grandma Gloria", "Grandma Mimi", "Grandma Cleo"],
     answer: "Grandma Gigi",
-    evidence: "Grandma Gigi, played by Gloria Estefan, joins Gabby on the road trip."
+    evidence: "Grandma Gigi joins Gabby on the road trip."
   },
   {
     id: 2,
     question: "What is the name of the antagonist in the movie who gets custody of the dollhouse?",
     options: ["Vera", "Valerie", "Victoria", "Vanessa"],
     answer: "Vera",
-    evidence: "Vera (played by Kristen Wiig) is an eccentric cat lady who comes into possession of the dollhouse."
+    evidence: "Vera is an eccentric cat lady who comes into possession of the dollhouse."
   },
   {
     id: 3,
@@ -31,17 +31,17 @@ export const GABBY_MOVIE_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 5,
-    question: "What role does Gloria Estefan play in the film?",
-    options: ["She plays Grandma Gigi", "She voices MerCat", "She plays Vera", "She voices Kitty Fairy"],
-    answer: "She plays Grandma Gigi",
-    evidence: "Gabby's grandmother, Grandma Gigi, is played by Gloria Estefan."
+    question: "Who is Grandma Gigi to Gabby?",
+    options: ["Her grandmother", "Her mother", "Her aunt", "Her teacher"],
+    answer: "Her grandmother",
+    evidence: "Grandma Gigi is Gabby's grandmother who goes with her on the road trip to Cat Francisco."
   },
   {
     id: 6,
-    question: "What role does Kristen Wiig play in the film?",
-    options: ["Vera", "Grandma Gigi", "Kitty Fairy", "Carlita"],
-    answer: "Vera",
-    evidence: "Vera is played by Kristen Wiig, who serves as the film's antagonist."
+    question: "What is the name of Gabby's best friend and sidekick who accompanies her in the dollhouse?",
+    options: ["Pandy Paws", "Cakey Cat", "CatRat", "MerCat"],
+    answer: "Pandy Paws",
+    evidence: "Pandy Paws is Gabby's best friend and sidekick who is always by her side."
   },
   {
     id: 7,
@@ -66,10 +66,10 @@ export const GABBY_MOVIE_TRIVIA: MCTriviaQuestion[] = [
   },
   {
     id: 10,
-    question: "True or False: Gloria Estefan plays the live-action role of Grandma Gigi.",
+    question: "True or False: Gabby's dollhouse is stolen by Vera during the road trip.",
     options: ["True", "False"],
     answer: "True",
-    evidence: "Grandma Gigi is played by Gloria Estefan."
+    evidence: "During the road trip, the dollhouse is stolen by the eccentric collector Vera."
   }
 ];
 
