@@ -2703,8 +2703,8 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>The short gives us a hilarious look at what happens when the Minions try their hands at rolling dice, playing as mighty warriors, wizards, and elves. The ensuing chaos is perfectly suited to their energetic nature. If you've ever played a tabletop RPG, you'll recognize the classic tropes: the dungeon master trying to maintain order, the player who doesn't understand the rules, and the sheer unpredictability of every encounter.</p>
 
       <div class="my-10 text-center">
-        <a href="/trivia-despicableme" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
-          <span class="text-yellow-400">Direct Link:</span> Test your knowledge in our Despicable Me Trivia
+        <a href="/trivia-minions-and-monsters" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-yellow-400">Direct Link:</span> Test your knowledge in our Minions & Monsters Trivia
         </a>
       </div>
     `
