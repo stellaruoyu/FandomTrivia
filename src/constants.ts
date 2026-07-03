@@ -6119,11 +6119,22 @@ export const DESPICABLE_ME_4_TRIVIA: MCTriviaQuestion[] = [
   }
 ];
 
+export const MINIONS_AND_MONSTERS_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: "What tabletop game are the Minions playing in the short film 'Minions & Monsters'?",
+    options: ["Dungeons & Dragons", "Monopoly", "Catan", "Risk"],
+    answer: "Dungeons & Dragons",
+    evidence: "The short film 'Minions & Monsters' features the Minions playing a fantasy tabletop role-playing game akin to Dungeons & Dragons."
+  }
+];
+
 export const DESPICABLE_ME_MIXED_TRIVIA: MCTriviaQuestion[] = [
   ...DESPICABLE_ME_1_TRIVIA,
   ...DESPICABLE_ME_2_TRIVIA,
   ...DESPICABLE_ME_3_TRIVIA,
-  ...DESPICABLE_ME_4_TRIVIA
+  ...DESPICABLE_ME_4_TRIVIA,
+  ...MINIONS_AND_MONSTERS_TRIVIA
 ];
 
 export const FROZEN_1_TRIVIA: MCTriviaQuestion[] = [

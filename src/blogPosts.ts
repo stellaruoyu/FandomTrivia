@@ -2687,5 +2687,26 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Are you a true wilderness protector? Put on your thinking cap, challenge your family, and see if you can earn the rank of Wilderness Sentinel in our <strong>Roz ROZZUM 7134 test</strong>!</p>
     `
+  },
+  {
+    slug: 'minions-and-monsters',
+    title: 'Minions & Monsters: A Tabletop Adventure',
+    metaDescription: 'Dive into the fun world of Minions & Monsters. See how the lovable Minions take on fantasy role-playing games like Dungeons & Dragons!',
+    date: '2026-07-03',
+    author: 'Fandom Trivia Team',
+    image: '/images/minions-and-monsters.jpg',
+    keywords: ['Minions and Monsters', 'Despicable Me', 'Minions D&D', 'tabletop RPG', 'Minions short film'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">If you thought the Minions were chaotic in the real world, wait until you see them in a fantasy realm! In the short film <em>Minions & Monsters</em>, our favorite yellow henchmen take a break from serving villains to dive into a tabletop role-playing game that bears a striking resemblance to Dungeons & Dragons.</p>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">A Minion's Guide to Role-Playing</h2>
+      <p>The short gives us a hilarious look at what happens when the Minions try their hands at rolling dice, playing as mighty warriors, wizards, and elves. The ensuing chaos is perfectly suited to their energetic nature. If you've ever played a tabletop RPG, you'll recognize the classic tropes: the dungeon master trying to maintain order, the player who doesn't understand the rules, and the sheer unpredictability of every encounter.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-despicableme" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-yellow-400">Direct Link:</span> Test your knowledge in our Despicable Me Trivia
+        </a>
+      </div>
+    `
   }
 ];
