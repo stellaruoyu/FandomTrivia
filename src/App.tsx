@@ -25,7 +25,7 @@ import {
   BAD_GUYS_1_TRIVIA, BAD_GUYS_2_TRIVIA,
   THREE_BODY_PROBLEM_TRIVIA, THE_DARK_FOREST_TRIVIA, DEATHS_END_TRIVIA,
   ZOOTOPIA_TRIVIA, ZOOTOPIA_2_TRIVIA,
-  DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
+  DESPICABLE_ME_1_TRIVIA, DESPICABLE_ME_2_TRIVIA, DESPICABLE_ME_3_TRIVIA, DESPICABLE_ME_4_TRIVIA, MINIONS_AND_MONSTERS_TRIVIA, DESPICABLE_ME_MIXED_TRIVIA,
   FROZEN_1_TRIVIA, FROZEN_2_TRIVIA, FROZEN_MIXED_TRIVIA,
   MARIO_2023_TRIVIA, MARIO_2026_TRIVIA, MARIO_MIXED_TRIVIA,
   PAW_PATROL_TRIVIA,
@@ -7733,7 +7733,8 @@ const DespicableMeSelector = () => {
           { label: "Film 2", title: "Despicable Me 2", desc: `${DESPICABLE_ME_2_TRIVIA.length} questions`, icon: "\u{1F9EA}", view: 'trivia-despicableme-2', gradient: 'from-purple-600/20 to-indigo-600/20', border: 'border-purple-500/30 hover:border-purple-400/50' },
           { label: "Film 3", title: "Despicable Me 3", desc: `${DESPICABLE_ME_3_TRIVIA.length} questions`, icon: "\u{1F48E}", view: 'trivia-despicableme-3', gradient: 'from-pink-600/20 to-rose-600/20', border: 'border-pink-500/30 hover:border-pink-400/50' },
           { label: "Film 4", title: "Despicable Me 4", desc: `${DESPICABLE_ME_4_TRIVIA.length} questions`, icon: "\u{1FAB3}", view: 'trivia-despicableme-4', gradient: 'from-yellow-600/20 to-amber-600/20', border: 'border-yellow-500/30 hover:border-yellow-400/50' },
-          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all 4 films", icon: "\u{1F3B2}", view: 'trivia-despicableme-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
+          { label: "Short", title: "Minions & Monsters", desc: `${MINIONS_AND_MONSTERS_TRIVIA.length} questions`, icon: "\u{1F3B2}", view: 'trivia-minions-and-monsters', gradient: 'from-green-600/20 to-emerald-600/20', border: 'border-green-500/30 hover:border-green-400/50' },
+          { label: "Random", title: "Mixed Challenge", desc: "20 random questions from all films", icon: "\u{1F3B2}", view: 'trivia-despicableme-random', gradient: 'from-fuchsia-600/20 to-pink-600/20', border: 'border-fuchsia-500/30 hover:border-fuchsia-400/50' },
         ].map(film => (
           <motion.button
             key={film.title}
@@ -9490,7 +9491,7 @@ export default function App() {
   []);
 
   const despicableMeRandomQuestions = useMemo(() => 
-    [...(DESPICABLE_ME_1_TRIVIA || []), ...(DESPICABLE_ME_2_TRIVIA || []), ...(DESPICABLE_ME_3_TRIVIA || []), ...(DESPICABLE_ME_4_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
+    [...(DESPICABLE_ME_1_TRIVIA || []), ...(DESPICABLE_ME_2_TRIVIA || []), ...(DESPICABLE_ME_3_TRIVIA || []), ...(DESPICABLE_ME_4_TRIVIA || []), ...(MINIONS_AND_MONSTERS_TRIVIA || [])].sort(() => 0.5 - Math.random()).slice(0, 20),
   []);
 
   const frozenRandomQuestions = useMemo(() => 
@@ -10115,6 +10116,7 @@ export default function App() {
             <Route path="/trivia-despicableme-2" element={<MCQuizView key="trivia-despicableme-2" questions={DESPICABLE_ME_2_TRIVIA} title="Despicable Me 2" scoreLabel="Despicable Me 2" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-despicableme-3" element={<MCQuizView key="trivia-despicableme-3" questions={DESPICABLE_ME_3_TRIVIA} title="Despicable Me 3" scoreLabel="Despicable Me 3" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-despicableme-4" element={<MCQuizView key="trivia-despicableme-4" questions={DESPICABLE_ME_4_TRIVIA} title="Despicable Me 4" scoreLabel="Despicable Me 4" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-minions-and-monsters" element={<MCQuizView key="trivia-minions-and-monsters" questions={MINIONS_AND_MONSTERS_TRIVIA} title="Minions & Monsters" scoreLabel="Minions & Monsters" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-despicableme-random" element={<MCQuizView key="trivia-despicableme-random" questions={despicableMeRandomQuestions} title="Despicable Me Mixed Challenge" scoreLabel="Despicable Me Mixed Challenge" grades={DESPICABLE_ME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
 
 
