@@ -97,7 +97,7 @@ import { supabase } from './supabaseClient';
 import { BLOG_POSTS } from './blogPosts';
 import { CHANGELOG_ENTRIES } from './changelogData';
 import { LION_KING_TRIVIA, ALADDIN_TRIVIA, BEAUTY_BEAST_TRIVIA, LITTLE_MERMAID_TRIVIA, TANGLED_TRIVIA, MULAN_TRIVIA } from './disneyTrivia';
-import { ATTACK_ON_TITAN_TRIVIA, DEMON_SLAYER_TRIVIA, JUJUTSU_KAISEN_TRIVIA, ONE_PIECE_TRIVIA, NARUTO_TRIVIA, DEATH_NOTE_TRIVIA } from './animeTrivia';
+import { ATTACK_ON_TITAN_TRIVIA, DEMON_SLAYER_TRIVIA, JUJUTSU_KAISEN_TRIVIA, ONE_PIECE_TRIVIA, NARUTO_TRIVIA, DEATH_NOTE_TRIVIA, TOTORO_TRIVIA } from './animeTrivia';
 import {
   WIZARD_OF_OZ_TRIVIA,
   UGLY_DUCKLING_TRIVIA,
@@ -1206,6 +1206,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'one-piece': '/trivia-one-piece',
       'naruto': '/trivia-naruto',
       'death-note': '/trivia-death-note',
+      'totoro': '/trivia-totoro',
     };
 
     const quizResults = UNIVERSES
@@ -6787,6 +6788,7 @@ const AnimeSelector = () => {
     { label: 'Adventure', title: 'One Piece', desc: '10 questions on Luffy, Devil Fruits, and the Grand Line', icon: '🏴‍☠️', view: 'trivia-one-piece', gradient: 'from-blue-600/20 to-cyan-900/20', border: 'border-blue-500/30 hover:border-blue-400/50' },
     { label: 'Classic Shonen', title: 'Naruto', desc: '10 questions on shinobi ranks, Kurama, and Konoha', icon: '🍥', view: 'trivia-naruto', gradient: 'from-orange-600/20 to-amber-900/20', border: 'border-orange-500/30 hover:border-orange-400/50' },
     { label: 'Mystery', title: 'Death Note', desc: '10 questions on Light, L, Ryuk, and the rules of death', icon: '📓', view: 'trivia-death-note', gradient: 'from-stone-700/20 to-neutral-900/30', border: 'border-neutral-500/30 hover:border-neutral-400/50' },
+    { label: 'Fantasy', title: 'My Neighbor Totoro', desc: '10 questions on the forest, spirits, and the new movie', icon: '🍃', view: 'trivia-totoro', gradient: 'from-emerald-700/20 to-green-900/30', border: 'border-emerald-500/30 hover:border-emerald-400/50' },
   ];
 
   return (
@@ -10157,6 +10159,7 @@ export default function App() {
             <Route path="/trivia-one-piece" element={<MCQuizView key="trivia-one-piece" questions={ONE_PIECE_TRIVIA} title="One Piece" scoreLabel="One Piece" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-naruto" element={<MCQuizView key="trivia-naruto" questions={NARUTO_TRIVIA} title="Naruto" scoreLabel="Naruto" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-death-note" element={<MCQuizView key="trivia-death-note" questions={DEATH_NOTE_TRIVIA} title="Death Note" scoreLabel="Death Note" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-totoro" element={<MCQuizView key="trivia-totoro" questions={TOTORO_TRIVIA} title="My Neighbor Totoro" scoreLabel="Totoro" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-lion-king" element={<MCQuizView key="trivia-lion-king" questions={LION_KING_TRIVIA} title="The Lion King" scoreLabel="The Lion King" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-aladdin" element={<MCQuizView key="trivia-aladdin" questions={ALADDIN_TRIVIA} title="Aladdin" scoreLabel="Aladdin" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-beauty-and-the-beast" element={<MCQuizView key="trivia-beauty-and-the-beast" questions={BEAUTY_BEAST_TRIVIA} title="Beauty and the Beast" scoreLabel="Beauty and the Beast" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />

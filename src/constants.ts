@@ -500,6 +500,18 @@ export const UNIVERSES = [
     path: '/trivia-death-note'
   },
   {
+    id: 'totoro',
+    hideOnHomepage: true,
+    title: 'My Neighbor Totoro',
+    tags: ['Anime', 'Fantasy', 'Studio Ghibli'],
+    description: 'Return to the magical forest! Test your knowledge on the new Totoro movie and the classic Studio Ghibli masterpiece.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/02/My_Neighbor_Totoro_-_Tonari_no_Totoro_%28Movie_Poster%29.jpg',
+    seoAlt: 'Official My Neighbor Totoro poster featuring Satsuki, Mei, and Totoro at the bus stop',
+    buttonText: 'Enter the Forest',
+    icon: 'Sparkles',
+    path: '/trivia-totoro'
+  },
+  {
     id: 'toy-story',
     hideOnHomepage: true,
     title: 'Toy Story',

@@ -11,6 +11,35 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'totoro-magic-quiz',
+    title: 'My Neighbor Totoro: Return to the Forest Quiz',
+    metaDescription: 'Step into the magical forest! Test your knowledge on the new Totoro movie and the classic Studio Ghibli masterpiece.',
+    date: '2026-08-10',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/0/02/My_Neighbor_Totoro_-_Tonari_no_Totoro_%28Movie_Poster%29.jpg',
+    keywords: ['Totoro quiz', 'Studio Ghibli trivia', 'anime movies test', 'My Neighbor Totoro knowledge'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">The magic of Studio Ghibli is back! With the release of the highly anticipated new Totoro movie, fans are returning to the enchanted forest to reunite with Satsuki, Mei, and the lovable forest spirits. From soaring through the sky to riding the iconic Catbus, the Totoro legacy continues to capture hearts around the world. Are you a true Ghibli fan? Grab your umbrella and take the ultimate <strong>My Neighbor Totoro quiz</strong>!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-totoro" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Totoro Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Knowledge of the Forest</h2>
+      <p>Passing our <strong>Studio Ghibli trivia</strong> challenge requires knowing more than just the name of the Catbus. Do you remember what the girls planted in their garden? Can you name the small, black soot sprites that hide in the shadows of their new home? These details separate the casual viewers from the true forest guardians.</p>
+      
+      <p class="mt-4">From heartwarming family moments to magical encounters in the rain, the Totoro movies are filled with wonder. If you think you're ready to show off your anime knowledge, <a href="/trivia-totoro" class="text-primary hover:text-primary/80 font-bold">take our anime movies test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-totoro" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-emerald-400">Direct Link:</span> Jump Straight to the Totoro Quiz
+        </a>
+      </div>
+    `
+  },
+  {
     slug: 'halloween-spooky-quiz',
     title: 'Halloween Quiz: Are You a Master of the Macabre?',
     metaDescription: 'Get into the spooky spirit! Take our Halloween quiz to test your knowledge of horror movies, urban legends, and spooky traditions.',

@@ -377,3 +377,42 @@ export const DEATH_NOTE_TRIVIA: MCTriviaQuestion[] = [
     answer: 'Soichiro Yagami'
   }
 ];
+
+export const TOTORO_TRIVIA: MCTriviaQuestion[] = [
+  {
+    id: 1,
+    question: 'What is the name of the two sisters who befriend Totoro?',
+    options: ['Satsuki and Mei', 'Chihiro and Lin', 'Kiki and Ursula', 'San and Eboshi'],
+    answer: 'Satsuki and Mei'
+  },
+  {
+    id: 2,
+    question: 'What shape does the magical vehicle take that transports Totoro and the girls?',
+    options: ['A giant Catbus', 'A flying broomstick', 'A moving castle', 'A spirit train'],
+    answer: 'A giant Catbus'
+  },
+  {
+    id: 3,
+    question: 'What small, soot-like spirits do the girls find in their new home?',
+    options: ['Susuwatari (Soot Sprites)', 'Kodama', 'Makkuro Kurosuke', 'Both A and C'],
+    answer: 'Both A and C'
+  },
+  {
+    id: 4,
+    question: 'What do the girls plant in their garden with Totoro\'s help?',
+    options: ['Magic beans', 'Acorns', 'Cherry blossoms', 'Sunflowers'],
+    answer: 'Acorns'
+  },
+  {
+    id: 5,
+    question: 'Where is the girls\' mother during the events of the movie?',
+    options: ['At work in the city', 'Traveling abroad', 'In the hospital', 'Running a bakery'],
+    answer: 'In the hospital'
+  },
+  {
+    id: 6,
+    question: 'What iconic item does Satsuki give Totoro to protect him from the rain?',
+    options: ['A magical leaf', 'An umbrella', 'A raincoat', 'A woven hat'],
+    answer: 'An umbrella'
+  }
+];
