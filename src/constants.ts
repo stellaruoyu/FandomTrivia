@@ -512,6 +512,18 @@ export const UNIVERSES = [
     path: '/trivia-totoro'
   },
   {
+    id: 'project-hail-mary',
+    hideOnHomepage: false,
+    title: 'Project Hail Mary',
+    tags: ['Sci-Fi', 'Space', 'Movies'],
+    description: 'Journey to Tau Ceti! Test your knowledge on the hit sci-fi movie Project Hail Mary, Astrophage, Rocky, and Ryland Grace\'s mission to save humanity.',
+    image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg',
+    seoAlt: 'Official cover of Project Hail Mary featuring a lone astronaut',
+    buttonText: 'Start Mission',
+    icon: 'Sparkles',
+    path: '/trivia-hail-mary'
+  },
+  {
     id: 'toy-story',
     hideOnHomepage: true,
     title: 'Toy Story',

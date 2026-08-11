@@ -11,6 +11,35 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'project-hail-mary-quiz',
+    title: 'Project Hail Mary: The Ultimate Interstellar Quiz',
+    metaDescription: 'Journey to Tau Ceti! Test your knowledge on the hit sci-fi movie Project Hail Mary, Astrophage, Rocky, and Ryland Grace\'s mission to save humanity.',
+    date: '2026-08-10',
+    author: 'Fandom Trivia Team',
+    image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg',
+    keywords: ['Project Hail Mary quiz', 'Sci-fi trivia', 'Andy Weir movie test', 'Astrophage and Rocky'],
+    content: `
+      <p class="lead text-xl text-slate-300 mb-6">A lone astronaut, a spaceship on a one-way trip, and an existential threat to humanity. Based on the acclaimed novel by Andy Weir, the <em>Project Hail Mary</em> movie has captivated audiences with its hard science, thrilling stakes, and an unforgettable alien friendship. As Ryland Grace wakes up from a coma with no memory of his past, he slowly realizes he is the last hope for Earth. Are you a true science officer? Put on your spacesuit and take the ultimate <strong>Project Hail Mary quiz</strong>!</p>
+
+      <div class="my-8 text-center">
+        <a href="/trivia-hail-mary" class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-primary/30">
+          Play the Project Hail Mary Trivia Now
+        </a>
+      </div>
+
+      <h2 class="text-3xl font-black italic uppercase mt-12 mb-6">Testing Your Sci-Fi Knowledge</h2>
+      <p>Passing our <strong>sci-fi trivia</strong> challenge requires knowing the intricacies of the mission. Do you remember the name of the star system the Hail Mary travels to? Can you recall what Ryland names his new Eridian friend, or the substance Rocky uses to build his ship? These details separate the casual viewers from the true interstellar heroes.</p>
+      
+      <p class="mt-4">From intense calculations to heartwarming cross-species communication, Project Hail Mary is a masterpiece of modern science fiction. If you think you're ready to show off your knowledge, <a href="/trivia-hail-mary" class="text-primary hover:text-primary/80 font-bold">take our Andy Weir movie test now</a>.</p>
+
+      <div class="my-10 text-center">
+        <a href="/trivia-hail-mary" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all border border-white/20">
+          <span class="text-indigo-400">Direct Link:</span> Jump Straight to the Project Hail Mary Quiz
+        </a>
+      </div>
+    `
+  },
+  {
     slug: 'totoro-magic-quiz',
     title: 'My Neighbor Totoro: Return to the Forest Quiz',
     metaDescription: 'Step into the magical forest! Test your knowledge on the new Totoro movie and the classic Studio Ghibli masterpiece.',

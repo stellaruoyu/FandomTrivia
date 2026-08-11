@@ -98,6 +98,7 @@ import { BLOG_POSTS } from './blogPosts';
 import { CHANGELOG_ENTRIES } from './changelogData';
 import { LION_KING_TRIVIA, ALADDIN_TRIVIA, BEAUTY_BEAST_TRIVIA, LITTLE_MERMAID_TRIVIA, TANGLED_TRIVIA, MULAN_TRIVIA } from './disneyTrivia';
 import { ATTACK_ON_TITAN_TRIVIA, DEMON_SLAYER_TRIVIA, JUJUTSU_KAISEN_TRIVIA, ONE_PIECE_TRIVIA, NARUTO_TRIVIA, DEATH_NOTE_TRIVIA, TOTORO_TRIVIA } from './animeTrivia';
+import { HAIL_MARY_TRIVIA } from './hailMaryTrivia';
 import {
   WIZARD_OF_OZ_TRIVIA,
   UGLY_DUCKLING_TRIVIA,
@@ -1207,6 +1208,7 @@ const SearchModal = ({ onClose }: { onClose?: () => void }) => {
       'naruto': '/trivia-naruto',
       'death-note': '/trivia-death-note',
       'totoro': '/trivia-totoro',
+      'project-hail-mary': '/trivia-hail-mary',
     };
 
     const quizResults = UNIVERSES
@@ -6777,6 +6779,13 @@ const ANIME_GRADES = [
   { threshold: 0, label: 'Apples Lover Ryuk', color: 'text-slate-400', character: { name: 'Ryuk', image: 'https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg', desc: 'Humans are so interesting! You might want to rewatch the episodes before writing in the notebook again.' } },
 ];
 
+const SCI_FI_GRADES = [
+  { threshold: 90, label: 'Commander', color: 'text-indigo-400', character: { name: 'Commander', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg', desc: 'Astounding logic and intuition. You just saved Earth!' } },
+  { threshold: 70, label: 'Science Officer', color: 'text-emerald-400', character: { name: 'Science Officer', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg', desc: 'Great work! Your calculations are almost perfect.' } },
+  { threshold: 50, label: 'Amnesiac Astronaut', color: 'text-amber-400', character: { name: 'Amnesiac', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg', desc: 'A bit disoriented? Take a breath and try to remember.' } },
+  { threshold: 0, label: 'Space Rookie', color: 'text-slate-400', character: { name: 'Space Rookie', image: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Project_Hail_Mary_cover.jpeg/220px-Project_Hail_Mary_cover.jpeg', desc: 'Space is tough. Don\'t worry, there\'s always next time.' } },
+];
+
 const AnimeSelector = () => {
   const navigate = useNavigate();
   const { getQuizCount, formatCount } = useQuizStats();
@@ -10160,6 +10169,7 @@ export default function App() {
             <Route path="/trivia-naruto" element={<MCQuizView key="trivia-naruto" questions={NARUTO_TRIVIA} title="Naruto" scoreLabel="Naruto" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-death-note" element={<MCQuizView key="trivia-death-note" questions={DEATH_NOTE_TRIVIA} title="Death Note" scoreLabel="Death Note" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-totoro" element={<MCQuizView key="trivia-totoro" questions={TOTORO_TRIVIA} title="My Neighbor Totoro" scoreLabel="Totoro" grades={ANIME_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
+            <Route path="/trivia-hail-mary" element={<MCQuizView key="trivia-hail-mary" questions={HAIL_MARY_TRIVIA} title="Project Hail Mary" scoreLabel="Project Hail Mary" grades={SCI_FI_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-lion-king" element={<MCQuizView key="trivia-lion-king" questions={LION_KING_TRIVIA} title="The Lion King" scoreLabel="The Lion King" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-aladdin" element={<MCQuizView key="trivia-aladdin" questions={ALADDIN_TRIVIA} title="Aladdin" scoreLabel="Aladdin" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
             <Route path="/trivia-beauty-and-the-beast" element={<MCQuizView key="trivia-beauty-and-the-beast" questions={BEAUTY_BEAST_TRIVIA} title="Beauty and the Beast" scoreLabel="Beauty and the Beast" grades={DISNEYLAND_GRADES} user={user} isDaily={location.state?.isDaily} onQuizComplete={evaluateBadges} />} />
